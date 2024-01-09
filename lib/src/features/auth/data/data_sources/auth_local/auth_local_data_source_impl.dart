@@ -1,12 +1,12 @@
-import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth/auth_data_source_local.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/secure_storage_auth_key_constants.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/extensions/flutter_secure_storage_wrapper_auth_extension.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 
-class AuthDataSourceLocalImpl implements AuthDataSourceLocal {
-  const AuthDataSourceLocalImpl({
+class AuthLocalDataSourceImpl implements AuthLocalDataSource {
+  const AuthLocalDataSourceImpl({
     required FlutterSecureStorageWrapper secureStorageWrapper,
     required IsarWrapper isarWrapper,
   })  : _secureStorageWrapper = secureStorageWrapper,
