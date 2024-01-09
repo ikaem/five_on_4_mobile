@@ -1,15 +1,17 @@
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/provider/go_router_wrapper_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
-/// The Widget that configures your application.
-class FiveOn4App extends StatelessWidget {
+class FiveOn4App extends ConsumerStatefulWidget {
   const FiveOn4App({
     super.key,
     required this.settingsController,
@@ -18,20 +20,38 @@ class FiveOn4App extends StatelessWidget {
   final SettingsController settingsController;
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _FiveOn4AppState();
+}
+
+class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
+  late final _goRouterWrapper = ref.read(goRouterWrapperProvider);
+
+  @override
   Widget build(BuildContext context) {
+    final isLoggedIn = ref.watch(authStatusControllerProvider).when(
+          data: (data) => data == true,
+          loading: () => false,
+          error: (error, stackTrace) => false,
+        );
+
     // Glue the SettingsController to the MaterialApp.
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return ListenableBuilder(
-      listenable: settingsController,
+      listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
+        return MaterialApp.router(
+          routerConfig: _goRouterWrapper.getRouter(isLoggedIn),
+          // builder: (context, child) {
+          //   // TODO this will insert widgets above the navigator or Router when .router is used
+          //   // so some toast wrapper
+          // },
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
           // background.
-          restorationScopeId: 'app',
+          restorationScopeId: 'five_on_4_app',
 
           // Provide the generated AppLocalizations to the MaterialApp. This
           // allows descendant Widgets to display the correct translations
@@ -59,9 +79,9 @@ class FiveOn4App extends StatelessWidget {
           // SettingsController to display the correct theme.
           theme: ThemeData(),
           darkTheme: ThemeData.dark(),
-          themeMode: settingsController.themeMode,
+          themeMode: widget.settingsController.themeMode,
           // TODO this is temp only
-          home: const LoginScreen(),
+          // home: const LoginScreen(),
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.

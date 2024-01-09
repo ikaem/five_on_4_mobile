@@ -6,17 +6,17 @@ import 'package:five_on_4_mobile/src/features/auth/utils/helpers/converters/auth
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({
-    required AuthLocalDataSource authDataSourceLocal,
+    required AuthLocalDataSource authLocalDataSource,
     required AuthStatusDataSource authStatusDataSource,
-  })  : _authDataSourceLocal = authDataSourceLocal,
+  })  : _authLocalDataSource = authLocalDataSource,
         _authStatusDataSource = authStatusDataSource;
 
-  final AuthLocalDataSource _authDataSourceLocal;
+  final AuthLocalDataSource _authLocalDataSource;
   final AuthStatusDataSource _authStatusDataSource;
 
   @override
   Future<void> checkAuthDataStatus() async {
-    final authDataEntity = await _authDataSourceLocal.getAuthData();
+    final authDataEntity = await _authLocalDataSource.getAuthData();
 
     _authStatusDataSource.setAuthDataStatus(authDataEntity);
   }

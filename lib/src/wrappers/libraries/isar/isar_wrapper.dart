@@ -9,12 +9,12 @@ import 'package:path_provider/path_provider.dart';
 
 class IsarWrapper {
   IsarWrapper({
-    required Directory dbDirectory,
+    required Future<Directory> dbDirectory,
     required DatabaseNameConstants databaseName,
   })  : _dbDirectory = dbDirectory,
         _databaseName = databaseName;
 
-  final Directory _dbDirectory;
+  final Future<Directory> _dbDirectory;
   final DatabaseNameConstants _databaseName;
 
   late final Isar _db;
@@ -32,11 +32,13 @@ class IsarWrapper {
     // TODO we could also use it to make sure test db is used - or pass it different test param to create new db
     // final dir = await getApplicationDocumentsDirectory();
 
+    final directory = await _dbDirectory;
+
     final db = await Isar.open(
       [
         AuthDataEntitySchema,
       ],
-      directory: _dbDirectory.path,
+      directory: directory.path,
       name: _databaseName.value,
     );
 
