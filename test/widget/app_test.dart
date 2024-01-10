@@ -16,12 +16,8 @@ Future<void> main() async {
         "should show LoginScreen when app starts with no previously authenticated user",
         (WidgetTester tester) async {
           final authLocalDataSource = _MockAuthLocalDataSource();
-          when(() => authLocalDataSource.getAuthData()).thenAnswer(
-            (_) async => AuthDataEntity(
-              playerInfo: AuthDataPlayerInfoEntity(),
-              teamInfo: AuthDataTeamInfoEntity(),
-            ),
-          );
+          when(() => authLocalDataSource.getAuthData())
+              .thenAnswer((_) async => null);
           final settingsController = SettingsController(SettingsService());
           await settingsController.loadSettings(); // stub this
 
