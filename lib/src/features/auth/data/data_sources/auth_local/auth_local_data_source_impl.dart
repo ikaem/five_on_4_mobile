@@ -5,6 +5,12 @@ import 'package:five_on_4_mobile/src/features/auth/utils/extensions/flutter_secu
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 
+// TODO temp - remove this
+final fakeAuthDataEntity = AuthDataEntity(
+  playerInfo: AuthDataPlayerInfoEntity(),
+  teamInfo: AuthDataTeamInfoEntity(),
+);
+
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   const AuthLocalDataSourceImpl({
     required FlutterSecureStorageWrapper secureStorageWrapper,
@@ -17,6 +23,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<AuthDataEntity?> getAuthData() async {
+    return fakeAuthDataEntity;
+
     // final token = await _secureStorageWrapper.readKeyValue(
     //   key: SecureStorageAuthKey.TOKEN.value,
     // );
@@ -25,30 +33,31 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     // }
     // TODO no
 
-    final storedAuthData = await _secureStorageWrapper.getAuthData();
-    if (storedAuthData == null) return null;
+    // TODO come back to this
+    // final storedAuthData = await _secureStorageWrapper.getAuthData();
+    // if (storedAuthData == null) return null;
 
-    final (_, authId) = storedAuthData;
+    // final (_, authId) = storedAuthData;
 
-    // TODO not sure if this would work
-    final authData = await _isarWrapper.db.authDataEntitys.getAll([]);
-    if (authData.isEmpty) {
-      // TODO this should not happen - clear token now
-      return null;
-    }
+    // // TODO not sure if this would work
+    // final authData = await _isarWrapper.db.authDataEntitys.getAll([]);
+    // if (authData.isEmpty) {
+    //   // TODO this should not happen - clear token now
+    //   return null;
+    // }
 
-    if (authData.length > 1) {
-      // TODO this should not happen - clear token now
-      return null;
-    }
+    // if (authData.length > 1) {
+    //   // TODO this should not happen - clear token now
+    //   return null;
+    // }
 
-    final authDataEntity = authData.first;
+    // final authDataEntity = authData.first;
 
-    if (authDataEntity == null) return null;
-    if (authDataEntity.id != authId) return null;
-    // TODO also should clear token for sure here
+    // if (authDataEntity == null) return null;
+    // if (authDataEntity.id != authId) return null;
+    // // TODO also should clear token for sure here
 
-    return authDataEntity;
+    // return authDataEntity;
   }
 
   // TODO create same one like this to save auth data to secure storage
