@@ -1,15 +1,10 @@
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller.dart';
-import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/provider/go_router_wrapper_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
-
-import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
 
 class FiveOn4App extends ConsumerStatefulWidget {
   const FiveOn4App({
