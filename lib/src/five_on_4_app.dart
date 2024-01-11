@@ -1,10 +1,26 @@
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/provider/go_router_wrapper_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import 'package:go_router/go_router.dart';
 import 'settings/settings_controller.dart';
+
+// final _goRouterWrapper = GoRouterWrapper();
+
+// final shellNavigatorKey = GlobalKey<NavigatorState>();
+// final rootNavigatorKey = GlobalKey<NavigatorState>();
+
+// TODO figure this out somehow - i dont want to have it here - can i move it to the wrapper?
+// https://github.com/flutter/flutter/issues/113757
+// https://gist.github.com/tolo/b26bd0ccb89a5fa2e57ec715f8963f2a
 
 class FiveOn4App extends ConsumerStatefulWidget {
   const FiveOn4App({
@@ -19,7 +35,9 @@ class FiveOn4App extends ConsumerStatefulWidget {
 }
 
 class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
-  late final _goRouterWrapper = ref.read(goRouterWrapperProvider);
+  late final _router = ref.read(goRouterWrapperProvider).getRouter();
+  // final router = getRouter();
+  // final router = GoRouterWrapper().getRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +55,8 @@ class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
       listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp.router(
-          routerConfig: _goRouterWrapper.getRouter(isLoggedIn),
+          // routerConfig: _goRouterWrapper.getRouter(isLoggedIn),
+          routerConfig: _router,
           // builder: (context, child) {
           //   // TODO this will insert widgets above the navigator or Router when .router is used
           //   // so some toast wrapper

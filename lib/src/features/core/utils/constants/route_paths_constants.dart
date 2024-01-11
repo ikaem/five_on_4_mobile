@@ -1,8 +1,11 @@
 enum RoutePathsConstants {
-  // AUTH ROUTES
+  // AUTHENTICATED ROUTES
   ROOT("/"),
 
-  // NON AUTH ROUTES
+  // SHELL ROUTES -> also authenticated
+  SEARCH("/search"),
+  SETTINGS("/settings"),
+  // NON AUTHENTICATED ROUTES
   LOGIN("/login");
 
   const RoutePathsConstants(this.value);
