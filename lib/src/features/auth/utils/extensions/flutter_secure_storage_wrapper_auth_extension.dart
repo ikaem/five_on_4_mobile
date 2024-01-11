@@ -19,4 +19,18 @@ extension FlutterSecureStorageWrapperAuthExtension
 
     return (token, authId);
   }
+
+  Future<void> storeAuthData({
+    required String token,
+    required int authId,
+  }) async {
+    await saveKeyValue(
+      key: SecureStorageAuthKeyConstants.TOKEN.value,
+      value: token,
+    );
+    await saveKeyValue(
+      key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      value: authId.toString(),
+    );
+  }
 }

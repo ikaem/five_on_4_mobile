@@ -1,12 +1,19 @@
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/secure_storage_auth_key_constants.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/extensions/flutter_secure_storage_wrapper_auth_extension.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   const secureStorage = FlutterSecureStorage();
 
   group("FlutterSecureStorageWrapperAuthExtension", () {
+    tearDown(() async {
+      await secureStorage.deleteAll();
+    });
+
     group("StoreAuthData", () {
       test("should store token and authId to secure storage WHEN called",
           () async {
