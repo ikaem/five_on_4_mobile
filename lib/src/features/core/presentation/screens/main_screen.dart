@@ -23,23 +23,21 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO create SafeAreaScaffold and user all over the app
-    return SafeArea(
-      child: Scaffold(
-        // key: UniqueKey(),
-        // body: const Text(
-        //   "Main Screen",
-        // ),
-        body: widget.child,
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: _onChangeTab,
-          currentIndex: _currentIndex,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Settings"),
-          ],
-        ),
+    return Scaffold(
+      // key: UniqueKey(),
+      // body: const Text(
+      //   "Main Screen",
+      // ),
+      body: widget.child,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _onChangeTab,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: "Settings"),
+        ],
       ),
     );
   }

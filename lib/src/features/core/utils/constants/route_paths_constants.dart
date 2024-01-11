@@ -1,10 +1,15 @@
 enum RoutePathsConstants {
   // AUTHENTICATED ROUTES
-  ROOT("/"),
 
-  // SHELL ROUTES -> also authenticated
+  // shell routes
+  ROOT("/"),
   SEARCH("/search"),
   SETTINGS("/settings"),
+
+  // non-shell routes
+  // TODO how to pass params
+  MATCH("match"),
+
   // NON AUTHENTICATED ROUTES
   LOGIN("/login");
 

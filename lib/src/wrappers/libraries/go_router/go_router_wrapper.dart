@@ -3,6 +3,9 @@ import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/lo
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
+import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,9 +27,7 @@ class GoRouterWrapper {
     return GoRouter(
       navigatorKey: _rootNavigatorKey,
       routes: [
-        // routesCreator.authenticatedRoute,
-        // routesCreator.shellAuthenticatedRoute,
-        // routesCreator.loginRoute,
+        // authenticated routes
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
           builder: (context, state, child) => MainScreen(
@@ -40,23 +41,42 @@ class GoRouterWrapper {
               builder: (context, state) {
                 return const HomeScreen();
               },
+              routes: [
+                GoRoute(
+                  path: RoutePathsConstants.MATCH.value,
+                  // has to be _rootNavigatorKey to make sure navigatorBar is not visible
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    return const MatchScreen();
+                  },
+                ),
+              ],
             ),
             GoRoute(
               path: RoutePathsConstants.SEARCH.value,
               parentNavigatorKey: _shellNavigatorKey,
               builder: (context, state) {
-                return const HomeScreen();
+                return const SearchScreen();
               },
             ),
             GoRoute(
               path: RoutePathsConstants.SETTINGS.value,
               parentNavigatorKey: _shellNavigatorKey,
               builder: (context, state) {
-                return const HomeScreen();
+                return const SettingsScreen();
               },
             ),
+            // GoRoute(
+            //   path: RoutePathsConstants.MATCH.value,
+            //   // parentNavigatorKey: _rootNavigatorKey,
+            //   builder: (context, state) {
+            //     return const MatchScreen();
+            //   },
+            // ),
           ],
         ),
+
+        // non authenticated routes
         GoRoute(
           parentNavigatorKey: _rootNavigatorKey,
           path: RoutePathsConstants.LOGIN.value,
