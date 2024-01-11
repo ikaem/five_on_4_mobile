@@ -6,9 +6,12 @@ enum RoutePathsConstants {
   SEARCH("/search"),
   SETTINGS("/settings"),
 
-  // non-shell routes
+  // shell nested routes
   // TODO how to pass params
   MATCH("match"),
+  MATCH_CREATE("create-match"),
+
+  // non-shell routes
 
   // NON AUTHENTICATED ROUTES
   LOGIN("/login");

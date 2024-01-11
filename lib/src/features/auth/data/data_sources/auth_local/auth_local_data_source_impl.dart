@@ -7,8 +7,16 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 
 // TODO temp - remove this
 final fakeAuthDataEntity = AuthDataEntity(
-  playerInfo: AuthDataPlayerInfoEntity(),
-  teamInfo: AuthDataTeamInfoEntity(),
+  playerInfo: AuthDataPlayerInfoEntity(
+    id: 1,
+    firstName: "John",
+    lastName: "Doe",
+    nickName: "JD",
+  ),
+  teamInfo: AuthDataTeamInfoEntity(
+    id: 1,
+    teamName: "Team 1",
+  ),
 );
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {

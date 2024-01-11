@@ -29,6 +29,12 @@ class _MainScreenState extends State<MainScreen> {
       //   "Main Screen",
       // ),
       body: widget.child,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.go("/${RoutePathsConstants.MATCH_CREATE.value}");
+        },
+        child: const Icon(Icons.add),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _onChangeTab,
         currentIndex: _currentIndex,

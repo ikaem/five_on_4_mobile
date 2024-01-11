@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/lo
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
 import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_screen.dart';
@@ -42,6 +43,14 @@ class GoRouterWrapper {
                 return const HomeScreen();
               },
               routes: [
+                // TODO screw it, all will be nested inside "/"
+                GoRoute(
+                  // parentNavigatorKey: _rootNavigatorKey,
+                  path: RoutePathsConstants.MATCH_CREATE.value,
+                  builder: (context, state) {
+                    return const MatchCreateScreen();
+                  },
+                ),
                 GoRoute(
                   path: RoutePathsConstants.MATCH.value,
                   // has to be _rootNavigatorKey to make sure navigatorBar is not visible
@@ -66,6 +75,7 @@ class GoRouterWrapper {
                 return const SettingsScreen();
               },
             ),
+
             // GoRoute(
             //   path: RoutePathsConstants.MATCH.value,
             //   // parentNavigatorKey: _rootNavigatorKey,
@@ -78,7 +88,7 @@ class GoRouterWrapper {
 
         // non authenticated routes
         GoRoute(
-          parentNavigatorKey: _rootNavigatorKey,
+          // parentNavigatorKey: _rootNavigatorKey,
           path: RoutePathsConstants.LOGIN.value,
           builder: (context, state) {
             return const LoginScreen();
