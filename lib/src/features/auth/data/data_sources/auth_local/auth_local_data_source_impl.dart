@@ -4,7 +4,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/f
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 
 // TODO temp - remove this
-final fakeAuthDataEntity = AuthDataEntity(
+final dummyAuthDataEntity = AuthDataEntity(
   playerInfo: AuthDataPlayerInfoEntity(
     id: 1,
     firstName: "John",
@@ -29,7 +29,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<AuthDataEntity?> getAuthData() async {
-    return fakeAuthDataEntity;
+    return dummyAuthDataEntity;
 
     // final token = await _secureStorageWrapper.readKeyValue(
     //   key: SecureStorageAuthKey.TOKEN.value,
@@ -64,6 +64,17 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     // // TODO also should clear token for sure here
 
     // return authDataEntity;
+  }
+
+  @override
+  Future<void> setAuthData({
+    required AuthDataEntity authDataEntity,
+    required String authToken,
+  }) async {
+    await _secureStorageWrapper.storeAuthData(
+      token: authToken,
+      authId: authDataEntity.id,
+    );
   }
 
   // TODO create same one like this to save auth data to secure storage
