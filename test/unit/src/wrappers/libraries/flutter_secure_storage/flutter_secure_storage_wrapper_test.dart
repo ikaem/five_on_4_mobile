@@ -16,30 +16,35 @@ void main() {
   group(
     "FlutterSecureStorageWrapper",
     () {
-      test("should store token and authId to secure storage WHEN called",
-          () async {
-        const secureStorageWrapper = FlutterSecureStorageWrapper();
+      group(
+        ".storeAuthData()",
+        () {
+          test("should store token and authId to secure storage WHEN called",
+              () async {
+            const secureStorageWrapper = FlutterSecureStorageWrapper();
 
-        const token = "token";
-        const authId = 1;
+            const token = "token";
+            const authId = 1;
 
-        await secureStorageWrapper.storeAuthData(
-          token: token,
-          authId: authId,
-        );
+            await secureStorageWrapper.storeAuthData(
+              token: token,
+              authId: authId,
+            );
 
-        final storedToken = await secureStorage.read(
-          key: SecureStorageAuthKeyConstants.TOKEN.value,
-        );
+            final storedToken = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.TOKEN.value,
+            );
 
-        final storedAuthIdString = await secureStorage.read(
-          key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-        );
-        final storedAuthId = int.tryParse(storedAuthIdString ?? "");
+            final storedAuthIdString = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+            );
+            final storedAuthId = int.tryParse(storedAuthIdString ?? "");
 
-        expect(storedToken, token);
-        expect(storedAuthId, authId);
-      });
+            expect(storedToken, token);
+            expect(storedAuthId, authId);
+          });
+        },
+      );
     },
   );
 }

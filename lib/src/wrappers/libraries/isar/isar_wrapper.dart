@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
@@ -6,6 +7,7 @@ import 'package:five_on_4_mobile/src/players/data/entities/player/player_entity.
 import 'package:flutter/widgets.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import "package:path/path.dart" as path;
 
 class IsarWrapper {
   IsarWrapper({
@@ -17,13 +19,35 @@ class IsarWrapper {
   final Future<Directory> _dbDirectory;
   final DatabaseNameConstants _databaseName;
 
-  late final Isar _db;
-  Isar get db => _db;
-
   @visibleForTesting
+  late final Isar db;
+  // TODO only use for testing to be able to verify db state after manipulation
+  // @visibleForTesting
+  // Isar get db => _db;
+
+  // TODO docs for isar test
+  // https://github.com/isar/isar/discussions/230
+
+  @visibleForTesting // TODO we will see if this is needed
   Future<void> initializeForTests() async {
+    // TODO this is dirtying this wrapper with another lib
+    // final dartToolDir = path.join(Directory.current.path, '.dart_tool', "libs");
+
+    const pathToLibs =
+        "/Users/karlo/development/mine/five_on_4/five_on_4_mobile/.dart_tool/isar_test/libs";
+
     // AS PER https://github.com/isar/isar#unit-tests and https://stackoverflow.com/questions/76769136/flutter-isar-db-initialization-error-could-not-download-isarcore-library
-    await Isar.initializeIsarCore(download: true);
+    // await Isar.initializeIsarCore(download: true);
+    // TODO where to download libs
+    await Isar.initializeIsarCore(
+      // download: true,
+      libraries: {
+        // Abi.windowsX64: path.join(dartToolDir, 'libisar_windows_x64.dll'),
+        // Abi.macosX64: path.join(dartToolDir, 'libisar_macos_x64.dylib'),
+        Abi.macosArm64: path.join(pathToLibs, 'libisar.dylib'),
+        // Abi.linuxX64: path.join(dartToolDir, 'libisar_linux_x64.so'),
+      },
+    );
     await initialize();
   }
 
@@ -34,21 +58,19 @@ class IsarWrapper {
 
     final directory = await _dbDirectory;
 
-    final db = await Isar.open(
+    db = await Isar.open(
       [
         AuthDataEntitySchema,
       ],
       directory: directory.path,
       name: _databaseName.value,
     );
-
-    _db = db;
   }
 
   Future<bool> close({
     bool shouldDeleteDatabase = false,
   }) {
-    return _db.close(deleteFromDisk: shouldDeleteDatabase);
+    return db.close(deleteFromDisk: shouldDeleteDatabase);
   }
 
   // TODO test only -> remove this
