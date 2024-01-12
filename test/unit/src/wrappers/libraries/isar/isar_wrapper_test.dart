@@ -34,7 +34,7 @@ void main() async {
 
   tearDown(() async {
     // TODO use the wrapper for this
-    Isar.getInstance()?.txn(() async {
+    Isar.getInstance()?.writeTxn(() async {
       Isar.getInstance()?.clear();
     });
     // await isarWrapper.db.clear();
@@ -56,17 +56,27 @@ void main() async {
             () async {
               final AuthDataEntity entity = testAuthDataEntity;
 
-              final storedEntity =
+              final storedEntityId =
                   await isarWrapper.putEntity<AuthDataEntity>(entity: entity);
 
               print("hello");
 
-              final retrievedEntity = await Isar.getInstance()
-                  ?.collection<AuthDataEntity>()
-                  .get(storedEntity.id);
+              // final storedEntityId =
+              //     await Isar.getInstance()?.writeTxn(() async {
+              //   return await Isar.getInstance()
+              //       ?.collection<AuthDataEntity>()
+              //       .put(entity);
+              // });
 
-              expect(
-                  entity.playerInfo.id, equals(retrievedEntity?.playerInfo.id));
+              // final retrievedEntity = await Isar.getInstance()
+              //     ?.collection<AuthDataEntity>()
+              //     .get(storedEntityId!);
+
+              final retrievedEntity = await isarWrapper.db
+                  .collection<AuthDataEntity>()
+                  .get(storedEntityId);
+
+              expect(entity.id, equals(retrievedEntity?.id));
             },
           );
         },

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
 import 'package:five_on_4_mobile/src/players/data/entities/player/player_entity.dart';
@@ -25,6 +26,51 @@ class IsarWrapper {
   // @visibleForTesting
   // Isar get db => _db;
 
+  Future<void> initialize() async {
+    // TODO might be better to pass this as argument to this function
+    // TODO we could also use it to make sure test db is used - or pass it different test param to create new db
+    // final dir = await getApplicationDocumentsDirectory();
+
+    final directory = await _dbDirectory;
+
+    db = await Isar.open(
+      [
+        AuthDataEntitySchema,
+      ],
+      directory: directory.path,
+      name: _databaseName.value,
+    );
+  }
+
+// TODO T has to be entity - maybe it would be good to have some abstract Entity class
+  Future<int> putEntity<T>({
+    required T entity,
+  }) async {
+    final putId = await db.writeTxn(() async {
+      final id = await db.collection<T>().put(entity);
+      return id;
+    });
+
+    return putId;
+  }
+
+  Future<bool> close({
+    bool shouldDeleteDatabase = false,
+  }) {
+    return db.close(deleteFromDisk: shouldDeleteDatabase);
+  }
+
+  // TODO test only -> remove this
+  // Future<void> createPlayer() async {
+  //   // final PlayerEntity player = PlayerEntity()..id = 1..firstName = "John"..
+  //   const PlayerEntity player = PlayerEntity(
+  //     id: 1,
+  //     firstName: "John",
+  //     lastName: "Doe",
+  //     nickname: "JD",
+  //   );
+
+  // TODO maybe move test initializer to extension
   // TODO docs for isar test
   // https://github.com/isar/isar/discussions/230
 
@@ -50,37 +96,5 @@ class IsarWrapper {
     );
     await initialize();
   }
-
-  Future<void> initialize() async {
-    // TODO might be better to pass this as argument to this function
-    // TODO we could also use it to make sure test db is used - or pass it different test param to create new db
-    // final dir = await getApplicationDocumentsDirectory();
-
-    final directory = await _dbDirectory;
-
-    db = await Isar.open(
-      [
-        AuthDataEntitySchema,
-      ],
-      directory: directory.path,
-      name: _databaseName.value,
-    );
-  }
-
-  Future<bool> close({
-    bool shouldDeleteDatabase = false,
-  }) {
-    return db.close(deleteFromDisk: shouldDeleteDatabase);
-  }
-
-  // TODO test only -> remove this
-  Future<void> createPlayer() async {
-    // final PlayerEntity player = PlayerEntity()..id = 1..firstName = "John"..
-    const PlayerEntity player = PlayerEntity(
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      nickname: "JD",
-    );
-  }
+  // }
 }

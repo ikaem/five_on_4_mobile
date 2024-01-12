@@ -102,6 +102,7 @@ AuthDataEntity _authDataEntityDeserialize(
         ) ??
         AuthDataTeamInfoEntity(),
   );
+  object.id = id;
   return object;
 }
 
@@ -132,7 +133,7 @@ P _authDataEntityDeserializeProp<P>(
 }
 
 Id _authDataEntityGetId(AuthDataEntity object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _authDataEntityGetLinks(AuthDataEntity object) {
@@ -140,7 +141,9 @@ List<IsarLinkBase<dynamic>> _authDataEntityGetLinks(AuthDataEntity object) {
 }
 
 void _authDataEntityAttach(
-    IsarCollection<dynamic> col, Id id, AuthDataEntity object) {}
+    IsarCollection<dynamic> col, Id id, AuthDataEntity object) {
+  object.id = id;
+}
 
 extension AuthDataEntityQueryWhereSort
     on QueryBuilder<AuthDataEntity, AuthDataEntity, QWhere> {
@@ -225,8 +228,26 @@ extension AuthDataEntityQueryWhere
 
 extension AuthDataEntityQueryFilter
     on QueryBuilder<AuthDataEntity, AuthDataEntity, QFilterCondition> {
+  QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition>
+      idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition>
+      idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
   QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition> idEqualTo(
-      Id value) {
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -237,7 +258,7 @@ extension AuthDataEntityQueryFilter
 
   QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition>
       idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -251,7 +272,7 @@ extension AuthDataEntityQueryFilter
 
   QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition>
       idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -264,8 +285,8 @@ extension AuthDataEntityQueryFilter
   }
 
   QueryBuilder<AuthDataEntity, AuthDataEntity, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

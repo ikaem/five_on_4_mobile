@@ -4,13 +4,14 @@ part "auth_data_entity.g.dart";
 
 @collection
 class AuthDataEntity {
-  const AuthDataEntity({
+  AuthDataEntity({
     required this.playerInfo,
     required this.teamInfo,
   });
 
   /// Only local id - not related in any way to remote server db
-  final Id id = Isar.autoIncrement;
+  // final Id id = Isar.autoIncrement;
+  Id? id;
 
   final AuthDataPlayerInfoEntity playerInfo;
   final AuthDataTeamInfoEntity teamInfo;

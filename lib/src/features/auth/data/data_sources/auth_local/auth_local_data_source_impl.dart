@@ -73,7 +73,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }) async {
     await _secureStorageWrapper.storeAuthData(
       token: authToken,
-      authId: authDataEntity.id,
+      authId: authDataEntity.id!,
     );
   }
 
