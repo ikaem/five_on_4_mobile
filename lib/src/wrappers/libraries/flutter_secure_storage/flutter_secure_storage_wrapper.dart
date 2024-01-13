@@ -37,6 +37,15 @@ class FlutterSecureStorageWrapper {
     );
   }
 
+  Future<void> clearAuthData() async {
+    await _deleteKeyValue(
+      key: SecureStorageAuthKeyConstants.TOKEN.value,
+    );
+    await _deleteKeyValue(
+      key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+    );
+  }
+
   Future<void> _saveKeyValue({
     required String key,
     required String value,

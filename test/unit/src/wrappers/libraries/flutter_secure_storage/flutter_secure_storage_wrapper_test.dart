@@ -88,29 +88,20 @@ void main() {
             const token = "token";
             const authId = 1;
 
-            await secureStorageWrapper.storeAuthData(
-              token: token,
-              authId: authId,
-            );
-
-            final storedToken = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.TOKEN.value,
-            );
-
-            final storedAuthIdString = await secureStorage.read(
+            await secureStorage.write(
               key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+              value: authId.toString(),
             );
-            final storedAuthId = int.tryParse(storedAuthIdString ?? "");
+            await secureStorage.write(
+              key: SecureStorageAuthKeyConstants.TOKEN.value,
+              value: token,
+            );
 
-            expect(storedToken, token);
-            expect(storedAuthId, authId);
-
-            await secureStorageWrapper.deleteAuthData();
+            await secureStorageWrapper.clearAuthData();
 
             final deletedToken = await secureStorage.read(
               key: SecureStorageAuthKeyConstants.TOKEN.value,
             );
-
             final deletedAuthIdString = await secureStorage.read(
               key: SecureStorageAuthKeyConstants.AUTH_ID.value,
             );
