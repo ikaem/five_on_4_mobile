@@ -76,10 +76,10 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       entity: authDataEntityDraft,
     );
 
-    // await _secureStorageWrapper.storeAuthData(
-    //   token: authToken,
-    //   authId: authDataEntityDraft.id!,
-    // );
+    await _secureStorageWrapper.storeAuthData(
+      token: authToken,
+      authId: id,
+    );
   }
 
   // TODO create same one like this to save auth data to secure storage
