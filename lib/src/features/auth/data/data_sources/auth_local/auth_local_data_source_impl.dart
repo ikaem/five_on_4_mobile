@@ -49,7 +49,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     final (_, authId) = storedAuthData;
 
     // TODO not sure if this would work
-    final authData = await _isarWrapper.db.authDataEntitys.getAll([]);
+    final authData = await _isarWrapper.findAllEntities<AuthDataEntity>();
     if (authData.isEmpty) {
       // TODO this should not happen - clear token now
       return null;

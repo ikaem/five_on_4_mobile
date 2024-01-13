@@ -78,11 +78,9 @@ void main() {
             });
 
             when(
-              () => isarWrapper.getEntity<AuthDataEntity>(
-                id: 1,
-              ),
+              () => isarWrapper.findAllEntities<AuthDataEntity>(),
             ).thenAnswer((invocation) async {
-              return entity;
+              return [entity];
             });
 
             final authDataEntity = await authLocalDataSource.getAuthData();

@@ -77,6 +77,49 @@ void main() {
           });
         },
       );
+
+      group(
+        ".deleteAuthData()",
+        () {
+          test("should delete token and authId from secure storage WHEN called",
+              () async {
+            const secureStorageWrapper = FlutterSecureStorageWrapper();
+
+            const token = "token";
+            const authId = 1;
+
+            await secureStorageWrapper.storeAuthData(
+              token: token,
+              authId: authId,
+            );
+
+            final storedToken = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.TOKEN.value,
+            );
+
+            final storedAuthIdString = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+            );
+            final storedAuthId = int.tryParse(storedAuthIdString ?? "");
+
+            expect(storedToken, token);
+            expect(storedAuthId, authId);
+
+            await secureStorageWrapper.deleteAuthData();
+
+            final deletedToken = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.TOKEN.value,
+            );
+
+            final deletedAuthIdString = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+            );
+
+            expect(deletedToken, isNull);
+            expect(deletedAuthIdString, isNull);
+          });
+        },
+      );
     },
   );
 }
