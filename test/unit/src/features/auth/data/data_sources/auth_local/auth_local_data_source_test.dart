@@ -54,7 +54,19 @@ void main() {
   });
 
   group("AuthLocalDataSource", () {
-    group(".setAuthData", () {
+    group(
+      ".getAuthData()",
+      () {
+        test(
+          "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
+          "when '.getAuthData() is called"
+          "should ",
+          () => null,
+        );
+      },
+    );
+
+    group(".setAuthData()", () {
       test(
         "given draft of [AuthDataEntity] and authToken"
         "when '.setAuthData()' is called"

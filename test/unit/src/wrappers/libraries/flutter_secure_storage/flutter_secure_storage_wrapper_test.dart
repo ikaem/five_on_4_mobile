@@ -8,6 +8,7 @@ void main() {
   // as per https://stackoverflow.com/questions/71873139/missingpluginexceptionno-implementation-found-for-method-read-on-channel-plugin
   FlutterSecureStorage.setMockInitialValues({});
 
+  // use for validation only
   const secureStorage = FlutterSecureStorage();
 
   tearDown(() async {
@@ -16,6 +17,37 @@ void main() {
   group(
     "FlutterSecureStorageWrapper",
     () {
+      group(
+        ".getAuthData",
+        () {
+          test(
+            "given authId and authToken stored in secure storage"
+            "when '.getAuthData' is called"
+            "should retrieve expected authId and authToken",
+            () async {
+              const secureStorageWrapper = FlutterSecureStorageWrapper();
+              const expectedAuthId = 1;
+              const expectedToken = "testToken";
+
+              await secureStorage.write(
+                key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+                value: expectedAuthId.toString(),
+              );
+              await secureStorage.write(
+                key: SecureStorageAuthKeyConstants.TOKEN.value,
+                value: expectedToken,
+              );
+
+              final (token, authId) =
+                  (await secureStorageWrapper.getAuthData())!;
+
+              expect(token, expectedToken);
+              expect(authId, expectedAuthId);
+            },
+          );
+        },
+      );
+
       group(
         ".storeAuthData()",
         () {
