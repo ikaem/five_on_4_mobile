@@ -87,6 +87,33 @@ void main() async {
           );
         },
       );
+
+      group(
+        ".getEntities()",
+        () {
+          test(
+            "given an entity type"
+            "when .getEntities() is called"
+            "should retrieve all existing entities from the database",
+            () async {
+              final AuthDataEntity entity = testAuthDataEntity;
+
+              // prepare db
+              await isarWrapper.db.writeTxn(
+                () async {
+                  await isarWrapper.db.collection<AuthDataEntity>().put(entity);
+                },
+              );
+
+              final retrievedEntities =
+                  await isarWrapper.findAllEntities<AuthDataEntity>();
+
+              expect(retrievedEntities, isNotEmpty);
+              expect(retrievedEntities.first!.id, equals(entity.id));
+            },
+          );
+        },
+      );
     },
   );
 }

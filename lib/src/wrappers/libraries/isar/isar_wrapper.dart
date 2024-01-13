@@ -32,6 +32,15 @@ class IsarWrapper {
     );
   }
 
+  Future<List<T?>> findAllEntities<T>() async {
+    final entities = await db.txn(() async {
+      final entities = await db.collection<T>().where().findAll();
+      return entities;
+    });
+
+    return entities;
+  }
+
   Future<T?> getEntity<T>({
     required int id,
   }) async {

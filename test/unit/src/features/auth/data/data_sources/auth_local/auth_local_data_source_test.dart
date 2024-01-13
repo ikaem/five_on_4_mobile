@@ -51,6 +51,7 @@ void main() {
 
   tearDown(() {
     reset(secureStorageWrapper);
+    reset(isarWrapper);
   });
 
   group("AuthLocalDataSource", () {
@@ -60,9 +61,37 @@ void main() {
         test(
           "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
           "when '.getAuthData() is called"
-          "should ",
-          () => null,
+          "should return expected [AuthDataEntity]",
+          () async {
+            final entity = AuthDataEntity(
+                playerInfo: testAuthDataEntity.playerInfo,
+                teamInfo: testAuthDataEntity.teamInfo)
+              ..id = 1;
+
+            when(
+              () => secureStorageWrapper.getAuthData(),
+            ).thenAnswer((invocation) async {
+              return (
+                "testToken",
+                entity.id!,
+              );
+            });
+
+            when(
+              () => isarWrapper.getEntity<AuthDataEntity>(
+                id: 1,
+              ),
+            ).thenAnswer((invocation) async {
+              return entity;
+            });
+
+            final authDataEntity = await authLocalDataSource.getAuthData();
+
+            expect(authDataEntity, equals(entity));
+          },
         );
+
+        // tests when not all data is present, or when data is not present
       },
     );
 
