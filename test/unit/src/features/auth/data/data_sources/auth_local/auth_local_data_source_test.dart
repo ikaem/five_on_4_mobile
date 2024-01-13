@@ -13,16 +13,35 @@ void main() {
   group("AuthLocalDataSource", () {
     group(".setAuthData", () {
       test(
-        "should set token and authId to secure storage WHEN called",
+        // TODO this next
+        "given draft of [AuthDataEntity] and authToken"
+        "when '.setAuthData()' is called"
+        "should store the draft in isar",
         () async {
-          // TODO this should be tore down in a setup method for each test
           final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
           final isarWrapper = _MockIsarWrapper();
 
-          String? token;
-          int? authId;
+          final authLocalDataSource = AuthLocalDataSourceImpl(
+            secureStorageWrapper: secureStorageWrapper,
+            isarWrapper: isarWrapper,
+          );
 
-          AuthDataEntity? authDataEntity;
+          final draftEntity = testAuthDataEntity;
+
+          registerFallbackValue(
+            AuthDataEntity(
+              playerInfo: AuthDataPlayerInfoEntity(),
+              teamInfo: AuthDataTeamInfoEntity(),
+            ),
+          );
+
+          when(
+            () => isarWrapper.putEntity<AuthDataEntity>(
+              entity: any(named: "entity"),
+            ),
+          ).thenAnswer((invocation) async {
+            return 1;
+          });
 
           when(
             () => secureStorageWrapper.storeAuthData(
@@ -30,42 +49,64 @@ void main() {
               authId: any(named: "authId"),
             ),
           ).thenAnswer((invocation) async {
-            // TODO make wrapper out of this
-            final tokenArgument =
-                invocation.namedArguments[const Symbol("token")];
-            final authIdArgument =
-                invocation.namedArguments[const Symbol("authId")];
-
-            token = tokenArgument;
-            authId = authIdArgument;
+            return;
           });
 
-          final authLocalDataSource = AuthLocalDataSourceImpl(
-            secureStorageWrapper: secureStorageWrapper,
-            isarWrapper: isarWrapper,
-          );
-
           await authLocalDataSource.setAuthData(
-            authDataEntity: testAuthDataEntity,
+            authDataEntityDraft: draftEntity,
             authToken: "authToken",
           );
 
-          expect(
-            token,
-            equals("authToken"),
-          );
-          expect(
-            authId,
-            equals(testAuthDataEntity.id),
-          );
+          verify(() => isarWrapper.putEntity(entity: draftEntity)).called(1);
         },
       );
 
-      test(
-        // TODO this next
-        "should store authData to isar WHEN called",
-        () => null,
-      );
+      // test(
+      //   "should set token and authId to secure storage WHEN called",
+      //   () async {
+      //     // TODO this should be tore down in a setup method for each test
+      //     final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
+      //     final isarWrapper = _MockIsarWrapper();
+
+      //     String? setToken;
+      //     int? setAuthId;
+      //    // TODO we can clear interactions before or after each tests
+      //     when(
+      //       () => secureStorageWrapper.storeAuthData(
+      //         token: any(named: "token"),
+      //         authId: any(named: "authId"),
+      //       ),
+      //     ).thenAnswer((invocation) async {
+      //       // TODO make wrapper out of this
+      //       final tokenArgument =
+      //           invocation.namedArguments[const Symbol("token")];
+      //       final authIdArgument =
+      //           invocation.namedArguments[const Symbol("authId")];
+
+      //       setToken = tokenArgument;
+      //       setAuthId = authIdArgument;
+      //     });
+
+      //     final authLocalDataSource = AuthLocalDataSourceImpl(
+      //       secureStorageWrapper: secureStorageWrapper,
+      //       isarWrapper: isarWrapper,
+      //     );
+
+      //     await authLocalDataSource.setAuthData(
+      //       authDataEntity: testAuthDataEntity,
+      //       authToken: "authToken",
+      //     );
+
+      //     expect(
+      //       setToken,
+      //       equals("authToken"),
+      //     );
+      //     expect(
+      //       setAuthId,
+      //       equals(testAuthDataEntity.id),
+      //     );
+      //   },
+      // );
 
       test(
         "should store same authId in secure storage and isar WHEN called",

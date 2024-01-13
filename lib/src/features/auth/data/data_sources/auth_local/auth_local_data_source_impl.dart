@@ -68,13 +68,18 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> setAuthData({
-    required AuthDataEntity authDataEntity,
+    /// authDataEntityDraft is the entity that is not yet stored in the database
+    required AuthDataEntity authDataEntityDraft,
     required String authToken,
   }) async {
-    await _secureStorageWrapper.storeAuthData(
-      token: authToken,
-      authId: authDataEntity.id!,
+    final id = await _isarWrapper.putEntity<AuthDataEntity>(
+      entity: authDataEntityDraft,
     );
+
+    // await _secureStorageWrapper.storeAuthData(
+    //   token: authToken,
+    //   authId: authDataEntityDraft.id!,
+    // );
   }
 
   // TODO create same one like this to save auth data to secure storage

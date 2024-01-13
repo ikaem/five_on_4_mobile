@@ -3,7 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_
 abstract interface class AuthLocalDataSource {
   Future<AuthDataEntity?> getAuthData();
   Future<void> setAuthData({
-    required AuthDataEntity authDataEntity,
+    required AuthDataEntity authDataEntityDraft,
     required String authToken,
   });
 }
