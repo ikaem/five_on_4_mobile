@@ -9,7 +9,7 @@ import 'package:five_on_4_mobile/src/settings/settings_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../utils/extensions/widget_testet_extension.dart';
+import '../../utils/extensions/widget_tester_extension.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();

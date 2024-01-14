@@ -16,8 +16,8 @@ class AuthStatusDataSourceImpl implements AuthStatusDataSource {
       _authDataStatusSubject.stream;
 
   @override
-  AuthDataEntity get authDataStatus {
-    throw UnimplementedError();
+  AuthDataEntity? get authDataStatus {
+    return _authDataStatusSubject.valueOrNull;
   }
 
   @override
