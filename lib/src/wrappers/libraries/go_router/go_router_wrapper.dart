@@ -1,6 +1,7 @@
-import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen.dart';
@@ -18,14 +19,27 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 GlobalKey<NavigatorState> get rootNavigatorKey => _rootNavigatorKey;
 
 class GoRouterWrapper {
-  GoRouterWrapper({required this.ref});
+  GoRouterWrapper({
+    // required this.ref,
+    required this.authStatusController,
+    // required this.authDataStatus,
+  });
 
-  final Ref ref;
+  // final Ref ref;
+  // final AsyncValue<bool?> authDataStatus;
+  final AuthStatusController authStatusController;
 
   // final routesCreator = _GoRouterRoutesCreator();
 
   GoRouter getRouter() {
     return GoRouter(
+      // refreshListenable: authDataStatus.when(
+      //   data: (data) => null,
+      //   loading: () => null,
+      //   error: (error, stackTrace) => null,
+      // ),
+      refreshListenable: authStatusController,
+
       navigatorKey: _rootNavigatorKey,
       routes: [
         // authenticated routes
@@ -93,23 +107,42 @@ class GoRouterWrapper {
           builder: (context, state) {
             return const LoginScreen();
           },
-        )
+        ),
+
+        // misc routes
+        GoRoute(
+          path: RoutePathsConstants.LOADING.value,
+          // parentNavigatorKey: _rootNavigatorKey,
+          builder: (context, state) {
+            return const LoadingScreen();
+          },
+        ),
+        GoRoute(
+          path: RoutePathsConstants.ERROR.value,
+          // parentNavigatorKey: _rootNavigatorKey,
+          builder: (context, state) {
+            return const Text("This is error");
+          },
+        ),
       ],
       redirect: (context, state) {
-        final authDataStatus = ref.watch(authStatusControllerProvider);
+        final isLoggedIn = authStatusController.isLoggedIn;
+        final isError = authStatusController.isError;
+        final isLoading = authStatusController.isLoading;
 
-        final isLoggedIn = authDataStatus.when(
-          data: (data) => data == true,
-          loading: () => false,
-          error: (error, stackTrace) => false,
-        );
-
-        if (isLoggedIn) {
-          // by default, it would always go to "/" unless specified differently by some deep link or someting
-          // handle that when needed
-          return state.uri.path;
+        if (isLoading) {
+          return RoutePathsConstants.LOADING.value;
         }
-        return RoutePathsConstants.LOGIN.value;
+
+        if (isError) {
+          return RoutePathsConstants.ERROR.value;
+        }
+
+        if (!isLoggedIn) {
+          return RoutePathsConstants.LOGIN.value;
+        }
+
+        return state.uri.path;
       },
     );
   }

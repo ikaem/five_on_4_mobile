@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/utils/constants/core_screens_key_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     // TODO create SafeAreaScaffold and user all over the app
     return Scaffold(
+      key: CoreScreensKeyConstants.MAIN_SCREEN.value,
+
       // key: UniqueKey(),
       // body: const Text(
       //   "Main Screen",

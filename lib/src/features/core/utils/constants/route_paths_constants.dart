@@ -12,6 +12,8 @@ enum RoutePathsConstants {
   MATCH_CREATE("create-match"),
 
   // non-shell routes
+  LOADING("/loading"),
+  ERROR("/error"),
 
   // NON AUTHENTICATED ROUTES
   LOGIN("/login");

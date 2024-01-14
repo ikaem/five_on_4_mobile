@@ -6,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "isar_wrapper_provider.g.dart";
 
 // TODO not sure about this
-@Riverpod(keepAlive: true)
+// @Riverpod(keepAlive: true)
+@riverpod
 IsarWrapper isarWrapper(
   IsarWrapperRef ref,
 ) {
