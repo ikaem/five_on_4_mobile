@@ -16,9 +16,10 @@ void main() {
 
           await widgetTester.pumpWidget(const MaterialApp(
             home: CurrentUserGreeting(
-                nickName: nickName,
-                teamName: teamName,
-                avatarUrl: "testAvatarUrl"),
+              nickName: nickName,
+              teamName: teamName,
+              avatarUrl: "testAvatarUrl",
+            ),
           ));
 
           final messageNickname = find.text("Welcome, $nickName");
@@ -26,6 +27,30 @@ void main() {
 
           expect(messageNickname, findsOneWidget);
           expect(messageTeam, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given avatarUrl argument is provided"
+        "when widget is rendered"
+        "should show expected avatar image",
+        (widgetTester) async {
+          const avatarUrl = "testAvatarUrl";
+
+          await widgetTester.pumpWidget(const MaterialApp(
+            home: CurrentUserGreeting(
+              nickName: "testNickName",
+              teamName: "testTeamName",
+              avatarUrl: avatarUrl,
+            ),
+          ));
+
+          // TODO use this
+          // final avatarImage = find.image(const NetworkImage(avatarUrl));
+          // final avatarImage = find.byType(Image);
+          final avatarImage = find.byType(NetworkImage);
+
+          expect(avatarImage, findsOneWidget);
         },
       );
     },
