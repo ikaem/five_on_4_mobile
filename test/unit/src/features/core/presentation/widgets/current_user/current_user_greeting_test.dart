@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_greeting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,10 +21,11 @@ void main() {
                 avatarUrl: "testAvatarUrl"),
           ));
 
-          final messageWidget =
-              find.text("Welcome, $nickName of team $teamName");
+          final messageNickname = find.text("Welcome, $nickName");
+          final messageTeam = find.text("of team $teamName");
 
-          expect(messageWidget, findsOneWidget);
+          expect(messageNickname, findsOneWidget);
+          expect(messageTeam, findsOneWidget);
         },
       );
     },
