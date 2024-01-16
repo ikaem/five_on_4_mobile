@@ -38,6 +38,22 @@ void main() {
           expect(nicknameTextField, findsOneWidget);
         },
       );
+
+      testWidgets(
+        "given navigate to Login screen"
+        "when screen is rendered"
+        "password TextField is shown",
+        (widgetTester) async {
+          // find specific widget by ancestor from here - https://stackoverflow.com/questions/74616390/flutter-test-find-by-specific-textfield
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+          final passwordTextField = find.ancestor(
+              of: find.text("Password"), matching: find.byType(TextField));
+
+          expect(passwordTextField, findsOneWidget);
+        },
+      );
+      // password should be obscured
     },
   );
 }

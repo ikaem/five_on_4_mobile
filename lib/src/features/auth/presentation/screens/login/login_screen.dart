@@ -24,6 +24,9 @@ class LoginScreen extends StatelessWidget {
                     labelText: "Nickname",
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                )
               ]),
             ),
             ElevatedButton(
