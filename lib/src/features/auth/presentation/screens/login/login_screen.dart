@@ -16,6 +16,16 @@ class LoginScreen extends StatelessWidget {
             Container(
               child: Image.asset(LocalAssetsPathConstants.LOGO_LARGE.value),
             ),
+            Container(
+              child: const Column(children: [
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Nickname",
+                  ),
+                ),
+              ]),
+            ),
             ElevatedButton(
               child: const Text("Login"),
               onPressed: () {},
