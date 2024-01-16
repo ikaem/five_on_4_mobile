@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_screens_key_constants.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/local_assets_path_constants.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -10,9 +11,16 @@ class LoginScreen extends StatelessWidget {
     return SafeArea(
       key: AuthScreensKeyConstants.LOGIN_SCREEN.value,
       child: Scaffold(
-        body: ElevatedButton(
-          child: const Text("Login"),
-          onPressed: () {},
+        body: Column(
+          children: [
+            Container(
+              child: Image.asset(LocalAssetsPathConstants.LOGO_LARGE.value),
+            ),
+            ElevatedButton(
+              child: const Text("Login"),
+              onPressed: () {},
+            ),
+          ],
         ),
       ),
     );
