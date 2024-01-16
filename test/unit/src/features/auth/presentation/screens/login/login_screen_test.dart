@@ -12,7 +12,7 @@ void main() {
       testWidgets(
         "given navigate to Login screen"
         "when screen is rendered"
-        "logo image should be shown",
+        "should show logo image",
         (widgetTester) async {
           // TODO this will probably need to override dependencies later
           // TODO and will probably need some unified wrapper to push screen on
@@ -27,7 +27,7 @@ void main() {
       testWidgets(
         "given navigate to Login screen"
         "when screen is rendered"
-        "nickname TextField is shown",
+        "should show nickname TextField",
         (widgetTester) async {
           // find specific widget by ancestor from here - https://stackoverflow.com/questions/74616390/flutter-test-find-by-specific-textfield
           await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
@@ -42,7 +42,7 @@ void main() {
       testWidgets(
         "given navigate to Login screen"
         "when screen is rendered"
-        "password TextField is shown",
+        "should shown password TextField",
         (widgetTester) async {
           // find specific widget by ancestor from here - https://stackoverflow.com/questions/74616390/flutter-test-find-by-specific-textfield
           await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
@@ -56,8 +56,24 @@ void main() {
 
       testWidgets(
         "given navigate to Login screen"
+        "when password TextField is shown"
+        "should have text obscured",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+          final passwordTextField = find.ancestor(
+              of: find.text("Password"), matching: find.byType(TextField));
+
+          final input = widgetTester.firstWidget<TextField>(passwordTextField);
+
+          expect(input.obscureText, isTrue);
+        },
+      );
+
+      testWidgets(
+        "given navigate to Login screen"
         "when screen is rendered"
-        "Login button is shown",
+        "should shown Login button",
         (widgetTester) async {
           await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
