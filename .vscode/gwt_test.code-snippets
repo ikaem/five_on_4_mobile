@@ -32,7 +32,7 @@
   }
 
 	"GWT Test Widget": {
-    "prefix": "gwtwidget",
+    "prefix": "gwtunit",
     "body": [
       "test(",
       "  \"given <pre-condition to the test>\"",
