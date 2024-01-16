@@ -12,7 +12,7 @@ void main() {
       testWidgets(
         "given navigate to Login screen"
         "when screen is rendered"
-        "logo should be shown",
+        "logo image should be shown",
         (widgetTester) async {
           // TODO this will probably need to override dependencies later
           // TODO and will probably need some unified wrapper to push screen on
@@ -22,6 +22,20 @@ void main() {
               find.image(AssetImage(LocalAssetsPathConstants.LOGO_LARGE.value));
 
           expect(logoImage, findsOneWidget);
+        },
+      );
+      testWidgets(
+        "given navigate to Login screen"
+        "when screen is rendered"
+        "nickname TextField is shown",
+        (widgetTester) async {
+          // find specific widget by ancestor from here - https://stackoverflow.com/questions/74616390/flutter-test-find-by-specific-textfield
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+          final nicknameTextField = find.ancestor(
+              of: find.text("Nickname"), matching: find.byType(TextField));
+
+          expect(nicknameTextField, findsOneWidget);
         },
       );
     },
