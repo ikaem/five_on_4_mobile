@@ -48,6 +48,9 @@ class CurrentUserGreeting extends StatelessWidget {
               )
             ],
           ),
+        ),
+        Container(
+          child: Image.network(avatarUrl),
         )
       ],
     ));
