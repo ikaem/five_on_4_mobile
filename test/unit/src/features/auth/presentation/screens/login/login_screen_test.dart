@@ -83,7 +83,21 @@ void main() {
           expect(loginButton, findsOneWidget);
         },
       );
-      // password should be obscured
+
+      testWidgets(
+        "given navigate to Login screen"
+        "when screen is rendered"
+        "should shown Google Login button",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+          final loginButton = find.ancestor(
+              of: find.text("Login with Google"),
+              matching: find.byType(ElevatedButton));
+
+          expect(loginButton, findsOneWidget);
+        },
+      );
     },
   );
 }

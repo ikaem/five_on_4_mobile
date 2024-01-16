@@ -42,6 +42,11 @@ class LoginScreen extends StatelessWidget {
               child: const Text("Login"),
               onPressed: () {},
             ),
+            const Divider(),
+            ElevatedButton(
+              child: const Text("Login with Google"),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
