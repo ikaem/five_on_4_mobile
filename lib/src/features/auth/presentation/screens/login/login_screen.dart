@@ -17,17 +17,25 @@ class LoginScreen extends StatelessWidget {
               child: Image.asset(LocalAssetsPathConstants.LOGO_LARGE.value),
             ),
             Container(
-              child: const Column(children: [
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Nickname",
+              child: const Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Nickname",
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                )
-              ]),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Password",
+                    ),
+                  ),
+                ],
+              ),
             ),
             ElevatedButton(
               child: const Text("Login"),
