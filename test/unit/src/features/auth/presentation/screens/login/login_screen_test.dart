@@ -91,11 +91,26 @@ void main() {
         (widgetTester) async {
           await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
-          final loginButton = find.ancestor(
+          final googleLoginButton = find.ancestor(
               of: find.text("Login with Google"),
               matching: find.byType(ElevatedButton));
 
-          expect(loginButton, findsOneWidget);
+          expect(googleLoginButton, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given navigate to Login screen"
+        "when screen is rendered"
+        "should shown Create account button",
+        (widgetTester) async {
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+          final createAccountButton = find.ancestor(
+              of: find.text("Create account"),
+              matching: find.byType(TextButton));
+
+          expect(createAccountButton, findsOneWidget);
         },
       );
     },
