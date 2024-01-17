@@ -16,6 +16,20 @@
   // 	"description": "Log output to console"
   // }
 
+  "GWT Test Unit": {
+    "prefix": "gwtunit",
+    "body": [
+      "test(",
+      "  \"given <pre-condition to the test>\"",
+      "  \"when <behavior we are specifying>\"",
+      "  \"should <state we expect to happen>\",",
+      "  () {",
+      "    // write the test",
+      "  },",
+      ");"
+    ],
+    "description": "Template for testWidgets"
+  },
   "GWT Test Widget": {
     "prefix": "gwtwidget",
     "body": [
@@ -24,21 +38,6 @@
       "  \"when <behavior we are specifying>\"",
       "  \"should <state we expect to happen>\",",
       "  (widgetTester) async {",
-      "    // write the test",
-      "  },",
-      ");"
-    ],
-    "description": "Template for testWidgets"
-  }
-
-	"GWT Test Widget": {
-    "prefix": "gwtunit",
-    "body": [
-      "test(",
-      "  \"given <pre-condition to the test>\"",
-      "  \"when <behavior we are specifying>\"",
-      "  \"should <state we expect to happen>\",",
-      "  () {",
       "    // write the test",
       "  },",
       ");"
