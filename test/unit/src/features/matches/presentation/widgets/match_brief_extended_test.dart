@@ -21,6 +21,7 @@ void main() {
                 date: date,
                 dayName: dayName,
                 time: time,
+                title: "testTitle",
               ),
             ),
           );
@@ -32,6 +33,30 @@ void main() {
           expect(dateText, findsOneWidget);
           expect(dayNameText, findsOneWidget);
           expect(timeText, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given title argument is provided"
+        "when widget is rendered"
+        "should show expected title",
+        (widgetTester) async {
+          const title = "testTitle";
+
+          await widgetTester.pumpWidget(
+            const MaterialApp(
+              home: MatchBriefExtended(
+                date: "testDate",
+                dayName: "testDayName",
+                time: "testTime",
+                title: title,
+              ),
+            ),
+          );
+
+          final titleText = find.text(title);
+
+          expect(titleText, findsOneWidget);
         },
       );
     },
