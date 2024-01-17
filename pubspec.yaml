@@ -26,6 +26,7 @@ dependencies:
   hooks_riverpod: ^2.4.9
   # TODO these might be dev dep actually
   path: ^1.8.3
+  mocktail_image_network: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -46,3 +47,4 @@ flutter:
     # Add assets from the images directory to the application.
     - assets/images/
     - assets/images/logo/
+    - assets/images/test/

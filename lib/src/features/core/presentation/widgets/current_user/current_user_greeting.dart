@@ -10,7 +10,7 @@ class CurrentUserGreeting extends StatelessWidget {
 
   final String nickName;
   final String teamName;
-  final String avatarUrl;
+  final Uri avatarUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class CurrentUserGreeting extends StatelessWidget {
           ),
         ),
         Container(
-          child: Image.network(avatarUrl),
+          child: Image.network(avatarUrl.toString()),
         )
       ],
     ));
