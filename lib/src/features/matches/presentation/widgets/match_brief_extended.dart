@@ -6,11 +6,13 @@ class MatchBriefExtended extends StatelessWidget {
     required this.date,
     required this.dayName,
     required this.time,
+    required this.title,
   });
 
   final String date;
   final String dayName;
   final String time;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,18 @@ class MatchBriefExtended extends StatelessWidget {
           date: date,
           dayName: dayName,
           time: time,
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     ));
