@@ -22,6 +22,7 @@ void main() {
                 dayName: dayName,
                 time: time,
                 title: "testTitle",
+                location: "testLocation",
               ),
             ),
           );
@@ -50,11 +51,37 @@ void main() {
                 dayName: "testDayName",
                 time: "testTime",
                 title: title,
+                location: "testLocation",
               ),
             ),
           );
 
           final titleText = find.text(title);
+
+          expect(titleText, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given location argument is provided"
+        "when widget is rendered"
+        "should show expected location",
+        (widgetTester) async {
+          const location = "testLocation";
+
+          await widgetTester.pumpWidget(
+            const MaterialApp(
+              home: MatchBriefExtended(
+                date: "testDate",
+                dayName: "testDayName",
+                time: "testTime",
+                title: "testTitle",
+                location: location,
+              ),
+            ),
+          );
+
+          final titleText = find.text(titleLarge);
 
           expect(titleText, findsOneWidget);
         },
