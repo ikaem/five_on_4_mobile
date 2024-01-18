@@ -79,6 +79,7 @@ void main() {
           final last = matchBriefsAnotherWay.last;
 
           expect(first.title, equals(todaysMatches.first.name));
+
           expect(last.title, equals(todaysMatches.last.name));
         },
       );

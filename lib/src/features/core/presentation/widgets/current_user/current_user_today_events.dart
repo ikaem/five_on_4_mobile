@@ -21,14 +21,31 @@ class CurrentUserTodayEvents extends StatelessWidget {
       );
     }
 
-    return const MatchBriefExtended(
-      date: "23 DEC",
-      dayName: "WEDNESDAY",
-      time: "19:00",
-      title: "testTitle",
-      location: "testLocation",
-      organizer: "testOrganizer",
-      arrivingPlayers: 0,
+    return ListView.builder(
+      itemCount: todaysMatches.length,
+      itemBuilder: (context, index) {
+        final match = todaysMatches[index];
+
+        return MatchBriefExtended(
+          date: match.date.toString(),
+          dayName: "WEDNESDAY",
+          time: "19:00",
+          title: match.name,
+          location: match.location,
+          organizer: match.organizer,
+          arrivingPlayers: match.arrivingPlayers,
+        );
+      },
     );
+
+    // return const MatchBriefExtended(
+    //   date: "23 DEC",
+    //   dayName: "WEDNESDAY",
+    //   time: "19:00",
+    //   title: "testTitle",
+    //   location: "testLocation",
+    //   organizer: "testOrganizer",
+    //   arrivingPlayers: 0,
+    // );
   }
 }
