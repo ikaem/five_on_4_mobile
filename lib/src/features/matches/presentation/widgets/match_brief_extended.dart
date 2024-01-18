@@ -8,6 +8,7 @@ class MatchBriefExtended extends StatelessWidget {
     required this.time,
     required this.title,
     required this.location,
+    required this.organizer,
   });
 
   final String date;
@@ -15,6 +16,7 @@ class MatchBriefExtended extends StatelessWidget {
   final String time;
   final String title;
   final String location;
+  final String organizer;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,21 @@ class MatchBriefExtended extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Organized by ",
+                    ),
+                    TextSpan(
+                      text: organizer,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

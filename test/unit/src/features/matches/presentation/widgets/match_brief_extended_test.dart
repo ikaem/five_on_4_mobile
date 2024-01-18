@@ -110,7 +110,7 @@ void main() {
             ),
           );
 
-          final organizerText = find.text("Organizer: $organizer");
+          final organizerText = find.text("Organized by $organizer");
 
           expect(organizerText, findsOneWidget);
         },
