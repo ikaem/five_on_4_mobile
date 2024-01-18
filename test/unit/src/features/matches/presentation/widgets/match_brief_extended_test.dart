@@ -23,6 +23,7 @@ void main() {
                 time: time,
                 title: "testTitle",
                 location: "testLocation",
+                organizer: "testOrganizer",
               ),
             ),
           );
@@ -52,6 +53,7 @@ void main() {
                 time: "testTime",
                 title: title,
                 location: "testLocation",
+                organizer: "testOrganizer",
               ),
             ),
           );
@@ -77,13 +79,40 @@ void main() {
                 time: "testTime",
                 title: "testTitle",
                 location: location,
+                organizer: "testOrganizer",
               ),
             ),
           );
 
-          final titleText = find.text(location);
+          final organizerText = find.text(location);
 
-          expect(titleText, findsOneWidget);
+          expect(organizerText, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given organizer argument is provided"
+        "when widget is rendered"
+        "should show expected organizer text",
+        (widgetTester) async {
+          const organizer = "testOrganizer";
+
+          await widgetTester.pumpWidget(
+            const MaterialApp(
+              home: MatchBriefExtended(
+                date: "testDate",
+                dayName: "testDayName",
+                time: "testTime",
+                title: "testTitle",
+                location: "testLocation",
+                organizer: organizer,
+              ),
+            ),
+          );
+
+          final organizerText = find.text("Organizer: $organizer");
+
+          expect(organizerText, findsOneWidget);
         },
       );
     },
