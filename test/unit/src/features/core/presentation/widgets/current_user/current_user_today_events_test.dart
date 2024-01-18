@@ -71,12 +71,12 @@ void main() {
           // final matchBriefs = find.byType(MatchBriefExtended);
           // matchBriefs.evaluate();
 
-          final matchBriefsAnotherWay = widgetTester
+          final matchBriefs = widgetTester
               .widgetList<MatchBriefExtended>(find.byType(MatchBriefExtended))
               .toList();
 
-          final first = matchBriefsAnotherWay.first;
-          final last = matchBriefsAnotherWay.last;
+          final first = matchBriefs.first;
+          final last = matchBriefs.last;
 
           expect(first.title, equals(todaysMatches.first.name));
 
