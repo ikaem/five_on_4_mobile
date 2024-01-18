@@ -9,6 +9,7 @@ class MatchBriefExtended extends StatelessWidget {
     required this.title,
     required this.location,
     required this.organizer,
+    required this.arrivingPlayers,
   });
 
   final String date;
@@ -17,16 +18,19 @@ class MatchBriefExtended extends StatelessWidget {
   final String title;
   final String location;
   final String organizer;
+  final int arrivingPlayers;
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Row(
       children: [
-        _DateElement(
-          date: date,
-          dayName: dayName,
-          time: time,
+        Expanded(
+          child: _DateElement(
+            date: date,
+            dayName: dayName,
+            time: time,
+          ),
         ),
         Expanded(
           child: Column(
@@ -57,7 +61,22 @@ class MatchBriefExtended extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: "Arriving players: ",
+                    ),
+                    TextSpan(
+                      text: arrivingPlayers.toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
