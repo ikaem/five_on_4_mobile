@@ -28,6 +28,7 @@ class CurrentUserTodayEvents extends StatelessWidget {
 
         return MatchBriefExtended(
           date: match.date.toString(),
+          // TODO make extension to format these properly
           dayName: "WEDNESDAY",
           time: "19:00",
           title: match.name,
@@ -37,15 +38,5 @@ class CurrentUserTodayEvents extends StatelessWidget {
         );
       },
     );
-
-    // return const MatchBriefExtended(
-    //   date: "23 DEC",
-    //   dayName: "WEDNESDAY",
-    //   time: "19:00",
-    //   title: "testTitle",
-    //   location: "testLocation",
-    //   organizer: "testOrganizer",
-    //   arrivingPlayers: 0,
-    // );
   }
 }
