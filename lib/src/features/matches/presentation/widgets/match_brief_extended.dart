@@ -47,7 +47,7 @@ class MatchBriefExtended extends StatelessWidget {
                 TextSpan(
                   children: [
                     const TextSpan(
-                      text: "Organized by ",
+                      text: "Organized by: ",
                     ),
                     TextSpan(
                       text: organizer,

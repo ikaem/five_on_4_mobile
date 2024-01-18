@@ -24,6 +24,7 @@ void main() {
                 title: "testTitle",
                 location: "testLocation",
                 organizer: "testOrganizer",
+                arrivingPlayers: 0,
               ),
             ),
           );
@@ -54,6 +55,7 @@ void main() {
                 title: title,
                 location: "testLocation",
                 organizer: "testOrganizer",
+                arrivingPlayers: 0,
               ),
             ),
           );
@@ -80,6 +82,7 @@ void main() {
                 title: "testTitle",
                 location: location,
                 organizer: "testOrganizer",
+                arrivingPlayers: 0,
               ),
             ),
           );
@@ -106,13 +109,42 @@ void main() {
                 title: "testTitle",
                 location: "testLocation",
                 organizer: organizer,
+                arrivingPlayers: 0,
               ),
             ),
           );
 
-          final organizerText = find.text("Organized by $organizer");
+          final organizerText = find.text("Organized by: $organizer");
 
           expect(organizerText, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given arrivingPlayers argument is provided"
+        "when widget is rendered"
+        "should show expected arriving players text",
+        (widgetTester) async {
+          const arrivingPlayers = 12;
+
+          await widgetTester.pumpWidget(
+            const MaterialApp(
+              home: MatchBriefExtended(
+                date: "testDate",
+                dayName: "testDayName",
+                time: "testTime",
+                title: "testTitle",
+                location: "testLocation",
+                organizer: "testOrganizer",
+                arrivingPlayers: arrivingPlayers,
+              ),
+            ),
+          );
+
+          final arrivingPlayersText =
+              find.text("Arriving players: $arrivingPlayers");
+
+          expect(arrivingPlayersText, findsOneWidget);
         },
       );
     },
