@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
