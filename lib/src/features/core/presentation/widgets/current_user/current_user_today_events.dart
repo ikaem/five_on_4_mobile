@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief_extended.dart';
 import 'package:flutter/material.dart';
 
 class CurrentUserTodayEvents extends StatelessWidget {
@@ -20,6 +21,14 @@ class CurrentUserTodayEvents extends StatelessWidget {
       );
     }
 
-    return Container();
+    return const MatchBriefExtended(
+      date: "23 DEC",
+      dayName: "WEDNESDAY",
+      time: "19:00",
+      title: "testTitle",
+      location: "testLocation",
+      organizer: "testOrganizer",
+      arrivingPlayers: 0,
+    );
   }
 }
