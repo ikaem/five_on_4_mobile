@@ -81,7 +81,7 @@ void main() {
             ),
           );
 
-          final titleText = find.text(titleLarge);
+          final titleText = find.text(location);
 
           expect(titleText, findsOneWidget);
         },
