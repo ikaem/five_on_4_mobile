@@ -27,12 +27,42 @@ class HomeScreen extends ConsumerWidget {
               child: const Text("Go to match"),
             ),
             ElevatedButton(
-                onPressed: () {
-                  ref
-                      .read(authStatusDataSourceProvider)
-                      .setAuthDataStatus(null);
-                },
-                child: const Text("Logout")),
+              onPressed: () {
+                ref.read(authStatusDataSourceProvider).setAuthDataStatus(null);
+              },
+              child: const Text("Logout"),
+            ),
+            // TODO start from here
+            Container(
+              child: const DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      indicatorColor: Colors.black,
+                      labelColor: Colors.black,
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      unselectedLabelStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                      ),
+                      tabs: [
+                        Tab(
+                          // child: Text,
+                          // text: "Today",
+                          child: Text(
+                            "Today •",
+                            // style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Tab(
+                          text: "Following events",
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

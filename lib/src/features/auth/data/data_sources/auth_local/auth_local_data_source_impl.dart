@@ -30,9 +30,9 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<AuthDataEntity?> getAuthData() async {
     // TODO use this for short circuit log in dev
-    // return dummyAuthDataEntity;
+    return dummyAuthDataEntity;
 
-    return null;
+    // return null;
 
     // final storedAuthData = await _secureStorageWrapper.getAuthData();
     // if (storedAuthData == null) return null;

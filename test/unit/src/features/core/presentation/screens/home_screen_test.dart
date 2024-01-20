@@ -14,7 +14,7 @@ void main() {
           testWidgets(
             "given user has performed no actions"
             "when screen is rendered"
-            "should have 'Today' selector selected by default",
+            "should have 'Today' selector selected by default, and not 'Following events'",
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 const MaterialApp(
@@ -22,15 +22,29 @@ void main() {
                 ),
               );
               // TODO maybe byWidgetPredicate can be used
-              final todaySelector = find.byWidget(
-                const Text(
-                  "Today •",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              );
+              // final todaySelector = find.byWidget(
+              //   const Text(
+              //     "Today •",
+              //     // style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // );
+
+              /* TODO this can be used as well */
+              // final todaySelector = find.byWidgetPredicate(
+              //   (widget) {
+              //     if (widget is! Text) return false;
+              //     if (widget.data != "Today •") return false;
+
+              //     return true;
+              //   },
+              // );
 
               // assert style and that it finds widget
+              final todaySelector = find.text("Today •");
+              final followingEventsSelector = find.text("Following matches •");
+
               expect(todaySelector, findsOneWidget);
+              expect(followingEventsSelector, findsNothing);
             },
           );
 
