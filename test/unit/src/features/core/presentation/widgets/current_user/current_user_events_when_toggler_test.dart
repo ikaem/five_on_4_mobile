@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_following.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_when_toggler.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_today.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -51,10 +52,7 @@ void main() {
             ),
           );
 
-          final followingEventsSelectorUnselected =
-              find.text("Following matches");
-          await widgetTester.tap(followingEventsSelectorUnselected);
-
+          await widgetTester.tap(find.text("Following matches"));
           await widgetTester.pumpAndSettle();
 
           final todaySelector = find.text("Today $selectorIndicator");
@@ -87,6 +85,32 @@ void main() {
           final eventsTodayWidget = find.byType(CurrentUserEventsToday);
 
           expect(eventsTodayWidget, findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        "given 'Following events' selector is active "
+        "when widget is used"
+        "should render [CurrentUserEventsFollowing] widget",
+        (widgetTester) async {
+          final matchesFollowing = <MatchModel>[];
+
+          await widgetTester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: CurrentUserEventsWhenToggler(
+                  matchesToday: const [],
+                  matchesFollowing: matchesFollowing,
+                ),
+              ),
+            ),
+          );
+
+          await widgetTester.tap(find.text("Following matches"));
+          await widgetTester.pumpAndSettle();
+
+          final followingEventsWidget = find.byType(CurrentUserEventsFollowing);
+          expect(followingEventsWidget, findsOneWidget);
         },
       );
     },

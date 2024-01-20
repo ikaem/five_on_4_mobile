@@ -20,7 +20,7 @@ void main() {
           await widgetTester.pumpWidget(
             MaterialApp(
               home: CurrentUserEventsToday(
-                todaysMatches: todaysMatches,
+                matches: todaysMatches,
               ),
             ),
           );
@@ -62,7 +62,7 @@ void main() {
           await widgetTester.pumpWidget(
             MaterialApp(
               home: CurrentUserEventsToday(
-                todaysMatches: todaysMatches,
+                matches: todaysMatches,
               ),
             ),
           );

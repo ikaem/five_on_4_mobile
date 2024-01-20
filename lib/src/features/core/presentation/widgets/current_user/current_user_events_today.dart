@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 class CurrentUserEventsToday extends StatelessWidget {
   const CurrentUserEventsToday({
     super.key,
-    required this.todaysMatches,
+    required this.matches,
   });
 
-  final List<MatchModel> todaysMatches;
+  final List<MatchModel> matches;
 
   @override
   Widget build(BuildContext context) {
-    if (todaysMatches.isEmpty) {
+    if (matches.isEmpty) {
       return const Column(
         children: [
           Text("No matches today"),
@@ -22,9 +22,9 @@ class CurrentUserEventsToday extends StatelessWidget {
     }
 
     return ListView.builder(
-      itemCount: todaysMatches.length,
+      itemCount: matches.length,
       itemBuilder: (context, index) {
-        final match = todaysMatches[index];
+        final match = matches[index];
 
         return MatchBriefExtended(
           date: match.date.toString(),

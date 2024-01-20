@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_following.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_today.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
@@ -73,12 +74,11 @@ class _CurrentUserEventsWhenTogglerState
               controller: _tabController,
               children: [
                 CurrentUserEventsToday(
-                  todaysMatches: widget.matchesToday,
+                  matches: widget.matchesToday,
                 ),
-                const Text("To be"),
-                // CurrentUserEventsFollowing(
-                //   followingMatches: widget.followingMatches,
-                // ),
+                CurrentUserEventsFollowing(
+                  matches: widget.matchesFollowing,
+                ),
               ],
             ),
           ),
