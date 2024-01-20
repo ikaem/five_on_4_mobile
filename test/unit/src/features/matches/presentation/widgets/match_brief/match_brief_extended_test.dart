@@ -6,147 +6,149 @@ void main() {
   group(
     "MatchBriefExtended",
     () {
-      testWidgets(
-        "given date, day name, and time arguments are provided"
-        "when widget is rendered"
-        "should show expected date, day name, and time",
-        (widgetTester) async {
-          const date = "23 DEC";
-          const dayName = "WEDNESDAY";
-          const time = "19:00";
+      group("Layout", () {
+        testWidgets(
+          "given date, day name, and time arguments are provided"
+          "when widget is rendered"
+          "should show expected date, day name, and time",
+          (widgetTester) async {
+            const date = "23 DEC";
+            const dayName = "WEDNESDAY";
+            const time = "19:00";
 
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: date,
-                dayName: dayName,
-                time: time,
-                title: "testTitle",
-                location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
+            await widgetTester.pumpWidget(
+              const MaterialApp(
+                home: MatchBriefExtended(
+                  date: date,
+                  dayName: dayName,
+                  time: time,
+                  title: "testTitle",
+                  location: "testLocation",
+                  organizer: "testOrganizer",
+                  arrivingPlayers: 0,
+                ),
               ),
-            ),
-          );
+            );
 
-          final dateText = find.text(date);
-          final dayNameText = find.text(dayName);
-          final timeText = find.text(time);
+            final dateText = find.text(date);
+            final dayNameText = find.text(dayName);
+            final timeText = find.text(time);
 
-          expect(dateText, findsOneWidget);
-          expect(dayNameText, findsOneWidget);
-          expect(timeText, findsOneWidget);
-        },
-      );
+            expect(dateText, findsOneWidget);
+            expect(dayNameText, findsOneWidget);
+            expect(timeText, findsOneWidget);
+          },
+        );
 
-      testWidgets(
-        "given title argument is provided"
-        "when widget is rendered"
-        "should show expected title",
-        (widgetTester) async {
-          const title = "testTitle";
+        testWidgets(
+          "given title argument is provided"
+          "when widget is rendered"
+          "should show expected title",
+          (widgetTester) async {
+            const title = "testTitle";
 
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: title,
-                location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
+            await widgetTester.pumpWidget(
+              const MaterialApp(
+                home: MatchBriefExtended(
+                  date: "testDate",
+                  dayName: "testDayName",
+                  time: "testTime",
+                  title: title,
+                  location: "testLocation",
+                  organizer: "testOrganizer",
+                  arrivingPlayers: 0,
+                ),
               ),
-            ),
-          );
+            );
 
-          final titleText = find.text(title);
+            final titleText = find.text(title);
 
-          expect(titleText, findsOneWidget);
-        },
-      );
+            expect(titleText, findsOneWidget);
+          },
+        );
 
-      testWidgets(
-        "given location argument is provided"
-        "when widget is rendered"
-        "should show expected location",
-        (widgetTester) async {
-          const location = "testLocation";
+        testWidgets(
+          "given location argument is provided"
+          "when widget is rendered"
+          "should show expected location",
+          (widgetTester) async {
+            const location = "testLocation";
 
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: "testTitle",
-                location: location,
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
+            await widgetTester.pumpWidget(
+              const MaterialApp(
+                home: MatchBriefExtended(
+                  date: "testDate",
+                  dayName: "testDayName",
+                  time: "testTime",
+                  title: "testTitle",
+                  location: location,
+                  organizer: "testOrganizer",
+                  arrivingPlayers: 0,
+                ),
               ),
-            ),
-          );
+            );
 
-          final organizerText = find.text(location);
+            final organizerText = find.text(location);
 
-          expect(organizerText, findsOneWidget);
-        },
-      );
+            expect(organizerText, findsOneWidget);
+          },
+        );
 
-      testWidgets(
-        "given organizer argument is provided"
-        "when widget is rendered"
-        "should show expected organizer text",
-        (widgetTester) async {
-          const organizer = "testOrganizer";
+        testWidgets(
+          "given organizer argument is provided"
+          "when widget is rendered"
+          "should show expected organizer text",
+          (widgetTester) async {
+            const organizer = "testOrganizer";
 
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: "testTitle",
-                location: "testLocation",
-                organizer: organizer,
-                arrivingPlayers: 0,
+            await widgetTester.pumpWidget(
+              const MaterialApp(
+                home: MatchBriefExtended(
+                  date: "testDate",
+                  dayName: "testDayName",
+                  time: "testTime",
+                  title: "testTitle",
+                  location: "testLocation",
+                  organizer: organizer,
+                  arrivingPlayers: 0,
+                ),
               ),
-            ),
-          );
+            );
 
-          final organizerText = find.text("Organized by: $organizer");
+            final organizerText = find.text("Organized by: $organizer");
 
-          expect(organizerText, findsOneWidget);
-        },
-      );
+            expect(organizerText, findsOneWidget);
+          },
+        );
 
-      testWidgets(
-        "given arrivingPlayers argument is provided"
-        "when widget is rendered"
-        "should show expected arriving players text",
-        (widgetTester) async {
-          const arrivingPlayers = 12;
+        testWidgets(
+          "given arrivingPlayers argument is provided"
+          "when widget is rendered"
+          "should show expected arriving players text",
+          (widgetTester) async {
+            const arrivingPlayers = 12;
 
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: "testTitle",
-                location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: arrivingPlayers,
+            await widgetTester.pumpWidget(
+              const MaterialApp(
+                home: MatchBriefExtended(
+                  date: "testDate",
+                  dayName: "testDayName",
+                  time: "testTime",
+                  title: "testTitle",
+                  location: "testLocation",
+                  organizer: "testOrganizer",
+                  arrivingPlayers: arrivingPlayers,
+                ),
               ),
-            ),
-          );
+            );
 
-          final arrivingPlayersText =
-              find.text("Arriving players: $arrivingPlayers");
+            final arrivingPlayersText =
+                find.text("Arriving players: $arrivingPlayers");
 
-          expect(arrivingPlayersText, findsOneWidget);
-        },
-      );
+            expect(arrivingPlayersText, findsOneWidget);
+          },
+        );
+      });
     },
   );
 }

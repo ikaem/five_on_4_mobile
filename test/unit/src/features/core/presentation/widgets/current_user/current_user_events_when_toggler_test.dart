@@ -11,108 +11,115 @@ void main() {
   group(
     "CurrentUserEventsWhenToggler",
     () {
-      testWidgets(
-        "given user has performed no actions"
-        "when widget is rendered"
-        "should have 'Today' selector selected by default, and not 'Following events'",
-        (widgetTester) async {
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: Scaffold(
-                body: CurrentUserEventsWhenToggler(
-                  matchesToday: [],
-                  matchesFollowing: [],
+      group(
+        "Tabbing",
+        () {
+          testWidgets(
+            "given user has performed no actions"
+            "when widget is rendered"
+            "should have 'Today' selector selected by default, and not 'Following events'",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: CurrentUserEventsWhenToggler(
+                      matchesToday: [],
+                      matchesFollowing: [],
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+
+              final todaySelector = find.text("Today $selectorIndicator");
+              final followingEventsSelector =
+                  find.text("Following matches $selectorIndicator");
+
+              expect(todaySelector, findsOneWidget);
+              expect(followingEventsSelector, findsNothing);
+            },
           );
 
-          final todaySelector = find.text("Today $selectorIndicator");
-          final followingEventsSelector =
-              find.text("Following matches $selectorIndicator");
+          testWidgets(
+            "given user selects 'following events'"
+            "when widget is used"
+            "should have 'Following' selector selected, and not 'Today'",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: CurrentUserEventsWhenToggler(
+                      matchesToday: [],
+                      matchesFollowing: [],
+                    ),
+                  ),
+                ),
+              );
 
-          expect(todaySelector, findsOneWidget);
-          expect(followingEventsSelector, findsNothing);
+              await widgetTester.tap(find.text("Following matches"));
+              await widgetTester.pumpAndSettle();
+
+              final todaySelector = find.text("Today $selectorIndicator");
+              final followingEventsSelector =
+                  find.text("Following matches $selectorIndicator");
+
+              expect(todaySelector, findsNothing);
+              expect(followingEventsSelector, findsOneWidget);
+            },
+          );
         },
       );
+      group("Layout", () {
+        testWidgets(
+          "given 'Today' selector is active "
+          "when widget is used"
+          "should render [CurrentUserEventsToday] widget",
+          (widgetTester) async {
+            final todaysMatches = <MatchModel>[];
 
-      testWidgets(
-        "given user selects 'following events'"
-        "when widget is used"
-        "should have 'Following' selector selected, and not 'Today'",
-        (widgetTester) async {
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: Scaffold(
-                body: CurrentUserEventsWhenToggler(
-                  matchesToday: [],
-                  matchesFollowing: [],
+            await widgetTester.pumpWidget(
+              MaterialApp(
+                home: Scaffold(
+                  body: CurrentUserEventsWhenToggler(
+                    matchesToday: todaysMatches,
+                    matchesFollowing: const [],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
 
-          await widgetTester.tap(find.text("Following matches"));
-          await widgetTester.pumpAndSettle();
+            final eventsTodayWidget = find.byType(CurrentUserEventsToday);
 
-          final todaySelector = find.text("Today $selectorIndicator");
-          final followingEventsSelector =
-              find.text("Following matches $selectorIndicator");
+            expect(eventsTodayWidget, findsOneWidget);
+          },
+        );
 
-          expect(todaySelector, findsNothing);
-          expect(followingEventsSelector, findsOneWidget);
-        },
-      );
+        testWidgets(
+          "given 'Following events' selector is active "
+          "when widget is used"
+          "should render [CurrentUserEventsFollowing] widget",
+          (widgetTester) async {
+            final matchesFollowing = <MatchModel>[];
 
-      testWidgets(
-        "given 'Today' selector is active "
-        "when widget is used"
-        "should render [CurrentUserEventsToday] widget",
-        (widgetTester) async {
-          final todaysMatches = <MatchModel>[];
-
-          await widgetTester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: CurrentUserEventsWhenToggler(
-                  matchesToday: todaysMatches,
-                  matchesFollowing: const [],
+            await widgetTester.pumpWidget(
+              MaterialApp(
+                home: Scaffold(
+                  body: CurrentUserEventsWhenToggler(
+                    matchesToday: const [],
+                    matchesFollowing: matchesFollowing,
+                  ),
                 ),
               ),
-            ),
-          );
+            );
 
-          final eventsTodayWidget = find.byType(CurrentUserEventsToday);
+            await widgetTester.tap(find.text("Following matches"));
+            await widgetTester.pumpAndSettle();
 
-          expect(eventsTodayWidget, findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        "given 'Following events' selector is active "
-        "when widget is used"
-        "should render [CurrentUserEventsFollowing] widget",
-        (widgetTester) async {
-          final matchesFollowing = <MatchModel>[];
-
-          await widgetTester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: CurrentUserEventsWhenToggler(
-                  matchesToday: const [],
-                  matchesFollowing: matchesFollowing,
-                ),
-              ),
-            ),
-          );
-
-          await widgetTester.tap(find.text("Following matches"));
-          await widgetTester.pumpAndSettle();
-
-          final followingEventsWidget = find.byType(CurrentUserEventsFollowing);
-          expect(followingEventsWidget, findsOneWidget);
-        },
-      );
+            final followingEventsWidget =
+                find.byType(CurrentUserEventsFollowing);
+            expect(followingEventsWidget, findsOneWidget);
+          },
+        );
+      });
     },
   );
 }
