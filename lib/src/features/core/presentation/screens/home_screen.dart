@@ -15,24 +15,27 @@ class HomeScreen extends ConsumerWidget {
     WidgetRef ref,
   ) {
     return SafeArea(
-        child: Scaffold(
-      body: Column(
-        children: [
-          const Text("Home Screen"),
-          ElevatedButton(
-            onPressed: () {
-              // TODO make some extension to make sure "/" is added in front of the route automatically
-              context.go("/${RoutePathsConstants.MATCH.value}");
-            },
-            child: const Text("Go to match"),
-          ),
-          ElevatedButton(
+      child: Scaffold(
+        body: Column(
+          children: [
+            const Text("Home Screen"),
+            ElevatedButton(
               onPressed: () {
-                ref.read(authStatusDataSourceProvider).setAuthDataStatus(null);
+                // TODO make some extension to make sure "/" is added in front of the route automatically
+                context.go("/${RoutePathsConstants.MATCH.value}");
               },
-              child: const Text("Logout")),
-        ],
+              child: const Text("Go to match"),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  ref
+                      .read(authStatusDataSourceProvider)
+                      .setAuthDataStatus(null);
+                },
+                child: const Text("Logout")),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
