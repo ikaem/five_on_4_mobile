@@ -8,31 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
-}
-
-// TODO possibly not needed to be stateful
-class _HomeScreenState extends ConsumerState<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
-  }
 
   @override
   Widget build(
     BuildContext context,
-    // WidgetRef ref,
+    WidgetRef ref,
   ) {
     return SafeArea(
       child: Scaffold(
@@ -55,11 +37,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             CurrentUserGreeting(
               nickName: "nickName",
               teamName: "teamName",
-              avatarUrl: Uri.parse("https://via.placeholder.com/150"),
+              avatarUrl: Uri.parse(
+                  "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
             ),
-            const CurrentUserEventsWhenToggler(
-              matchesToday: [],
-              matchesFollowing: [],
+            const Expanded(
+              child: CurrentUserEventsWhenToggler(
+                matchesToday: [],
+                matchesFollowing: [],
+              ),
             ),
           ],
         ),

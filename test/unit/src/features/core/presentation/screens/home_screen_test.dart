@@ -18,7 +18,7 @@ void main() {
             "when screen is rendered"
             "should show all expected child widgets",
             (widgetTester) async {
-              mockNetworkImages(() async {
+              await mockNetworkImages(() async {
                 await widgetTester.pumpWidget(
                   const MaterialApp(
                     home: HomeScreen(),
@@ -30,8 +30,9 @@ void main() {
               final whenTogglerWidget =
                   find.byType(CurrentUserEventsWhenToggler);
 
-              expect(greetingWidget, findsOneWidget);
               expect(whenTogglerWidget, findsOneWidget);
+              expect(greetingWidget, findsOneWidget);
+              print("what");
             },
           );
         },

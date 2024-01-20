@@ -14,6 +14,8 @@ class CurrentUserGreeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final imageUrl = avatarUrl.toString();
+
     return Container(
         child: Row(
       children: [
@@ -50,7 +52,20 @@ class CurrentUserGreeting extends StatelessWidget {
           ),
         ),
         Container(
-          child: Image.network(avatarUrl.toString()),
+          child: Image.network(
+            avatarUrl.toString(),
+            width: 60,
+            height: 60,
+            fit: BoxFit.cover,
+
+            // TODO try to test on error
+            // TODO also, errors are not really handled by this
+            errorBuilder: (context, error, stackTrace) {
+              return const Center(
+                child: Icon(Icons.error),
+              );
+            },
+          ),
         )
       ],
     ));
