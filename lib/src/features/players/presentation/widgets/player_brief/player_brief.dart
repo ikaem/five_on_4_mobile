@@ -4,9 +4,11 @@ class PlayerBrief extends StatelessWidget {
   const PlayerBrief({
     super.key,
     required this.avatarUrl,
+    required this.nickname,
   });
 
   final Uri avatarUrl;
+  final String nickname;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,11 @@ class PlayerBrief extends StatelessWidget {
               width: 54,
               height: 30,
               fit: BoxFit.cover,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              nickname,
             ),
           ),
         ],

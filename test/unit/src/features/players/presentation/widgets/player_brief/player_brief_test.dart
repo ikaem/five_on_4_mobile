@@ -56,7 +56,7 @@ void main() {
                   ),
                 );
 
-                final nameText = find.text(name);
+                final nameText = find.text(nickname);
 
                 expect(nameText, findsOneWidget);
               },
