@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/players/models/player/player_model
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 void main() {
   group("MatchTabOptionParticipants", () {
@@ -48,13 +49,15 @@ void main() {
               );
             });
 
-            await widgetTester.pumpWidget(
-              MaterialApp(
-                home: MatchTabOptionParticipants(
-                  participants: participants,
+            await mockNetworkImages(() async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: MatchTabOptionParticipants(
+                    participants: participants,
+                  ),
                 ),
-              ),
-            );
+              );
+            });
 
             final participantTop = widgetTester
                 .widgetList<PlayerBrief>(find.byType(
