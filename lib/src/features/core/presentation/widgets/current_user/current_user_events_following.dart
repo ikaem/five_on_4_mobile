@@ -3,8 +3,8 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief_extended.dart';
 import 'package:flutter/material.dart';
 
-class CurrentUserAllEvents extends StatelessWidget {
-  const CurrentUserAllEvents({
+class CurrentUserEventsFollowing extends StatelessWidget {
+  const CurrentUserEventsFollowing({
     super.key,
     required this.matches,
   });

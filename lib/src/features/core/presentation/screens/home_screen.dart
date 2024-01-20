@@ -51,7 +51,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               },
               child: const Text("Logout"),
             ),
-            const CurrentUserEventsWhenToggler(),
+            const CurrentUserEventsWhenToggler(
+              matchesToday: [],
+              matchesFollowing: [],
+            ),
           ],
         ),
       ),

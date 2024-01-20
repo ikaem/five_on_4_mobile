@@ -1,5 +1,5 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_when_toggler.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_today_events.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_today.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,8 +19,8 @@ void main() {
             const MaterialApp(
               home: Scaffold(
                 body: CurrentUserEventsWhenToggler(
-                  todaysMatches: [],
-                  followingMatches: [],
+                  matchesToday: [],
+                  matchesFollowing: [],
                 ),
               ),
             ),
@@ -44,8 +44,8 @@ void main() {
             const MaterialApp(
               home: Scaffold(
                 body: CurrentUserEventsWhenToggler(
-                  todaysMatches: [],
-                  followingMatches: [],
+                  matchesToday: [],
+                  matchesFollowing: [],
                 ),
               ),
             ),
@@ -74,17 +74,17 @@ void main() {
           final todaysMatches = <MatchModel>[];
 
           await widgetTester.pumpWidget(
-            const MaterialApp(
+            MaterialApp(
               home: Scaffold(
                 body: CurrentUserEventsWhenToggler(
-                  todaysMatches: todaysMatches,
-                  followingMatches: [],
+                  matchesToday: todaysMatches,
+                  matchesFollowing: const [],
                 ),
               ),
             ),
           );
 
-          final eventsTodayWidget = find.byType(CurrentUserTodayEvents);
+          final eventsTodayWidget = find.byType(CurrentUserEventsToday);
 
           expect(eventsTodayWidget, findsOneWidget);
         },

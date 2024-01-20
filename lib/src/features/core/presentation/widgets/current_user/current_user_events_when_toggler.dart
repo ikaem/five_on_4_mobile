@@ -1,7 +1,16 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_today.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
 
 class CurrentUserEventsWhenToggler extends StatefulWidget {
-  const CurrentUserEventsWhenToggler({super.key});
+  const CurrentUserEventsWhenToggler({
+    super.key,
+    required this.matchesToday,
+    required this.matchesFollowing,
+  });
+
+  final List<MatchModel> matchesToday;
+  final List<MatchModel> matchesFollowing;
 
   @override
   State<CurrentUserEventsWhenToggler> createState() =>
@@ -58,7 +67,21 @@ class _CurrentUserEventsWhenTogglerState
                     "Following matches${!isTodaySelected ? selectorIndicator : ""}",
               )
             ],
-          )
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                CurrentUserEventsToday(
+                  todaysMatches: widget.matchesToday,
+                ),
+                const Text("To be"),
+                // CurrentUserEventsFollowing(
+                //   followingMatches: widget.followingMatches,
+                // ),
+              ],
+            ),
+          ),
         ],
       ),
     );
