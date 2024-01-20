@@ -1,6 +1,7 @@
 // TODO dont forget to test this
 
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/provider/auth_status_data_source_provider.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_when_toggler.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
 }
 
+// TODO possibly not needed to be stateful
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
@@ -49,44 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               },
               child: const Text("Logout"),
             ),
-            // TODO start from here
-            // TODO extract from here for eventWhenController
-            Builder(builder: (context) {
-              final isTodaySelected = _tabController.index == 0;
-
-              return Container(
-                child: Column(
-                  children: [
-                    TabBar(
-                      controller: _tabController,
-                      indicatorColor: Colors.black,
-                      labelColor: Colors.black,
-                      labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-                      unselectedLabelStyle: const TextStyle(
-                        fontWeight: FontWeight.normal,
-                      ),
-                      onTap: (value) {
-                        setState(() {});
-                      },
-                      tabs: [
-                        Tab(
-                          // child: Text,
-                          // text: "Today",
-                          child: Text(
-                            "Today${isTodaySelected ? " •" : ""}",
-                            // style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Tab(
-                          text:
-                              "Following matches${!isTodaySelected ? " •" : ""}",
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              );
-            }),
+            const CurrentUserEventsWhenToggler(),
           ],
         ),
       ),
