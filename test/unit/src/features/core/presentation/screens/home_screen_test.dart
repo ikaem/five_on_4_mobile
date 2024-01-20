@@ -22,25 +22,7 @@ void main() {
                   home: HomeScreen(),
                 ),
               );
-              // TODO maybe byWidgetPredicate can be used
-              // final todaySelector = find.byWidget(
-              //   const Text(
-              //     "Today •",
-              //     // style: TextStyle(fontWeight: FontWeight.bold),
-              //   ),
-              // );
 
-              /* TODO this can be used as well */
-              // final todaySelector = find.byWidgetPredicate(
-              //   (widget) {
-              //     if (widget is! Text) return false;
-              //     if (widget.data != "Today •") return false;
-
-              //     return true;
-              //   },
-              // );
-
-              // assert style and that it finds widget
               final todaySelector = find.text("Today $selectorIndicator");
               final followingEventsSelector =
                   find.text("Following matches $selectorIndicator");
@@ -60,25 +42,13 @@ void main() {
                   home: HomeScreen(),
                 ),
               );
-              // TODO maybe byWidgetPredicate can be used
-              // final todaySelector = find.byWidget(
-              //   const Text(
-              //     "Today •",
-              //     // style: TextStyle(fontWeight: FontWeight.bold),
-              //   ),
-              // );
 
-              /* TODO this can be used as well */
-              // final todaySelector = find.byWidgetPredicate(
-              //   (widget) {
-              //     if (widget is! Text) return false;
-              //     if (widget.data != "Today •") return false;
+              final followingEventsSelectorUnselected =
+                  find.text("Following matches");
+              await widgetTester.tap(followingEventsSelectorUnselected);
 
-              //     return true;
-              //   },
-              // );
+              await widgetTester.pumpAndSettle();
 
-              // assert style and that it finds widget
               final todaySelector = find.text("Today $selectorIndicator");
               final followingEventsSelector =
                   find.text("Following matches $selectorIndicator");
@@ -87,17 +57,6 @@ void main() {
               expect(followingEventsSelector, findsOneWidget);
             },
           );
-
-          // testWidgets(
-          //   "given there is no events"
-          //   "when tap on 'Today' tab"
-          //   "should show expected 'No event today' message",
-          //   (widgetTester) async {
-          //     await widgetTester.pumpWidget(
-          //       Container(),
-          //     );
-          //   },
-          // );
         },
       );
     },
