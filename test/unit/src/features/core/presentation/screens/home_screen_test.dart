@@ -1,60 +1,37 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_when_toggler.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_greeting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 void main() {
   group(
     "HomeScreen",
     () {
       // TODO do somehow ordering and position possibly - dont force it though
-      // group("Screen layout", () {});
       group(
-        "Toggle 'when' on events selector",
+        "Screen layout",
         () {
-          const selectorIndicator = "•";
           testWidgets(
-            "given user has performed no actions"
+            "given nothing in particular"
             "when screen is rendered"
-            "should have 'Today' selector selected by default, and not 'Following events'",
+            "should show all expected child widgets",
             (widgetTester) async {
-              await widgetTester.pumpWidget(
-                const MaterialApp(
-                  home: HomeScreen(),
-                ),
-              );
+              mockNetworkImages(() async {
+                await widgetTester.pumpWidget(
+                  const MaterialApp(
+                    home: HomeScreen(),
+                  ),
+                );
+              });
 
-              final todaySelector = find.text("Today $selectorIndicator");
-              final followingEventsSelector =
-                  find.text("Following matches $selectorIndicator");
+              final greetingWidget = find.byType(CurrentUserGreeting);
+              final whenTogglerWidget =
+                  find.byType(CurrentUserEventsWhenToggler);
 
-              expect(todaySelector, findsOneWidget);
-              expect(followingEventsSelector, findsNothing);
-            },
-          );
-
-          testWidgets(
-            "given user selects 'following events'"
-            "when screen is rendered"
-            "should have 'Following' selector selected, and not 'Today'",
-            (widgetTester) async {
-              await widgetTester.pumpWidget(
-                const MaterialApp(
-                  home: HomeScreen(),
-                ),
-              );
-
-              final followingEventsSelectorUnselected =
-                  find.text("Following matches");
-              await widgetTester.tap(followingEventsSelectorUnselected);
-
-              await widgetTester.pumpAndSettle();
-
-              final todaySelector = find.text("Today $selectorIndicator");
-              final followingEventsSelector =
-                  find.text("Following matches $selectorIndicator");
-
-              expect(todaySelector, findsNothing);
-              expect(followingEventsSelector, findsOneWidget);
+              expect(greetingWidget, findsOneWidget);
+              expect(whenTogglerWidget, findsOneWidget);
             },
           );
         },
