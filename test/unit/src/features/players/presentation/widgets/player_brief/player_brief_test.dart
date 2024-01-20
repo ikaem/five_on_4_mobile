@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -12,6 +13,8 @@ void main() {
           "when widget is rendered"
           "should show expected avatar image",
           (widgetTester) async {
+            const avatarUrl = "https://test.com/avatar.png";
+
             await mockNetworkImages(() async {
               await widgetTester.pumpWidget(
                 MaterialApp(
@@ -22,6 +25,10 @@ void main() {
                   ),
                 ),
               );
+
+              final avatarImage = find.image(const NetworkImage(avatarUrl));
+
+              expect(avatarImage, findsOneWidget);
             });
           },
         );
