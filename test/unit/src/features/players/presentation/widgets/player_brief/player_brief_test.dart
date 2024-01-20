@@ -15,21 +15,52 @@ void main() {
           (widgetTester) async {
             const avatarUrl = "https://test.com/avatar.png";
 
-            await mockNetworkImages(() async {
-              await widgetTester.pumpWidget(
-                MaterialApp(
-                  home: PlayerBrief(
-                    avatarUrl: Uri.parse(
-                      "https://test.com/avatar.png",
+            await mockNetworkImages(
+              () async {
+                await widgetTester.pumpWidget(
+                  MaterialApp(
+                    home: PlayerBrief(
+                      nickname: "testNickname",
+                      avatarUrl: Uri.parse(
+                        "https://test.com/avatar.png",
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
 
-              final avatarImage = find.image(const NetworkImage(avatarUrl));
+                final avatarImage = find.image(const NetworkImage(avatarUrl));
 
-              expect(avatarImage, findsOneWidget);
-            });
+                expect(avatarImage, findsOneWidget);
+              },
+            );
+          },
+        );
+
+        testWidgets(
+          "given name argument is provided"
+          "when widget is rendered"
+          "should show expected name",
+          (widgetTester) async {
+            const nickname = "testNickname";
+
+            await mockNetworkImages(
+              () async {
+                await widgetTester.pumpWidget(
+                  MaterialApp(
+                    home: PlayerBrief(
+                      nickname: nickname,
+                      avatarUrl: Uri.parse(
+                        "https://test.com/avatar.png",
+                      ),
+                    ),
+                  ),
+                );
+
+                final nameText = find.text(name);
+
+                expect(nameText, findsOneWidget);
+              },
+            );
           },
         );
       },
