@@ -1,6 +1,6 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief_extended.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief/match_brief.dart';
+
 import 'package:flutter/material.dart';
 
 class CurrentUserEventsFollowing extends StatelessWidget {

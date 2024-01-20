@@ -1,10 +1,10 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief_extended.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief/match_brief.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group(
-    "MatchBriefExtended",
+    "MatchBrief",
     () {
       testWidgets(
         "given date, day name, and time arguments are provided"
@@ -17,14 +17,12 @@ void main() {
 
           await widgetTester.pumpWidget(
             const MaterialApp(
-              home: MatchBriefExtended(
+              home: MatchBrief(
                 date: date,
                 dayName: dayName,
                 time: time,
                 title: "testTitle",
                 location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
               ),
             ),
           );
@@ -48,14 +46,12 @@ void main() {
 
           await widgetTester.pumpWidget(
             const MaterialApp(
-              home: MatchBriefExtended(
+              home: MatchBrief(
                 date: "testDate",
                 dayName: "testDayName",
                 time: "testTime",
                 title: title,
                 location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
               ),
             ),
           );
@@ -75,14 +71,12 @@ void main() {
 
           await widgetTester.pumpWidget(
             const MaterialApp(
-              home: MatchBriefExtended(
+              home: MatchBrief(
                 date: "testDate",
                 dayName: "testDayName",
                 time: "testTime",
                 title: "testTitle",
                 location: location,
-                organizer: "testOrganizer",
-                arrivingPlayers: 0,
               ),
             ),
           );
@@ -90,61 +84,6 @@ void main() {
           final organizerText = find.text(location);
 
           expect(organizerText, findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        "given organizer argument is provided"
-        "when widget is rendered"
-        "should show expected organizer text",
-        (widgetTester) async {
-          const organizer = "testOrganizer";
-
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: "testTitle",
-                location: "testLocation",
-                organizer: organizer,
-                arrivingPlayers: 0,
-              ),
-            ),
-          );
-
-          final organizerText = find.text("Organized by: $organizer");
-
-          expect(organizerText, findsOneWidget);
-        },
-      );
-
-      testWidgets(
-        "given arrivingPlayers argument is provided"
-        "when widget is rendered"
-        "should show expected arriving players text",
-        (widgetTester) async {
-          const arrivingPlayers = 12;
-
-          await widgetTester.pumpWidget(
-            const MaterialApp(
-              home: MatchBriefExtended(
-                date: "testDate",
-                dayName: "testDayName",
-                time: "testTime",
-                title: "testTitle",
-                location: "testLocation",
-                organizer: "testOrganizer",
-                arrivingPlayers: arrivingPlayers,
-              ),
-            ),
-          );
-
-          final arrivingPlayersText =
-              find.text("Arriving players: $arrivingPlayers");
-
-          expect(arrivingPlayersText, findsOneWidget);
         },
       );
     },
