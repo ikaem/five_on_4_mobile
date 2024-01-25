@@ -15,7 +15,7 @@ void main() {
         testWidgets(
           "given user has performed no actions"
           "when widget is rendered"
-          "should have 'Today' selector selected by default, and not 'Following events'",
+          "should have 'Info' selector selected by default, and not 'Participants'",
           (widgetTester) async {
             final match = MatchModel(
               id: 1,
@@ -35,12 +35,47 @@ void main() {
               ),
             );
 
-            final todaySelector = find.text("Info $selectorIndicator");
-            final followingEventsSelector =
+            final infoSelector = find.text("Info $selectorIndicator");
+            final participantsSelector =
                 find.text("Participants $selectorIndicator");
 
-            expect(todaySelector, findsOneWidget);
-            expect(followingEventsSelector, findsNothing);
+            expect(infoSelector, findsOneWidget);
+            expect(participantsSelector, findsNothing);
+          },
+        );
+
+        testWidgets(
+          "given user selects 'participatns'"
+          "when widget is rendered"
+          "should have 'Participants' selector selected, and not 'Info'",
+          (widgetTester) async {
+            final match = MatchModel(
+              id: 1,
+              // TODO this should be a list of Players
+              arrivingPlayers: 12,
+              date: DateTime.now(),
+              location: "location",
+              name: "name",
+              organizer: "organizer",
+            );
+
+            await widgetTester.pumpWidget(
+              MaterialApp(
+                home: Scaffold(
+                  body: MatchTabOptionToggler(match: match),
+                ),
+              ),
+            );
+
+            await widgetTester.tap(find.text("Participants"));
+            await widgetTester.pumpAndSettle();
+
+            final infoSelector = find.text("Info $selectorIndicator");
+            final participantsSelector =
+                find.text("Participants $selectorIndicator");
+
+            expect(infoSelector, findsNothing);
+            expect(participantsSelector, findsOneWidget);
           },
         );
       });
