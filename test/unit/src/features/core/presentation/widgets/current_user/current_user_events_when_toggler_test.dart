@@ -86,7 +86,7 @@ void main() {
                 ),
               ),
             );
-
+// TODO use widgetbypredicte to make sure correct arguments are passed
             final eventsTodayWidget = find.byType(CurrentUserEventsToday);
 
             expect(eventsTodayWidget, findsOneWidget);
