@@ -25,7 +25,7 @@ void main() {
                   title: "testTitle",
                   location: "testLocation",
                   organizer: "testOrganizer",
-                  arrivingPlayers: 0,
+                  arrivingPlayersNumber: 0,
                 ),
               ),
             );
@@ -56,7 +56,7 @@ void main() {
                   title: title,
                   location: "testLocation",
                   organizer: "testOrganizer",
-                  arrivingPlayers: 0,
+                  arrivingPlayersNumber: 0,
                 ),
               ),
             );
@@ -83,7 +83,7 @@ void main() {
                   title: "testTitle",
                   location: location,
                   organizer: "testOrganizer",
-                  arrivingPlayers: 0,
+                  arrivingPlayersNumber: 0,
                 ),
               ),
             );
@@ -110,7 +110,7 @@ void main() {
                   title: "testTitle",
                   location: "testLocation",
                   organizer: organizer,
-                  arrivingPlayers: 0,
+                  arrivingPlayersNumber: 0,
                 ),
               ),
             );
@@ -137,7 +137,7 @@ void main() {
                   title: "testTitle",
                   location: "testLocation",
                   organizer: "testOrganizer",
-                  arrivingPlayers: arrivingPlayers,
+                  arrivingPlayersNumber: arrivingPlayers,
                 ),
               ),
             );

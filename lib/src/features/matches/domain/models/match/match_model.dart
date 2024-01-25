@@ -1,4 +1,6 @@
 // TODO use freezed or equatable later
+import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+
 class MatchModel {
   const MatchModel({
     required this.id,
@@ -14,5 +16,5 @@ class MatchModel {
   final String name;
   final String location;
   final String organizer;
-  final int arrivingPlayers;
+  final List<PlayerModel> arrivingPlayers;
 }

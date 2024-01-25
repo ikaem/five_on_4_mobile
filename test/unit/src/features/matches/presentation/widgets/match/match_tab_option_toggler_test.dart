@@ -23,7 +23,7 @@ void main() {
               final match = MatchModel(
                 id: 1,
                 // TODO this should be a list of Players
-                arrivingPlayers: 12,
+                arrivingPlayers: [],
                 date: DateTime.now(),
                 location: "location",
                 name: "name",
@@ -55,7 +55,7 @@ void main() {
               final match = MatchModel(
                 id: 1,
                 // TODO this should be a list of Players
-                arrivingPlayers: 12,
+                arrivingPlayers: [],
                 date: DateTime.now(),
                 location: "location",
                 name: "name",
@@ -95,7 +95,7 @@ void main() {
               final match = MatchModel(
                 id: 1,
                 // TODO this should be a list of Players
-                arrivingPlayers: 12,
+                arrivingPlayers: [],
                 date: DateTime.now(),
                 location: "location",
                 name: "name",

@@ -50,7 +50,7 @@ void main() {
                 name: "testName1",
                 location: "testLocation1",
                 organizer: "testOrganizer1",
-                arrivingPlayers: 0,
+                arrivingPlayers: [],
               ),
               MatchModel(
                 id: 2,
@@ -58,7 +58,7 @@ void main() {
                 name: "testName2",
                 location: "testLocation2",
                 organizer: "testOrganizer2",
-                arrivingPlayers: 0,
+                arrivingPlayers: [],
               ),
             ];
 

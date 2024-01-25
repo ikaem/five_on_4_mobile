@@ -44,7 +44,7 @@ void main() {
               name: "testName$index",
               location: "testLocation$index",
               organizer: "testOrganizer$index",
-              arrivingPlayers: index,
+              arrivingPlayers: [],
             );
           });
 

@@ -9,7 +9,7 @@ class MatchBriefExtended extends StatelessWidget {
     required this.title,
     required this.location,
     required this.organizer,
-    required this.arrivingPlayers,
+    required this.arrivingPlayersNumber,
   });
 
   final String date;
@@ -18,7 +18,7 @@ class MatchBriefExtended extends StatelessWidget {
   final String title;
   final String location;
   final String organizer;
-  final int arrivingPlayers;
+  final int arrivingPlayersNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class MatchBriefExtended extends StatelessWidget {
                       text: "Arriving players: ",
                     ),
                     TextSpan(
-                      text: arrivingPlayers.toString(),
+                      text: arrivingPlayersNumber.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

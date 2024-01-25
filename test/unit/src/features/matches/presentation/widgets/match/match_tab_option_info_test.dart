@@ -11,7 +11,7 @@ void main() {
     name: "testName",
     location: "testLocation",
     organizer: "testOrganizer",
-    arrivingPlayers: 1,
+    arrivingPlayers: [],
   );
   group(
     "MatchTabOptionInfoTest",
@@ -35,7 +35,8 @@ void main() {
               final matchInfo = find.byWidgetPredicate((widget) {
                 // TODO extract this to function if needed in future
                 if (widget is! MatchInfo) return false;
-                if (widget.arrivingPlayers != match.arrivingPlayers) {
+                if (widget.arrivingPlayersNumber !=
+                    match.arrivingPlayers.length) {
                   return false;
                 }
                 if (widget.date != match.date.toString()) {

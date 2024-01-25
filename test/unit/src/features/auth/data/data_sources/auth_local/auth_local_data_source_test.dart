@@ -58,15 +58,16 @@ void main() {
     group(
       ".getAuthData()",
       () {
+        // TODO this will pass when authlocaldata source logic is uncommented
         test(
           "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
           "when '.getAuthData() is called"
           "should return expected [AuthDataEntity]",
           () async {
             final entity = AuthDataEntity(
-                playerInfo: testAuthDataEntity.playerInfo,
-                teamInfo: testAuthDataEntity.teamInfo)
-              ..id = 1;
+              playerInfo: testAuthDataEntity.playerInfo,
+              teamInfo: testAuthDataEntity.teamInfo,
+            )..id = 1;
 
             when(
               () => secureStorageWrapper.getAuthData(),

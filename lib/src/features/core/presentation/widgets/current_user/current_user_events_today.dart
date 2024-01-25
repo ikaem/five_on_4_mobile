@@ -35,7 +35,7 @@ class CurrentUserEventsToday extends StatelessWidget {
           title: match.name,
           location: match.location,
           organizer: match.organizer,
-          arrivingPlayers: match.arrivingPlayers,
+          arrivingPlayersNumber: match.arrivingPlayers.length,
         );
       },
     );
