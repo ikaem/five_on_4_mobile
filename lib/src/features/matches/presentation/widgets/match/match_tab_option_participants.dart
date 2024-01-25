@@ -19,6 +19,7 @@ class MatchTabOptionParticipants extends StatelessWidget {
       );
     }
 
+    // TODO this could be a widget of itself as well
     return ListView.builder(
       itemCount: participants.length,
       itemBuilder: (context, index) {

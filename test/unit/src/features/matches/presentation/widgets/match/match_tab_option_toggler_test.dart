@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_tab_option_toggler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -6,7 +7,7 @@ void main() {
   const selectorIndicator = "•";
 
   group(
-    "MatchDataTabToggler",
+    "MatchTabOptionToggler",
     () {
       group("Tabbing", () {
         // help me
@@ -23,20 +24,20 @@ void main() {
               date: DateTime.now(),
               location: "location",
               name: "name",
-              organizer: "organizer",„
+              organizer: "organizer",
             );
 
             await widgetTester.pumpWidget(
-              const MaterialApp(
+              MaterialApp(
                 home: Scaffold(
-                  body: MatchDataTabToggler(match),
+                  body: MatchTabOptionToggler(match: match),
                 ),
               ),
             );
 
-            final todaySelector = find.text("Today $selectorIndicator");
+            final todaySelector = find.text("Info $selectorIndicator");
             final followingEventsSelector =
-                find.text("Following matches $selectorIndicator");
+                find.text("Participants $selectorIndicator");
 
             expect(todaySelector, findsOneWidget);
             expect(followingEventsSelector, findsNothing);
