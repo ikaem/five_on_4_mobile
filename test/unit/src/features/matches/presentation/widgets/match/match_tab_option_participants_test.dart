@@ -38,16 +38,19 @@ void main() {
           "when widget is rendered"
           "should show expected number of participant briefs",
           (widgetTester) async {
-            final participants = List<PlayerModel>.generate(10, (index) {
-              return PlayerModel(
-                id: index,
-                nickname: "testNickname$index",
-                name: "testName$index",
-                avatarUrl: Uri.parse(
-                  "https://test.com/avatar.png",
-                ),
-              );
-            });
+            final participants = List<PlayerModel>.generate(
+              10,
+              (index) {
+                return PlayerModel(
+                  id: index,
+                  nickname: "testNickname$index",
+                  name: "testName$index",
+                  avatarUrl: Uri.parse(
+                    "https://test.com/avatar.png",
+                  ),
+                );
+              },
+            );
 
             await mockNetworkImages(() async {
               await widgetTester.pumpWidget(

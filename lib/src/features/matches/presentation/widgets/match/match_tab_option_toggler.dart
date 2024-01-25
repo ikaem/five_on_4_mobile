@@ -75,8 +75,8 @@ class _MatchTabOptionTogglerState extends State<MatchTabOptionToggler>
                 MatchTabOptionInfo(
                   match: widget.match,
                 ),
-                const MatchTabOptionParticipants(
-                  participants: [],
+                MatchTabOptionParticipants(
+                  participants: widget.match.arrivingPlayers,
                 ),
               ],
             ),
