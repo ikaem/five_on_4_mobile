@@ -10,6 +10,7 @@ class MatchTabOptionParticipants extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO this could also be a widget
     if (participants.isEmpty) {
       return const Column(
         children: [
