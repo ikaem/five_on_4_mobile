@@ -26,6 +26,8 @@ void main() {
                 );
               });
 
+              // TODO make sure to find specific widget with specific arguments passed to it
+              // TODO also make sure to split tests into multiple tests for each widget
               final greetingWidget = find.byType(CurrentUserGreeting);
               final whenTogglerWidget =
                   find.byType(CurrentUserEventsWhenToggler);
