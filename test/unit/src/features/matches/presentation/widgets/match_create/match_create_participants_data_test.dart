@@ -33,6 +33,27 @@ void main() {
               expect(inviteOneText, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given empty list of participants to invite is provided"
+            "when screen is rendered"
+            "should show 'Invite players' button",
+            (widgetTester) async {
+              // TODO this will probably need to override dependencies later
+              // TODO and will probably need some unified wrapper to push screen on
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: MatchCreateParticipantsData(
+                    playersToInvite: [],
+                  ),
+                ),
+              );
+
+              final inviteButton = find.ancestor(
+                  of: find.text("Invite players"),
+                  matching: find.byType(ElevatedButton));
+            },
+          );
         },
       );
     },

@@ -12,10 +12,14 @@ class MatchCreateParticipantsData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (playersToInvite.isEmpty) {
-      return const Column(
+      return Column(
         children: [
-          Text("No players have been invited to the match"),
-          Text("Why don’t you reach out to some?"),
+          const Text("No players have been invited to the match"),
+          const Text("Why don’t you reach out to some?"),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text("Invite players"),
+          )
         ],
       );
     }
