@@ -12,26 +12,25 @@ class MatchCreateParticipantsData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final invitePlayersButton = ElevatedButton(
+      onPressed: () {},
+      child: const Text("Invite players"),
+    );
+
     if (playersToInvite.isEmpty) {
       return Column(
         children: [
           const Text("No players have been invited to the match"),
           const Text("Why don’t you reach out to some?"),
           // TODO could extract this into build up top
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Invite players"),
-          )
+          invitePlayersButton,
         ],
       );
     }
 
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: () {},
-          child: const Text("Invite players"),
-        ),
+        invitePlayersButton,
         Expanded(
           child: ListView.builder(
             itemCount: playersToInvite.length,
