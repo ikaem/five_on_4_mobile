@@ -2,6 +2,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import '../../../../../../../utils/data/test_models.dart';
 
@@ -67,15 +68,19 @@ void main() {
                 count: 10,
               );
 
-              // TODO this will probably need to override dependencies later
-              // TODO and will probably need some unified wrapper to push screen on
-              await widgetTester.pumpWidget(
-                MaterialApp(
-                  home: MatchCreateParticipantsData(
-                    playersToInvite: playersToInvite,
+              await mockNetworkImages(() async {
+                // TODO this will probably need to override dependencies later
+                // TODO and will probably need some unified wrapper to push screen on
+                await widgetTester.pumpWidget(
+                  MaterialApp(
+                    home: Scaffold(
+                      body: MatchCreateParticipantsData(
+                        playersToInvite: playersToInvite,
+                      ),
+                    ),
                   ),
-                ),
-              );
+                );
+              });
 
               final invitedPlayerTop = widgetTester
                   .widgetList<MatchPlayerInvitation>(
