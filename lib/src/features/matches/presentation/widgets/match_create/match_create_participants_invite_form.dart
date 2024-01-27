@@ -29,6 +29,7 @@ class MatchCreateParticipantsInviteForm extends StatelessWidget {
               labelText: "PLAYER NAME / NICKNAME",
             ),
           ),
+          const Text("FOUND PLAYERS"),
           _MatchCreateParticipantsInviteFormPlayersList(
             foundPlayers: foundPlayers,
             onInvitationAction: onInvitationAction,

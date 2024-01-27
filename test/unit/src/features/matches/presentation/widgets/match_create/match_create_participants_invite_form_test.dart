@@ -44,6 +44,33 @@ void main() {
           );
 
           testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show 'FOUND PLAYERS' label",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateParticipantsInviteForm(
+                      foundPlayers: const [],
+                      onPlayerSearch: ({
+                        required String playerIdentifier,
+                      }) async {},
+                      onInvitationAction: ({
+                        required PlayerModel player,
+                      }) {},
+                    ),
+                  ),
+                ),
+              );
+
+              final foundPlayersLabel = find.text("FOUND PLAYERS");
+
+              expect(foundPlayersLabel, findsOneWidget);
+            },
+          );
+
+          testWidgets(
             "given empty list of foundPlayers"
             "when widget is rendered"
             "should show 'No players found' message",
