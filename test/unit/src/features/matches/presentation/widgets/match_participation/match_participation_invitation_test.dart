@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,18 +27,21 @@ void main() {
               mockNetworkImages(
                 () async {
                   await widgetTester.pumpWidget(
-                    const MaterialApp(
+                    MaterialApp(
                       home: MatchParticipationInvitation(
                         player: testPlayer,
                         isAddedToMatchInvitations: false,
+                        onInvitationAction: ({
+                          required PlayerModel player,
+                        }) {},
                       ),
                     ),
                   );
 
                   final avatarImage = find.image(
-                    const NetworkImage("https://test.com/avatar.png"),
+                    const NetworkImage(avatarUrl),
                   );
-                  expect(avatarUrl, findsOneWidget);
+                  expect(avatarImage, findsOneWidget);
                 },
               );
             },

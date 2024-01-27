@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class PlayerBrief extends StatelessWidget {
   const PlayerBrief({
     super.key,
-    required this.avatarUrl,
+    required this.avatarUri,
     required this.nickname,
   });
 
-  final Uri avatarUrl;
+  final Uri avatarUri;
   final String nickname;
 
   @override
@@ -17,7 +17,7 @@ class PlayerBrief extends StatelessWidget {
         children: [
           Container(
             child: Image.network(
-              avatarUrl.toString(),
+              avatarUri.toString(),
               width: 54,
               height: 30,
               fit: BoxFit.cover,

@@ -22,7 +22,7 @@ void main() {
                     // TODO this could in theory get entire player object
                     home: PlayerBrief(
                       nickname: "testNickname",
-                      avatarUrl: Uri.parse(
+                      avatarUri: Uri.parse(
                         "https://test.com/avatar.png",
                       ),
                     ),
@@ -50,7 +50,7 @@ void main() {
                   MaterialApp(
                     home: PlayerBrief(
                       nickname: nickname,
-                      avatarUrl: Uri.parse(
+                      avatarUri: Uri.parse(
                         "https://test.com/avatar.png",
                       ),
                     ),
