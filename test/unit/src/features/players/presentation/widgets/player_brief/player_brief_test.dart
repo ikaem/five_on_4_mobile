@@ -19,6 +19,7 @@ void main() {
               () async {
                 await widgetTester.pumpWidget(
                   MaterialApp(
+                    // TODO this could in theory get entire player object
                     home: PlayerBrief(
                       nickname: "testNickname",
                       avatarUrl: Uri.parse(

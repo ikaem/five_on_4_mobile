@@ -45,7 +45,7 @@ void main() {
                   id: index,
                   nickname: "testNickname$index",
                   name: "testName$index",
-                  avatarUrl: Uri.parse(
+                  avatarUri: Uri.parse(
                     "https://test.com/avatar.png",
                   ),
                 );

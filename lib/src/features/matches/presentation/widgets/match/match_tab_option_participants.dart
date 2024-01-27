@@ -27,7 +27,7 @@ class MatchTabOptionParticipants extends StatelessWidget {
         final participant = participants[index];
 
         return PlayerBrief(
-          avatarUrl: participant.avatarUrl,
+          avatarUrl: participant.avatarUri,
           nickname: participant.nickname,
         );
       },
