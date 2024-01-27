@@ -47,6 +47,33 @@ void main() {
             },
           );
 
+          testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show expected player nickname",
+            (widgetTester) async {
+              mockNetworkImages(
+                () async {
+                  await widgetTester.pumpWidget(
+                    MaterialApp(
+                      home: MatchParticipationInvitation(
+                        player: testPlayer,
+                        isAddedToMatchInvitations: false,
+                        onInvitationAction: ({
+                          required PlayerModel player,
+                        }) {},
+                      ),
+                    ),
+                  );
+
+                  final nicknameText = find.text(testPlayer.nickname);
+
+                  expect(nicknameText, findsOneWidget);
+                },
+              );
+            },
+          );
+
           // testWidgets(
           //   "given 'isAddedToInvitations' argument is true"
           //   "when widget is rendered"

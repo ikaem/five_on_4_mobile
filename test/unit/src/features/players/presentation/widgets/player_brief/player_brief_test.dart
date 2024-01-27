@@ -40,7 +40,7 @@ void main() {
         testWidgets(
           "given name argument is provided"
           "when widget is rendered"
-          "should show expected name",
+          "should show expected nickname",
           (widgetTester) async {
             const nickname = "testNickname";
 
@@ -57,9 +57,9 @@ void main() {
                   ),
                 );
 
-                final nameText = find.text(nickname);
+                final nicknameText = find.text(nickname);
 
-                expect(nameText, findsOneWidget);
+                expect(nicknameText, findsOneWidget);
               },
             );
           },
