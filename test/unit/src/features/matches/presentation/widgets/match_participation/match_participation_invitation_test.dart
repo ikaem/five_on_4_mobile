@@ -28,12 +28,14 @@ void main() {
                 () async {
                   await widgetTester.pumpWidget(
                     MaterialApp(
-                      home: MatchParticipationInvitation(
-                        player: testPlayer,
-                        isAddedToMatchInvitations: false,
-                        onInvitationAction: ({
-                          required PlayerModel player,
-                        }) {},
+                      home: Scaffold(
+                        body: MatchParticipationInvitation(
+                          player: testPlayer,
+                          isAddedToMatchInvitations: false,
+                          onInvitationAction: ({
+                            required PlayerModel player,
+                          }) {},
+                        ),
                       ),
                     ),
                   );
@@ -55,12 +57,14 @@ void main() {
                 () async {
                   await widgetTester.pumpWidget(
                     MaterialApp(
-                      home: MatchParticipationInvitation(
-                        player: testPlayer,
-                        isAddedToMatchInvitations: false,
-                        onInvitationAction: ({
-                          required PlayerModel player,
-                        }) {},
+                      home: Scaffold(
+                        body: MatchParticipationInvitation(
+                          player: testPlayer,
+                          isAddedToMatchInvitations: false,
+                          onInvitationAction: ({
+                            required PlayerModel player,
+                          }) {},
+                        ),
                       ),
                     ),
                   );
@@ -81,12 +85,14 @@ void main() {
                 () async {
                   await widgetTester.pumpWidget(
                     MaterialApp(
-                      home: MatchParticipationInvitation(
-                        player: testPlayer,
-                        isAddedToMatchInvitations: false,
-                        onInvitationAction: ({
-                          required PlayerModel player,
-                        }) {},
+                      home: Scaffold(
+                        body: MatchParticipationInvitation(
+                          player: testPlayer,
+                          isAddedToMatchInvitations: false,
+                          onInvitationAction: ({
+                            required PlayerModel player,
+                          }) {},
+                        ),
                       ),
                     ),
                   );

@@ -17,6 +17,16 @@ class MatchParticipationInvitation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final invitationIcon = isAddedToMatchInvitations
+        ? const Icon(
+            Icons.remove,
+            color: Colors.green,
+          )
+        : const Icon(
+            Icons.add,
+            color: Colors.blue,
+          );
+
     return Container(
       child: Row(
         children: [
@@ -31,6 +41,16 @@ class MatchParticipationInvitation extends StatelessWidget {
           Expanded(
             child: Text(
               player.nickname,
+            ),
+          ),
+          Expanded(
+            child: IconButton(
+              onPressed: () {
+                onInvitationAction(
+                  player: player,
+                );
+              },
+              icon: invitationIcon,
             ),
           ),
         ],
