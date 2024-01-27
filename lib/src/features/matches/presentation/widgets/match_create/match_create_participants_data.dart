@@ -17,6 +17,7 @@ class MatchCreateParticipantsData extends StatelessWidget {
         children: [
           const Text("No players have been invited to the match"),
           const Text("Why don’t you reach out to some?"),
+          // TODO could extract this into build up top
           ElevatedButton(
             onPressed: () {},
             child: const Text("Invite players"),
@@ -25,21 +26,31 @@ class MatchCreateParticipantsData extends StatelessWidget {
       );
     }
 
-    return ListView.builder(
-      itemCount: playersToInvite.length,
-      itemBuilder: (context, index) {
-        final playerToInvite = playersToInvite[index];
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text("Invite players"),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: playersToInvite.length,
+            itemBuilder: (context, index) {
+              final playerToInvite = playersToInvite[index];
 
-        return MatchPlayerInvitation(
-          player: playerToInvite,
-          isAddedToMatchInvitations: true,
-          onInvitationAction: ({
-            required PlayerModel player,
-          }) {
-            // TODO should do some stuff - not sure where is this going to be passed from
-          },
-        );
-      },
+              return MatchPlayerInvitation(
+                player: playerToInvite,
+                isAddedToMatchInvitations: true,
+                onInvitationAction: ({
+                  required PlayerModel player,
+                }) {
+                  // TODO should do some stuff - not sure where is this going to be passed from
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

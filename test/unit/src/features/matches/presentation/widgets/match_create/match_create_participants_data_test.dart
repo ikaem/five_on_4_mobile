@@ -54,8 +54,11 @@ void main() {
               );
 
               final inviteButton = find.ancestor(
-                  of: find.text("Invite players"),
-                  matching: find.byType(ElevatedButton));
+                of: find.text("Invite players"),
+                matching: find.byType(ElevatedButton),
+              );
+
+              expect(inviteButton, findsOneWidget);
             },
           );
 
@@ -101,10 +104,38 @@ void main() {
                   .last;
 
               expect(invitedPlayerBottom.player, equals(playersToInvite.last));
+            },
+          );
 
-              // will need again that same thing - scrolling and checking that first and 10th are here
+          testWidgets(
+            "given non-emnpty list of participants to invite is provided"
+            "when screen is rendered"
+            "should show 'Invite players' button",
+            (widgetTester) async {
+              final playersToInvite = getTestPlayers(
+                count: 1,
+              );
 
-              // will also need to test that invitaation widget - it should accept bool for whether user is currently invited, and callback of onTapInvitationAction - which would invite or cancel invitation depending on the state. and it would accept player of course
+              await mockNetworkImages(() async {
+                // TODO this will probably need to override dependencies later
+                // TODO and will probably need some unified wrapper to push screen on
+                await widgetTester.pumpWidget(
+                  MaterialApp(
+                    home: Scaffold(
+                      body: MatchCreateParticipantsData(
+                        playersToInvite: playersToInvite,
+                      ),
+                    ),
+                  ),
+                );
+              });
+
+              final inviteButton = find.ancestor(
+                of: find.text("Invite players"),
+                matching: find.byType(ElevatedButton),
+              );
+
+              expect(inviteButton, findsOneWidget);
             },
           );
         },
