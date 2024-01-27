@@ -4,7 +4,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../../../utils/data/entities.dart';
+import '../../../../../../../utils/data/test_entities.dart';
 
 void main() {
   group(

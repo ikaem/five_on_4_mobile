@@ -5,7 +5,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../../../../utils/data/entities.dart';
+import '../../../../../../../utils/data/test_entities.dart';
 
 void main() {
   // reset and clear interactions docs - https://stackoverflow.com/a/77574465

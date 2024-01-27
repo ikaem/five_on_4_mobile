@@ -29,7 +29,7 @@ void main() {
                   await widgetTester.pumpWidget(
                     MaterialApp(
                       home: Scaffold(
-                        body: MatchParticipationInvitation(
+                        body: MatchPlayerInvitation(
                           player: testPlayer,
                           isAddedToMatchInvitations: false,
                           onInvitationAction: ({
@@ -58,7 +58,7 @@ void main() {
                   await widgetTester.pumpWidget(
                     MaterialApp(
                       home: Scaffold(
-                        body: MatchParticipationInvitation(
+                        body: MatchPlayerInvitation(
                           player: testPlayer,
                           isAddedToMatchInvitations: false,
                           onInvitationAction: ({
@@ -86,7 +86,7 @@ void main() {
                   await widgetTester.pumpWidget(
                     MaterialApp(
                       home: Scaffold(
-                        body: MatchParticipationInvitation(
+                        body: MatchPlayerInvitation(
                           player: testPlayer,
                           isAddedToMatchInvitations: false,
                           onInvitationAction: ({
@@ -105,6 +105,38 @@ void main() {
               );
 
               expect(addToInvitationsButton, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given 'isAddedToMatchInvitations' argument is true"
+            "when widget is rendered"
+            "should render expected icon button",
+            (widgetTester) async {
+              await mockNetworkImages(
+                () async {
+                  await widgetTester.pumpWidget(
+                    MaterialApp(
+                      home: Scaffold(
+                        body: MatchPlayerInvitation(
+                          player: testPlayer,
+                          isAddedToMatchInvitations: true,
+                          onInvitationAction: ({
+                            required PlayerModel player,
+                          }) {},
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+
+              final removeInvitationsButton = find.widgetWithIcon(
+                IconButton,
+                Icons.remove,
+              );
+
+              expect(removeInvitationsButton, findsOneWidget);
             },
           );
         },

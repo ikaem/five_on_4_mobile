@@ -1,8 +1,8 @@
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 
-class MatchParticipationInvitation extends StatelessWidget {
-  const MatchParticipationInvitation({
+class MatchPlayerInvitation extends StatelessWidget {
+  const MatchPlayerInvitation({
     super.key,
     required this.player,
     required this.isAddedToMatchInvitations,

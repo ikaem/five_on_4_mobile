@@ -1,6 +1,9 @@
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_data.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
@@ -58,19 +61,41 @@ void main() {
           testWidgets(
             "given non-emnpty list of participants to invite is provided"
             "when screen is rendered"
-            "should show expected [PlayerInvitation] widget for each player",
+            "should show expected [MatchPlayerInvitation] widget for each player",
             (widgetTester) async {
+              final playersToInvite = getTestPlayers(
+                count: 10,
+              );
+
               // TODO this will probably need to override dependencies later
               // TODO and will probably need some unified wrapper to push screen on
               await widgetTester.pumpWidget(
-                const MaterialApp(
+                MaterialApp(
                   home: MatchCreateParticipantsData(
-                    playersToInvite: [
-                      // TODO make this list of playears with some players inside
-                    ],
+                    playersToInvite: playersToInvite,
                   ),
                 ),
               );
+
+              final invitedPlayerTop = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                      find.byType(MatchPlayerInvitation))
+                  .first;
+
+              expect(invitedPlayerTop.player, equals(playersToInvite.first));
+
+              await widgetTester.dragUntilVisible(
+                find.text("test_nickname9"),
+                find.byType(ListView),
+                const Offset(0, -1000),
+              );
+
+              final invitedPlayerBottom = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                      find.byType(MatchPlayerInvitation))
+                  .last;
+
+              expect(invitedPlayerBottom.player, equals(playersToInvite.last));
 
               // will need again that same thing - scrolling and checking that first and 10th are here
 

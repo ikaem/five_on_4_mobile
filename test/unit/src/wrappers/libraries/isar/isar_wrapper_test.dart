@@ -5,7 +5,7 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../utils/data/entities.dart';
+import '../../../../../utils/data/test_entities.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();

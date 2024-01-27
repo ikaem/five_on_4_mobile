@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
+// TODO these tests are in a wrong folder - unit
+
 void main() {
   group("MatchTabOptionParticipants", () {
     group(
@@ -63,10 +65,12 @@ void main() {
             });
 
             final participantTop = widgetTester
-                .widgetList<PlayerBrief>(find.byType(
-                  PlayerBrief,
-                ))
-                .toList()
+                .widgetList<PlayerBrief>(
+                  find.byType(
+                    PlayerBrief,
+                  ),
+                )
+                // .toList()
                 .first;
             expect(participantTop.nickname, participants.first.nickname);
 
@@ -78,10 +82,12 @@ void main() {
 
             // at this point, we can only see items at the bottom of the list
             final participantBottom = widgetTester
-                .widgetList<PlayerBrief>(find.byType(
-                  PlayerBrief,
-                ))
-                .toList()
+                .widgetList<PlayerBrief>(
+                  find.byType(
+                    PlayerBrief,
+                  ),
+                )
+                // .toList()
                 .last;
             expect(participantBottom.nickname, participants.last.nickname);
           },
