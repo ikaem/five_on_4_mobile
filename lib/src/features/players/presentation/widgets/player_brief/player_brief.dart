@@ -28,6 +28,7 @@ class PlayerBrief extends StatelessWidget {
               nickname,
             ),
           ),
+          // todo THIS Should also include name in smaller font
         ],
       ),
     );
