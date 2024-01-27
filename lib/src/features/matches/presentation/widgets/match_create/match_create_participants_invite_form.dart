@@ -21,16 +21,39 @@ class MatchCreateParticipantsInviteForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Column(
+      child: Column(
         children: [
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: "PLAYER NAME / NICKNAME",
             ),
           ),
+          _MatchCreateParticipantsInviteFormPlayersList(
+            foundPlayers: foundPlayers,
+            onInvitationAction: onInvitationAction,
+          ),
         ],
       ),
     );
+  }
+}
+
+class _MatchCreateParticipantsInviteFormPlayersList extends StatelessWidget {
+  const _MatchCreateParticipantsInviteFormPlayersList({
+    required this.foundPlayers,
+    required this.onInvitationAction,
+  });
+
+  final List<PlayerModel> foundPlayers;
+  final OnInvitationAction onInvitationAction;
+
+  @override
+  Widget build(BuildContext context) {
+    if (foundPlayers.isEmpty) {
+      return const Text("No players found");
+    }
+
+    return Container();
   }
 }

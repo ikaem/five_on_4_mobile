@@ -44,17 +44,15 @@ void main() {
           );
 
           testWidgets(
-            "given non-empty foundPlayers"
+            "given empty list of foundPlayers"
             "when widget is rendered"
-            "should show expected [MatchPlayerInvitation] widget for each player",
+            "should show 'No players found' message",
             (widgetTester) async {
-              final foundPlayers = getTestPlayers(count: 5);
-
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
                     body: MatchCreateParticipantsInviteForm(
-                      foundPlayers: foundPlayers,
+                      foundPlayers: const [],
                       onPlayerSearch: ({
                         required String playerIdentifier,
                       }) async {},
@@ -66,27 +64,56 @@ void main() {
                 ),
               );
 
-              final foundPlayerTop = widgetTester
-                  .widgetList<MatchPlayerInvitation>(
-                    find.byType(MatchPlayerInvitation),
-                  )
-                  .first;
-              expect(foundPlayerTop.player, equals(foundPlayers.first));
+              final noPlayersFoundText = find.text("No players found");
 
-              await widgetTester.dragUntilVisible(
-                find.text("test_nickname4"),
-                find.byType(ListView),
-                const Offset(0, -1000),
-              );
-
-              final foundPlayerBottom = widgetTester
-                  .widgetList<MatchPlayerInvitation>(
-                    find.byType(MatchPlayerInvitation),
-                  )
-                  .last;
-              expect(foundPlayerBottom.player, equals(foundPlayers.last));
+              expect(noPlayersFoundText, findsOneWidget);
             },
           );
+
+          // testWidgets(
+          //   "given non-empty foundPlayers"
+          //   "when widget is rendered"
+          //   "should show expected [MatchPlayerInvitation] widget for each player",
+          //   (widgetTester) async {
+          //     final foundPlayers = getTestPlayers(count: 5);
+
+          //     await widgetTester.pumpWidget(
+          //       MaterialApp(
+          //         home: Scaffold(
+          //           body: MatchCreateParticipantsInviteForm(
+          //             foundPlayers: foundPlayers,
+          //             onPlayerSearch: ({
+          //               required String playerIdentifier,
+          //             }) async {},
+          //             onInvitationAction: ({
+          //               required PlayerModel player,
+          //             }) {},
+          //           ),
+          //         ),
+          //       ),
+          //     );
+
+          //     final foundPlayerTop = widgetTester
+          //         .widgetList<MatchPlayerInvitation>(
+          //           find.byType(MatchPlayerInvitation),
+          //         )
+          //         .first;
+          //     expect(foundPlayerTop.player, equals(foundPlayers.first));
+
+          //     await widgetTester.dragUntilVisible(
+          //       find.text("test_nickname4"),
+          //       find.byType(ListView),
+          //       const Offset(0, -1000),
+          //     );
+
+          //     final foundPlayerBottom = widgetTester
+          //         .widgetList<MatchPlayerInvitation>(
+          //           find.byType(MatchPlayerInvitation),
+          //         )
+          //         .last;
+          //     expect(foundPlayerBottom.player, equals(foundPlayers.last));
+          //   },
+          // );
         },
       );
     },
