@@ -1,7 +1,10 @@
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_invite_form.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
@@ -37,6 +40,51 @@ void main() {
               );
 
               expect(playerNameTextField, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given non-empty foundPlayers"
+            "when widget is rendered"
+            "should show expected [MatchPlayerInvitation] widget for each player",
+            (widgetTester) async {
+              final foundPlayers = getTestPlayers(count: 5);
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateParticipantsInviteForm(
+                      foundPlayers: foundPlayers,
+                      onPlayerSearch: ({
+                        required String playerIdentifier,
+                      }) async {},
+                      onInvitationAction: ({
+                        required PlayerModel player,
+                      }) {},
+                    ),
+                  ),
+                ),
+              );
+
+              final foundPlayerTop = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                    find.byType(MatchPlayerInvitation),
+                  )
+                  .first;
+              expect(foundPlayerTop.player, equals(foundPlayers.first));
+
+              await widgetTester.dragUntilVisible(
+                find.text("test_nickname4"),
+                find.byType(ListView),
+                const Offset(0, -1000),
+              );
+
+              final foundPlayerBottom = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                    find.byType(MatchPlayerInvitation),
+                  )
+                  .last;
+              expect(foundPlayerBottom.player, equals(foundPlayers.last));
             },
           );
         },
