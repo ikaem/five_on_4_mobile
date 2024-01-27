@@ -140,6 +140,35 @@ void main() {
           );
         },
       );
+
+      // group(
+      //   "Invite players dialog",
+      //   () {
+      //     testWidgets(
+      //       "given widget is rendered"
+      //       "when when 'Invite players' button is pressed"
+      //       "should show 'Invite players' dialog",
+      //       (widgetTester) async {
+      //         await widgetTester.pumpWidget(
+      //           const MaterialApp(
+      //             home: MatchCreateParticipantsData(
+      //               playersToInvite: [],
+      //             ),
+      //           ),
+      //         );
+
+      //         final inviteButton = find.ancestor(
+      //           of: find.text("Invite players"),
+      //           matching: find.byType(ElevatedButton),
+      //         );
+
+      //         widgetTester.tap(inviteButton);
+
+      //         await widgetTester.pumpAndSettle();
+      //       },
+      //     );
+      //   },
+      // );
     },
   );
 }
