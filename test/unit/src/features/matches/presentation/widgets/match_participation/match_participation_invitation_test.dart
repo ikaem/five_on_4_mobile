@@ -24,7 +24,7 @@ void main() {
             "when widget is rendered"
             "should show expected avatar image",
             (widgetTester) async {
-              mockNetworkImages(
+              await mockNetworkImages(
                 () async {
                   await widgetTester.pumpWidget(
                     MaterialApp(
@@ -37,13 +37,12 @@ void main() {
                       ),
                     ),
                   );
-
-                  final avatarImage = find.image(
-                    const NetworkImage(avatarUrl),
-                  );
-                  expect(avatarImage, findsOneWidget);
                 },
               );
+              final avatarImage = find.image(
+                const NetworkImage(avatarUrl),
+              );
+              expect(avatarImage, findsOneWidget);
             },
           );
 
@@ -52,7 +51,7 @@ void main() {
             "when widget is rendered"
             "should show expected player nickname",
             (widgetTester) async {
-              mockNetworkImages(
+              await mockNetworkImages(
                 () async {
                   await widgetTester.pumpWidget(
                     MaterialApp(
@@ -65,23 +64,43 @@ void main() {
                       ),
                     ),
                   );
-
-                  final nicknameText = find.text(testPlayer.nickname);
-
-                  expect(nicknameText, findsOneWidget);
                 },
               );
+              final nicknameText = find.text(testPlayer.nickname);
+
+              expect(nicknameText, findsOneWidget);
             },
           );
 
-          // testWidgets(
-          //   "given 'isAddedToInvitations' argument is true"
-          //   "when widget is rendered"
-          //   "should render expected icon button",
-          //   (widgetTester) async {
+          testWidgets(
+            "given 'isAddedToMatchInvitations' argument is false"
+            "when widget is rendered"
+            "should render expected icon button",
+            (widgetTester) async {
+              await mockNetworkImages(
+                () async {
+                  await widgetTester.pumpWidget(
+                    MaterialApp(
+                      home: MatchParticipationInvitation(
+                        player: testPlayer,
+                        isAddedToMatchInvitations: false,
+                        onInvitationAction: ({
+                          required PlayerModel player,
+                        }) {},
+                      ),
+                    ),
+                  );
+                },
+              );
 
-          //   },
-          // );
+              final addToInvitationsButton = find.widgetWithIcon(
+                IconButton,
+                Icons.add,
+              );
+
+              expect(addToInvitationsButton, findsOneWidget);
+            },
+          );
         },
       );
     },
