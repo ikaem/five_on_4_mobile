@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import '../../../../../../../utils/data/test_models.dart';
 
@@ -97,50 +98,52 @@ void main() {
             },
           );
 
-          // testWidgets(
-          //   "given non-empty foundPlayers"
-          //   "when widget is rendered"
-          //   "should show expected [MatchPlayerInvitation] widget for each player",
-          //   (widgetTester) async {
-          //     final foundPlayers = getTestPlayers(count: 5);
+          testWidgets(
+            "given non-empty foundPlayers"
+            "when widget is rendered"
+            "should show expected [MatchPlayerInvitation] widget for each player",
+            (widgetTester) async {
+              final foundPlayers = getTestPlayers(count: 5);
 
-          //     await widgetTester.pumpWidget(
-          //       MaterialApp(
-          //         home: Scaffold(
-          //           body: MatchCreateParticipantsInviteForm(
-          //             foundPlayers: foundPlayers,
-          //             onPlayerSearch: ({
-          //               required String playerIdentifier,
-          //             }) async {},
-          //             onInvitationAction: ({
-          //               required PlayerModel player,
-          //             }) {},
-          //           ),
-          //         ),
-          //       ),
-          //     );
+              await mockNetworkImages(() async {
+                await widgetTester.pumpWidget(
+                  MaterialApp(
+                    home: Scaffold(
+                      body: MatchCreateParticipantsInviteForm(
+                        foundPlayers: foundPlayers,
+                        onPlayerSearch: ({
+                          required String playerIdentifier,
+                        }) async {},
+                        onInvitationAction: ({
+                          required PlayerModel player,
+                        }) {},
+                      ),
+                    ),
+                  ),
+                );
+              });
 
-          //     final foundPlayerTop = widgetTester
-          //         .widgetList<MatchPlayerInvitation>(
-          //           find.byType(MatchPlayerInvitation),
-          //         )
-          //         .first;
-          //     expect(foundPlayerTop.player, equals(foundPlayers.first));
+              final foundPlayerTop = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                    find.byType(MatchPlayerInvitation),
+                  )
+                  .first;
+              expect(foundPlayerTop.player, equals(foundPlayers.first));
 
-          //     await widgetTester.dragUntilVisible(
-          //       find.text("test_nickname4"),
-          //       find.byType(ListView),
-          //       const Offset(0, -1000),
-          //     );
+              await widgetTester.dragUntilVisible(
+                find.text("test_nickname4"),
+                find.byType(ListView),
+                const Offset(0, -1000),
+              );
 
-          //     final foundPlayerBottom = widgetTester
-          //         .widgetList<MatchPlayerInvitation>(
-          //           find.byType(MatchPlayerInvitation),
-          //         )
-          //         .last;
-          //     expect(foundPlayerBottom.player, equals(foundPlayers.last));
-          //   },
-          // );
+              final foundPlayerBottom = widgetTester
+                  .widgetList<MatchPlayerInvitation>(
+                    find.byType(MatchPlayerInvitation),
+                  )
+                  .last;
+              expect(foundPlayerBottom.player, equals(foundPlayers.last));
+            },
+          );
         },
       );
     },

@@ -30,9 +30,11 @@ class MatchCreateParticipantsInviteForm extends StatelessWidget {
             ),
           ),
           const Text("FOUND PLAYERS"),
-          _MatchCreateParticipantsInviteFormPlayersList(
-            foundPlayers: foundPlayers,
-            onInvitationAction: onInvitationAction,
+          Expanded(
+            child: _MatchCreateParticipantsInviteFormPlayersList(
+              foundPlayers: foundPlayers,
+              onInvitationAction: onInvitationAction,
+            ),
           ),
         ],
       ),
@@ -55,6 +57,17 @@ class _MatchCreateParticipantsInviteFormPlayersList extends StatelessWidget {
       return const Text("No players found");
     }
 
-    return Container();
+    return ListView.builder(
+      itemCount: foundPlayers.length,
+      itemBuilder: (context, index) {
+        final foundPlayer = foundPlayers[index];
+
+        return MatchPlayerInvitation(
+          player: foundPlayer,
+          isAddedToMatchInvitations: false,
+          onInvitationAction: onInvitationAction,
+        );
+      },
+    );
   }
 }
