@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_invite_form.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,16 +13,20 @@ void main() {
           testWidgets(
             "given nothing in particular"
             "when widget is rendered"
-            "should show 'PLAYER NAME' TextField",
+            "should show 'PLAYER NAME / NICKNAME' TextField",
             (widgetTester) async {
               await widgetTester.pumpWidget(
-                const MaterialApp(
-                  home: MatchCreateParticipantsInviteForm(
-                    foundPlayers: [],
-                    onPlayerSearch: () {},
-                    onInvitationAction: ({
-                      required PlayerModel player,
-                    }) {},
+                MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateParticipantsInviteForm(
+                      foundPlayers: const [],
+                      onPlayerSearch: ({
+                        required String playerIdentifier,
+                      }) async {},
+                      onInvitationAction: ({
+                        required PlayerModel player,
+                      }) {},
+                    ),
                   ),
                 ),
               );

@@ -1,6 +1,10 @@
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 
+typedef OnInvitationAction = void Function({
+  required PlayerModel player,
+});
+
 class MatchPlayerInvitation extends StatelessWidget {
   const MatchPlayerInvitation({
     super.key,
@@ -11,9 +15,7 @@ class MatchPlayerInvitation extends StatelessWidget {
 
   final PlayerModel player;
   final bool isAddedToMatchInvitations;
-  final void Function({
-    required PlayerModel player,
-  }) onInvitationAction;
+  final OnInvitationAction onInvitationAction;
 
   @override
   Widget build(BuildContext context) {
