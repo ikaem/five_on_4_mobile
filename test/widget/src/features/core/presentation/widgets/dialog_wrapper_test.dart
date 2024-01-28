@@ -7,6 +7,13 @@ void main() {
     "DialogWrapper",
     () {
       group(
+        "Interaction",
+        () {
+          // should close dialog when tap on close button in the dialog
+          // for this, we have to activate it with showDialog in text - will need builder or something to provide context
+        },
+      );
+      group(
         "Layout",
         () {
           testWidgets(
@@ -28,6 +35,29 @@ void main() {
               final titleFinder = find.text(title);
 
               expect(titleFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show 'close' IconButton",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: DialogWrapper(
+                    title: "testTitle",
+                    child: SizedBox(),
+                  ),
+                ),
+              );
+
+              final closeButtonFinder = find.ancestor(
+                of: find.byIcon(Icons.close_rounded),
+                matching: find.byType(IconButton),
+              );
+
+              expect(closeButtonFinder, findsOneWidget);
             },
           );
         },
