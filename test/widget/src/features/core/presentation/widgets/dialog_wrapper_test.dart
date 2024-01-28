@@ -60,8 +60,37 @@ void main() {
               expect(closeButtonFinder, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given 'child' argument is provided"
+            "when widget is rendered"
+            "should show expected child",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: DialogWrapper(
+                    title: "testTitle",
+                    child: _MyCustomWidget(),
+                  ),
+                ),
+              );
+
+              final childFinder = find.byType(_MyCustomWidget);
+
+              expect(childFinder, findsOneWidget);
+            },
+          );
         },
       );
     },
   );
+}
+
+class _MyCustomWidget extends StatelessWidget {
+  const _MyCustomWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
