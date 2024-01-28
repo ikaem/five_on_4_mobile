@@ -141,34 +141,42 @@ void main() {
         },
       );
 
-      // group(
-      //   "Invite players dialog",
-      //   () {
-      //     testWidgets(
-      //       "given widget is rendered"
-      //       "when when 'Invite players' button is pressed"
-      //       "should show 'Invite players' dialog",
-      //       (widgetTester) async {
-      //         await widgetTester.pumpWidget(
-      //           const MaterialApp(
-      //             home: MatchCreateParticipantsData(
-      //               playersToInvite: [],
-      //             ),
-      //           ),
-      //         );
+      group(
+        "Invite players interaction",
+        () {
+          testWidgets(
+            "given widget is rendered"
+            "when when 'Invite players' button is pressed"
+            "should show 'Invite players' dialog",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: MatchCreateParticipantsData(
+                    playersToInvite: [],
+                  ),
+                ),
+              );
 
-      //         final inviteButton = find.ancestor(
-      //           of: find.text("Invite players"),
-      //           matching: find.byType(ElevatedButton),
-      //         );
+              final inviteButton = find.ancestor(
+                of: find.text("Invite players"),
+                matching: find.byType(ElevatedButton),
+              );
 
-      //         widgetTester.tap(inviteButton);
+              await widgetTester.tap(inviteButton);
+              await widgetTester.pumpAndSettle();
 
-      //         await widgetTester.pumpAndSettle();
-      //       },
-      //     );
-      //   },
-      // );
+              final invitePlayersDialog = find.ancestor(
+                of: find.text("INVITE PLAYERS"),
+                matching: find.byType(Dialog),
+              );
+
+              expect(invitePlayersDialog, findsOneWidget);
+            },
+          );
+
+          // should show widget of type MatchCreateParticipantsInviteForm (with proper arguments)
+        },
+      );
     },
   );
 }
