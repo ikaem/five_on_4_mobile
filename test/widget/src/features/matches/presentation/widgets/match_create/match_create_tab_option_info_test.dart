@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_data.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_tab_option_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,8 +16,8 @@ void main() {
             "should render expected widget",
             (widgetTester) async {
               await widgetTester.pumpWidget(
-                MaterialApp(
-                  home: MatchCreateTabOptionInfo(),
+                const MaterialApp(
+                  home: Scaffold(body: MatchCreateTabOptionInfo()),
                 ),
               );
 
