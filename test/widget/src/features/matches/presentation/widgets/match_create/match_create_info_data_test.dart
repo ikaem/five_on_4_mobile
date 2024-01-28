@@ -82,6 +82,47 @@ void main() {
               expect(matchTimeTextFieldFinder, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show expected 'MATCH DESCRIPTION' TextField input",
+            (widgetTester) async {
+              // write the test
+              // TODO should do interaction test to make sure that time picker is shown
+
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateInfoData(),
+                  ),
+                ),
+              );
+
+              final matchDescriptionTextFieldFinder = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! TextField) return false;
+                  if (widget.decoration?.labelText != "MATCH DESCRIPTION") {
+                    return false;
+                  }
+                  if (widget.minLines != 5) return false;
+                  if (widget.maxLines != 5) return false;
+
+                  return true;
+                },
+              );
+
+              expect(matchDescriptionTextFieldFinder, findsOneWidget);
+
+              // final matchTimeTextFieldFinder = find.ancestor(
+              //   of: find.text("MATCH DESCRIPTION"),
+              //   matching: find.byType(TextField),
+              // );
+
+              // TODO also possibly test that it is multiline
+              // expect(matchTimeTextFieldFinder, findsOneWidget);
+            },
+          );
         },
       );
     },

@@ -28,6 +28,14 @@ class MatchCreateInfoData extends StatelessWidget {
             labelText: "MATCH TIME",
           ),
         ),
+        TextField(
+          minLines: 5,
+          maxLines: 5,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "MATCH DESCRIPTION",
+          ),
+        ),
       ],
     );
   }

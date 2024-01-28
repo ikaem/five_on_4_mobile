@@ -17,4 +17,5 @@ class MatchModel {
   final String location;
   final String organizer;
   final List<PlayerModel> arrivingPlayers;
+  // TODO add match description field here and into entitiry
 }
