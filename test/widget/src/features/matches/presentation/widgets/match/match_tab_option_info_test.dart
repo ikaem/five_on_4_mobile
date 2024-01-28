@@ -14,7 +14,7 @@ void main() {
     arrivingPlayers: [],
   );
   group(
-    "MatchTabOptionInfoTest",
+    "MatchTabOptionInfo",
     () {
       group(
         "Layout",
