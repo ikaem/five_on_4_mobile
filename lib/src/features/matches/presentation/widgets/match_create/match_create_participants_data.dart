@@ -1,3 +1,5 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/dialog_wrapper.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_invite_form.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,23 @@ class MatchCreateParticipantsData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final invitePlayersButton = ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        // TODO extract this into a method
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return DialogWrapper(
+              title: "INVITE PLAYERS",
+              child: MatchCreateParticipantsInviteForm(
+                onInvitationAction: ({required PlayerModel player}) {},
+                foundPlayers: const [],
+                // TODO this possibly does not need to be async - we will just have to set this value into rx subject
+                onPlayerSearch: ({required String playerIdentifier}) async {},
+              ),
+            );
+          },
+        );
+      },
       child: const Text("Invite players"),
     );
 
