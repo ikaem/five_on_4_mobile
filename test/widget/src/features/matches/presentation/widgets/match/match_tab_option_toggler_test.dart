@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
+// TODO this should be extracted because we use it in multiple places
 void main() {
   const selectorIndicator = "•";
 
