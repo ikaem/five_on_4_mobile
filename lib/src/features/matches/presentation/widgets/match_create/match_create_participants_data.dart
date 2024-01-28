@@ -15,23 +15,7 @@ class MatchCreateParticipantsData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final invitePlayersButton = ElevatedButton(
-      onPressed: () async {
-        // TODO extract this into a method
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return DialogWrapper(
-              title: "INVITE PLAYERS",
-              child: MatchCreateParticipantsInviteForm(
-                onInvitationAction: ({required PlayerModel player}) {},
-                foundPlayers: const [],
-                // TODO this possibly does not need to be async - we will just have to set this value into rx subject
-                onPlayerSearch: ({required String playerIdentifier}) async {},
-              ),
-            );
-          },
-        );
-      },
+      onPressed: () => _onShowParticipantsInviteDialog(context: context),
       child: const Text("Invite players"),
     );
 
@@ -40,7 +24,6 @@ class MatchCreateParticipantsData extends StatelessWidget {
         children: [
           const Text("No players have been invited to the match"),
           const Text("Why don’t you reach out to some?"),
-          // TODO could extract this into build up top
           invitePlayersButton,
         ],
       );
@@ -68,6 +51,25 @@ class MatchCreateParticipantsData extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _onShowParticipantsInviteDialog({
+    required BuildContext context,
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return DialogWrapper(
+          title: "INVITE PLAYERS",
+          child: MatchCreateParticipantsInviteForm(
+            onInvitationAction: ({required PlayerModel player}) {},
+            foundPlayers: const [],
+            // TODO this possibly does not need to be async - we will just have to set this value into rx subject
+            onPlayerSearch: ({required String playerIdentifier}) async {},
+          ),
+        );
+      },
     );
   }
 }
