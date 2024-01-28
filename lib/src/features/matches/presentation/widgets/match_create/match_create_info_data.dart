@@ -22,6 +22,12 @@ class MatchCreateInfoData extends StatelessWidget {
             labelText: "MATCH DATE",
           ),
         ),
+        TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "MATCH TIME",
+          ),
+        ),
       ],
     );
   }

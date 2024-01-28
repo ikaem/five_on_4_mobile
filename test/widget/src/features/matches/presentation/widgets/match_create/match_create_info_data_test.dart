@@ -57,6 +57,31 @@ void main() {
               expect(matchDateTextFieldFinder, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show expected 'MATCH TIME' TextField input",
+            (widgetTester) async {
+              // write the test
+              // TODO should do interaction test to make sure that time picker is shown
+
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateInfoData(),
+                  ),
+                ),
+              );
+
+              final matchTimeTextFieldFinder = find.ancestor(
+                of: find.text("MATCH TIME"),
+                matching: find.byType(TextField),
+              );
+
+              expect(matchTimeTextFieldFinder, findsOneWidget);
+            },
+          );
         },
       );
     },
