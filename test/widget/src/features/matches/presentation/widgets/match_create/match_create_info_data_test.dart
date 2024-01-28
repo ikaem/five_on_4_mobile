@@ -10,8 +10,8 @@ void main() {
         "Layout",
         () {
           testWidgets(
-            "given widget is rendered"
-            "when no particular behavior happens"
+            "given nothing in particular"
+            "when widget is rendered"
             "should show 'MATCH NAME' TextField",
             (widgetTester) async {
               // write the test
@@ -30,6 +30,31 @@ void main() {
               );
 
               expect(matchNameTextFieldFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given nothing in particular"
+            "when widget is rendered"
+            "should show expected 'MATCH DATE' TextField input",
+            (widgetTester) async {
+              // write the test
+              // TODO should do interaction test to make sure that date picker is shown
+
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateInfoData(),
+                  ),
+                ),
+              );
+
+              final matchDateTextFieldFinder = find.ancestor(
+                of: find.text("MATCH DATE"),
+                matching: find.byType(TextField),
+              );
+
+              expect(matchDateTextFieldFinder, findsOneWidget);
             },
           );
         },

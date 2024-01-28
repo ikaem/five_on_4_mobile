@@ -13,6 +13,15 @@ class MatchCreateInfoData extends StatelessWidget {
             labelText: "MATCH NAME",
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "MATCH DATE",
+          ),
+        ),
       ],
     );
   }
