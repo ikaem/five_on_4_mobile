@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_tab_option_participants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +8,7 @@ import 'package:mocktail_image_network/mocktail_image_network.dart';
 // TODO these tests are in a wrong folder - unit
 
 void main() {
-  group("MatchTabOptionParticipants", () {
+  group("MatchParticipantsContainer", () {
     group(
       "Layout",
       () {
@@ -21,7 +21,7 @@ void main() {
 
             await widgetTester.pumpWidget(
               MaterialApp(
-                home: MatchTabOptionParticipants(
+                home: MatchParticipantsContainer(
                   participants: participants,
                 ),
               ),
@@ -34,6 +34,8 @@ void main() {
             expect(inviteOneText, equals(findsOneWidget));
           },
         );
+
+        // TODO should render specific widget now
 
         testWidgets(
           "given non-empty list of participants is provided"
@@ -57,7 +59,7 @@ void main() {
             await mockNetworkImages(() async {
               await widgetTester.pumpWidget(
                 MaterialApp(
-                  home: MatchTabOptionParticipants(
+                  home: MatchParticipantsContainer(
                     participants: participants,
                   ),
                 ),

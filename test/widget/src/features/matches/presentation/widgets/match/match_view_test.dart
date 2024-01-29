@@ -1,6 +1,6 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_tab_option_info.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_tab_option_participants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,8 +46,8 @@ void main() {
                 final option1Child = option1.child;
                 final option2Child = option2.child;
 
-                if (option1Child is! MatchTabOptionInfo) return false;
-                if (option2Child is! MatchTabOptionParticipants) return false;
+                if (option1Child is! MatchInfoContainer) return false;
+                if (option2Child is! MatchParticipantsContainer) return false;
 
                 final option1ChildMatch = option1Child.match;
                 final option2ChildParticipants = option2Child.participants;

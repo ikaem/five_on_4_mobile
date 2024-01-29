@@ -2,8 +2,8 @@ import 'package:five_on_4_mobile/src/features/players/models/player/player_model
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:flutter/material.dart';
 
-class MatchTabOptionParticipants extends StatelessWidget {
-  const MatchTabOptionParticipants({super.key, required this.participants});
+class MatchParticipantsContainer extends StatelessWidget {
+  const MatchParticipantsContainer({super.key, required this.participants});
 
 // TODO possible that we would need to introduce a model for participant
   final List<PlayerModel> participants;

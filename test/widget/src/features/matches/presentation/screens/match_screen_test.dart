@@ -1,5 +1,5 @@
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_tab_option_toggler.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,7 +13,7 @@ void main() {
           testWidgets(
             "given nothing in particular"
             "when screen is rendered"
-            "should show [MatchTabOptionToggler] with expected arguments pass to it",
+            "should show [MatchView] with expected arguments passed to it",
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 const MaterialApp(
@@ -22,8 +22,7 @@ void main() {
               );
 
               // TODO come back to this - will need to override controller to provide match
-              final matchTabOptionTogglerWidget =
-                  find.byType(MatchTabOptionToggler);
+              final matchTabOptionTogglerWidget = find.byType(MatchView);
 
               expect(matchTabOptionTogglerWidget, findsOneWidget);
             },

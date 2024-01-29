@@ -2,8 +2,8 @@ import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info.dart';
 import 'package:flutter/material.dart';
 
-class MatchTabOptionInfo extends StatelessWidget {
-  const MatchTabOptionInfo({
+class MatchInfoContainer extends StatelessWidget {
+  const MatchInfoContainer({
     super.key,
     required this.match,
   });
