@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,6 +48,29 @@ void main() {
               });
 
               expect(tabBarFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given a list of [TabTogglerOptionValue]s"
+            "when widget is rendered"
+            "should render expected Tabs",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: TabToggler(options: options),
+                  ),
+                ),
+              );
+
+              final tabs =
+                  widgetTester.widgetList<Tab>(find.byType(Tab)).toList();
+
+              expect(tabs.length, options.length);
+              expect(tabs[0].text, "${options[0].title} $selectorIndicator");
+              expect(tabs[1].text, options[1].title);
+              expect(tabs[2].text, options[2].title);
             },
           );
 
