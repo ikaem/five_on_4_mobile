@@ -135,7 +135,73 @@ void main() {
 
       group(
         "Tabbing",
-        () {},
+        () {
+          testWidgets(
+            "given a tab is not selected"
+            "when user taps on the tab"
+            "should mark selected tab as active",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: TabToggler(options: options),
+                  ),
+                ),
+              );
+
+              const option2SelectedText = "Option 2 $selectorIndicator";
+              const option1SelectedText = "Option 1 $selectorIndicator";
+
+              final option2SelectorBeforeTouch = find.text(option2SelectedText);
+              final option1SelectorBeforeTouch = find.text(option1SelectedText);
+
+              expect(option2SelectorBeforeTouch, findsNothing);
+              expect(option1SelectorBeforeTouch, findsOneWidget);
+
+              await widgetTester.tap(find.text("Option 2"));
+              await widgetTester.pumpAndSettle();
+
+              final option2SelectorAfterTouch = find.text(option2SelectedText);
+              final option1SelectorAfterTouch = find.text(option1SelectedText);
+
+              expect(option2SelectorAfterTouch, findsOneWidget);
+              expect(option1SelectorAfterTouch, findsNothing);
+            },
+          );
+
+          testWidgets(
+            "given a tab is not selected"
+            "when user taps on the tab"
+            "should render expected widget.",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: TabToggler(options: options),
+                  ),
+                ),
+              );
+
+              const content2SelectedText = "Content 2";
+              const content1SelectedText = "Content 1";
+
+              final content2FinderBeforeTouch = find.text(content2SelectedText);
+              final content1FinderBeforeTouch = find.text(content1SelectedText);
+
+              expect(content2FinderBeforeTouch, findsNothing);
+              expect(content1FinderBeforeTouch, findsOneWidget);
+
+              await widgetTester.tap(find.text("Option 2"));
+              await widgetTester.pumpAndSettle();
+
+              final content2FinderAfterTouch = find.text(content2SelectedText);
+              final content1FinderAfterTouch = find.text(content1SelectedText);
+
+              expect(content2FinderAfterTouch, findsOneWidget);
+              expect(content1FinderAfterTouch, findsNothing);
+            },
+          );
+        },
       );
     },
   );
