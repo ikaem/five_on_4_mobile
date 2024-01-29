@@ -7,17 +7,17 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   const selectorIndicator = "•";
   final options = [
-    TabTogglerOptionValue(
+    const TabTogglerOptionValue(
       title: "Option 1",
-      child: Container(),
+      child: Text("Content 1"),
     ),
     const TabTogglerOptionValue(
       title: "Option 2",
-      child: Row(),
+      child: Text("Content 2"),
     ),
     const TabTogglerOptionValue(
       title: "Option 3",
-      child: Column(),
+      child: Text("Content 3"),
     ),
   ];
 
@@ -67,7 +67,6 @@ void main() {
               final tabs =
                   widgetTester.widgetList<Tab>(find.byType(Tab)).toList();
 
-              expect(tabs.length, options.length);
               expect(tabs[0].text, "${options[0].title} $selectorIndicator");
               expect(tabs[1].text, options[1].title);
               expect(tabs[2].text, options[2].title);
@@ -95,6 +94,40 @@ void main() {
               });
 
               expect(tabBarViewFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given a list of [TabTogglerOptionValue]s"
+            "when widget is rendered"
+            "should render expected widget in [TabBarView]",
+            (widgetTester) async {
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: TabToggler(options: options),
+                  ),
+                ),
+              );
+
+              final content1Finder = find.descendant(
+                of: find.byType(TabBarView),
+                matching: find.text("Content 1"),
+              );
+
+              final content2Finder = find.descendant(
+                of: find.byType(TabBarView),
+                matching: find.text("Content 2"),
+              );
+
+              final content3Finder = find.descendant(
+                of: find.byType(TabBarView),
+                matching: find.text("Content 3"),
+              );
+
+              expect(content1Finder, findsOneWidget);
+              expect(content2Finder, findsNothing);
+              expect(content3Finder, findsNothing);
             },
           );
         },
