@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 
 List<PlayerModel> getTestPlayers({
@@ -20,4 +21,22 @@ List<PlayerModel> getTestPlayers({
   );
 
   return players;
+}
+
+MatchModel getTestMatch({
+  int id = 1,
+  String name = "testName",
+  String organizer = "testOrganizer",
+  String location = "testLocation",
+  DateTime? date,
+  List<PlayerModel> arrivingPlayers = const [],
+}) {
+  return MatchModel(
+    id: id,
+    name: name,
+    organizer: organizer,
+    location: location,
+    date: date ?? DateTime.now(),
+    arrivingPlayers: arrivingPlayers,
+  );
 }
