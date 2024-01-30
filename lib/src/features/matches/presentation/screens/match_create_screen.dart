@@ -1,8 +1,5 @@
-// TODO dont forget to test this
-
-import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_view.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class MatchCreateScreen extends StatelessWidget {
   const MatchCreateScreen({super.key});
@@ -10,16 +7,10 @@ class MatchCreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      // TODO replace app bar by back button
-      appBar: AppBar(
-        title: const Text("Match Create Screen"),
+      child: Scaffold(
+        appBar: AppBar(),
+        body: const MatchCreateView(),
       ),
-      body: const Column(
-        children: [
-          Text("Match Create Screen"),
-        ],
-      ),
-    ));
+    );
   }
 }
