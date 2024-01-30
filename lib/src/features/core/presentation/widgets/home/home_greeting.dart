@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CurrentUserGreeting extends StatelessWidget {
-  const CurrentUserGreeting({
+class HomeGreeting extends StatelessWidget {
+  const HomeGreeting({
     super.key,
     required this.nickName,
     required this.teamName,
@@ -14,8 +14,6 @@ class CurrentUserGreeting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final imageUrl = avatarUrl.toString();
-
     return Container(
         child: Row(
       children: [

@@ -1,6 +1,5 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_following.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_events_today.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_greeting.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CurrentUserGreeting(
+        HomeGreeting(
           nickName: "nickName",
           teamName: "teamName",
           avatarUrl: Uri.parse(
@@ -35,13 +34,13 @@ class HomeView extends StatelessWidget {
   List<TabTogglerOptionValue> get _togglerOptions => [
         TabTogglerOptionValue(
           title: "Today",
-          child: CurrentUserEventsToday(
+          child: HomeEvents(
             matches: matchesToday,
           ),
         ),
         TabTogglerOptionValue(
           title: "Following matches",
-          child: CurrentUserEventsFollowing(
+          child: HomeEvents(
             matches: matchesFollowing,
           ),
         ),

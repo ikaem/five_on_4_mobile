@@ -1,11 +1,11 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_greeting.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 void main() {
   group(
-    "CurrentUserGreeting",
+    "HomeGreeting",
     () {
       testWidgets(
         "given name and team name argument is provided"
@@ -17,7 +17,7 @@ void main() {
 
           await mockNetworkImages(() async {
             await widgetTester.pumpWidget(MaterialApp(
-                home: CurrentUserGreeting(
+                home: HomeGreeting(
               nickName: nickName,
               teamName: teamName,
               avatarUrl: Uri.parse(
@@ -43,7 +43,7 @@ void main() {
 
           await mockNetworkImages(() async {
             await widgetTester.pumpWidget(MaterialApp(
-                home: CurrentUserGreeting(
+                home: HomeGreeting(
               nickName: "testNickName",
               teamName: "testTeamName",
               avatarUrl: Uri.parse(

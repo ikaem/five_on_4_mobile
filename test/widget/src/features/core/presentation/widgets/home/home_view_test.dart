@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/current_user/current_user_greeting.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_view.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ void main() {
               );
 
               final userGreetingFinder = find.byWidgetPredicate((widget) {
-                if (widget is! CurrentUserGreeting) return false;
+                if (widget is! HomeGreeting) return false;
                 // TODO there will be more tests here
 
                 return true;
