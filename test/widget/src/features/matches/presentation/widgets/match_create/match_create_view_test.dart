@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,10 +18,10 @@ void main() {
             "should show a [TabToggler] with expected arguments",
             (widgetTester) async {
               await widgetTester.pumpWidget(
-                MaterialApp(
+                const MaterialApp(
                   home: Scaffold(
                     // TODO match view will need some arguments eventually
-                    body: MatchView(),
+                    body: MatchCreateView(),
                   ),
                 ),
               );
@@ -46,7 +47,7 @@ void main() {
                   return false;
                 }
 
-                // TODO will need more arguments here
+                // TODO will need chec more arguments here
 
                 return true;
               });
