@@ -34,6 +34,32 @@ void main() {
               expect(ctaFinder, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given 'isToday' is false "
+            "when widget is rendered "
+            "should show expected 'NO JOINED MATCHES' message",
+            (widgetTester) async {
+              const isToday = false;
+
+              await widgetTester.pumpWidget(
+                const MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isToday: isToday,
+                      matches: [],
+                    ),
+                  ),
+                ),
+              );
+
+              final messageFinder = find.text("No joined matches");
+              final ctaFinder = find.text("Why not join one?");
+
+              expect(messageFinder, findsOneWidget);
+              expect(ctaFinder, findsOneWidget);
+            },
+          );
         },
       );
     },
