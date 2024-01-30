@@ -1,6 +1,7 @@
 // TODO not sure if should have one entity for each type of data source or just one for both
-
 // TODO possibly later use Equatable for this
+import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
+
 class MatchRemoteEntity {
   MatchRemoteEntity({
     required this.id,
@@ -18,7 +19,5 @@ class MatchRemoteEntity {
   final String location;
   final String organizer;
   final String description;
-  // TODO not sure if this should be some Brief entity?
   final List<PlayerRemoteEntity> arrivingPlayers;
-  // TODO add match description field here and into entitiry
 }

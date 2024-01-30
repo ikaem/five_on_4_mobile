@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../../../../utils/data/test_entities.dart';
+
 void main() {
   // TODO we will try not to expose it via riverpod
 
-  // final matchesRemoteDataSource = MatchesRemoteDataSourceImpl();
+  final matchesRemoteDataSource = MatchesRemoteDataSourceImpl();
 
   group(
     "MatchesRemoteDataSource",
@@ -18,14 +20,14 @@ void main() {
             () async {
               // write the test
               const userId = "userId";
-              // final testMatches = getTestMatchesEntities();
+              final testMatches = getTestPlayerRemoteEntities();
 
-              // final matches =
-              //     await matchesRemoteDataSource.getMyFollowingMatches(
-              //   userId: userId,
-              // );
+              final matches =
+                  await matchesRemoteDataSource.getMyFollowingMatches(
+                userId: userId,
+              );
 
-              // expect(matches, equals());
+              expect(matches, equals(testMatches));
             },
           );
         },
