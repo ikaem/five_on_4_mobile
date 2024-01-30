@@ -6,8 +6,8 @@ typedef OnPlayerSearch = Future<void> Function({
   required String playerIdentifier,
 });
 
-class MatchCreateParticipantsInviteForm extends StatelessWidget {
-  const MatchCreateParticipantsInviteForm({
+class MatchCreateParticipantsInvite extends StatelessWidget {
+  const MatchCreateParticipantsInvite({
     super.key,
     required this.onInvitationAction,
     required this.foundPlayers,
@@ -31,7 +31,7 @@ class MatchCreateParticipantsInviteForm extends StatelessWidget {
           ),
           const Text("FOUND PLAYERS"),
           Expanded(
-            child: _MatchCreateParticipantsInviteFormPlayersList(
+            child: _MatchCreateParticipantsInvitePlayersList(
               foundPlayers: foundPlayers,
               onInvitationAction: onInvitationAction,
             ),
@@ -42,8 +42,10 @@ class MatchCreateParticipantsInviteForm extends StatelessWidget {
   }
 }
 
-class _MatchCreateParticipantsInviteFormPlayersList extends StatelessWidget {
-  const _MatchCreateParticipantsInviteFormPlayersList({
+// TODO possibly move this somewhere
+
+class _MatchCreateParticipantsInvitePlayersList extends StatelessWidget {
+  const _MatchCreateParticipantsInvitePlayersList({
     required this.foundPlayers,
     required this.onInvitationAction,
   });

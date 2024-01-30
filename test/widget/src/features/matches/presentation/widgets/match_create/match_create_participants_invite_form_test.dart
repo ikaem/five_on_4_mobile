@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_invite_form.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_invite.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateParticipantsInviteForm(
+                    body: MatchCreateParticipantsInvite(
                       foundPlayers: const [],
                       onPlayerSearch: ({
                         required String playerIdentifier,
@@ -53,7 +53,7 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateParticipantsInviteForm(
+                    body: MatchCreateParticipantsInvite(
                       foundPlayers: const [],
                       onPlayerSearch: ({
                         required String playerIdentifier,
@@ -80,7 +80,7 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateParticipantsInviteForm(
+                    body: MatchCreateParticipantsInvite(
                       foundPlayers: const [],
                       onPlayerSearch: ({
                         required String playerIdentifier,
@@ -110,7 +110,7 @@ void main() {
                 await widgetTester.pumpWidget(
                   MaterialApp(
                     home: Scaffold(
-                      body: MatchCreateParticipantsInviteForm(
+                      body: MatchCreateParticipantsInvite(
                         foundPlayers: foundPlayers,
                         onPlayerSearch: ({
                           required String playerIdentifier,

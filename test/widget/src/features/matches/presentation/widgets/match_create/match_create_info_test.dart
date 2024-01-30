@@ -1,10 +1,10 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_data.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group(
-    "MatchCreateInfoData",
+    "MatchCreateInfo",
     () {
       group(
         "Layout",
@@ -14,12 +14,10 @@ void main() {
             "when widget is rendered"
             "should show 'MATCH NAME' TextField",
             (widgetTester) async {
-              // write the test
-
               await widgetTester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateInfoData(),
+                    body: MatchCreateInfo(),
                   ),
                 ),
               );
@@ -38,13 +36,10 @@ void main() {
             "when widget is rendered"
             "should show expected 'MATCH DATE' TextField input",
             (widgetTester) async {
-              // write the test
-              // TODO should do interaction test to make sure that date picker is shown
-
               await widgetTester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateInfoData(),
+                    body: MatchCreateInfo(),
                   ),
                 ),
               );
@@ -63,13 +58,10 @@ void main() {
             "when widget is rendered"
             "should show expected 'MATCH TIME' TextField input",
             (widgetTester) async {
-              // write the test
-              // TODO should do interaction test to make sure that time picker is shown
-
               await widgetTester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateInfoData(),
+                    body: MatchCreateInfo(),
                   ),
                 ),
               );
@@ -88,13 +80,10 @@ void main() {
             "when widget is rendered"
             "should show expected 'MATCH DESCRIPTION' TextField input",
             (widgetTester) async {
-              // write the test
-              // TODO should do interaction test to make sure that time picker is shown
-
               await widgetTester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
-                    body: MatchCreateInfoData(),
+                    body: MatchCreateInfo(),
                   ),
                 ),
               );
@@ -113,16 +102,9 @@ void main() {
               );
 
               expect(matchDescriptionTextFieldFinder, findsOneWidget);
-
-              // final matchTimeTextFieldFinder = find.ancestor(
-              //   of: find.text("MATCH DESCRIPTION"),
-              //   matching: find.byType(TextField),
-              // );
-
-              // TODO also possibly test that it is multiline
-              // expect(matchTimeTextFieldFinder, findsOneWidget);
             },
           );
+          // TODO should do interaction test to make sure that time picker is shown
         },
       );
     },

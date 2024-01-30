@@ -1,5 +1,5 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_data.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_tab_option_participants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
@@ -8,7 +8,7 @@ import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
-    "MatchCreateTabOptionParticipants",
+    "MatchCreateParticipantsContainer",
     () {
       group(
         "Layout",
@@ -25,7 +25,7 @@ void main() {
                   MaterialApp(
                     home: Scaffold(
                       // TODO both toggler and toggler option should be extracted
-                      body: MatchCreateTabOptionParticipants(
+                      body: MatchCreateParticipantsContainer(
                         playersToInvite: playersToInvite,
                       ),
                     ),
@@ -34,7 +34,7 @@ void main() {
               });
               final matchCreateParticipantsDataFinder = find.byWidgetPredicate(
                 (widget) {
-                  if (widget is! MatchCreateParticipantsData) return false;
+                  if (widget is! MatchCreateParticipants) return false;
                   if (widget.playersToInvite != playersToInvite) return false;
                   // TODO there will be more checks here when we pass arguments to widget
 

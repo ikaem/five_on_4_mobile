@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_data.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,7 +8,7 @@ import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
-    "MatchCreateParticipantsData",
+    "MatchCreateParticipants",
     () {
       group(
         "Layout",
@@ -22,7 +22,7 @@ void main() {
               // TODO and will probably need some unified wrapper to push screen on
               await widgetTester.pumpWidget(
                 const MaterialApp(
-                  home: MatchCreateParticipantsData(
+                  home: MatchCreateParticipants(
                     playersToInvite: [],
                   ),
                 ),
@@ -47,7 +47,7 @@ void main() {
               // TODO and will probably need some unified wrapper to push screen on
               await widgetTester.pumpWidget(
                 const MaterialApp(
-                  home: MatchCreateParticipantsData(
+                  home: MatchCreateParticipants(
                     playersToInvite: [],
                   ),
                 ),
@@ -77,7 +77,7 @@ void main() {
                 await widgetTester.pumpWidget(
                   MaterialApp(
                     home: Scaffold(
-                      body: MatchCreateParticipantsData(
+                      body: MatchCreateParticipants(
                         playersToInvite: playersToInvite,
                       ),
                     ),
@@ -122,7 +122,7 @@ void main() {
                 await widgetTester.pumpWidget(
                   MaterialApp(
                     home: Scaffold(
-                      body: MatchCreateParticipantsData(
+                      body: MatchCreateParticipants(
                         playersToInvite: playersToInvite,
                       ),
                     ),
@@ -151,7 +151,7 @@ void main() {
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 const MaterialApp(
-                  home: MatchCreateParticipantsData(
+                  home: MatchCreateParticipants(
                     playersToInvite: [],
                   ),
                 ),

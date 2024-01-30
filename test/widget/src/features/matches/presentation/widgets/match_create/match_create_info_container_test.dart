@@ -1,5 +1,5 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_data.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_tab_option_info.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,13 +17,13 @@ void main() {
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 const MaterialApp(
-                  home: Scaffold(body: MatchCreateTabOptionInfo()),
+                  home: Scaffold(body: MatchCreateInfoContainer()),
                 ),
               );
 
               final matchCreateInfoDataFinder = find.byWidgetPredicate(
                 (widget) {
-                  if (widget is! MatchCreateInfoData) return false;
+                  if (widget is! MatchCreateInfo) return false;
                   // TODO there will be more checks here when we pass arguments to widget
 
                   return true;
