@@ -10,7 +10,7 @@ void main() {
         "Layout",
         () {
           testWidgets(
-            "given 'isToday' is true "
+            "given 'isToday' is true and empty list of matches is provided "
             "when widget is rendered "
             "should show expected 'NO MATCHES TODAY' message",
             (widgetTester) async {
@@ -36,7 +36,7 @@ void main() {
           );
 
           testWidgets(
-            "given 'isToday' is false "
+            "given 'isToday' is false and empty list of matches is provided "
             "when widget is rendered "
             "should show expected 'NO JOINED MATCHES' message",
             (widgetTester) async {
