@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class HomeEventsContainer extends StatelessWidget {
       );
     }
 
-    return Container();
+    return HomeEvents(matches: matches);
   }
 }
 
