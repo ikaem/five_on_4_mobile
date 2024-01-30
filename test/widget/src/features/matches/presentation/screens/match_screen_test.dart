@@ -22,9 +22,9 @@ void main() {
               );
 
               // TODO come back to this - will need to override controller to provide match
-              final matchTabOptionTogglerWidget = find.byType(MatchView);
+              final matchViewFinder = find.byType(MatchView);
 
-              expect(matchTabOptionTogglerWidget, findsOneWidget);
+              expect(matchViewFinder, findsOneWidget);
             },
           );
         },
