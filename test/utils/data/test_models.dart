@@ -1,6 +1,22 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 
+PlayerModel getTestPlayer({
+  int id = 1,
+  String nickname = "test_nickname",
+  String name = "test_name",
+  String avatarUrl = "https://test.com/avatar.png",
+}) {
+  return PlayerModel(
+    id: id,
+    nickname: nickname,
+    name: name,
+    avatarUri: Uri.parse(
+      avatarUrl,
+    ),
+  );
+}
+
 List<PlayerModel> getTestPlayers({
   int count = 10,
   String avatarUrl = "https://test.com/avatar.png",
@@ -39,4 +55,29 @@ MatchModel getTestMatch({
     date: date ?? DateTime.now(),
     arrivingPlayers: arrivingPlayers,
   );
+}
+
+List<MatchModel> getTestMatches({
+  int count = 10,
+  String namesPrefix = "test_",
+  String organizer = "test_organizer",
+  String location = "test_location",
+  DateTime? date,
+  List<PlayerModel> arrivingPlayers = const [],
+}) {
+  final matches = List<MatchModel>.generate(
+    count,
+    (index) {
+      return MatchModel(
+        id: index,
+        name: "${namesPrefix}name$index",
+        organizer: organizer,
+        location: location,
+        date: date ?? DateTime.now(),
+        arrivingPlayers: arrivingPlayers,
+      );
+    },
+  );
+
+  return matches;
 }

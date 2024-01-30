@@ -14,14 +14,8 @@ class MatchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: TabToggler(
-            options: _togglerOptions,
-          ),
-        ),
-      ],
+    return TabToggler(
+      options: _togglerOptions,
     );
   }
 
