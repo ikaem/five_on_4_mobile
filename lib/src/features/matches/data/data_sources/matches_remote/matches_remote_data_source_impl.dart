@@ -10,9 +10,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   final DioWrapper _dioWrapper;
 
   @override
-  Future<List<MatchRemoteEntity>> getMyFollowingMatches({
-    required String userId,
-  }) async {
+  Future<List<MatchRemoteEntity>> getMyFollowingMatches() async {
     return [];
   }
 }
