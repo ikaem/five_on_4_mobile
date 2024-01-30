@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -34,13 +34,15 @@ class HomeView extends StatelessWidget {
   List<TabTogglerOptionValue> get _togglerOptions => [
         TabTogglerOptionValue(
           title: "Today",
-          child: HomeEvents(
+          child: HomeEventsContainer(
+            isToday: true,
             matches: matchesToday,
           ),
         ),
         TabTogglerOptionValue(
-          title: "Following matches",
-          child: HomeEvents(
+          title: "Following",
+          child: HomeEventsContainer(
+            isToday: false,
             matches: matchesFollowing,
           ),
         ),
