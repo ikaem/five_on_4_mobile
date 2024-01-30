@@ -1,6 +1,9 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
@@ -58,6 +61,35 @@ void main() {
 
               expect(messageFinder, findsOneWidget);
               expect(ctaFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given a non-empty list of matches is provided "
+            "when widget is rendered "
+            "should show [HomeEvents] widget with expected arguments passed to it",
+            (widgetTester) async {
+              final matches = getTestMatches();
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isToday: true, // irrelevant for this test,
+                      matches: matches,
+                    ),
+                  ),
+                ),
+              );
+
+              final homeEventsFinder = find.byWidgetPredicate((widget) {
+                if (widget is! HomeEvents) return false;
+                if (widget.matches != matches) return false;
+
+                return true;
+              });
+
+              expect(homeEventsFinder, findsOneWidget);
             },
           );
         },
