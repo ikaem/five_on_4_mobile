@@ -69,7 +69,7 @@ void main() {
             "when widget is rendered "
             "should show [HomeEvents] widget with expected arguments passed to it",
             (widgetTester) async {
-              final matches = getTestMatches();
+              final matches = getTestMatchesModels();
 
               await widgetTester.pumpWidget(
                 MaterialApp(

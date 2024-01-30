@@ -58,6 +58,7 @@ void main() {
     group(
       ".getAuthData()",
       () {
+        // TODO these tests fail - fix them
         // TODO this will pass when authlocaldata source logic is uncommented
         test(
           "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"

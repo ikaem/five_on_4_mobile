@@ -19,7 +19,7 @@ void main() {
             "when widget is rendered"
             "should show expected number of participant briefs",
             (widgetTester) async {
-              final participants = getTestPlayers();
+              final participants = getTestPlayersModels();
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWidget(

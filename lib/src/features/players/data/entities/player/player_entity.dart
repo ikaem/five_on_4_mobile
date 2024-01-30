@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 
 part "player_entity.g.dart";
 
+// TODO this should be a local entity only
 @collection
 class PlayerEntity {
   const PlayerEntity({

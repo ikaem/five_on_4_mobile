@@ -48,9 +48,9 @@ void main() {
             "should show [TabToggler] widget with expected arguments passed to it",
             (widgetTester) async {
               final matchesToday =
-                  getTestMatches(count: 2, namesPrefix: "today_");
+                  getTestMatchesModels(count: 2, namesPrefix: "today_");
               final matchesFollowing =
-                  getTestMatches(count: 10, namesPrefix: "following_");
+                  getTestMatchesModels(count: 10, namesPrefix: "following_");
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWidget(

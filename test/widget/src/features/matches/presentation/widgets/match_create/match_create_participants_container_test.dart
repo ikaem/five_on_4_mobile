@@ -18,7 +18,7 @@ void main() {
             "when widget is rendered"
             "should show expected widget",
             (widgetTester) async {
-              final playersToInvite = getTestPlayers(count: 3);
+              final playersToInvite = getTestPlayersModels(count: 3);
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWidget(

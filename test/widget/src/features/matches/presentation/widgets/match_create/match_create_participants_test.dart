@@ -67,7 +67,7 @@ void main() {
             "when screen is rendered"
             "should show expected [MatchPlayerInvitation] widget for each player",
             (widgetTester) async {
-              final playersToInvite = getTestPlayers(
+              final playersToInvite = getTestPlayersModels(
                 count: 10,
               );
 
@@ -112,7 +112,7 @@ void main() {
             "when screen is rendered"
             "should show 'Invite players' button",
             (widgetTester) async {
-              final playersToInvite = getTestPlayers(
+              final playersToInvite = getTestPlayersModels(
                 count: 1,
               );
 
