@@ -54,14 +54,7 @@ void main() {
               final matches =
                   await matchesRemoteDataSource.getMyFollowingMatches();
 
-              // TODO temp until not figure out remote players
-              final retrievedMatchesIds =
-                  matches.map((match) => match.id).toList();
-              final expectedMatchesIds =
-                  testMatches.map((match) => match.id).toList();
-
-              expect(retrievedMatchesIds, equals(expectedMatchesIds));
-              // expect(matches, equals(testMatches));
+              expect(matches, equals(testMatches));
             },
           );
         },

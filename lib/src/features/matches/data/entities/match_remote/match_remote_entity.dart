@@ -1,10 +1,10 @@
 // TODO not sure if should have one entity for each type of data source or just one for both
 // TODO possibly later use Equatable for this
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
-import 'package:flutter/widgets.dart';
 
-class MatchRemoteEntity {
-  MatchRemoteEntity({
+class MatchRemoteEntity extends Equatable {
+  const MatchRemoteEntity({
     required this.id,
     required this.date,
     required this.name,
@@ -13,14 +13,6 @@ class MatchRemoteEntity {
     required this.description,
     required this.arrivingPlayers,
   });
-
-  final int id;
-  final int date;
-  final String name;
-  final String location;
-  final String organizer;
-  final String description;
-  final List<PlayerRemoteEntity> arrivingPlayers;
 
   // TODO if we go with Freezed, which we will, fromJson will be here anyway
   factory MatchRemoteEntity.fromJson({
@@ -46,9 +38,16 @@ class MatchRemoteEntity {
     );
   }
 
-  @visibleForTesting
+  final int id;
+  final int date;
+  final String name;
+  final String location;
+  final String organizer;
+  final String description;
+  final List<PlayerRemoteEntity> arrivingPlayers;
+
   Map<String, dynamic> toJson() {
-    final jsonArrivingPlayers = [];
+    final jsonArrivingPlayers = arrivingPlayers.map((e) => e.toJson()).toList();
     return {
       "id": id,
       "date": date,
@@ -59,4 +58,16 @@ class MatchRemoteEntity {
       "arrivingPlayers": jsonArrivingPlayers,
     };
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        id,
+        date,
+        name,
+        location,
+        organizer,
+        description,
+        arrivingPlayers,
+      ];
 }
