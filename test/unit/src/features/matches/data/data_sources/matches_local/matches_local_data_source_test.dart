@@ -11,7 +11,38 @@ void main() {
 
   group(
     "MatchesLocalDataSource",
-    () {},
+    () {
+      group(
+        ".saveMatches()",
+        () {
+          test(
+            "given a list of [MatchLocalEntity]s"
+            "when '.saveMatches() is called"
+            "should save the matches to the database",
+            () async {
+              final testMatches = getTestMatchLocalEntities(count: 3);
+              final ids = testMatches.map((match) => match.id).toList();
+
+              when(
+                () => isarWrapper.putEntities(
+                  entities: any(named: "entities"),
+                ),
+              ).thenAnswer(
+                (invocation) => ids,
+              );
+
+              await matchesLocalDataSource.saveMatches(matches: testMatches);
+
+              verify(
+                () => isarWrapper.putEntities(
+                  entities: testMatches,
+                ),
+              ).called(1);
+            },
+          );
+        },
+      );
+    },
   );
 }
 
