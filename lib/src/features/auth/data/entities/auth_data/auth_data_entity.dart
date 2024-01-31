@@ -13,7 +13,6 @@ class AuthDataEntity implements IsarLocalEntity {
 
   /// Only local id - not related in any way to remote server db
   // final Id id = Isar.autoIncrement;
-  @override
   Id? id;
 
   final AuthDataPlayerInfoEntity playerInfo;

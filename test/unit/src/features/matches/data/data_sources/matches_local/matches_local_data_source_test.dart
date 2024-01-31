@@ -1,6 +1,9 @@
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../../../../../../utils/data/test_entities.dart';
 
 void main() {
   final isarWrapper = _MockIsarWrapper();
@@ -24,11 +27,11 @@ void main() {
               final ids = testMatches.map((match) => match.id).toList();
 
               when(
-                () => isarWrapper.putEntities(
+                () => isarWrapper.putEntities<MatchLocalEntity>(
                   entities: any(named: "entities"),
                 ),
               ).thenAnswer(
-                (invocation) => ids,
+                (invocation) async => ids,
               );
 
               await matchesLocalDataSource.saveMatches(matches: testMatches);
