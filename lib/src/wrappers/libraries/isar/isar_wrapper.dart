@@ -28,9 +28,11 @@ class IsarWrapper {
     db = await Isar.open(
       [
         AuthDataEntitySchema,
-        MatchLocalEntitySchema,
+        // MatchLocalEntitySchema,
       ],
-      directory: directory.path,
+      // directory: Directory.current.path,
+      // TODO lets find a folder locally here then
+      directory: Directory.systemTemp.path,
       name: _databaseName.value,
     );
 
@@ -93,8 +95,11 @@ class IsarWrapper {
 
     // https://github.com/isar/isar/discussions/230
     // AS PER https://github.com/isar/isar#unit-tests and https://stackoverflow.com/questions/76769136/flutter-isar-db-initialization-error-could-not-download-isarcore-library
+    // https://github.com/isar/isar/issues/1119 - where do download libs
+    // download libs here too https://github.com/isar/isar/releases?page=2
     // await Isar.initializeIsarCore(download: true);
     // TODO where to download libs
+    // TODO hide folder inside somewhere in tests folder and point to it there - so clean does not clean all
     await Isar.initializeIsarCore(
       libraries: {
         Abi.macosArm64: path.join(dartToolDir, 'libisar.dylib'),

@@ -9,14 +9,14 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
 
   final IsarWrapper _isarWrapper;
 
-  @override
-  Future<List<int>> saveMatches({
-    required List<MatchLocalEntity> matches,
-  }) async {
-    final ids = await _isarWrapper.putEntities<MatchLocalEntity>(
-      entities: matches,
-    );
+  // @override
+  // Future<List<int>> saveMatches({
+  //   required List<MatchLocalEntity> matches,
+  // }) async {
+  //   final ids = await _isarWrapper.putEntities<MatchLocalEntity>(
+  //     entities: matches,
+  //   );
 
-    return ids;
-  }
+  //   return ids;
+  // }
 }
