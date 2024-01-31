@@ -12,6 +12,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
 
   final DioWrapper _dioWrapper;
 
+  // TODO this might not even be needed - we might have some endpoint like getInitialData, which would get all today, following matches, and stuff like that, maybe the whole home thing
   @override
   Future<List<MatchRemoteEntity>> getMyFollowingMatches() async {
     final uriParts = HttpRequestUriPartsValue(

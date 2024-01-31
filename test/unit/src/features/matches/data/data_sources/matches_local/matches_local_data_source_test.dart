@@ -5,11 +5,14 @@ import 'package:mocktail/mocktail.dart';
 void main() {
   final isarWrapper = _MockIsarWrapper();
 
-  // final matchesLocalDataSource = MatchesLocalDataSourceImpl(
-  //   isarWrapper: isarWrapper,
-  // );
+  final matchesLocalDataSource = MatchesLocalDataSourceImpl(
+    isarWrapper: isarWrapper,
+  );
 
-  // group(description, () { })
+  group(
+    "MatchesLocalDataSource",
+    () {},
+  );
 }
 
 class _MockIsarWrapper extends Mock implements IsarWrapper {}

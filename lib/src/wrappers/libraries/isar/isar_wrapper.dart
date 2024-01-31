@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
+import 'package:five_on_4_mobile/src/features/core/data/entities/isar_local/isar_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
 import 'package:flutter/widgets.dart';
 import 'package:isar/isar.dart';
@@ -32,7 +33,7 @@ class IsarWrapper {
     );
   }
 
-  Future<List<T?>> findAllEntities<T>() async {
+  Future<List<T?>> findAllEntities<T extends IsarLocalEntity>() async {
     final entities = await db.txn(() async {
       final entities = await db.collection<T>().where().findAll();
       return entities;
@@ -41,7 +42,7 @@ class IsarWrapper {
     return entities;
   }
 
-  Future<T?> getEntity<T>({
+  Future<T?> getEntity<T extends IsarLocalEntity>({
     required int id,
   }) async {
     final entity = await db.txn<T?>(() async {
@@ -53,7 +54,7 @@ class IsarWrapper {
   }
 
 // TODO T has to be entity - maybe it would be good to have some abstract Entity class
-  Future<int> putEntity<T>({
+  Future<int> putEntity<T extends IsarLocalEntity>({
     required T entity,
   }) async {
     final putId = await db.writeTxn(() async {
@@ -70,7 +71,7 @@ class IsarWrapper {
     return db.close(deleteFromDisk: shouldDeleteDatabase);
   }
 
-  Future<List<int>> putEntities<T>({
+  Future<List<int>> putEntities<T extends IsarLocalEntity>({
     required List<T> entities,
   }) async {
     final ids = await db.writeTxn(() async {

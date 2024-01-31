@@ -1,10 +1,11 @@
+import 'package:five_on_4_mobile/src/features/core/data/entities/isar_local/isar_local_entity.dart';
 import 'package:isar/isar.dart';
 
 part "auth_data_entity.g.dart";
 
 // TODO rename this to AuthDataLocalEntity
 @collection
-class AuthDataEntity {
+class AuthDataEntity implements IsarLocalEntity {
   AuthDataEntity({
     required this.playerInfo,
     required this.teamInfo,
@@ -12,6 +13,7 @@ class AuthDataEntity {
 
   /// Only local id - not related in any way to remote server db
   // final Id id = Isar.autoIncrement;
+  @override
   Id? id;
 
   final AuthDataPlayerInfoEntity playerInfo;
