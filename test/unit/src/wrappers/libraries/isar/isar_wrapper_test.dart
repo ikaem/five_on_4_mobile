@@ -114,6 +114,32 @@ void main() async {
           );
         },
       );
+
+      // TODO put entities
+      // TODO is there need that this should be groups? - maybe we provide somea rguments there, os it is worth to be groups
+      group(
+        ".putEntities",
+        () {
+          test(
+            "given a list of entities"
+            "when .putEntities() is called"
+            "should put all entities in the database",
+            () async {
+              final entities = getTestAuthDataEntities();
+
+              final _ = await isarWrapper.putEntities<AuthDataEntity>(
+                  entities: entities);
+
+              final retrievedEntities =
+                  await isarWrapper.findAllEntities<AuthDataEntity>();
+
+              expect(retrievedEntities, isNotEmpty);
+              // TODO not sure this tests very thoroughly
+              expect(retrievedEntities.length, equals(entities.length));
+            },
+          );
+        },
+      );
     },
   );
 }

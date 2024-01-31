@@ -70,6 +70,17 @@ class IsarWrapper {
     return db.close(deleteFromDisk: shouldDeleteDatabase);
   }
 
+  Future<List<int>> putEntities<T>({
+    required List<T> entities,
+  }) async {
+    final ids = await db.writeTxn(() async {
+      final ids = await db.collection<T>().putAll(entities);
+      return ids;
+    });
+
+    return ids;
+  }
+
   @visibleForTesting
   Future<void> initializeForTests() async {
     final dartToolDir =

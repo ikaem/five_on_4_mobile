@@ -29,7 +29,7 @@ void main() {
         ".getMyFollowingMatches()",
         () {
           test(
-            "given my userId"
+            "given nothing in particular"
             "when '.getMyFollowingMatches() is called"
             "should return expected list of matches",
             () async {

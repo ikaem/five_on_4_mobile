@@ -15,6 +15,32 @@ final testAuthDataEntity = AuthDataEntity(
   ),
 );
 
+// NOTE: this is only for testing isar wrapper works - this would never happen in real life
+List<AuthDataEntity> getTestAuthDataEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final authDataEntities = List<AuthDataEntity>.generate(
+    count,
+    (index) {
+      return AuthDataEntity(
+        playerInfo: AuthDataPlayerInfoEntity(
+          id: index,
+          firstName: "${namesPrefix}firstName$index",
+          lastName: "${namesPrefix}lastName$index",
+          nickName: "${namesPrefix}nickName$index",
+        ),
+        teamInfo: AuthDataTeamInfoEntity(
+          id: index,
+          teamName: "${namesPrefix}teamName$index",
+        ),
+      );
+    },
+  );
+
+  return authDataEntities;
+}
+
 List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
   int count = 10,
   String avatarUrl = "https://test.com/avatar.png",

@@ -2,6 +2,7 @@ import 'package:isar/isar.dart';
 
 part "auth_data_entity.g.dart";
 
+// TODO rename this to AuthDataLocalEntity
 @collection
 class AuthDataEntity {
   AuthDataEntity({
