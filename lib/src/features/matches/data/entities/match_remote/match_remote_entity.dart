@@ -24,8 +24,11 @@ class MatchRemoteEntity extends Equatable {
     final location = json["location"] as String;
     final organizer = json["organizer"] as String;
     final description = json["description"] as String;
-    // TODO temp for now
-    final arrivingPlayers = <PlayerRemoteEntity>[];
+
+    final arrivingPlayers = (json["arrivingPlayers"] as List<dynamic>)
+        .cast<Map<String, dynamic>>()
+        .map((e) => PlayerRemoteEntity.fromJson(json: e))
+        .toList();
 
     return MatchRemoteEntity(
       id: id,
