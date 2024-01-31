@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 
 final testAuthDataEntity = AuthDataEntity(
@@ -34,4 +35,26 @@ List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
   );
 
   return players;
+}
+
+List<MatchRemoteEntity> getTestMatchRemoteEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final matches = List<MatchRemoteEntity>.generate(
+    count,
+    (index) {
+      return MatchRemoteEntity(
+        id: index,
+        date: DateTime.now().millisecondsSinceEpoch,
+        name: "${namesPrefix}name$index",
+        location: "${namesPrefix}location$index",
+        organizer: "${namesPrefix}organizer$index",
+        description: "${namesPrefix}description$index",
+        arrivingPlayers: getTestPlayerRemoteEntities(),
+      );
+    },
+  );
+
+  return matches;
 }

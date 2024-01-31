@@ -9,6 +9,7 @@ class HttpRequestUriPartsValue {
     required this.apiContextPath,
     required this.apiEndpointPath,
     required this.queryParameters,
+    required this.port,
   });
 
   final String apiUrlScheme;
@@ -16,6 +17,7 @@ class HttpRequestUriPartsValue {
   final String apiContextPath;
   final String apiEndpointPath;
   final Map<String, String>? queryParameters;
+  final int? port;
 }
 
 @immutable

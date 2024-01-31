@@ -15,6 +15,7 @@ class DioWrapper {
     required HttpRequestUriPartsValue uriParts,
   }) async {
     final uri = Uri(
+      port: uriParts.port,
       scheme: uriParts.apiUrlScheme,
       host: uriParts.apiBaseUrl,
       path: '${uriParts.apiContextPath}/${uriParts.apiEndpointPath}',
