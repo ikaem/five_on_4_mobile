@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/data/entities/isar_local/isar_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:isar/isar.dart';
 import "package:path/path.dart" as path;
@@ -27,10 +28,13 @@ class IsarWrapper {
     db = await Isar.open(
       [
         AuthDataEntitySchema,
+        MatchLocalEntitySchema,
       ],
       directory: directory.path,
       name: _databaseName.value,
     );
+
+    print("yes");
   }
 
   Future<List<T?>> findAllEntities<T extends IsarLocalEntity>() async {
@@ -99,5 +103,7 @@ class IsarWrapper {
         // Abi.linuxX64: path.join(dartToolDir, 'libisar_linux_x64.so'),
       },
     );
+
+    print("hello");
   }
 }

@@ -30,33 +30,33 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<AuthDataEntity?> getAuthData() async {
     // TODO use this for short circuit log in dev
-    return dummyAuthDataEntity;
+    // return dummyAuthDataEntity;
 
     // return null;
 
-    // final storedAuthData = await _secureStorageWrapper.getAuthData();
-    // if (storedAuthData == null) return null;
+    final storedAuthData = await _secureStorageWrapper.getAuthData();
+    if (storedAuthData == null) return null;
 
-    // final (_, authId) = storedAuthData;
+    final (_, authId) = storedAuthData;
 
-    // final authData = await _isarWrapper.findAllEntities<AuthDataEntity>();
-    // if (authData.isEmpty) {
-    //   // TODO this should not happen - clear token now
-    //   return null;
-    // }
+    final authData = await _isarWrapper.findAllEntities<AuthDataEntity>();
+    if (authData.isEmpty) {
+      // TODO this should not happen - clear token now
+      return null;
+    }
 
-    // if (authData.length > 1) {
-    //   // TODO this should not happen - clear token now
-    //   return null;
-    // }
+    if (authData.length > 1) {
+      // TODO this should not happen - clear token now
+      return null;
+    }
 
-    // final authDataEntity = authData.first;
+    final authDataEntity = authData.first;
 
-    // if (authDataEntity == null) return null;
-    // if (authDataEntity.id != authId) return null;
-    // // TODO also should clear token for sure here
+    if (authDataEntity == null) return null;
+    if (authDataEntity.id != authId) return null;
+    // TODO also should clear token for sure here
 
-    // return authDataEntity;
+    return authDataEntity;
   }
 
   @override

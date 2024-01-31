@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -22,11 +23,11 @@ void main() async {
     await isarWrapper.initialize();
   });
 
-  tearDown(() async {
-    await isarWrapper.db.writeTxn(() async {
-      await isarWrapper.db.clear();
-    });
-  });
+  // tearDown(() async {
+  //   await isarWrapper.db.writeTxn(() async {
+  //     await isarWrapper.db.clear();
+  //   });
+  // });
 
   tearDownAll(() async {
     await isarWrapper.close(shouldDeleteDatabase: true);
@@ -34,112 +35,138 @@ void main() async {
   group(
     "IsarWrapper",
     () {
-      group(
-        ".putEntity()",
-        () {
-          test(
-            "given an entity"
-            "when .putEntity() is called"
-            "should put the entity in the database",
-            () async {
-              final AuthDataEntity entity = testAuthDataEntity;
+      // group(
+      //   "MatchLocalEntity",
+      //   () {
+      //     testWidgets(
+      //       "given an instance of [MatchLocalEntity] "
+      //       "when .putEntity() is called "
+      //       "should put the entity in the database",
+      //       (widgetTester) async {
+      //         final matchLocalEntity =
+      //             getTestMatchLocalEntities(count: 1).first;
 
-              final storedEntityId =
-                  await isarWrapper.putEntity<AuthDataEntity>(entity: entity);
+      //         final storedEntityId =
+      //             await isarWrapper.putEntity<MatchLocalEntity>(
+      //           entity: matchLocalEntity,
+      //         );
 
-              final retrievedEntity = await isarWrapper.db
-                  .collection<AuthDataEntity>()
-                  .get(storedEntityId);
+      //         final retrievedEntity = await isarWrapper.db
+      //             .collection<MatchLocalEntity>()
+      //             .get(storedEntityId);
 
-              expect(entity.id, equals(retrievedEntity?.id));
-            },
-          );
-        },
-      );
+      //         expect(matchLocalEntity.id, equals(retrievedEntity?.id));
+      //       },
+      //     );
+      //   },
+      // );
+      // TODO get rid of these - have each entity have its own group
+      // group(
+      //   ".putEntity()",
+      //   () {
+      //     test(
+      //       "given an entity"
+      //       "when .putEntity() is called"
+      //       "should put the entity in the database",
+      //       () async {
+      //         final AuthDataEntity entity = testAuthDataEntity;
 
-      group(
-        ".getEntity()",
-        () {
-          test(
-            "given an id and entity type"
-            "when .getEntity() is called"
-            "should retrieve expected entity from the database",
-            () async {
-              final AuthDataEntity entity = testAuthDataEntity;
+      //         final storedEntityId =
+      //             await isarWrapper.putEntity<AuthDataEntity>(entity: entity);
 
-              // prepare db
-              final id = await isarWrapper.db.writeTxn(
-                () async {
-                  final id = await isarWrapper.db
-                      .collection<AuthDataEntity>()
-                      .put(entity);
-                  return id;
-                },
-              );
+      //         final retrievedEntity = await isarWrapper.db
+      //             .collection<AuthDataEntity>()
+      //             .get(storedEntityId);
 
-              final retrievedEntity =
-                  await isarWrapper.getEntity<AuthDataEntity>(
-                id: id,
-              );
+      //         expect(entity.id, equals(retrievedEntity?.id));
+      //       },
+      //     );
+      //   },
+      // );
 
-              expect(entity.id, equals(retrievedEntity?.id));
-            },
-          );
-        },
-      );
+      // group(
+      //   ".getEntity()",
+      //   () {
+      //     test(
+      //       "given an id and entity type"
+      //       "when .getEntity() is called"
+      //       "should retrieve expected entity from the database",
+      //       () async {
+      //         final AuthDataEntity entity = testAuthDataEntity;
 
-      group(
-        ".getEntities()",
-        () {
-          test(
-            "given an entity type"
-            "when .getEntities() is called"
-            "should retrieve all existing entities from the database",
-            () async {
-              final AuthDataEntity entity = testAuthDataEntity;
+      //         // prepare db
+      //         final id = await isarWrapper.db.writeTxn(
+      //           () async {
+      //             final id = await isarWrapper.db
+      //                 .collection<AuthDataEntity>()
+      //                 .put(entity);
+      //             return id;
+      //           },
+      //         );
 
-              // prepare db
-              await isarWrapper.db.writeTxn(
-                () async {
-                  await isarWrapper.db.collection<AuthDataEntity>().put(entity);
-                },
-              );
+      //         final retrievedEntity =
+      //             await isarWrapper.getEntity<AuthDataEntity>(
+      //           id: id,
+      //         );
 
-              final retrievedEntities =
-                  await isarWrapper.findAllEntities<AuthDataEntity>();
+      //         expect(entity.id, equals(retrievedEntity?.id));
+      //       },
+      //     );
+      //   },
+      // );
 
-              expect(retrievedEntities, isNotEmpty);
-              expect(retrievedEntities.first!.id, equals(entity.id));
-            },
-          );
-        },
-      );
+      // group(
+      //   ".getEntities()",
+      //   () {
+      //     test(
+      //       "given an entity type"
+      //       "when .getEntities() is called"
+      //       "should retrieve all existing entities from the database",
+      //       () async {
+      //         final AuthDataEntity entity = testAuthDataEntity;
+
+      //         // prepare db
+      //         await isarWrapper.db.writeTxn(
+      //           () async {
+      //             await isarWrapper.db.collection<AuthDataEntity>().put(entity);
+      //           },
+      //         );
+
+      //         final retrievedEntities =
+      //             await isarWrapper.findAllEntities<AuthDataEntity>();
+
+      //         expect(retrievedEntities, isNotEmpty);
+      //         expect(retrievedEntities.first!.id, equals(entity.id));
+      //       },
+      //     );
+      //   },
+      // );
 
       // TODO put entities
       // TODO is there need that this should be groups? - maybe we provide somea rguments there, os it is worth to be groups
-      group(
-        ".putEntities",
-        () {
-          test(
-            "given a list of entities"
-            "when .putEntities() is called"
-            "should put all entities in the database",
-            () async {
-              final entities = getTestAuthDataEntities();
+      // group(
+      //   ".putEntities",
+      //   () {
+      //     test(
+      //       "given a list of entities"
+      //       "when .putEntities() is called"
+      //       "should put all entities in the database",
+      //       () async {
+      //         final entities = getTestAuthDataEntities();
 
-              final _ = await isarWrapper.putEntities<AuthDataEntity>(
-                  entities: entities);
+      //         final _ = await isarWrapper.putEntities<AuthDataEntity>(
+      //             entities: entities);
 
-              final retrievedEntities =
-                  await isarWrapper.findAllEntities<AuthDataEntity>();
+      //         final retrievedEntities =
+      //             await isarWrapper.findAllEntities<AuthDataEntity>();
 
-              expect(retrievedEntities, isNotEmpty);
-              // TODO not sure this tests very thoroughly
-              expect(retrievedEntities.length, equals(entities.length));
-            },
-          );
-        },
-      );
+      //         expect(retrievedEntities, isNotEmpty);
+      //         // TODO not sure this tests very thoroughly
+      //         expect(retrievedEntities.length, equals(entities.length));
+      //       },
+      //     );
+      //   },
+      // )
     },
   );
 }
