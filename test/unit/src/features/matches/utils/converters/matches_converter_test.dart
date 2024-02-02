@@ -32,6 +32,34 @@ void main() {
           );
         },
       );
+
+      group(
+        ".fromRemoteEntitiesToLocalEntities",
+        () {
+          test(
+            "given a list of [MatchRemoteEntity]"
+            "when '.fromRemoteEntitiesToLocalEntities()' is called"
+            "should return a list of [MatchLocalEntity]",
+            () {
+              final matchesRemote = getTestMatchRemoteEntities(count: 3);
+
+              final expectedMatchesLocal = matchesRemote
+                  .map(
+                    (m) => _testFromRemoteEntityToLocalEntity(
+                      matchRemote: m,
+                    ),
+                  )
+                  .toList();
+
+              final result = MatchesConverter.fromRemoteEntitiesToLocalEntities(
+                matchesRemote: matchesRemote,
+              );
+
+              expect(result, equals(expectedMatchesLocal));
+            },
+          );
+        },
+      );
     },
   );
 }
