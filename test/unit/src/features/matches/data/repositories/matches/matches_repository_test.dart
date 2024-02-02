@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,7 +10,7 @@ void main() {
   final matchesLocalDataSource = _MockMatchesLocalDataSource();
   final matchesRemoteDataSource = _MockMatchesRemoteDataSource();
 
-  final matchesRepository = MatchesRepository(
+  final matchesRepository = MatchesRepositoryImpl(
     matchesLocalDataSource: matchesLocalDataSource,
     matchesRemoteDataSource: matchesRemoteDataSource,
   );
