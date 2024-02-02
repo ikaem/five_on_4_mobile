@@ -52,6 +52,8 @@ void main() {
                 },
               );
 
+              // TODO we should also test that correct arguments are used
+
               final matches =
                   await matchesRemoteDataSource.getMyFollowingMatches();
 
