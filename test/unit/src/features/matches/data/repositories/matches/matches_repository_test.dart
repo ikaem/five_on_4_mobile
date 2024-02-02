@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -62,13 +63,18 @@ void main() {
             "should pass remote matches retrieved from remote data source to the local data source",
             () async {
               await matchesRepository.loadMyMatches();
+              final convertedMatchLocalEntities =
+                  MatchesConverter.fromRemoteEntitiesToLocalEntities(
+                      matchesRemote: testMatches);
 
-              // final convertedMatches = testMatches
-              //     .map((match) => match.toMatchLocalEntity())
-              //     .toList();
+              await matchesLocalDataSource.saveMatches(
+                matches: convertedMatchLocalEntities,
+              );
 
               verify(
-                () => matchesRemoteDataSource.getMyFollowingMatches(),
+                () => matchesLocalDataSource.saveMatches(
+                  matches: convertedMatchLocalEntities,
+                ),
               ).called(1);
             },
           );
