@@ -14,9 +14,7 @@ class PlayerRemoteEntity extends Equatable {
   }) {
     final id = json["id"] as int;
     final name = json["name"] as String;
-    final avatarUri = Uri.parse(
-      json["avatarUri"] as String,
-    );
+    final avatarUri = json["avatarUri"] as String;
     final nickname = json["nickname"] as String;
 
     return PlayerRemoteEntity(
@@ -29,7 +27,7 @@ class PlayerRemoteEntity extends Equatable {
 
   final int id;
   final String name;
-  final Uri avatarUri;
+  final String avatarUri;
   final String nickname;
 
   Map<String, dynamic> toJson() {

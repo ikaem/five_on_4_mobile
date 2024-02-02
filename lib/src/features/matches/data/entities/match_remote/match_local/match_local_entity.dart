@@ -1,13 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/data/entities/isar_local/isar_local_entity.dart';
 import 'package:isar/isar.dart';
 
 part "match_local_entity.g.dart";
 
-// TODO write test in isar that we can actualy store this entity
-
-@collection
-class MatchLocalEntity implements IsarLocalEntity {
-  MatchLocalEntity({
+@Collection(inheritance: false)
+class MatchLocalEntity extends Equatable implements IsarLocalEntity {
+  const MatchLocalEntity({
     required this.id,
     required this.date,
     required this.name,
@@ -26,20 +25,41 @@ class MatchLocalEntity implements IsarLocalEntity {
   final String organizer;
   final String description;
   final List<MatchLocalPlayerEntity> arrivingPlayers;
+
+  @ignore
+  @override
+  List<Object?> get props => [
+        id,
+        date,
+        name,
+        location,
+        organizer,
+        description,
+        arrivingPlayers,
+      ];
 }
 
-@embedded
-class MatchLocalPlayerEntity {
-  MatchLocalPlayerEntity({
+@Embedded(inheritance: false)
+class MatchLocalPlayerEntity extends Equatable {
+  const MatchLocalPlayerEntity({
     this.id,
-    this.firstName,
-    this.lastName,
-    this.nickName,
+    this.name,
+    this.nickname,
+    this.avatarUrl,
   });
 
   /// Actual player id from remote server db
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? nickName;
+  final int? id;
+  final String? name;
+  final String? nickname;
+  final String? avatarUrl;
+
+  @ignore
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        nickname,
+        avatarUrl,
+      ];
 }

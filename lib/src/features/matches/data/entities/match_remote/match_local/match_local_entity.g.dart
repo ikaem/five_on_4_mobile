@@ -1259,9 +1259,9 @@ const MatchLocalPlayerEntitySchema = Schema(
   name: r'MatchLocalPlayerEntity',
   id: 786037350379932849,
   properties: {
-    r'firstName': PropertySchema(
+    r'avatarUrl': PropertySchema(
       id: 0,
-      name: r'firstName',
+      name: r'avatarUrl',
       type: IsarType.string,
     ),
     r'id': PropertySchema(
@@ -1269,14 +1269,14 @@ const MatchLocalPlayerEntitySchema = Schema(
       name: r'id',
       type: IsarType.long,
     ),
-    r'lastName': PropertySchema(
+    r'name': PropertySchema(
       id: 2,
-      name: r'lastName',
+      name: r'name',
       type: IsarType.string,
     ),
-    r'nickName': PropertySchema(
+    r'nickname': PropertySchema(
       id: 3,
-      name: r'nickName',
+      name: r'nickname',
       type: IsarType.string,
     )
   },
@@ -1293,19 +1293,19 @@ int _matchLocalPlayerEntityEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.firstName;
+    final value = object.avatarUrl;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.lastName;
+    final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.nickName;
+    final value = object.nickname;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -1319,10 +1319,10 @@ void _matchLocalPlayerEntitySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.firstName);
+  writer.writeString(offsets[0], object.avatarUrl);
   writer.writeLong(offsets[1], object.id);
-  writer.writeString(offsets[2], object.lastName);
-  writer.writeString(offsets[3], object.nickName);
+  writer.writeString(offsets[2], object.name);
+  writer.writeString(offsets[3], object.nickname);
 }
 
 MatchLocalPlayerEntity _matchLocalPlayerEntityDeserialize(
@@ -1332,10 +1332,10 @@ MatchLocalPlayerEntity _matchLocalPlayerEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = MatchLocalPlayerEntity(
-    firstName: reader.readStringOrNull(offsets[0]),
+    avatarUrl: reader.readStringOrNull(offsets[0]),
     id: reader.readLongOrNull(offsets[1]),
-    lastName: reader.readStringOrNull(offsets[2]),
-    nickName: reader.readStringOrNull(offsets[3]),
+    name: reader.readStringOrNull(offsets[2]),
+    nickname: reader.readStringOrNull(offsets[3]),
   );
   return object;
 }
@@ -1363,31 +1363,31 @@ P _matchLocalPlayerEntityDeserializeProp<P>(
 extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     MatchLocalPlayerEntity, MatchLocalPlayerEntity, QFilterCondition> {
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameIsNull() {
+      QAfterFilterCondition> avatarUrlIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'firstName',
+        property: r'avatarUrl',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameIsNotNull() {
+      QAfterFilterCondition> avatarUrlIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'firstName',
+        property: r'avatarUrl',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameEqualTo(
+      QAfterFilterCondition> avatarUrlEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1395,7 +1395,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameGreaterThan(
+      QAfterFilterCondition> avatarUrlGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1403,7 +1403,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1411,7 +1411,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameLessThan(
+      QAfterFilterCondition> avatarUrlLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1419,7 +1419,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1427,7 +1427,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameBetween(
+      QAfterFilterCondition> avatarUrlBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1436,7 +1436,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'firstName',
+        property: r'avatarUrl',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1447,13 +1447,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameStartsWith(
+      QAfterFilterCondition> avatarUrlStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1461,13 +1461,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameEndsWith(
+      QAfterFilterCondition> avatarUrlEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1476,10 +1476,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      firstNameContains(String value, {bool caseSensitive = true}) {
+      avatarUrlContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1488,10 +1488,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      firstNameMatches(String pattern, {bool caseSensitive = true}) {
+      avatarUrlMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'firstName',
+        property: r'avatarUrl',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1499,20 +1499,20 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameIsEmpty() {
+      QAfterFilterCondition> avatarUrlIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: '',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> firstNameIsNotEmpty() {
+      QAfterFilterCondition> avatarUrlIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'firstName',
+        property: r'avatarUrl',
         value: '',
       ));
     });
@@ -1593,31 +1593,31 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameIsNull() {
+      QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lastName',
+        property: r'name',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameIsNotNull() {
+      QAfterFilterCondition> nameIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lastName',
+        property: r'name',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameEqualTo(
+      QAfterFilterCondition> nameEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1625,7 +1625,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameGreaterThan(
+      QAfterFilterCondition> nameGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1633,7 +1633,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1641,7 +1641,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameLessThan(
+      QAfterFilterCondition> nameLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1649,7 +1649,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1657,7 +1657,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameBetween(
+      QAfterFilterCondition> nameBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1666,7 +1666,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lastName',
+        property: r'name',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1677,13 +1677,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameStartsWith(
+      QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1691,13 +1691,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameEndsWith(
+      QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1706,10 +1706,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      lastNameContains(String value, {bool caseSensitive = true}) {
+      nameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'lastName',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1718,10 +1718,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      lastNameMatches(String pattern, {bool caseSensitive = true}) {
+      nameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'lastName',
+        property: r'name',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1729,51 +1729,51 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameIsEmpty() {
+      QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastName',
+        property: r'name',
         value: '',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> lastNameIsNotEmpty() {
+      QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'lastName',
+        property: r'name',
         value: '',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameIsNull() {
+      QAfterFilterCondition> nicknameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'nickName',
+        property: r'nickname',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameIsNotNull() {
+      QAfterFilterCondition> nicknameIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'nickName',
+        property: r'nickname',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameEqualTo(
+      QAfterFilterCondition> nicknameEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1781,7 +1781,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameGreaterThan(
+      QAfterFilterCondition> nicknameGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1789,7 +1789,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1797,7 +1797,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameLessThan(
+      QAfterFilterCondition> nicknameLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1805,7 +1805,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1813,7 +1813,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameBetween(
+      QAfterFilterCondition> nicknameBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1822,7 +1822,7 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'nickName',
+        property: r'nickname',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1833,13 +1833,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameStartsWith(
+      QAfterFilterCondition> nicknameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1847,13 +1847,13 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameEndsWith(
+      QAfterFilterCondition> nicknameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1862,10 +1862,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      nickNameContains(String value, {bool caseSensitive = true}) {
+      nicknameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'nickName',
+        property: r'nickname',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1874,10 +1874,10 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
           QAfterFilterCondition>
-      nickNameMatches(String pattern, {bool caseSensitive = true}) {
+      nicknameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'nickName',
+        property: r'nickname',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1885,20 +1885,20 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameIsEmpty() {
+      QAfterFilterCondition> nicknameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'nickName',
+        property: r'nickname',
         value: '',
       ));
     });
   }
 
   QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> nickNameIsNotEmpty() {
+      QAfterFilterCondition> nicknameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'nickName',
+        property: r'nickname',
         value: '',
       ));
     });

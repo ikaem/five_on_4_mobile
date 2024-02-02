@@ -54,9 +54,7 @@ List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
         id: index,
         nickname: "${namesPrefix}nickname$index",
         name: "${namesPrefix}name$index",
-        avatarUri: Uri.parse(
-          avatarUrl,
-        ),
+        avatarUri: avatarUrl,
       );
     },
   );
@@ -117,9 +115,9 @@ List<MatchLocalPlayerEntity> _getTestMatchLocalPlayerEntities({
     (index) {
       return MatchLocalPlayerEntity(
         id: index,
-        firstName: "${namesPrefix}firstName$index",
-        lastName: "${namesPrefix}lastName$index",
-        nickName: "${namesPrefix}nickName$index",
+        name: "${namesPrefix}name$index",
+        nickname: "${namesPrefix}nickname$index",
+        avatarUrl: "https://test.com/avatar.png",
       );
     },
   );
