@@ -86,43 +86,43 @@ List<MatchRemoteEntity> getTestMatchRemoteEntities({
   return matches;
 }
 
-// List<MatchLocalEntity> getTestMatchLocalEntities({
-//   int count = 10,
-//   String namesPrefix = "test_",
-// }) {
-//   final matches = List<MatchLocalEntity>.generate(
-//     count,
-//     (index) {
-//       return MatchLocalEntity(
-//         id: index,
-//         date: DateTime.now().millisecondsSinceEpoch,
-//         name: "${namesPrefix}name$index",
-//         location: "${namesPrefix}location$index",
-//         organizer: "${namesPrefix}organizer$index",
-//         description: "${namesPrefix}description$index",
-//         arrivingPlayers: _getTestMatchLocalPlayerEntities(),
-//       );
-//     },
-//   );
+List<MatchLocalEntity> getTestMatchLocalEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final matches = List<MatchLocalEntity>.generate(
+    count,
+    (index) {
+      return MatchLocalEntity(
+        id: index,
+        date: DateTime.now().millisecondsSinceEpoch,
+        name: "${namesPrefix}name$index",
+        location: "${namesPrefix}location$index",
+        organizer: "${namesPrefix}organizer$index",
+        description: "${namesPrefix}description$index",
+        arrivingPlayers: _getTestMatchLocalPlayerEntities(),
+      );
+    },
+  );
 
-//   return matches;
-// }
+  return matches;
+}
 
-// List<MatchLocalPlayerEntity> _getTestMatchLocalPlayerEntities({
-//   int count = 10,
-//   String namesPrefix = "test_",
-// }) {
-//   final players = List<MatchLocalPlayerEntity>.generate(
-//     count,
-//     (index) {
-//       return MatchLocalPlayerEntity(
-//         id: index,
-//         firstName: "${namesPrefix}firstName$index",
-//         lastName: "${namesPrefix}lastName$index",
-//         nickName: "${namesPrefix}nickName$index",
-//       );
-//     },
-//   );
+List<MatchLocalPlayerEntity> _getTestMatchLocalPlayerEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final players = List<MatchLocalPlayerEntity>.generate(
+    count,
+    (index) {
+      return MatchLocalPlayerEntity(
+        id: index,
+        firstName: "${namesPrefix}firstName$index",
+        lastName: "${namesPrefix}lastName$index",
+        nickName: "${namesPrefix}nickName$index",
+      );
+    },
+  );
 
-//   return players;
-// }
+  return players;
+}
