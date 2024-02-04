@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/setup_db.dart';
+import '../../../../../../../utils/db/setup_db.dart';
 
 void main() {
   // final isarWrapper = _MockIsarWrapper();

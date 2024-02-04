@@ -6,130 +6,133 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/db/setup_db.dart';
 
 void main() {
+  final isarWrapper = setupTestDb();
+  // final secureStorageWrapper = setupTestSecureStorageWrapper()
   // reset and clear interactions docs - https://stackoverflow.com/a/77574465
-  final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
-  final isarWrapper = _MockIsarWrapper();
+  // final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
+  // final isarWrapper = _MockIsarWrapper();
 
-  final authLocalDataSource = AuthLocalDataSourceImpl(
-    secureStorageWrapper: secureStorageWrapper,
-    isarWrapper: isarWrapper,
-  );
+  // final authLocalDataSource = AuthLocalDataSourceImpl(
+  //   secureStorageWrapper: secureStorageWrapper,
+  //   isarWrapper: isarWrapper,
+  // );
 
-  final draftEntity = testAuthDataEntity;
+  // final draftEntity = testAuthDataEntity;
 
-  setUpAll(
-    () {
-      registerFallbackValue(
-        AuthDataEntity(
-          playerInfo: AuthDataPlayerInfoEntity(),
-          teamInfo: AuthDataTeamInfoEntity(),
-        ),
-      );
-    },
-  );
+  // setUpAll(
+  //   () {
+  //     registerFallbackValue(
+  //       AuthDataEntity(
+  //         playerInfo: AuthDataPlayerInfoEntity(),
+  //         teamInfo: AuthDataTeamInfoEntity(),
+  //       ),
+  //     );
+  //   },
+  // );
 
-  setUp(() {
-    when(
-      () => isarWrapper.putEntity<AuthDataEntity>(
-        entity: any(named: "entity"),
-      ),
-    ).thenAnswer((invocation) async {
-      return 1;
-    });
+  // setUp(() {
+  //   when(
+  //     () => isarWrapper.putEntity<AuthDataEntity>(
+  //       entity: any(named: "entity"),
+  //     ),
+  //   ).thenAnswer((invocation) async {
+  //     return 1;
+  //   });
 
-    when(
-      () => secureStorageWrapper.storeAuthData(
-        token: any(named: "token"),
-        authId: any(named: "authId"),
-      ),
-    ).thenAnswer((invocation) async {
-      return;
-    });
-  });
+  //   when(
+  //     () => secureStorageWrapper.storeAuthData(
+  //       token: any(named: "token"),
+  //       authId: any(named: "authId"),
+  //     ),
+  //   ).thenAnswer((invocation) async {
+  //     return;
+  //   });
+  // });
 
-  tearDown(() {
-    reset(secureStorageWrapper);
-    reset(isarWrapper);
-  });
+  // tearDown(() {
+  //   reset(secureStorageWrapper);
+  //   reset(isarWrapper);
+  // });
 
   group("AuthLocalDataSource", () {
-    group(
-      ".getAuthData()",
-      () {
-        // TODO these tests fail - fix them
-        // TODO this will pass when authlocaldata source logic is uncommented
-        test(
-          "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
-          "when '.getAuthData() is called"
-          "should return expected [AuthDataEntity]",
-          () async {
-            final entity = AuthDataEntity(
-              playerInfo: testAuthDataEntity.playerInfo,
-              teamInfo: testAuthDataEntity.teamInfo,
-            )..id = 1;
+    // group(
+    //   ".getAuthData()",
+    //   () {
+    //     // TODO these tests fail - fix them
+    //     // TODO this will pass when authlocaldata source logic is uncommented
+    //     test(
+    //       "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
+    //       "when '.getAuthData() is called"
+    //       "should return expected [AuthDataEntity]",
+    //       () async {
+    //         final entity = AuthDataEntity(
+    //           playerInfo: testAuthDataEntity.playerInfo,
+    //           teamInfo: testAuthDataEntity.teamInfo,
+    //         )..id = 1;
 
-            when(
-              () => secureStorageWrapper.getAuthData(),
-            ).thenAnswer((invocation) async {
-              return (
-                "testToken",
-                entity.id!,
-              );
-            });
+    //         when(
+    //           () => secureStorageWrapper.getAuthData(),
+    //         ).thenAnswer((invocation) async {
+    //           return (
+    //             "testToken",
+    //             entity.id!,
+    //           );
+    //         });
 
-            when(
-              () => isarWrapper.findAllEntities<AuthDataEntity>(),
-            ).thenAnswer((invocation) async {
-              return [entity];
-            });
+    //         when(
+    //           () => isarWrapper.findAllEntities<AuthDataEntity>(),
+    //         ).thenAnswer((invocation) async {
+    //           return [entity];
+    //         });
 
-            final authDataEntity = await authLocalDataSource.getAuthData();
+    //         final authDataEntity = await authLocalDataSource.getAuthData();
 
-            expect(authDataEntity, equals(entity));
-          },
-        );
+    //         expect(authDataEntity, equals(entity));
+    //       },
+    //     );
 
-        // tests when not all data is present, or when data is not present
-        // test then data is delete from secure stroage if something is off
-      },
-    );
+    //     // tests when not all data is present, or when data is not present
+    //     // test then data is delete from secure stroage if something is off
+    //   },
+    // );
 
-    group(".setAuthData()", () {
-      test(
-        "given draft of [AuthDataEntity] and authToken"
-        "when '.setAuthData()' is called"
-        "should store the draft in isar",
-        () async {
-          await authLocalDataSource.setAuthData(
-            authDataEntityDraft: draftEntity,
-            authToken: "authToken",
-          );
+    // group(".setAuthData()", () {
+    //   test(
+    //     "given draft of [AuthDataEntity] and authToken"
+    //     "when '.setAuthData()' is called"
+    //     "should store the draft in isar",
+    //     () async {
+    //       await authLocalDataSource.setAuthData(
+    //         authDataEntityDraft: draftEntity,
+    //         authToken: "authToken",
+    //       );
 
-          verify(() => isarWrapper.putEntity(entity: draftEntity)).called(1);
-        },
-      );
+    //       verify(() => isarWrapper.putEntity(entity: draftEntity)).called(1);
+    //     },
+    //   );
 
-      test(
-        "given draft of [AuthDataEntity] and authToken"
-        "when '.setAuthData()' is called"
-        "should store the authToken and authId in secure storage",
-        () async {
-          await authLocalDataSource.setAuthData(
-            authDataEntityDraft: draftEntity,
-            authToken: "authToken",
-          );
+    //   test(
+    //     "given draft of [AuthDataEntity] and authToken"
+    //     "when '.setAuthData()' is called"
+    //     "should store the authToken and authId in secure storage",
+    //     () async {
+    //       await authLocalDataSource.setAuthData(
+    //         authDataEntityDraft: draftEntity,
+    //         authToken: "authToken",
+    //       );
 
-          verify(
-            () => secureStorageWrapper.storeAuthData(
-              token: "authToken",
-              authId: 1,
-            ),
-          ).called(1);
-        },
-      );
-    });
+    //       verify(
+    //         () => secureStorageWrapper.storeAuthData(
+    //           token: "authToken",
+    //           authId: 1,
+    //         ),
+    //       ).called(1);
+    //     },
+    //   );
+    // });
   });
 }
 

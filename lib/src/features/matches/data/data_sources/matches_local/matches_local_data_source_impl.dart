@@ -14,11 +14,12 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   Future<List<int>> saveMatches({
     required List<MatchLocalEntity> matches,
   }) async {
-    final ids = await _isarWrapper.putEntities<MatchLocalEntity>(
-      entities: matches,
-    );
+    final result = await _isarWrapper.db.writeTxn(() async {
+      final ids = await _isarWrapper.db.matchLocalEntitys.putAll(matches);
+      return ids;
+    });
 
-    return ids;
+    return result;
   }
 
   @override
