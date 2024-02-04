@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
@@ -8,32 +9,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';
 
 import '../../../../../utils/data/test_entities.dart';
+import '../../../../../utils/setup_db.dart';
+
+// TODO here we should test some other stuff - maybe not directly putting stuff to db, but possibly
+// - can open correctly
+// - can close correctly
+// - can delete db correctly
+// - that db is in specified folder
+// - that db is named correctly
+// - that all schemas are registered
+
+// TODO remove all tests tht actually deal with entities
 
 void main() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  final isarWrapper = setupTestDb();
 
-  // TODO extract this somewhere
-  // TODO move to better folder, somewhere in tests maybe
-  final dbDirectory = Directory.current;
-  final isarWrapper = IsarWrapper(
-    dbDirectory: Future.value(dbDirectory),
-    databaseName: DatabaseNameConstants.DB_NAME_TEST,
-  );
-
-  setUpAll(() async {
-    await isarWrapper.initializeForTests();
-    await isarWrapper.initialize();
-  });
-
-  tearDown(() async {
-    await isarWrapper.db.writeTxn(() async {
-      await isarWrapper.db.clear();
-    });
-  });
-
-  tearDownAll(() async {
-    await isarWrapper.close(shouldDeleteDatabase: true);
-  });
   group(
     "IsarWrapper",
     () {
@@ -61,22 +51,22 @@ void main() async {
             },
           );
 
-          test(
-            "given a list of [MatchLocalEntity] "
-            "when .putEntities() is called "
-            "should put the entitities in the database",
-            () async {
-              final matchLocalEntities = getTestMatchLocalEntities(count: 3);
+          // test(
+          //   "given a list of [MatchLocalEntity] "
+          //   "when .putEntities() is called "
+          //   "should put the entitities in the database",
+          //   () async {
+          //     final matchLocalEntities = getTestMatchLocalEntities(count: 3);
 
-              final retrievedEntities = await isarWrapper.db
-                  .collection<MatchLocalEntity>()
-                  .where()
-                  .findAll();
+          //     final retrievedEntities = await isarWrapper.db
+          //         .collection<MatchLocalEntity>()
+          //         .where()
+          //         .findAll();
 
-              expect(
-                  retrievedEntities.length, equals(matchLocalEntities.length));
-            },
-          );
+          //     expect(
+          //         retrievedEntities.length, equals(matchLocalEntities.length));
+          //   },
+          // );
         },
       );
       // TODO get rid of these - have each entity have its own group

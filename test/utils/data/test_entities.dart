@@ -84,21 +84,49 @@ List<MatchRemoteEntity> getTestMatchRemoteEntities({
   return matches;
 }
 
+/// [arrivingPlayers] defaults to generic call to [getTestMatchLocalPlayerEntities]
+/// [firstMatchDate] defaults to [DateTime.now()]
+MatchLocalEntity getTestMatchLocalEntity({
+  stringFieldsPrefix = "test_",
+  List<MatchLocalPlayerEntity>? arrivingPlayers,
+  DateTime? firstMatchDate,
+}) {
+  final matchDate = firstMatchDate ?? DateTime.now();
+  final players = arrivingPlayers ?? getTestMatchLocalPlayerEntities();
+
+  return MatchLocalEntity(
+    id: 1,
+    date: matchDate.millisecondsSinceEpoch,
+    name: "${stringFieldsPrefix}name",
+    location: "${stringFieldsPrefix}location",
+    organizer: "${stringFieldsPrefix}organizer",
+    description: "${stringFieldsPrefix}description",
+    arrivingPlayers: players,
+  );
+}
+
 List<MatchLocalEntity> getTestMatchLocalEntities({
   int count = 10,
   String namesPrefix = "test_",
+
+  /// Default is DateTime.now() - every next match will be 1 minute later
+  DateTime? firstMatchDate,
 }) {
+  final initialMatchDate = firstMatchDate ?? DateTime.now();
+
   final matches = List<MatchLocalEntity>.generate(
     count,
     (index) {
+      final matchDate = initialMatchDate.add(Duration(minutes: index));
+
       return MatchLocalEntity(
         id: index,
-        date: DateTime.now().millisecondsSinceEpoch,
+        date: matchDate.millisecondsSinceEpoch,
         name: "${namesPrefix}name$index",
         location: "${namesPrefix}location$index",
         organizer: "${namesPrefix}organizer$index",
         description: "${namesPrefix}description$index",
-        arrivingPlayers: _getTestMatchLocalPlayerEntities(),
+        arrivingPlayers: getTestMatchLocalPlayerEntities(),
       );
     },
   );
@@ -106,17 +134,29 @@ List<MatchLocalEntity> getTestMatchLocalEntities({
   return matches;
 }
 
-List<MatchLocalPlayerEntity> _getTestMatchLocalPlayerEntities({
+MatchLocalPlayerEntity getTestMatchLocalPlayerEntity({
+  int id = 1,
+  String stringFieldsPrefix = "test_",
+}) {
+  return MatchLocalPlayerEntity(
+    id: id,
+    name: "${stringFieldsPrefix}name",
+    nickname: "${stringFieldsPrefix}nickname",
+    avatarUrl: "https://test.com/avatar.png",
+  );
+}
+
+List<MatchLocalPlayerEntity> getTestMatchLocalPlayerEntities({
   int count = 10,
-  String namesPrefix = "test_",
+  String stringFieldsPrefix = "test_",
 }) {
   final players = List<MatchLocalPlayerEntity>.generate(
     count,
     (index) {
       return MatchLocalPlayerEntity(
         id: index,
-        name: "${namesPrefix}name$index",
-        nickname: "${namesPrefix}nickname$index",
+        name: "${stringFieldsPrefix}name$index",
+        nickname: "${stringFieldsPrefix}nickname$index",
         avatarUrl: "https://test.com/avatar.png",
       );
     },
