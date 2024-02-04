@@ -61,9 +61,10 @@ void main() {
             "when .getFollowingMatchesForPlayer() is called"
             "should retrieve current users matches starting from tomorrow from the database",
             () async {
-              const playerId = 1;
+              const playerId = 999;
+              const nonPlayerId = 2;
               // generate todays matches
-              final todayMatches = _generateCurrentPlayerTestMatches(
+              final todayMatches = _generatePlayerTestMatches(
                 playerId: playerId,
                 matchesCount: 2,
                 playersPerMatchCount: 5,
@@ -71,7 +72,7 @@ void main() {
                 initialMatchId: 0,
               );
               // generate tomorrows matches
-              final tomorrowMatches = _generateCurrentPlayerTestMatches(
+              final tomorrowMatches = _generatePlayerTestMatches(
                 playerId: playerId,
                 matchesCount: 3,
                 playersPerMatchCount: 5,
@@ -80,7 +81,7 @@ void main() {
                 ),
                 initialMatchId: 2,
               );
-              final afterTomorrowMatches = _generateCurrentPlayerTestMatches(
+              final afterTomorrowMatches = _generatePlayerTestMatches(
                 playerId: playerId,
                 matchesCount: 3,
                 playersPerMatchCount: 5,
@@ -90,8 +91,21 @@ void main() {
                 initialMatchId: 5,
               );
 
+              // add matches for non player, just to test filtering
+              final afterTomorrowMatchesNonPlayer = _generatePlayerTestMatches(
+                playerId: nonPlayerId,
+                matchesCount: 3,
+                playersPerMatchCount: 5,
+                initialMatchDate: DateTime.now().add(
+                  const Duration(days: 2),
+                ),
+                initialMatchId: 8,
+              );
+
               final followingMatches = tomorrowMatches + afterTomorrowMatches;
-              final allMatches = todayMatches + followingMatches;
+              final allMatches = todayMatches +
+                  followingMatches +
+                  afterTomorrowMatchesNonPlayer;
 
               // add matches to db manually
               await isarWrapper.db.writeTxn(() async {
@@ -100,14 +114,13 @@ void main() {
                     .putAll(allMatches);
               });
 
+              // result should be of lenght 6 - 3 matches from tomorrow and 3 matches from after tomorrow
               final result =
                   await matchesLocalDataSource.getFollowingMatchesForPlayer(
                 playerId: playerId,
               );
 
-              print("done");
-
-              // expect(result, equals(followingMatches));
+              expect(result, equals(followingMatches));
             },
           );
         },
@@ -116,7 +129,7 @@ void main() {
   );
 }
 
-List<MatchLocalEntity> _generateCurrentPlayerTestMatches({
+List<MatchLocalEntity> _generatePlayerTestMatches({
   required int playerId,
   required int matchesCount,
   required int playersPerMatchCount,

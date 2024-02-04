@@ -140,7 +140,7 @@ MatchLocalPlayerEntity getTestMatchLocalPlayerEntity({
   String stringFieldsPrefix = "test_",
 }) {
   return MatchLocalPlayerEntity(
-    id: id,
+    playerId: id,
     name: "${stringFieldsPrefix}name",
     nickname: "${stringFieldsPrefix}nickname",
     avatarUrl: "https://test.com/avatar.png",
@@ -155,7 +155,7 @@ List<MatchLocalPlayerEntity> getTestMatchLocalPlayerEntities({
     count,
     (index) {
       return MatchLocalPlayerEntity(
-        id: index,
+        playerId: index,
         name: "${stringFieldsPrefix}name$index",
         nickname: "${stringFieldsPrefix}nickname$index",
         avatarUrl: "https://test.com/avatar.png",

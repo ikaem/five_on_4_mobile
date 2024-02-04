@@ -25,7 +25,6 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
     required int playerId,
   }) async {
-    // because this might be indexed and used for where
     final lastMomentOfToday = DateTime.now()
         .add(
           const Duration(
@@ -37,17 +36,18 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
         )
         .millisecondsSinceEpoch;
 
-    // final matches = await _isarWrapper.findAllEntities<MatchLocalEntity>();
-    final matches = await _isarWrapper.db
-        .collection<MatchLocalEntity>()
+    // querying nested objects from https://isar.dev/queries.html#embedded-objects
+    final matches = await _isarWrapper.db.matchLocalEntitys
         .where()
         .dateGreaterThan(lastMomentOfToday)
-        // .idEqualTo(playerId)
-        // .
-        // .filter()
-        // .dateGreaterThan(lastMomentOfToday)
-        .findAll();
+        .filter()
+        .arrivingPlayersElement(
+      (q) {
+        // return q.idEqualTo(playerId);
+        return q.playerIdEqualTo(playerId);
+      },
+    ).findAll();
 
-    return [];
+    return matches;
   }
 }

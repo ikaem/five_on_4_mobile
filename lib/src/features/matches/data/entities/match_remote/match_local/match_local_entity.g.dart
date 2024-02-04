@@ -1379,20 +1379,20 @@ const MatchLocalPlayerEntitySchema = Schema(
       name: r'avatarUrl',
       type: IsarType.string,
     ),
-    r'id': PropertySchema(
-      id: 1,
-      name: r'id',
-      type: IsarType.long,
-    ),
     r'name': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'name',
       type: IsarType.string,
     ),
     r'nickname': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'nickname',
       type: IsarType.string,
+    ),
+    r'playerId': PropertySchema(
+      id: 3,
+      name: r'playerId',
+      type: IsarType.long,
     )
   },
   estimateSize: _matchLocalPlayerEntityEstimateSize,
@@ -1435,9 +1435,9 @@ void _matchLocalPlayerEntitySerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.avatarUrl);
-  writer.writeLong(offsets[1], object.id);
-  writer.writeString(offsets[2], object.name);
-  writer.writeString(offsets[3], object.nickname);
+  writer.writeString(offsets[1], object.name);
+  writer.writeString(offsets[2], object.nickname);
+  writer.writeLong(offsets[3], object.playerId);
 }
 
 MatchLocalPlayerEntity _matchLocalPlayerEntityDeserialize(
@@ -1448,9 +1448,9 @@ MatchLocalPlayerEntity _matchLocalPlayerEntityDeserialize(
 ) {
   final object = MatchLocalPlayerEntity(
     avatarUrl: reader.readStringOrNull(offsets[0]),
-    id: reader.readLongOrNull(offsets[1]),
-    name: reader.readStringOrNull(offsets[2]),
-    nickname: reader.readStringOrNull(offsets[3]),
+    name: reader.readStringOrNull(offsets[1]),
+    nickname: reader.readStringOrNull(offsets[2]),
+    playerId: reader.readLongOrNull(offsets[3]),
   );
   return object;
 }
@@ -1465,11 +1465,11 @@ P _matchLocalPlayerEntityDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1629,80 +1629,6 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'avatarUrl',
         value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
-      QAfterFilterCondition> idBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
       ));
     });
   }
@@ -2015,6 +1941,80 @@ extension MatchLocalPlayerEntityQueryFilter on QueryBuilder<
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'nickname',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'playerId',
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'playerId',
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'playerId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'playerId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'playerId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalPlayerEntity, MatchLocalPlayerEntity,
+      QAfterFilterCondition> playerIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'playerId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }

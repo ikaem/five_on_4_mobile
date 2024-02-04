@@ -25,6 +25,7 @@ class MatchLocalEntity extends Equatable implements IsarLocalEntity {
   final String location;
   final String organizer;
   final String description;
+  // @Index(name: "arriving_players_index")
   final List<MatchLocalPlayerEntity> arrivingPlayers;
 
   @ignore
@@ -43,14 +44,14 @@ class MatchLocalEntity extends Equatable implements IsarLocalEntity {
 @Embedded(inheritance: false)
 class MatchLocalPlayerEntity extends Equatable {
   const MatchLocalPlayerEntity({
-    this.id,
+    this.playerId,
     this.name,
     this.nickname,
     this.avatarUrl,
   });
 
   /// Actual player id from remote server db
-  final int? id;
+  final int? playerId;
   final String? name;
   final String? nickname;
   final String? avatarUrl;
@@ -58,7 +59,7 @@ class MatchLocalPlayerEntity extends Equatable {
   @ignore
   @override
   List<Object?> get props => [
-        id,
+        playerId,
         name,
         nickname,
         avatarUrl,

@@ -69,7 +69,7 @@ MatchLocalEntity _testFromRemoteEntityToLocalEntity({
 }) {
   final arrivingPlayers = matchRemote.arrivingPlayers.map((player) {
     return MatchLocalPlayerEntity(
-      id: player.id,
+      playerId: player.id,
       name: player.name,
       nickname: player.nickname,
       avatarUrl: player.avatarUri.toString(),
