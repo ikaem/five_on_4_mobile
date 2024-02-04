@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
+import 'package:isar/isar.dart';
 
 class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   const MatchesLocalDataSourceImpl({
@@ -18,5 +19,35 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     );
 
     return ids;
+  }
+
+  @override
+  Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
+    required int playerId,
+  }) async {
+    // because this might be indexed and used for where
+    final lastMomentOfToday = DateTime.now()
+        .add(
+          const Duration(
+            hours: 23,
+            seconds: 59,
+            milliseconds: 999,
+            microseconds: 999,
+          ),
+        )
+        .millisecondsSinceEpoch;
+
+    // final matches = await _isarWrapper.findAllEntities<MatchLocalEntity>();
+    final matches = await _isarWrapper.db
+        .collection<MatchLocalEntity>()
+        .where()
+        .dateGreaterThan(lastMomentOfToday)
+        // .idEqualTo(playerId)
+        // .
+        // .filter()
+        // .dateGreaterThan(lastMomentOfToday)
+        .findAll();
+
+    return [];
   }
 }

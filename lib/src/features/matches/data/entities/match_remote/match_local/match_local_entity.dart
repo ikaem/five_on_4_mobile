@@ -19,6 +19,7 @@ class MatchLocalEntity extends Equatable implements IsarLocalEntity {
   // Actual match id from remote server db
   final Id id;
 
+  @Index(name: "date_index")
   final int date;
   final String name;
   final String location;

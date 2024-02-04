@@ -87,6 +87,7 @@ List<MatchRemoteEntity> getTestMatchRemoteEntities({
 /// [arrivingPlayers] defaults to generic call to [getTestMatchLocalPlayerEntities]
 /// [firstMatchDate] defaults to [DateTime.now()]
 MatchLocalEntity getTestMatchLocalEntity({
+  int id = 1,
   stringFieldsPrefix = "test_",
   List<MatchLocalPlayerEntity>? arrivingPlayers,
   DateTime? firstMatchDate,
@@ -95,7 +96,7 @@ MatchLocalEntity getTestMatchLocalEntity({
   final players = arrivingPlayers ?? getTestMatchLocalPlayerEntities();
 
   return MatchLocalEntity(
-    id: 1,
+    id: id,
     date: matchDate.millisecondsSinceEpoch,
     name: "${stringFieldsPrefix}name",
     location: "${stringFieldsPrefix}location",

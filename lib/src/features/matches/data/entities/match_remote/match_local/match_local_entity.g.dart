@@ -54,7 +54,21 @@ const MatchLocalEntitySchema = CollectionSchema(
   deserialize: _matchLocalEntityDeserialize,
   deserializeProp: _matchLocalEntityDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'date_index': IndexSchema(
+      id: -6248863950318275727,
+      name: r'date_index',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'date',
+          type: IndexType.value,
+          caseSensitive: false,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {r'MatchLocalPlayerEntity': MatchLocalPlayerEntitySchema},
   getId: _matchLocalEntityGetId,
@@ -176,6 +190,14 @@ extension MatchLocalEntityQueryWhereSort
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhere> anyDate() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'date_index'),
+      );
+    });
+  }
 }
 
 extension MatchLocalEntityQueryWhere
@@ -242,6 +264,99 @@ extension MatchLocalEntityQueryWhere
         lower: lowerId,
         includeLower: includeLower,
         upper: upperId,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhereClause>
+      dateEqualTo(int date) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'date_index',
+        value: [date],
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhereClause>
+      dateNotEqualTo(int date) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'date_index',
+              lower: [],
+              upper: [date],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'date_index',
+              lower: [date],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'date_index',
+              lower: [date],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'date_index',
+              lower: [],
+              upper: [date],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhereClause>
+      dateGreaterThan(
+    int date, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'date_index',
+        lower: [date],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhereClause>
+      dateLessThan(
+    int date, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'date_index',
+        lower: [],
+        upper: [date],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<MatchLocalEntity, MatchLocalEntity, QAfterWhereClause>
+      dateBetween(
+    int lowerDate,
+    int upperDate, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'date_index',
+        lower: [lowerDate],
+        includeLower: includeLower,
+        upper: [upperDate],
         includeUpper: includeUpper,
       ));
     });

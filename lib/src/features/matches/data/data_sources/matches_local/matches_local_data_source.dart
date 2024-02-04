@@ -4,4 +4,8 @@ abstract interface class MatchesLocalDataSource {
   Future<List<int>> saveMatches({
     required List<MatchLocalEntity> matches,
   });
+
+  Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
+    required int playerId,
+  });
 }
