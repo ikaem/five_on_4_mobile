@@ -26,7 +26,41 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
     required int playerId,
   }) async {
-    return [];
+    // TODO abstrac this somehow
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    final lastMomentOfYesterday = DateTime(
+      yesterday.year,
+      yesterday.month,
+      yesterday.day,
+      23,
+      59,
+      59,
+      999,
+      999,
+    ).millisecondsSinceEpoch;
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    final firstMomentOfTomorrow = DateTime(
+      tomorrow.year,
+      tomorrow.month,
+      tomorrow.day,
+      0,
+      0,
+      0,
+      0,
+      0,
+    ).millisecondsSinceEpoch;
+
+    final matches = await _isarWrapper.db.matchLocalEntitys
+        .where()
+        .dateBetween(lastMomentOfYesterday, firstMomentOfTomorrow)
+        .filter()
+        .arrivingPlayersElement(
+      (q) {
+        return q.playerIdEqualTo(playerId);
+      },
+    ).findAll();
+
+    return matches;
   }
 
   @override
@@ -44,17 +78,6 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       999,
       999,
     ).millisecondsSinceEpoch;
-
-    // final lastMomentOfToday = DateTime.now()
-    //     .add(
-    //       const Duration(
-    //         hours: 23,
-    //         seconds: 59,
-    //         milliseconds: 999,
-    //         microseconds: 999,
-    //       ),
-    //     )
-    //     .millisecondsSinceEpoch;
 
     // querying nested objects from https://isar.dev/queries.html#embedded-objects
     final matches = await _isarWrapper.db.matchLocalEntitys
