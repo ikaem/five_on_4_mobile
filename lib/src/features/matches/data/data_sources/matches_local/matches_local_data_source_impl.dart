@@ -23,19 +23,38 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
+  Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
+    required int playerId,
+  }) async {
+    return [];
+  }
+
+  @override
   Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
     required int playerId,
   }) async {
-    final lastMomentOfToday = DateTime.now()
-        .add(
-          const Duration(
-            hours: 23,
-            seconds: 59,
-            milliseconds: 999,
-            microseconds: 999,
-          ),
-        )
-        .millisecondsSinceEpoch;
+    final now = DateTime.now();
+    final lastMomentOfToday = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      23,
+      59,
+      59,
+      999,
+      999,
+    ).millisecondsSinceEpoch;
+
+    // final lastMomentOfToday = DateTime.now()
+    //     .add(
+    //       const Duration(
+    //         hours: 23,
+    //         seconds: 59,
+    //         milliseconds: 999,
+    //         microseconds: 999,
+    //       ),
+    //     )
+    //     .millisecondsSinceEpoch;
 
     // querying nested objects from https://isar.dev/queries.html#embedded-objects
     final matches = await _isarWrapper.db.matchLocalEntitys

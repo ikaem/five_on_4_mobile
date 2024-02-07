@@ -8,4 +8,8 @@ abstract interface class MatchesLocalDataSource {
   Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
     required int playerId,
   });
+
+  Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
+    required int playerId,
+  });
 }
