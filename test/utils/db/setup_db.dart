@@ -10,14 +10,10 @@ import "package:path/path.dart" as path;
 /// Sets up a test database using Isar.
 ///
 /// This function
-///
 /// - initializes a test database in the current directory,
 /// using the specified database name for testing.
-///
 /// - after each test it clears the database.
-///
 /// - after all tests it closes the database and deletes it.
-///
 /// - returns an instance of the IsarWrapper for the test database.
 IsarWrapper setupTestDb() {
   // The directory where the database will be created.

@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/data/entities/isar_local/isar_local_entity.dart';
 import 'package:isar/isar.dart';
 
 part "auth_data_entity.g.dart";
 
 // TODO rename this to AuthDataLocalEntity
-@collection
-class AuthDataEntity implements IsarLocalEntity {
+@Collection(inheritance: false)
+class AuthDataEntity extends Equatable implements IsarLocalEntity {
   AuthDataEntity({
     required this.playerInfo,
     required this.teamInfo,
@@ -13,15 +14,24 @@ class AuthDataEntity implements IsarLocalEntity {
 
   /// Only local id - not related in any way to remote server db
   // final Id id = Isar.autoIncrement;
+  // TODO we could possibly always hardcode this to 1? to make sure only one player exists?
   Id? id;
 
   final AuthDataPlayerInfoEntity playerInfo;
   final AuthDataTeamInfoEntity teamInfo;
+
+  @ignore
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        playerInfo,
+        teamInfo,
+      ];
 }
 
-@embedded
-class AuthDataPlayerInfoEntity {
-  AuthDataPlayerInfoEntity({
+@Embedded(inheritance: false)
+class AuthDataPlayerInfoEntity extends Equatable {
+  const AuthDataPlayerInfoEntity({
     this.id,
     this.firstName,
     this.lastName,
@@ -29,20 +39,36 @@ class AuthDataPlayerInfoEntity {
   });
 
   /// Actual player id from remote server db
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? nickName;
+  final int? id;
+  final String? firstName;
+  final String? lastName;
+  final String? nickName;
+
+  @ignore
+  @override
+  List<Object?> get props => [
+        id,
+        firstName,
+        lastName,
+        nickName,
+      ];
 }
 
-@embedded
-class AuthDataTeamInfoEntity {
-  AuthDataTeamInfoEntity({
+@Embedded(inheritance: false)
+class AuthDataTeamInfoEntity extends Equatable {
+  const AuthDataTeamInfoEntity({
     this.id,
     this.teamName,
   });
 
   /// Actual team id from remote server db
-  int? id;
-  String? teamName;
+  final int? id;
+  final String? teamName;
+
+  @ignore
+  @override
+  List<Object?> get props => [
+        id,
+        teamName,
+      ];
 }
