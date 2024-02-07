@@ -109,6 +109,9 @@ void main() {
               const playerId = 999;
               const someOtherPlayerId = 2;
 
+              // TODO abstract and shorten this for all by inserting all matches at once in a helper function
+              // and then the function should return the matches that we will compare to tesult - base on argument we give it
+
               final testMatchesToday = _generatePlayerTestMatches(
                 playerId: playerId,
                 matchesCount: 2,

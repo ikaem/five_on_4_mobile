@@ -1,7 +1,8 @@
 // TODO use freezed or equatable later
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 
-class MatchModel {
+class MatchModel extends Equatable {
   const MatchModel({
     required this.id,
     required this.date,
@@ -9,6 +10,7 @@ class MatchModel {
     required this.location,
     required this.organizer,
     required this.arrivingPlayers,
+    required this.description,
   });
 
   final int id;
@@ -17,5 +19,15 @@ class MatchModel {
   final String location;
   final String organizer;
   final List<PlayerModel> arrivingPlayers;
-  // TODO add match description field here and into entitiry
+  final String description;
+
+  @override
+  List<Object?> get props => [
+        id,
+        date,
+        name,
+        location,
+        organizer,
+        arrivingPlayers,
+      ];
 }

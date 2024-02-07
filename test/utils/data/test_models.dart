@@ -44,6 +44,7 @@ MatchModel getTestMatchModel({
   String name = "testName",
   String organizer = "testOrganizer",
   String location = "testLocation",
+  String description = "testDescription",
   DateTime? date,
   List<PlayerModel> arrivingPlayers = const [],
 }) {
@@ -54,6 +55,7 @@ MatchModel getTestMatchModel({
     location: location,
     date: date ?? DateTime.now(),
     arrivingPlayers: arrivingPlayers,
+    description: description,
   );
 }
 
@@ -62,6 +64,7 @@ List<MatchModel> getTestMatchesModels({
   String namesPrefix = "test_",
   String organizer = "test_organizer",
   String location = "test_location",
+  String description = "test_description",
   DateTime? date,
   List<PlayerModel> arrivingPlayers = const [],
 }) {
@@ -73,6 +76,7 @@ List<MatchModel> getTestMatchesModels({
         name: "${namesPrefix}name$index",
         organizer: organizer,
         location: location,
+        description: description,
         date: date ?? DateTime.now(),
         arrivingPlayers: arrivingPlayers,
       );

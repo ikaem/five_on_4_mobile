@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
@@ -10,32 +11,25 @@ import '../../../../../../../utils/data/test_entities.dart';
 void main() {
   final matchesLocalDataSource = _MockMatchesLocalDataSource();
   final matchesRemoteDataSource = _MockMatchesRemoteDataSource();
+  final authStatusDataSource = _MockAuthStatusDataSource();
 
-  final testMatches = getTestMatchRemoteEntities();
+  final testRemoteMatches = getTestMatchRemoteEntities();
+  final testLocalMatches = MatchesConverter.fromRemoteEntitiesToLocalEntities(
+      matchesRemote: testRemoteMatches);
+  final testModelMatches = MatchesConverter.fromLocalEntitiesToModels(
+    matchesLocal: testLocalMatches,
+  );
 
   final matchesRepository = MatchesRepositoryImpl(
     matchesLocalDataSource: matchesLocalDataSource,
     matchesRemoteDataSource: matchesRemoteDataSource,
+    authStatusDataSource: authStatusDataSource,
   );
-
-  setUp(() {
-    // remote data source
-    when(
-      () => matchesRemoteDataSource.getMyFollowingMatches(),
-    ).thenAnswer(
-      (_) async => testMatches,
-    );
-
-    // local data source
-    when(() =>
-            matchesLocalDataSource.saveMatches(matches: any(named: "matches")))
-        .thenAnswer(
-            (invocation) async => testMatches.map((e) => e.id).toList());
-  });
 
   tearDown(() {
     reset(matchesLocalDataSource);
     reset(matchesRemoteDataSource);
+    reset(authStatusDataSource);
   });
 
   group(
@@ -44,6 +38,26 @@ void main() {
       group(
         ".loadMyMatches",
         () {
+          setUp(
+            () {
+              // remote data source
+              when(
+                () => matchesRemoteDataSource.getMyFollowingMatches(),
+              ).thenAnswer(
+                (_) async => testRemoteMatches,
+              );
+
+              // local data source
+              when(
+                () => matchesLocalDataSource.saveMatches(
+                  matches: any(named: "matches"),
+                ),
+              ).thenAnswer(
+                (invocation) async =>
+                    testRemoteMatches.map((e) => e.id).toList(),
+              );
+            },
+          );
           test(
             "given nothing in particular"
             "when .loadMyMatches() is called"
@@ -66,15 +80,55 @@ void main() {
 
               verify(
                 () => matchesLocalDataSource.saveMatches(
-                  matches: MatchesConverter.fromRemoteEntitiesToLocalEntities(
-                    matchesRemote: testMatches,
-                  ),
+                  matches: testLocalMatches,
                 ),
               ).called(1);
             },
           );
         },
       );
+    },
+  );
+
+  group(
+    ".getMyTodayMatches",
+    () {
+      setUp(
+        () {
+          // matches local data source
+          // when(
+          //   () => matchesLocalDataSource.getTodayMatchesForPlayer(
+          //     playerId: any(named: "playerId"),
+          //   ),
+          // ).thenAnswer(
+          //   (invocation) async => testLocalMatches,
+          // );
+        },
+      );
+      test(
+        "given a logged in player exists "
+        "when getMyTodayMatches()"
+        "should return today's matches retrieved from the local data source",
+        () {
+          when(
+            () => matchesLocalDataSource.getTodayMatchesForPlayer(
+              playerId: any(named: "playerId"),
+            ),
+          ).thenAnswer(
+            (invocation) async => testLocalMatches,
+          );
+          // auth status data source
+          when(
+            () => authStatusDataSource.authDataStatus,
+          ).thenReturn(testAuthDataEntity);
+
+          final matches = matchesRepository.getMyTodayMatches();
+
+          expect(matches, equals(testLocalMatches));
+        },
+      );
+
+      // throw exception when no logged in player exists
     },
   );
 }
@@ -84,3 +138,5 @@ class _MockMatchesLocalDataSource extends Mock
 
 class _MockMatchesRemoteDataSource extends Mock
     implements MatchesRemoteDataSource {}
+
+class _MockAuthStatusDataSource extends Mock implements AuthStatusDataSource {}
