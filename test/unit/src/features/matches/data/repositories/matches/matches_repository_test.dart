@@ -63,17 +63,12 @@ void main() {
             "should pass remote matches retrieved from remote data source to the local data source",
             () async {
               await matchesRepository.loadMyMatches();
-              final convertedMatchLocalEntities =
-                  MatchesConverter.fromRemoteEntitiesToLocalEntities(
-                      matchesRemote: testMatches);
-
-              await matchesLocalDataSource.saveMatches(
-                matches: convertedMatchLocalEntities,
-              );
 
               verify(
                 () => matchesLocalDataSource.saveMatches(
-                  matches: convertedMatchLocalEntities,
+                  matches: MatchesConverter.fromRemoteEntitiesToLocalEntities(
+                    matchesRemote: testMatches,
+                  ),
                 ),
               ).called(1);
             },
