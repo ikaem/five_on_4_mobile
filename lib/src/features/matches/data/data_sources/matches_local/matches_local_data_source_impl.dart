@@ -23,6 +23,35 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
+  Future<List<MatchLocalEntity>> getPastMatchesForPlayer({
+    required int playerId,
+  }) async {
+    final today = DateTime.now();
+    final firstMomentOfToday = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      0,
+      0,
+      0,
+      0,
+      0,
+    ).millisecondsSinceEpoch;
+
+    final matches = await _isarWrapper.db.matchLocalEntitys
+        .where()
+        .dateLessThan(firstMomentOfToday)
+        .filter()
+        .arrivingPlayersElement(
+      (q) {
+        return q.playerIdEqualTo(playerId);
+      },
+    ).findAll();
+
+    return matches;
+  }
+
+  @override
   Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
     required int playerId,
   }) async {
