@@ -2,6 +2,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:isar/isar.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
@@ -20,38 +21,27 @@ void main() {
   group(
     "MatchesLocalDataSource",
     () {
-      // group(
-      //   ".saveMatches()",
-      //   () {
-      //     test(
-      //       "given a list of [MatchLocalEntity]s"
-      //       "when '.saveMatches() is called"
-      //       "should save the matches to the database",
-      //       () async {
-      //         final testMatches = getTestMatchLocalEntities(count: 3);
-      //         final ids = testMatches.map((match) => match.id).toList();
+      group(
+        ".saveMatches()",
+        () {
+          test(
+            "given a list of [MatchLocalEntity]s"
+            "when '.saveMatches() is called"
+            "should save the matches to the database",
+            () async {
+              final testMatches = getTestMatchLocalEntities(count: 3);
+              final ids = testMatches.map((match) => match.id).toList();
 
-      //         when(
-      //           () => isarWrapper.putEntities<MatchLocalEntity>(
-      //             entities: any(named: "entities"),
-      //           ),
-      //         ).thenAnswer(
-      //           (invocation) async => ids,
-      //         );
+              await matchesLocalDataSource.saveMatches(matches: testMatches);
 
-      //         final result = await matchesLocalDataSource.saveMatches(
-      //             matches: testMatches);
+              final result =
+                  await isarWrapper.db.matchLocalEntitys.where().findAll();
 
-      //         verify(
-      //           () => isarWrapper.putEntities(
-      //             entities: testMatches,
-      //           ),
-      //         ).called(1);
-      //         expect(result, equals(ids));
-      //       },
-      //     );
-      //   },
-      // );
+              expect(result, equals(testMatches));
+            },
+          );
+        },
+      );
 
       group(
         ".getFollowingMatchesForPlayer()",
