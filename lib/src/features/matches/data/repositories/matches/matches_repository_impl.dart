@@ -31,9 +31,9 @@ class MatchesRepositoryImpl implements MatchesRepository {
   }
 
   @override
-  Future<List<MatchModel>> getMyMatches() async {
-    final auth = _authStatusDataSource.authDataStatus;
-    if (auth == null) {
+  Future<List<MatchModel>> getMyTodayMatches() async {
+    final playerId = _authStatusDataSource.playerId;
+    if (playerId == null) {
       // TODO log error
       // TODO also this should logout the user
       // TODO
@@ -42,7 +42,16 @@ class MatchesRepositoryImpl implements MatchesRepository {
       - the controller should pick it up
       - then if there is this error - controller should do what? somehow logout? call use case of logout?
        */
+      // TODO make concrete exception here
       throw Exception("User is not authenticated");
     }
+
+    final matchesLocal = await _matchesLocalDataSource.getTodayMatchesForPlayer(
+        playerId: playerId);
+
+    final modelMatches =
+        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+
+    return modelMatches;
   }
 }

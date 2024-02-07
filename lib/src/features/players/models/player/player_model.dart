@@ -1,5 +1,7 @@
-class PlayerModel {
-  PlayerModel({
+import 'package:equatable/equatable.dart';
+
+class PlayerModel extends Equatable {
+  const PlayerModel({
     required this.id,
     required this.name,
     required this.avatarUri,
@@ -13,4 +15,12 @@ class PlayerModel {
   // TODO we will see if if we need these
   // final int teamId;
   // final int matchId;
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        avatarUri,
+        nickname,
+      ];
 }

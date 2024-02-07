@@ -93,23 +93,11 @@ void main() {
   group(
     ".getMyTodayMatches",
     () {
-      setUp(
-        () {
-          // matches local data source
-          // when(
-          //   () => matchesLocalDataSource.getTodayMatchesForPlayer(
-          //     playerId: any(named: "playerId"),
-          //   ),
-          // ).thenAnswer(
-          //   (invocation) async => testLocalMatches,
-          // );
-        },
-      );
       test(
         "given a logged in player exists "
         "when getMyTodayMatches()"
         "should return today's matches retrieved from the local data source",
-        () {
+        () async {
           when(
             () => matchesLocalDataSource.getTodayMatchesForPlayer(
               playerId: any(named: "playerId"),
@@ -119,12 +107,12 @@ void main() {
           );
           // auth status data source
           when(
-            () => authStatusDataSource.authDataStatus,
-          ).thenReturn(testAuthDataEntity);
+            () => authStatusDataSource.playerId,
+          ).thenReturn(1);
 
-          final matches = matchesRepository.getMyTodayMatches();
+          final matches = await matchesRepository.getMyTodayMatches();
 
-          expect(matches, equals(testLocalMatches));
+          expect(matches, equals(testModelMatches));
         },
       );
 
