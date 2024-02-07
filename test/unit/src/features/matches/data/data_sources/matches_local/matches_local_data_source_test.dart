@@ -43,6 +43,61 @@ void main() {
         },
       );
 
+      group(".getPastMatchesForPlayer()", () {
+        test(
+          "given user joined 2 matches yesterday"
+          "when .getPastMatchesForPlayer is called"
+          "should retrieve current users matches from the database",
+          () async {
+            const playerId = 999;
+            const someOtherPlayerId = 2;
+
+            final testMatchesToday = _generatePlayerTestMatches(
+              playerId: playerId,
+              matchesCount: 2,
+              playersPerMatchCount: 5,
+              initialMatchDate: DateTime.now(),
+              initialMatchId: 0,
+            );
+
+            final anotherPlayerMatchesToday = _generatePlayerTestMatches(
+              playerId: someOtherPlayerId,
+              matchesCount: 2,
+              playersPerMatchCount: 5,
+              initialMatchDate: DateTime.now(),
+              initialMatchId: 2,
+            );
+
+            final testMatchesYesterday = _generatePlayerTestMatches(
+              playerId: playerId,
+              matchesCount: 2,
+              playersPerMatchCount: 5,
+              initialMatchDate: DateTime.now().subtract(
+                const Duration(days: 1),
+              ),
+              initialMatchId: 4,
+            );
+
+            final allMatches = testMatchesToday +
+                testMatchesYesterday +
+                anotherPlayerMatchesToday;
+
+            // add matches to db manually
+            await isarWrapper.db.writeTxn(() async {
+              await isarWrapper.db
+                  .collection<MatchLocalEntity>()
+                  .putAll(allMatches);
+            });
+
+            final result = await matchesLocalDataSource.getPastMatchesForPlayer(
+              playerId: playerId,
+            );
+
+            expect(result, equals(testMatchesYesterday));
+          },
+        );
+      });
+
       group(
         ".getTodayMatchesForPlayer()",
         () {
@@ -77,7 +132,7 @@ void main() {
                 initialMatchDate: DateTime.now().add(
                   const Duration(days: 1),
                 ),
-                initialMatchId: 2,
+                initialMatchId: 4,
               );
 
               final allMatches = testMatchesToday +
