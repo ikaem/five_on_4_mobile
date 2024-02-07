@@ -44,6 +44,65 @@ void main() {
       );
 
       group(
+        ".getTodayMatchesForPlayer()",
+        () {
+          test(
+            "given user joined 2 matches today"
+            "when .getTodayMatchesForPlayer is called "
+            "should retrieve current users matches from the database",
+            () async {
+              const playerId = 999;
+              const someOtherPlayerId = 2;
+
+              final testMatchesToday = _generatePlayerTestMatches(
+                playerId: playerId,
+                matchesCount: 2,
+                playersPerMatchCount: 5,
+                initialMatchDate: DateTime.now(),
+                initialMatchId: 0,
+              );
+
+              final anotherPlayerMatchesToday = _generatePlayerTestMatches(
+                playerId: someOtherPlayerId,
+                matchesCount: 2,
+                playersPerMatchCount: 5,
+                initialMatchDate: DateTime.now(),
+                initialMatchId: 2,
+              );
+
+              final testMatchesTomorrow = _generatePlayerTestMatches(
+                playerId: playerId,
+                matchesCount: 2,
+                playersPerMatchCount: 5,
+                initialMatchDate: DateTime.now().add(
+                  const Duration(days: 1),
+                ),
+                initialMatchId: 2,
+              );
+
+              final allMatches = testMatchesToday +
+                  testMatchesTomorrow +
+                  anotherPlayerMatchesToday;
+
+              // add matches to db manually
+              await isarWrapper.db.writeTxn(() async {
+                await isarWrapper.db
+                    .collection<MatchLocalEntity>()
+                    .putAll(allMatches);
+              });
+
+              final result =
+                  await matchesLocalDataSource.getTodayMatchesForPlayer(
+                playerId: playerId,
+              );
+
+              expect(result, equals(testMatchesToday));
+            },
+          );
+        },
+      );
+
+      group(
         ".getFollowingMatchesForPlayer()",
         () {
           test(
@@ -51,6 +110,7 @@ void main() {
             "when .getFollowingMatchesForPlayer() is called"
             "should retrieve current users matches starting from tomorrow from the database",
             () async {
+              // TODO simplify or shorten this somehow
               const playerId = 999;
               const nonPlayerId = 2;
               // generate todays matches
