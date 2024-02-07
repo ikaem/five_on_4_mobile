@@ -7,8 +7,8 @@ import 'package:isar/isar.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/db/setup_db.dart';
-import '../../../../../../../utils/secure_storage/setup_secure_storage.dart';
+import '../../../../../../../utils/helpers/db/setup_db.dart';
+import '../../../../../../../utils/helpers/secure_storage/setup_secure_storage.dart';
 
 void main() {
   final isarWrapper = setupTestDb();

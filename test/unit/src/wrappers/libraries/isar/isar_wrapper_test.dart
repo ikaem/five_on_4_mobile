@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';
 
 import '../../../../../utils/data/test_entities.dart';
-import '../../../../../utils/db/setup_db.dart';
+import '../../../../../utils/helpers/db/setup_db.dart';
 
 // TODO here we should test some other stuff - maybe not directly putting stuff to db, but possibly
 // - can open correctly

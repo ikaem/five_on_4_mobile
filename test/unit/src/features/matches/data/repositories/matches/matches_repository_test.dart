@@ -117,6 +117,19 @@ void main() {
       );
 
       // throw exception when no logged in player exists
+      test(
+        "given a logged in player DOES NOT exist "
+        "when getMyTodayMatches()"
+        "should throw AuthStatusNotLoggedInException",
+        () async {
+          // auth status data source
+          when(
+            () => authStatusDataSource.playerId,
+          ).thenReturn(null);
+
+          final matches = await matchesRepository.getMyTodayMatches();
+        },
+      );
     },
   );
 }

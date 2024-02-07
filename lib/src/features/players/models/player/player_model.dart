@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 
 class PlayerModel extends Equatable {
   const PlayerModel({

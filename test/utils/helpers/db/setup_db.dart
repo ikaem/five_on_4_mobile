@@ -57,8 +57,8 @@ Future<Directory> _getIsarLibsDir() async {
       .toString()
       .trim();
 
-  final Directory libsDir =
-      Directory(path.join(projectRootPath, "test", "utils", "db", "libs"));
+  final Directory libsDir = Directory(
+      path.join(projectRootPath, "test", "utils", "helpers", "db", "libs"));
 
   return libsDir;
 }

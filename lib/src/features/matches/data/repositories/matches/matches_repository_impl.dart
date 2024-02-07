@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -43,7 +44,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
       - then if there is this error - controller should do what? somehow logout? call use case of logout?
        */
       // TODO make concrete exception here
-      throw Exception("User is not authenticated");
+      throw const AuthNotLoggedInException();
     }
 
     final matchesLocal = await _matchesLocalDataSource.getTodayMatchesForPlayer(
