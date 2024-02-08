@@ -129,11 +129,62 @@ void main() {
           // Given
           when(
             () => authStatusDataSource.playerId,
-          ).thenReturn(null);
+          ).thenReturn(1);
 
           // When & Then
           expect(
             () => matchesRepository.getMyTodayMatches(),
+            throwsAuthExceptionWithMessage(
+              "User is not logged in",
+            ),
+          );
+        },
+      );
+    },
+  );
+
+  group(
+    ".getMyPastMatches",
+    () {
+      test(
+        "given a logged in player exists "
+        "when getMyPastMatches()"
+        "should return past matches retrieved from the local data source",
+        () async {
+          when(
+            () => matchesLocalDataSource.getPastMatchesForPlayer(
+              playerId: any(named: "playerId"),
+            ),
+          ).thenAnswer(
+            (invocation) async => testLocalMatches,
+          );
+          // auth status data source
+          when(
+            () => authStatusDataSource.playerId,
+          ).thenReturn(1);
+
+          final matches = await matchesRepository.getMyPastMatches();
+
+          expect(matches, equals(testModelMatches));
+        },
+      );
+
+      // throw exception when no logged in player exists
+      test(
+        "given a logged in player DOES NOT exist "
+        "when getMyPastMatches()"
+        "should throw AuthStatusNotLoggedInException",
+        () async {
+          // auth status data source
+
+          // Given
+          when(
+            () => authStatusDataSource.playerId,
+          ).thenReturn(null);
+
+          // When & Then
+          expect(
+            () => matchesRepository.getMyPastMatches(),
             throwsAuthExceptionWithMessage(
               "User is not logged in",
             ),

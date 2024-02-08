@@ -93,7 +93,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
-  Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
+  Future<List<MatchLocalEntity>> getUpcomingMatchesForPlayer({
     required int playerId,
   }) async {
     final now = DateTime.now();

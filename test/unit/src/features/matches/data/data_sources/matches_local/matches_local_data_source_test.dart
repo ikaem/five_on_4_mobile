@@ -224,7 +224,7 @@ void main() {
 
               // result should be of lenght 6 - 3 matches from tomorrow and 3 matches from after tomorrow
               final result =
-                  await matchesLocalDataSource.getFollowingMatchesForPlayer(
+                  await matchesLocalDataSource.getUpcomingMatchesForPlayer(
                 playerId: playerId,
               );
 

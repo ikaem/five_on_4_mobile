@@ -6,7 +6,7 @@ abstract interface class MatchesLocalDataSource {
   });
 
   // TODO these could all probably be abstracted into one function with a parameter for the type of match
-  Future<List<MatchLocalEntity>> getFollowingMatchesForPlayer({
+  Future<List<MatchLocalEntity>> getUpcomingMatchesForPlayer({
     required int playerId,
   });
 

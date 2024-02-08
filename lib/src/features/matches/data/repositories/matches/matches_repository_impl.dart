@@ -47,4 +47,21 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
     return modelMatches;
   }
+
+  @override
+  Future<List<MatchModel>> getMyPastMatches() async {
+    final playerId = _authStatusDataSource.playerId;
+    if (playerId == null) {
+      // TODO responsible controller here should have access to logoutusecase, and use it to logout
+      throw const AuthNotLoggedInException();
+    }
+
+    final matchesLocal = await _matchesLocalDataSource.getPastMatchesForPlayer(
+        playerId: playerId);
+
+    final modelMatches =
+        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+
+    return modelMatches;
+  }
 }
