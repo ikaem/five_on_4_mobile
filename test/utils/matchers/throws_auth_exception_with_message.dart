@@ -4,7 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 Matcher throwsAuthExceptionWithMessage<T extends AuthException>(
   String message,
 ) {
-  return _AuthExceptionWithMessageMatcher<T>(message);
+  // return _AuthExceptionWithMessageMatcher<T>(message);
+  return Throws(wrapMatcher(_AuthExceptionWithMessageMatcher(message)));
 }
 
 class _AuthExceptionWithMessageMatcher<T extends AuthException>

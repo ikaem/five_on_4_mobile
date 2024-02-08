@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/matchers/throws_auth_exception_with_message.dart';
 
 void main() {
   final matchesLocalDataSource = _MockMatchesLocalDataSource();
@@ -109,7 +110,7 @@ void main() {
           // auth status data source
           when(
             () => authStatusDataSource.playerId,
-          ).thenReturn(1);
+          ).thenReturn(null);
 
           final matches = await matchesRepository.getMyTodayMatches();
 
@@ -131,18 +132,12 @@ void main() {
           ).thenReturn(null);
 
           // When & Then
-
-          try {
-            final matches = await matchesRepository.getMyTodayMatches();
-          } catch (e) {
-            if (e is! AuthNotLoggedInException) {
-              // fail("Expected AuthNotLoggedInException but got $e");
-              return;
-            }
-
-            // if()
-            print(e);
-          }
+          expect(
+            () => matchesRepository.getMyTodayMatches(),
+            throwsAuthExceptionWithMessage(
+              "User is not logged in",
+            ),
+          );
         },
       );
     },
