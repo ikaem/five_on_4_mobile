@@ -23,6 +23,11 @@ void main() {
       (_) async => testMatches,
     );
   });
+
+  tearDown(() {
+    reset(matchesRepository);
+  });
+
   group(
     "GetMyTodayMatchesUseCase",
     () {
@@ -41,6 +46,18 @@ void main() {
           );
 
           // test repo is used
+          test(
+            "given use case is instantiated "
+            "when call() is called"
+            "then should call matches repository ",
+            () async {
+              final result = await getMyTodayMatchesUseCase();
+
+              verify(
+                () => matchesRepository.getMyTodayMatches(),
+              ).called(1);
+            },
+          );
         },
       );
     },
