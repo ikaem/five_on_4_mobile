@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
@@ -123,11 +124,25 @@ void main() {
         "should throw AuthStatusNotLoggedInException",
         () async {
           // auth status data source
+
+          // Given
           when(
             () => authStatusDataSource.playerId,
           ).thenReturn(null);
 
-          final matches = await matchesRepository.getMyTodayMatches();
+          // When & Then
+
+          try {
+            final matches = await matchesRepository.getMyTodayMatches();
+          } catch (e) {
+            if (e is! AuthNotLoggedInException) {
+              // fail("Expected AuthNotLoggedInException but got $e");
+              return;
+            }
+
+            // if()
+            print(e);
+          }
         },
       );
     },

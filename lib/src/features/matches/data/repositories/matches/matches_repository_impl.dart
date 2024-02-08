@@ -35,15 +35,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
   Future<List<MatchModel>> getMyTodayMatches() async {
     final playerId = _authStatusDataSource.playerId;
     if (playerId == null) {
-      // TODO log error
-      // TODO also this should logout the user
-      // TODO
-      /* 
-      - we could potentially throw specific exeption here 
-      - the controller should pick it up
-      - then if there is this error - controller should do what? somehow logout? call use case of logout?
-       */
-      // TODO make concrete exception here
+      // TODO responsible controller here should have access to logoutusecase, and use it to logout
       throw const AuthNotLoggedInException();
     }
 
