@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/domain/repositories_interfaces.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
 
 class LoadMyMatchesUseCase {
   LoadMyMatchesUseCase({

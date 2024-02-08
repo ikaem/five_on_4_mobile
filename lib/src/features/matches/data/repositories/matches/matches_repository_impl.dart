@@ -3,7 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_except
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/repositories_interfaces.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 
 class MatchesRepositoryImpl implements MatchesRepository {
@@ -58,6 +58,23 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
     final matchesLocal = await _matchesLocalDataSource.getPastMatchesForPlayer(
         playerId: playerId);
+
+    final modelMatches =
+        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+
+    return modelMatches;
+  }
+
+  @override
+  Future<List<MatchModel>> getMyUpcomingMatches() async {
+    final playerId = _authStatusDataSource.playerId;
+    if (playerId == null) {
+      // TODO responsible controller here should have access to logoutusecase, and use it to logout
+      throw const AuthNotLoggedInException();
+    }
+
+    final matchesLocal = await _matchesLocalDataSource
+        .getUpcomingMatchesForPlayer(playerId: playerId);
 
     final modelMatches =
         MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);

@@ -193,6 +193,57 @@ void main() {
       );
     },
   );
+
+  group(
+    ".getMyUpcomingMatches",
+    () {
+      test(
+        "given a logged in player exists "
+        "when getMyUpcomingMatches()"
+        "should return upcoming matches retrieved from the local data source",
+        () async {
+          when(
+            () => matchesLocalDataSource.getUpcomingMatchesForPlayer(
+              playerId: any(named: "playerId"),
+            ),
+          ).thenAnswer(
+            (invocation) async => testLocalMatches,
+          );
+          // auth status data source
+          when(
+            () => authStatusDataSource.playerId,
+          ).thenReturn(1);
+
+          final matches = await matchesRepository.getMyUpcomingMatches();
+
+          expect(matches, equals(testModelMatches));
+        },
+      );
+
+      // throw exception when no logged in player exists
+      test(
+        "given a logged in player DOES NOT exist "
+        "when getMyUpcomingMatches()"
+        "should throw AuthStatusNotLoggedInException",
+        () async {
+          // auth status data source
+
+          // Given
+          when(
+            () => authStatusDataSource.playerId,
+          ).thenReturn(null);
+
+          // When & Then
+          expect(
+            () => matchesRepository.getMyUpcomingMatches(),
+            throwsAuthExceptionWithMessage(
+              "User is not logged in",
+            ),
+          );
+        },
+      );
+    },
+  );
 }
 
 class _MockMatchesLocalDataSource extends Mock
