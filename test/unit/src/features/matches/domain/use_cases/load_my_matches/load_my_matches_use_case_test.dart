@@ -24,20 +24,24 @@ void main() {
   group(
     "LoadMyMatchesUseCase",
     () {
-      group(".call()", () {
-        test(
-          "given nothing in particular"
-          "when useCase is called"
-          "should call repository to load matches",
-          () async {
-            await loadMyMatchesUseCase();
+      group(
+        ".call()",
+        () {
+          test(
+            "given nothing in particular"
+            "when call() is called"
+            "should call repository to load matches",
+            () async {
+              await loadMyMatchesUseCase();
 
-            verify(
-              () => matchesRepository.loadMyMatches(),
-            ).called(1);
-          },
-        );
-      });
+              verify(
+                () => matchesRepository.loadMyMatches(),
+              ).called(1);
+            },
+          );
+        },
+      );
+      // test repo is used
     },
   );
 }
