@@ -25,6 +25,7 @@ void main() {
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: false,
+                      isSyncing: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -52,6 +53,7 @@ void main() {
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: false,
+                      isSyncing: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -79,6 +81,7 @@ void main() {
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: false,
+                      isSyncing: false,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -108,6 +111,7 @@ void main() {
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: true,
+                      isSyncing: false,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -124,6 +128,38 @@ void main() {
                 },
               );
               expect(circularLoadingStatus, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given 'isSyncing' argument is set to true "
+            "when the widget is rendered "
+            "then should show LoadingStatus widget with expected arguments",
+            (widgetTester) async {
+              final matches = getTestMatchesModels();
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: true,
+                      isToday: true, // irrelevant for this test,
+                      matches: matches,
+                    ),
+                  ),
+                ),
+              );
+
+              final linearLoadingStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! LoadingStatus) return false;
+                  if (!widget.isLinear) return false;
+
+                  return true;
+                },
+              );
+              expect(linearLoadingStatus, findsOneWidget);
             },
           );
         },
