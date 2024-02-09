@@ -4,12 +4,14 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_to
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_state_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_my_today_matches_controller.g.dart";
+
+// TODO maybe its better to have a controller that will retrieve all today, past and future matches in one place at the same time
 
 // TODO make interface for controllers
 // - force dispose method on them
@@ -27,7 +29,7 @@ class GetMyTodayMatchesController extends _$GetMyTodayMatchesController {
   }
 
   @override
-  Future<MatchesStateValue> build() async {
+  Future<MatchesControllerStateValue> build() async {
     handleDispose();
     // If this method throws or returns a future that fails, the error will be caught and an [AsyncError] will be emitted. -> official docs
 
@@ -41,12 +43,12 @@ class GetMyTodayMatchesController extends _$GetMyTodayMatchesController {
   }
 
   // Getting data from db
-  Future<MatchesStateValue> _getDataFromDb({
+  Future<MatchesControllerStateValue> _getDataFromDb({
     required bool isRemoteFetchDone,
   }) async {
     final data = await getMyTodayMatchesUseCase();
 
-    final stateValue = MatchesStateValue(
+    final stateValue = MatchesControllerStateValue(
       isRemoteFetchDone: isRemoteFetchDone,
       matches: data,
     );

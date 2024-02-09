@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_view.dart';
@@ -24,7 +25,11 @@ void main() {
                 const MaterialApp(
                   home: Scaffold(
                     body: HomeView(
-                      matchesToday: [],
+                      matchesToday: MatchesUIStateValue(
+                        isLoading: false,
+                        isSyncing: false,
+                        matches: [],
+                      ),
                       matchesFollowing: [],
                     ),
                   ),
@@ -57,7 +62,11 @@ void main() {
                   MaterialApp(
                     home: Scaffold(
                       body: HomeView(
-                        matchesToday: matchesToday,
+                        matchesToday: MatchesUIStateValue(
+                          isLoading: false,
+                          isSyncing: false,
+                          matches: matchesToday,
+                        ),
                         matchesFollowing: matchesFollowing,
                       ),
                     ),

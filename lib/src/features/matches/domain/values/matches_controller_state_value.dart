@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 
-class MatchesStateValue extends Equatable {
-  const MatchesStateValue({
+class MatchesControllerStateValue extends Equatable {
+  const MatchesControllerStateValue({
     required this.isRemoteFetchDone,
     required this.matches,
   });
