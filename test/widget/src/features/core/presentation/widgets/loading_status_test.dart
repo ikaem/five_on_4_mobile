@@ -28,7 +28,7 @@ void main() {
         testWidgets(
           "given a widget instance"
           "when when the widget is rendered "
-          "then should should Circular",
+          "then should show CircularProgressIndicator",
           (widgetTester) async {
             // given
             const loadingStatus = LoadingStatus(message: "Loading...");
@@ -41,6 +41,32 @@ void main() {
             expect(
               find.byType(
                 CircularProgressIndicator,
+              ),
+              findsOneWidget,
+            );
+          },
+        );
+
+        testWidgets(
+          "given 'isLinear' argument is set to true "
+          "when when the widget is rendered "
+          "then should show LinearProgressIndicator",
+          (widgetTester) async {
+            // given
+            const loadingStatus = LoadingStatus(
+              message: "Loading...",
+              isLinear: true,
+            );
+
+            // when
+            await widgetTester.pumpWidget(const MaterialApp(
+              home: loadingStatus,
+            ));
+
+            // then
+            expect(
+              find.byType(
+                LinearProgressIndicator,
               ),
               findsOneWidget,
             );
