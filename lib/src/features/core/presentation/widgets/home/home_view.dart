@@ -37,6 +37,7 @@ class HomeView extends StatelessWidget {
           child: HomeEventsContainer(
             isLoading: false,
             isToday: true,
+            isSyncing: false,
             matches: matchesToday,
           ),
         ),
@@ -45,6 +46,7 @@ class HomeView extends StatelessWidget {
           child: HomeEventsContainer(
             isLoading: false,
             isToday: false,
+            isSyncing: false,
             matches: matchesFollowing,
           ),
         ),

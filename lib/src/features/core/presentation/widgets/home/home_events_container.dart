@@ -9,11 +9,13 @@ class HomeEventsContainer extends StatelessWidget {
     required this.isToday,
     required this.matches,
     required this.isLoading,
+    required this.isSyncing,
   });
 
   final bool isToday;
   final bool isLoading;
   final List<MatchModel> matches;
+  final bool isSyncing;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,17 @@ class HomeEventsContainer extends StatelessWidget {
       );
     }
 
-    return HomeEvents(matches: matches);
+    return Column(
+      children: [
+        Expanded(
+          child: HomeEvents(matches: matches),
+        ),
+        const LoadingStatus(
+          message: "Synchronizing with remote data...",
+          isLinear: true,
+        )
+      ],
+    );
   }
 }
 
