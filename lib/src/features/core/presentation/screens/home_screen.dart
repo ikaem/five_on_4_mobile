@@ -33,7 +33,12 @@ class HomeScreen extends ConsumerWidget {
       child: Scaffold(
         body: HomeView(
           matchesToday: matchesToday,
-          matchesFollowing: const [],
+          // TODO temp data
+          matchesFollowing: const MatchesUIStateValue(
+            isLoading: false,
+            isSyncing: false,
+            matches: [],
+          ),
         ),
       ),
     );

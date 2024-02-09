@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
   });
 
   final MatchesUIStateValue matchesToday;
-  final List<MatchModel> matchesFollowing;
+  final MatchesUIStateValue matchesFollowing;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +45,10 @@ class HomeView extends StatelessWidget {
         TabTogglerOptionValue(
           title: "Following",
           child: HomeEventsContainer(
-            isLoading: false,
             isToday: false,
-            isSyncing: false,
-            matches: matchesFollowing,
+            isLoading: matchesFollowing.isLoading,
+            isSyncing: matchesFollowing.isSyncing,
+            matches: matchesFollowing.matches,
           ),
         ),
       ];
