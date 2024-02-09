@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -90,6 +91,35 @@ void main() {
               });
 
               expect(homeEventsFinder, findsOneWidget);
+            },
+          );
+          testWidgets(
+            "given 'isLoading' argument is set to true "
+            "when the widget is rendered "
+            "then should show LoadingStatus widget with expected arguments",
+            (widgetTester) async {
+              final matches = getTestMatchesModels();
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isToday: true, // irrelevant for this test,
+                      matches: matches,
+                    ),
+                  ),
+                ),
+              );
+
+              final circularLoadingStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! LoadingStatus) return false;
+                  if (widget.isLinear) return false;
+
+                  return true;
+                },
+              );
+              expect(circularLoadingStatus, findsOneWidget);
             },
           );
         },
