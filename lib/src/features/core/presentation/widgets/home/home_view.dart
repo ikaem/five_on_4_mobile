@@ -35,6 +35,7 @@ class HomeView extends StatelessWidget {
         TabTogglerOptionValue(
           title: "Today",
           child: HomeEventsContainer(
+            isLoading: false,
             isToday: true,
             matches: matchesToday,
           ),
@@ -42,6 +43,7 @@ class HomeView extends StatelessWidget {
         TabTogglerOptionValue(
           title: "Following",
           child: HomeEventsContainer(
+            isLoading: false,
             isToday: false,
             matches: matchesFollowing,
           ),

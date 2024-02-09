@@ -24,6 +24,7 @@ void main() {
                 const MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -50,6 +51,7 @@ void main() {
                 const MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -76,6 +78,7 @@ void main() {
                 MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -104,6 +107,7 @@ void main() {
                 MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: true,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
