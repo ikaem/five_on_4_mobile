@@ -24,6 +24,28 @@ void main() {
             expect(find.text(message), findsOneWidget);
           },
         );
+
+        testWidgets(
+          "given a widget instance"
+          "when when the widget is rendered "
+          "then should should Circular",
+          (widgetTester) async {
+            // given
+            const loadingStatus = LoadingStatus(message: "Loading...");
+
+            // when
+            await widgetTester
+                .pumpWidget(const MaterialApp(home: loadingStatus));
+
+            // then
+            expect(
+              find.byType(
+                CircularProgressIndicator,
+              ),
+              findsOneWidget,
+            );
+          },
+        );
       },
     );
   });

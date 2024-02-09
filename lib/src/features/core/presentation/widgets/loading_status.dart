@@ -8,7 +8,17 @@ class LoadingStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(message),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(message),
+          const SizedBox(
+            height: 5,
+          ),
+          const CircularProgressIndicator(),
+        ],
+      ),
     );
   }
 }
