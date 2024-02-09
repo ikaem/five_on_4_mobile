@@ -3,13 +3,13 @@ import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_
 
 class MatchesStateValue extends Equatable {
   const MatchesStateValue({
-    required this.isFetchingRemoteData,
+    required this.isRemoteFetchDone,
     required this.matches,
   });
 
-  final bool isFetchingRemoteData;
+  final bool isRemoteFetchDone;
   final List<MatchModel> matches;
 
   @override
-  List<Object> get props => [isFetchingRemoteData, matches];
+  List<Object> get props => [isRemoteFetchDone, matches];
 }

@@ -47,7 +47,7 @@ class GetMyTodayMatchesController extends _$GetMyTodayMatchesController {
     final data = await getMyTodayMatchesUseCase();
 
     final stateValue = MatchesStateValue(
-      isFetchingRemoteData: isRemoteFetchDone,
+      isRemoteFetchDone: isRemoteFetchDone,
       matches: data,
     );
     return stateValue;
