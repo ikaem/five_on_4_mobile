@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
@@ -26,6 +27,7 @@ void main() {
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: false,
+                      isError: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -54,6 +56,7 @@ void main() {
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: false,
+                      isError: false,
                       isToday: isToday,
                       matches: [],
                     ),
@@ -82,6 +85,7 @@ void main() {
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: false,
+                      isError: false,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -112,6 +116,7 @@ void main() {
                     body: HomeEventsContainer(
                       isLoading: true,
                       isSyncing: false,
+                      isError: false,
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -144,6 +149,8 @@ void main() {
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: true,
+                      isError: false,
+                      onRetry: () {},
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -160,6 +167,44 @@ void main() {
                 },
               );
               expect(linearLoadingStatus, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given 'isError' argument is set to true "
+            "when the widget is rendered "
+            "then should show ErrorStatus widget with expected arguments",
+            (widgetTester) async {
+              const isError = true;
+              onRetryCallback() {}
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: false,
+                      isError: isError,
+                      onRetry: onRetryCallback,
+                      isToday: true, // irrelevant for this test,
+                      matches: getTestMatchesModels(),
+                    ),
+                  ),
+                ),
+              );
+
+              final errorStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! ErrorStatus) return false;
+                  if (widget.message !=
+                      "There was an issue retrieving matches") {
+                    return false;
+                  }
+                  if (widget.onRetry != onRetryCallback) return false;
+
+                  return true;
+                },
+              );
             },
           );
         },
