@@ -1,7 +1,7 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_view.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen_view.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,7 +11,7 @@ import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
   group(
-    "HomeView",
+    "$HomeScreenView",
     () {
       group(
         "Layout",
@@ -24,7 +24,7 @@ void main() {
               await widgetTester.pumpWidget(
                 const MaterialApp(
                   home: Scaffold(
-                    body: HomeView(
+                    body: HomeScreenView(
                       matchesToday: MatchesUIStateValue(
                         isLoading: false,
                         isSyncing: false,
@@ -65,7 +65,7 @@ void main() {
                 await widgetTester.pumpWidget(
                   MaterialApp(
                     home: Scaffold(
-                      body: HomeView(
+                      body: HomeScreenView(
                         matchesToday: MatchesUIStateValue(
                           isLoading: false,
                           isSyncing: false,

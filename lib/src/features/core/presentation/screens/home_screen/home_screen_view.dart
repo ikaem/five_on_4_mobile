@@ -1,12 +1,13 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({
+// TODO views are legitimate parts of screens
+class HomeScreenView extends StatelessWidget {
+  const HomeScreenView({
     super.key,
     required this.matchesToday,
     required this.matchesFollowing,

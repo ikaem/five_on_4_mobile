@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_view.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen_view.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_today_matches/provider/get_my_today_matches_controller.dart';
@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: HomeView(
+        body: HomeScreenView(
           matchesToday: matchesToday,
           // TODO temp data
           matchesFollowing: const MatchesUIStateValue(
