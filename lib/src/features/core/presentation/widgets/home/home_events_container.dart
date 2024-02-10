@@ -40,10 +40,11 @@ class HomeEventsContainer extends StatelessWidget {
         Expanded(
           child: HomeEvents(matches: matches),
         ),
-        const LoadingStatus(
-          message: "Synchronizing with remote data...",
-          isLinear: true,
-        )
+        if (isSyncing)
+          const LoadingStatus(
+            message: "Synchronizing with remote data...",
+            isLinear: true,
+          ),
       ],
     );
   }
