@@ -11,17 +11,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_my_matches_controller.g.dart";
 
-// TODO maybe its better to have a controller that will retrieve all today, past and future matches in one place at the same time
-
-// TODO make interface for controllers
-// - force dispose method on them
-// TODO this will probably be changed to getMyMatchesController - to render max 5 of each 3 type of matches:
-// - today
-// - upcoming
-// - past
-// and then it should have three functions inside to fetch more of each type of matches
-// - and these functions should call their respective use cases and update current state
-
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
   late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
@@ -44,6 +33,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     final initialData = await _getDataFromDb(
       isRemoteFetchDone: false,
     );
+    // await Future.delayed(Duration.zero);
     _handleLoadUpdatedData();
 
     return initialData;

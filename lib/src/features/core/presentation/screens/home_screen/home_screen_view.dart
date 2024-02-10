@@ -31,12 +31,7 @@ class MatchesUIStateValue {
 class HomeScreenView extends ConsumerWidget {
   const HomeScreenView({
     super.key,
-    // required this.matchesToday,
-    // required this.matchesFollowing,
   });
-
-  // final MatchesUIStateValue matchesToday;
-  // final MatchesUIStateValue matchesFollowing;
 
   @override
   Widget build(
@@ -65,27 +60,6 @@ class HomeScreenView extends ConsumerWidget {
       ],
     );
   }
-
-  // List<TabTogglerOptionValue> get _togglerOptions => [
-  //       TabTogglerOptionValue(
-  //         title: "Today",
-  //         child: HomeEventsContainer(
-  //           isToday: true,
-  //           isLoading: matchesToday.isLoading,
-  //           isSyncing: matchesToday.isSyncing,
-  //           matches: matchesToday.matches,
-  //         ),
-  //       ),
-  //       TabTogglerOptionValue(
-  //         title: "Following",
-  //         child: HomeEventsContainer(
-  //           isToday: false,
-  //           isLoading: matchesFollowing.isLoading,
-  //           isSyncing: matchesFollowing.isSyncing,
-  //           matches: matchesFollowing.matches,
-  //         ),
-  //       ),
-  //     ];
 
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchesUIStateValue matchesUIState,
