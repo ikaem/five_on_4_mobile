@@ -8,8 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../../../../utils/data/test_models.dart';
 
 void main() {
-  final testPlayers = getTestPlayers();
-  final testMatch = getTestMatch(arrivingPlayers: testPlayers);
+  final testPlayers = getTestPlayersModels();
+  final testMatch = getTestMatchModel(arrivingPlayers: testPlayers);
 
   group(
     "MatchView",

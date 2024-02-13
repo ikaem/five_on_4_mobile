@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import "package:rxdart/rxdart.dart";
 
+// TODO
 class AuthStatusDataSourceImpl implements AuthStatusDataSource {
   final BehaviorSubject<AuthDataEntity?> _authDataStatusSubject =
       BehaviorSubject<AuthDataEntity?>();
@@ -18,6 +19,15 @@ class AuthStatusDataSourceImpl implements AuthStatusDataSource {
   @override
   AuthDataEntity? get authDataStatus {
     return _authDataStatusSubject.valueOrNull;
+  }
+
+  @override
+  // TODO: implement playerId
+  int? get playerId {
+    final authData = _authDataStatusSubject.valueOrNull;
+    if (authData == null) return null;
+
+    return authData.playerInfo.id;
   }
 
   @override

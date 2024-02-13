@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_entity.dart';
+part of 'player_local_entity.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'player_entity.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetPlayerEntityCollection on Isar {
-  IsarCollection<PlayerEntity> get playerEntitys => this.collection();
+extension GetPlayerLocalEntityCollection on Isar {
+  IsarCollection<PlayerLocalEntity> get playerLocalEntitys => this.collection();
 }
 
-const PlayerEntitySchema = CollectionSchema(
-  name: r'PlayerEntity',
-  id: -3563034513647125575,
+const PlayerLocalEntitySchema = CollectionSchema(
+  name: r'PlayerLocalEntity',
+  id: -527625426859127704,
   properties: {
     r'firstName': PropertySchema(
       id: 0,
@@ -33,22 +33,22 @@ const PlayerEntitySchema = CollectionSchema(
       type: IsarType.string,
     )
   },
-  estimateSize: _playerEntityEstimateSize,
-  serialize: _playerEntitySerialize,
-  deserialize: _playerEntityDeserialize,
-  deserializeProp: _playerEntityDeserializeProp,
+  estimateSize: _playerLocalEntityEstimateSize,
+  serialize: _playerLocalEntitySerialize,
+  deserialize: _playerLocalEntityDeserialize,
+  deserializeProp: _playerLocalEntityDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _playerEntityGetId,
-  getLinks: _playerEntityGetLinks,
-  attach: _playerEntityAttach,
+  getId: _playerLocalEntityGetId,
+  getLinks: _playerLocalEntityGetLinks,
+  attach: _playerLocalEntityAttach,
   version: '3.1.0+1',
 );
 
-int _playerEntityEstimateSize(
-  PlayerEntity object,
+int _playerLocalEntityEstimateSize(
+  PlayerLocalEntity object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -59,8 +59,8 @@ int _playerEntityEstimateSize(
   return bytesCount;
 }
 
-void _playerEntitySerialize(
-  PlayerEntity object,
+void _playerLocalEntitySerialize(
+  PlayerLocalEntity object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -70,13 +70,13 @@ void _playerEntitySerialize(
   writer.writeString(offsets[2], object.nickname);
 }
 
-PlayerEntity _playerEntityDeserialize(
+PlayerLocalEntity _playerLocalEntityDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = PlayerEntity(
+  final object = PlayerLocalEntity(
     firstName: reader.readString(offsets[0]),
     id: id,
     lastName: reader.readString(offsets[1]),
@@ -85,7 +85,7 @@ PlayerEntity _playerEntityDeserialize(
   return object;
 }
 
-P _playerEntityDeserializeProp<P>(
+P _playerLocalEntityDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -103,29 +103,31 @@ P _playerEntityDeserializeProp<P>(
   }
 }
 
-Id _playerEntityGetId(PlayerEntity object) {
+Id _playerLocalEntityGetId(PlayerLocalEntity object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _playerEntityGetLinks(PlayerEntity object) {
+List<IsarLinkBase<dynamic>> _playerLocalEntityGetLinks(
+    PlayerLocalEntity object) {
   return [];
 }
 
-void _playerEntityAttach(
-    IsarCollection<dynamic> col, Id id, PlayerEntity object) {}
+void _playerLocalEntityAttach(
+    IsarCollection<dynamic> col, Id id, PlayerLocalEntity object) {}
 
-extension PlayerEntityQueryWhereSort
-    on QueryBuilder<PlayerEntity, PlayerEntity, QWhere> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhere> anyId() {
+extension PlayerLocalEntityQueryWhereSort
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QWhere> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension PlayerEntityQueryWhere
-    on QueryBuilder<PlayerEntity, PlayerEntity, QWhereClause> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhereClause> idEqualTo(Id id) {
+extension PlayerLocalEntityQueryWhere
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QWhereClause> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhereClause>
+      idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -134,8 +136,8 @@ extension PlayerEntityQueryWhere
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhereClause>
+      idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -157,9 +159,8 @@ extension PlayerEntityQueryWhere
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhereClause> idGreaterThan(
-      Id id,
-      {bool include = false}) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhereClause>
+      idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -167,8 +168,8 @@ extension PlayerEntityQueryWhere
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhereClause>
+      idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -176,7 +177,8 @@ extension PlayerEntityQueryWhere
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterWhereClause> idBetween(
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterWhereClause>
+      idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -193,9 +195,9 @@ extension PlayerEntityQueryWhere
   }
 }
 
-extension PlayerEntityQueryFilter
-    on QueryBuilder<PlayerEntity, PlayerEntity, QFilterCondition> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+extension PlayerLocalEntityQueryFilter
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QFilterCondition> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -209,7 +211,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameGreaterThan(
     String value, {
     bool include = false,
@@ -225,7 +227,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameLessThan(
     String value, {
     bool include = false,
@@ -241,7 +243,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameBetween(
     String lower,
     String upper, {
@@ -261,7 +263,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -275,7 +277,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -289,7 +291,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -300,7 +302,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -311,7 +313,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -321,7 +323,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       firstNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -331,8 +333,8 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition> idEqualTo(
-      Id value) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
+      idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -341,7 +343,8 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
+      idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -354,7 +357,8 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition> idLessThan(
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
+      idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -367,7 +371,8 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition> idBetween(
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
+      idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -384,7 +389,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -398,7 +403,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameGreaterThan(
     String value, {
     bool include = false,
@@ -414,7 +419,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameLessThan(
     String value, {
     bool include = false,
@@ -430,7 +435,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameBetween(
     String lower,
     String upper, {
@@ -450,7 +455,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -464,7 +469,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -478,7 +483,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -489,7 +494,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -500,7 +505,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -510,7 +515,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       lastNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -520,7 +525,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -534,7 +539,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameGreaterThan(
     String value, {
     bool include = false,
@@ -550,7 +555,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameLessThan(
     String value, {
     bool include = false,
@@ -566,7 +571,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameBetween(
     String lower,
     String upper, {
@@ -586,7 +591,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -600,7 +605,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -614,7 +619,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -625,7 +630,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -636,7 +641,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -646,7 +651,7 @@ extension PlayerEntityQueryFilter
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterFilterCondition>
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterFilterCondition>
       nicknameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -657,147 +662,161 @@ extension PlayerEntityQueryFilter
   }
 }
 
-extension PlayerEntityQueryObject
-    on QueryBuilder<PlayerEntity, PlayerEntity, QFilterCondition> {}
+extension PlayerLocalEntityQueryObject
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QFilterCondition> {}
 
-extension PlayerEntityQueryLinks
-    on QueryBuilder<PlayerEntity, PlayerEntity, QFilterCondition> {}
+extension PlayerLocalEntityQueryLinks
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QFilterCondition> {}
 
-extension PlayerEntityQuerySortBy
-    on QueryBuilder<PlayerEntity, PlayerEntity, QSortBy> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByFirstName() {
+extension PlayerLocalEntityQuerySortBy
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QSortBy> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByFirstName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstName', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByFirstNameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByFirstNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstName', Sort.desc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByLastName() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByLastName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByLastNameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByLastNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.desc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByNickname() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByNickname() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nickname', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> sortByNicknameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      sortByNicknameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nickname', Sort.desc);
     });
   }
 }
 
-extension PlayerEntityQuerySortThenBy
-    on QueryBuilder<PlayerEntity, PlayerEntity, QSortThenBy> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByFirstName() {
+extension PlayerLocalEntityQuerySortThenBy
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QSortThenBy> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByFirstName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstName', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByFirstNameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByFirstNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstName', Sort.desc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenById() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByLastName() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByLastName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByLastNameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByLastNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastName', Sort.desc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByNickname() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByNickname() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nickname', Sort.asc);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QAfterSortBy> thenByNicknameDesc() {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QAfterSortBy>
+      thenByNicknameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nickname', Sort.desc);
     });
   }
 }
 
-extension PlayerEntityQueryWhereDistinct
-    on QueryBuilder<PlayerEntity, PlayerEntity, QDistinct> {
-  QueryBuilder<PlayerEntity, PlayerEntity, QDistinct> distinctByFirstName(
-      {bool caseSensitive = true}) {
+extension PlayerLocalEntityQueryWhereDistinct
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QDistinct> {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QDistinct>
+      distinctByFirstName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'firstName', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QDistinct> distinctByLastName(
-      {bool caseSensitive = true}) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QDistinct>
+      distinctByLastName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastName', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<PlayerEntity, PlayerEntity, QDistinct> distinctByNickname(
-      {bool caseSensitive = true}) {
+  QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QDistinct>
+      distinctByNickname({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nickname', caseSensitive: caseSensitive);
     });
   }
 }
 
-extension PlayerEntityQueryProperty
-    on QueryBuilder<PlayerEntity, PlayerEntity, QQueryProperty> {
-  QueryBuilder<PlayerEntity, int, QQueryOperations> idProperty() {
+extension PlayerLocalEntityQueryProperty
+    on QueryBuilder<PlayerLocalEntity, PlayerLocalEntity, QQueryProperty> {
+  QueryBuilder<PlayerLocalEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<PlayerEntity, String, QQueryOperations> firstNameProperty() {
+  QueryBuilder<PlayerLocalEntity, String, QQueryOperations>
+      firstNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'firstName');
     });
   }
 
-  QueryBuilder<PlayerEntity, String, QQueryOperations> lastNameProperty() {
+  QueryBuilder<PlayerLocalEntity, String, QQueryOperations> lastNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastName');
     });
   }
 
-  QueryBuilder<PlayerEntity, String, QQueryOperations> nicknameProperty() {
+  QueryBuilder<PlayerLocalEntity, String, QQueryOperations> nicknameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nickname');
     });

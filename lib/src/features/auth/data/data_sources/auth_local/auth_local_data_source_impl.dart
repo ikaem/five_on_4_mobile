@@ -2,16 +2,17 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
+import 'package:isar/isar.dart';
 
 // TODO temp - remove this
 final dummyAuthDataEntity = AuthDataEntity(
-  playerInfo: AuthDataPlayerInfoEntity(
+  playerInfo: const AuthDataPlayerInfoEntity(
     id: 1,
     firstName: "John",
     lastName: "Doe",
     nickName: "JD",
   ),
-  teamInfo: AuthDataTeamInfoEntity(
+  teamInfo: const AuthDataTeamInfoEntity(
     id: 1,
     teamName: "Team 1",
   ),
@@ -39,7 +40,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
     // final (_, authId) = storedAuthData;
 
-    // final authData = await _isarWrapper.findAllEntities<AuthDataEntity>();
+    // final authData = await _isarWrapper.db.authDataEntitys.where().findAll();
     // if (authData.isEmpty) {
     //   // TODO this should not happen - clear token now
     //   return null;
@@ -65,13 +66,14 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     required AuthDataEntity authDataEntityDraft,
     required String authToken,
   }) async {
-    final id = await _isarWrapper.putEntity<AuthDataEntity>(
-      entity: authDataEntityDraft,
-    );
+    final result = await _isarWrapper.db.writeTxn(() async {
+      final id = await _isarWrapper.db.authDataEntitys.put(authDataEntityDraft);
+      return id;
+    });
 
     await _secureStorageWrapper.storeAuthData(
       token: authToken,
-      authId: id,
+      authId: result,
     );
   }
 

@@ -22,6 +22,8 @@ class AuthStatusController extends ChangeNotifier {
   bool _isError = false;
   bool _isLoading = true;
 
+  // TODO maybe it would be good to expose user basic data to the UI - hold it here possibly - or maybe not needed
+
   bool get isLoggedIn => _isLoggedIn;
   bool get isError => _isError;
   bool get isLoading => _isLoading;

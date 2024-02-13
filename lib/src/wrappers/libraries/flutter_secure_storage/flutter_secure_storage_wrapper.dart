@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/secure_storage_auth_key_constants.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FlutterSecureStorageWrapper {
@@ -63,5 +64,10 @@ class FlutterSecureStorageWrapper {
     required String key,
   }) {
     return secureStorage.read(key: key);
+  }
+
+  @visibleForTesting
+  Future<void> deleteAll() {
+    return secureStorage.deleteAll();
   }
 }

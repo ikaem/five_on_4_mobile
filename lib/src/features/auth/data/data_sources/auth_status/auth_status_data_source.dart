@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_
 abstract interface class AuthStatusDataSource {
   Stream<AuthDataEntity?> get authDataStatusStream;
   AuthDataEntity? get authDataStatus;
+  int? get playerId;
 
   void setAuthDataStatus(AuthDataEntity? authData);
   Future<void> dispose();

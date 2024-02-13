@@ -17,7 +17,7 @@ void main() {
             "when widget is rendered"
             "should show expected number of match briefs",
             (widgetTester) async {
-              final matches = getTestMatches();
+              final matches = getTestMatchesModels();
 
               await widgetTester.pumpWidget(
                 MaterialApp(

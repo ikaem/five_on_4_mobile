@@ -3,6 +3,8 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/f
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// TODO this should probably test some other tuff
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // as per https://stackoverflow.com/questions/71873139/missingpluginexceptionno-implementation-found-for-method-read-on-channel-plugin
