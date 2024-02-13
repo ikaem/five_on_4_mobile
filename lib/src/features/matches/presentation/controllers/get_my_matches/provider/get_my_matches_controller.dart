@@ -77,10 +77,19 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     required bool isRemoteFetchDone,
   }) async {
     // TODO dont forget to make it so that we only fetch max 5 matches at time for each type
-    final todayMatches = await getMyTodayMatchesUseCase();
-    // TODO temp only - will implement it
-    final pastMatches = <MatchModel>[];
-    final upcomingMatches = <MatchModel>[];
+    // final todayMatches = await getMyTodayMatchesUseCase();
+    // // TODO temp only - will implement it
+    // final pastMatches = <MatchModel>[];
+    // final upcomingMatches = <MatchModel>[];
+
+    final matchesData = await Future.wait([
+      getMyTodayMatchesUseCase(),
+      getMyTodayMatchesUseCase(),
+      getMyTodayMatchesUseCase(),
+    ]);
+    final todayMatches = matchesData[0];
+    final pastMatches = matchesData[1];
+    final upcomingMatches = matchesData[2];
 
     final stateValue = MatchesControllerStateValue(
       isRemoteFetchDone: isRemoteFetchDone,
