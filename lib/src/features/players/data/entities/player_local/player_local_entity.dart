@@ -1,10 +1,11 @@
 import 'package:isar/isar.dart';
 
-part "player_entity.g.dart";
+part "player_local_entity.g.dart";
 
+// TODO this should be a local entity only
 @collection
-class PlayerEntity {
-  const PlayerEntity({
+class PlayerLocalEntity {
+  const PlayerLocalEntity({
     required this.id,
     required this.firstName,
     required this.lastName,

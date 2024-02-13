@@ -9,11 +9,12 @@ class MatchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final dummyMatch = MatchModel(
       id: 1,
-      arrivingPlayers: [],
+      arrivingPlayers: const [],
       date: DateTime.now(),
       location: "location",
       name: "name",
       organizer: "organizer",
+      description: "description",
     );
 
     return SafeArea(

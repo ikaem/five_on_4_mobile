@@ -1,200 +1,203 @@
 {
-  "matches": [
-    {
-      "id": 1,
-      "date": 20240201,
-      "name": "Basketball Match",
-      "location": "City Park Court",
-      "organizer": "John Doe",
-      "description": "Come join us for a friendly basketball match. All skill levels are welcome.",
-      "arrivingPlayers": [
-        {
-          "id": 1,
-          "name": "Jane Doe",
-          "avatarUri": "https://picsum.photos/200/300",
-          "nickname": "janedoe"
-        },
-        {
-          "id": 2,
-          "name": "Peter Jones",
-          "avatarUri": "https://picsum.photos/200/301",
-          "nickname": "peterjones"
-        },
-        {
-          "id": 3,
-          "name": "Mary Smith",
-          "avatarUri": "https://picsum.photos/200/302",
-          "nickname": "marysmith"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "date": 20240202,
-      "name": "Soccer Match",
-      "location": "School Field",
-      "organizer": "Sarah Brown",
-      "description": "Let's play a friendly soccer match. No experience necessary.",
-      "arrivingPlayers": [
-        {
-          "id": 1,
-          "name": "David Williams",
-          "avatarUri": "https://picsum.photos/200/303",
-          "nickname": "davidwilliams"
-        },
-        {
-          "id": 4,
-          "name": "Emily Johnson",
-          "avatarUri": "https://picsum.photos/200/304",
-          "nickname": "emilyjohnson"
-        },
-        {
-          "id": 5,
-          "name": "Michael Anderson",
-          "avatarUri": "https://picsum.photos/200/305",
-          "nickname": "michaelanderson"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "date": 20240203,
-      "name": "Tennis Match",
-      "location": "Tennis Club",
-      "organizer": "Tom Lee",
-      "description": "Enroll in our beginner tennis class and learn the basics of the game.",
-      "arrivingPlayers": [
-        {
-          "id": 3,
-          "name": "Lisa Miller",
-          "avatarUri": "https://picsum.photos/200/306",
-          "nickname": "lisamiller"
-        },
-        {
-          "id": 6,
-          "name": "John Smith",
-          "avatarUri": "https://picsum.photos/200/307",
-          "nickname": "johnsmith"
-        },
-        {
-          "id": 7,
-          "name": "Susan Jones",
-          "avatarUri": "https://picsum.photos/200/308",
-          "nickname": "susanjones"
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "date": 20240204,
-      "name": "Volleyball Match",
-      "location": "Beach Volleyball Court",
-      "organizer": "Jane Smith",
-      "description": "Join us for a fun volleyball match. We're looking for players of all skill levels.",
-      "arrivingPlayers": [
-        {
-          "id": 5,
-          "name": "Peter Johnson",
-          "avatarUri": "https://picsum.photos/200/309",
-          "nickname": "peterjohnson"
-        },
-        {
-          "id": 8,
-          "name": "Jennifer Williams",
-          "avatarUri": "https://picsum.photos/200/310",
-          "nickname": "jenniferwilliams"
-        },
-        {
-          "id": 9,
-          "name": "Mark Miller",
-          "avatarUri": "https://picsum.photos/200/311",
-          "nickname": "markmiller"
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "date": 20240205,
-      "name": "Badminton Match",
-      "location": "Community Center Gymnasium",
-      "organizer": "David Jones",
-      "description": "Let's get our badminton rackets out and have some fun! Open to all levels.",
-      "arrivingPlayers": [
-        {
-          "id": 7,
-          "name": "Sarah Williams",
-          "avatarUri": "https://picsum.photos/200/312",
-          "nickname": "sarahwilliams"
-        },
-        {
-          "id": 10,
-          "name": "James Johnson",
-          "avatarUri": "https://picsum.photos/200/313",
-          "nickname": "jamesjohnson"
-        },
-        {
-          "id": 11,
-          "name": "Elizabeth Miller",
-          "avatarUri": "https://picsum.photos/200/314",
-          "nickname": "elizabethmiller"
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "date": 20240206,
-      "name": "Squash Match",
-      "location": "Squash Club",
-      "organizer": "Mary Johnson",
-      "description": "Calling all squash enthusiasts! Join us for a competitive match.",
-      "arrivingPlayers": [
-        {
-          "id": 9,
-          "name": "Mark Williams",
-          "avatarUri": "https://picsum.photos/200/315",
-          "nickname": "markwilliams"
-        },
-        {
-          "id": 12,
-          "name": "Peter Miller",
-          "avatarUri": "https://picsum.photos/200/316",
-          "nickname": "petermiller"
-        },
-        {
-          "id": 13,
-          "name": "Jennifer Johnson",
-          "avatarUri": "https://picsum.photos/200/317",
-          "nickname": "jenniferjohnson"
-        }
-      ]
-    },
-    {
-      "id": 7,
-      "date": 20240207,
-      "name": "Table Tennis Match",
-      "location": "Community Center Table Tennis Room",
-      "organizer": "Michael Miller",
-      "description": "Get ready for a fast-paced table tennis match! All skill levels welcome.",
-      "arrivingPlayers": [
-        {
-          "id": 11,
-          "name": "Elizabeth Williams",
-          "avatarUri": "https://picsum.photos/200/318",
-          "nickname": "elizabethwilliams"
-        },
-        {
-          "id": 14,
-          "name": "James Miller",
-          "avatarUri": "https://picsum.photos/200/319",
-          "nickname": "jamesmiller"
-        },
-        {
-          "id": 15,
-          "name": "Sarah Johnson",
-          "avatarUri": "https://picsum.photos/200/320",
-          "nickname": "sarahjohnson"
-        }
-      ]
-    }
-  ]
+  "matches": {
+    "ok": true,
+    "data": [
+      {
+        "id": 1,
+        "date": 20240201,
+        "name": "Basketball Match",
+        "location": "City Park Court",
+        "organizer": "John Doe",
+        "description": "Come join us for a friendly basketball match. All skill levels are welcome.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "Jane Doe",
+            "avatarUri": "https://picsum.photos/200/300",
+            "nickname": "janedoe"
+          },
+          {
+            "id": 2,
+            "name": "Peter Jones",
+            "avatarUri": "https://picsum.photos/200/301",
+            "nickname": "peterjones"
+          },
+          {
+            "id": 3,
+            "name": "Mary Smith",
+            "avatarUri": "https://picsum.photos/200/302",
+            "nickname": "marysmith"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "date": 20240202,
+        "name": "Soccer Match",
+        "location": "School Field",
+        "organizer": "Sarah Brown",
+        "description": "Let's play a friendly soccer match. No experience necessary.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "David Williams",
+            "avatarUri": "https://picsum.photos/200/303",
+            "nickname": "davidwilliams"
+          },
+          {
+            "id": 4,
+            "name": "Emily Johnson",
+            "avatarUri": "https://picsum.photos/200/304",
+            "nickname": "emilyjohnson"
+          },
+          {
+            "id": 5,
+            "name": "Michael Anderson",
+            "avatarUri": "https://picsum.photos/200/305",
+            "nickname": "michaelanderson"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "date": 20240203,
+        "name": "Tennis Match",
+        "location": "Tennis Club",
+        "organizer": "Tom Lee",
+        "description": "Enroll in our beginner tennis class and learn the basics of the game.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "Lisa Miller",
+            "avatarUri": "https://picsum.photos/200/306",
+            "nickname": "lisamiller"
+          },
+          {
+            "id": 6,
+            "name": "John Smith",
+            "avatarUri": "https://picsum.photos/200/307",
+            "nickname": "johnsmith"
+          },
+          {
+            "id": 7,
+            "name": "Susan Jones",
+            "avatarUri": "https://picsum.photos/200/308",
+            "nickname": "susanjones"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "date": 20240204,
+        "name": "Volleyball Match",
+        "location": "Beach Volleyball Court",
+        "organizer": "Jane Smith",
+        "description": "Join us for a fun volleyball match. We're looking for players of all skill levels.",
+        "arrivingPlayers": [
+          {
+            "id": 5,
+            "name": "Peter Johnson",
+            "avatarUri": "https://picsum.photos/200/309",
+            "nickname": "peterjohnson"
+          },
+          {
+            "id": 8,
+            "name": "Jennifer Williams",
+            "avatarUri": "https://picsum.photos/200/310",
+            "nickname": "jenniferwilliams"
+          },
+          {
+            "id": 9,
+            "name": "Mark Miller",
+            "avatarUri": "https://picsum.photos/200/311",
+            "nickname": "markmiller"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "date": 20240205,
+        "name": "Badminton Match",
+        "location": "Community Center Gymnasium",
+        "organizer": "David Jones",
+        "description": "Let's get our badminton rackets out and have some fun! Open to all levels.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "Sarah Williams",
+            "avatarUri": "https://picsum.photos/200/312",
+            "nickname": "sarahwilliams"
+          },
+          {
+            "id": 10,
+            "name": "James Johnson",
+            "avatarUri": "https://picsum.photos/200/313",
+            "nickname": "jamesjohnson"
+          },
+          {
+            "id": 11,
+            "name": "Elizabeth Miller",
+            "avatarUri": "https://picsum.photos/200/314",
+            "nickname": "elizabethmiller"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "date": 20240206,
+        "name": "Squash Match",
+        "location": "Squash Club",
+        "organizer": "Mary Johnson",
+        "description": "Calling all squash enthusiasts! Join us for a competitive match.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "Mark Williams",
+            "avatarUri": "https://picsum.photos/200/315",
+            "nickname": "markwilliams"
+          },
+          {
+            "id": 12,
+            "name": "Peter Miller",
+            "avatarUri": "https://picsum.photos/200/316",
+            "nickname": "petermiller"
+          },
+          {
+            "id": 13,
+            "name": "Jennifer Johnson",
+            "avatarUri": "https://picsum.photos/200/317",
+            "nickname": "jenniferjohnson"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "date": 20240207,
+        "name": "Table Tennis Match",
+        "location": "Community Center Table Tennis Room",
+        "organizer": "Michael Miller",
+        "description": "Get ready for a fast-paced table tennis match! All skill levels welcome.",
+        "arrivingPlayers": [
+          {
+            "id": 1,
+            "name": "Elizabeth Williams",
+            "avatarUri": "https://picsum.photos/200/318",
+            "nickname": "elizabethwilliams"
+          },
+          {
+            "id": 14,
+            "name": "James Miller",
+            "avatarUri": "https://picsum.photos/200/319",
+            "nickname": "jamesmiller"
+          },
+          {
+            "id": 15,
+            "name": "Sarah Johnson",
+            "avatarUri": "https://picsum.photos/200/320",
+            "nickname": "sarahjohnson"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -104,7 +104,7 @@ void main() {
             "when widget is rendered"
             "should show expected [MatchPlayerInvitation] widget for each player",
             (widgetTester) async {
-              final foundPlayers = getTestPlayers(count: 5);
+              final foundPlayers = getTestPlayersModels(count: 5);
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWidget(

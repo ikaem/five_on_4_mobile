@@ -3,61 +3,29 @@ import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:isar/isar.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/helpers/db/setup_db.dart';
+import '../../../../../../../utils/helpers/secure_storage/setup_secure_storage.dart';
 
 void main() {
-  // reset and clear interactions docs - https://stackoverflow.com/a/77574465
-  final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
-  final isarWrapper = _MockIsarWrapper();
+  final isarWrapper = setupTestDb();
+  final secureStorageWrapper = setupTestSecureStorage();
+  // final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
 
   final authLocalDataSource = AuthLocalDataSourceImpl(
+    // secureStorageWrapper: secureStorageWrapper,
     secureStorageWrapper: secureStorageWrapper,
     isarWrapper: isarWrapper,
   );
-
-  final draftEntity = testAuthDataEntity;
-
-  setUpAll(
-    () {
-      registerFallbackValue(
-        AuthDataEntity(
-          playerInfo: AuthDataPlayerInfoEntity(),
-          teamInfo: AuthDataTeamInfoEntity(),
-        ),
-      );
-    },
-  );
-
-  setUp(() {
-    when(
-      () => isarWrapper.putEntity<AuthDataEntity>(
-        entity: any(named: "entity"),
-      ),
-    ).thenAnswer((invocation) async {
-      return 1;
-    });
-
-    when(
-      () => secureStorageWrapper.storeAuthData(
-        token: any(named: "token"),
-        authId: any(named: "authId"),
-      ),
-    ).thenAnswer((invocation) async {
-      return;
-    });
-  });
-
-  tearDown(() {
-    reset(secureStorageWrapper);
-    reset(isarWrapper);
-  });
 
   group("AuthLocalDataSource", () {
     group(
       ".getAuthData()",
       () {
+        // TODO these tests fail - fix them
         // TODO this will pass when authlocaldata source logic is uncommented
         test(
           "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
@@ -69,19 +37,13 @@ void main() {
               teamInfo: testAuthDataEntity.teamInfo,
             )..id = 1;
 
-            when(
-              () => secureStorageWrapper.getAuthData(),
-            ).thenAnswer((invocation) async {
-              return (
-                "testToken",
-                entity.id!,
-              );
-            });
+            await secureStorageWrapper.storeAuthData(
+              token: "authToken",
+              authId: 1,
+            );
 
-            when(
-              () => isarWrapper.findAllEntities<AuthDataEntity>(),
-            ).thenAnswer((invocation) async {
-              return [entity];
+            await isarWrapper.db.writeTxn(() async {
+              await isarWrapper.db.authDataEntitys.put(entity);
             });
 
             final authDataEntity = await authLocalDataSource.getAuthData();
@@ -96,6 +58,8 @@ void main() {
     );
 
     group(".setAuthData()", () {
+      final draftEntity = testAuthDataEntity;
+
       test(
         "given draft of [AuthDataEntity] and authToken"
         "when '.setAuthData()' is called"
@@ -106,7 +70,11 @@ void main() {
             authToken: "authToken",
           );
 
-          verify(() => isarWrapper.putEntity(entity: draftEntity)).called(1);
+          final storedEntities =
+              await isarWrapper.db.authDataEntitys.where().findAll();
+
+          expect(storedEntities.length, equals(1));
+          expect(storedEntities.first, equals(draftEntity));
         },
       );
 

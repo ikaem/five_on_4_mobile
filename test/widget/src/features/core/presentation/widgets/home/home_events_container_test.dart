@@ -1,5 +1,7 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,11 +22,15 @@ void main() {
               const isToday = true;
 
               await widgetTester.pumpWidget(
-                const MaterialApp(
+                MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: false,
+                      isError: false,
+                      onRetry: () async {},
                       isToday: isToday,
-                      matches: [],
+                      matches: const [],
                     ),
                   ),
                 ),
@@ -46,11 +52,15 @@ void main() {
               const isToday = false;
 
               await widgetTester.pumpWidget(
-                const MaterialApp(
+                MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: false,
+                      isError: false,
+                      onRetry: () async {},
                       isToday: isToday,
-                      matches: [],
+                      matches: const [],
                     ),
                   ),
                 ),
@@ -69,12 +79,16 @@ void main() {
             "when widget is rendered "
             "should show [HomeEvents] widget with expected arguments passed to it",
             (widgetTester) async {
-              final matches = getTestMatches();
+              final matches = getTestMatchesModels();
 
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: false,
+                      isError: false,
+                      onRetry: () async {},
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -90,6 +104,121 @@ void main() {
               });
 
               expect(homeEventsFinder, findsOneWidget);
+            },
+          );
+          testWidgets(
+            "given 'isLoading' argument is set to true "
+            "when the widget is rendered "
+            "then should show LoadingStatus widget with expected arguments",
+            (widgetTester) async {
+              final matches = getTestMatchesModels();
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isLoading: true,
+                      isSyncing: false,
+                      isError: false,
+                      onRetry: () async {},
+                      isToday: true, // irrelevant for this test,
+                      matches: matches,
+                    ),
+                  ),
+                ),
+              );
+
+              final circularLoadingStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! LoadingStatus) return false;
+                  if (widget.isLinear) return false;
+
+                  return true;
+                },
+              );
+              expect(circularLoadingStatus, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given 'isSyncing' argument is set to true "
+            "when the widget is rendered "
+            "then should show LoadingStatus widget with expected arguments",
+            (widgetTester) async {
+              final matches = getTestMatchesModels();
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: true,
+                      isError: false,
+                      onRetry: () async {},
+                      isToday: true, // irrelevant for this test,
+                      matches: matches,
+                    ),
+                  ),
+                ),
+              );
+
+              final linearLoadingStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! LoadingStatus) return false;
+                  if (!widget.isLinear) return false;
+
+                  return true;
+                },
+              );
+              expect(linearLoadingStatus, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given 'isError' argument is set to true "
+            "when the widget is rendered "
+            "then should show ErrorStatus widget with expected arguments",
+            (widgetTester) async {
+              const isError = true;
+              onRetryCallback() async {
+                print("hello");
+              }
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: HomeEventsContainer(
+                      isLoading: false,
+                      isSyncing: false,
+                      isError: isError,
+                      onRetry: onRetryCallback,
+                      isToday: true, // irrelevant for this test,
+                      matches: getTestMatchesModels(),
+                    ),
+                  ),
+                ),
+              );
+
+              print("hello: ${onRetryCallback == onRetryCallback}");
+
+              final errorStatus = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! ErrorStatus) return false;
+                  if (widget.message !=
+                      "There was an issue retrieving matches") {
+                    return false;
+                  }
+
+                  final onRetry = widget.onRetry;
+                  if (onRetry != onRetryCallback) {
+                    return false;
+                  }
+
+                  return true;
+                },
+              );
+
+              expect(errorStatus, findsOneWidget);
             },
           );
         },

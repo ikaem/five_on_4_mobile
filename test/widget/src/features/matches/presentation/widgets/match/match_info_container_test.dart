@@ -11,7 +11,8 @@ void main() {
     name: "testName",
     location: "testLocation",
     organizer: "testOrganizer",
-    arrivingPlayers: [],
+    arrivingPlayers: const [],
+    description: "testDescription",
   );
   group(
     "MatchInfoContainer",

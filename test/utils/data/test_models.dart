@@ -1,7 +1,7 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 
-PlayerModel getTestPlayer({
+PlayerModel getTestPlayerModel({
   int id = 1,
   String nickname = "test_nickname",
   String name = "test_name",
@@ -17,7 +17,7 @@ PlayerModel getTestPlayer({
   );
 }
 
-List<PlayerModel> getTestPlayers({
+List<PlayerModel> getTestPlayersModels({
   int count = 10,
   String avatarUrl = "https://test.com/avatar.png",
   String namesPrefix = "test_",
@@ -39,11 +39,12 @@ List<PlayerModel> getTestPlayers({
   return players;
 }
 
-MatchModel getTestMatch({
+MatchModel getTestMatchModel({
   int id = 1,
   String name = "testName",
   String organizer = "testOrganizer",
   String location = "testLocation",
+  String description = "testDescription",
   DateTime? date,
   List<PlayerModel> arrivingPlayers = const [],
 }) {
@@ -54,14 +55,16 @@ MatchModel getTestMatch({
     location: location,
     date: date ?? DateTime.now(),
     arrivingPlayers: arrivingPlayers,
+    description: description,
   );
 }
 
-List<MatchModel> getTestMatches({
+List<MatchModel> getTestMatchesModels({
   int count = 10,
   String namesPrefix = "test_",
   String organizer = "test_organizer",
   String location = "test_location",
+  String description = "test_description",
   DateTime? date,
   List<PlayerModel> arrivingPlayers = const [],
 }) {
@@ -73,6 +76,7 @@ List<MatchModel> getTestMatches({
         name: "${namesPrefix}name$index",
         organizer: organizer,
         location: location,
+        description: description,
         date: date ?? DateTime.now(),
         arrivingPlayers: arrivingPlayers,
       );

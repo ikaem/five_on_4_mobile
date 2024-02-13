@@ -42,7 +42,7 @@ void main() {
           "when widget is rendered"
           "should show [MatchParticipants] widget with expected arguments",
           (widgetTester) async {
-            final participants = getTestPlayers();
+            final participants = getTestPlayersModels();
 
             await mockNetworkImages(() async {
               await widgetTester.pumpWidget(
