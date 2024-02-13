@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
@@ -100,7 +102,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
 
       state = AsyncValue.data(updatedData);
     } catch (e, s) {
-      // TODO log error
+      log("Error loading updated data", error: e, stackTrace: s);
       state = AsyncValue.error(e, s);
     }
   }

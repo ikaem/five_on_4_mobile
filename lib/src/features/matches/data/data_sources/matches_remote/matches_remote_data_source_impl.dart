@@ -43,16 +43,41 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         )
         .toList();
 
-    return matchesEntities;
+    // TODO temp only until real matches
+    final manipulatedMatches = _generateTempManipulatedMatches(matchesEntities);
+
+    return manipulatedMatches;
   }
-}
 
-class SomethingElse {
-  const SomethingElse({
-    required this.test1,
-    required this.test2,
-  });
+  List<MatchRemoteEntity> _generateTempManipulatedMatches(
+      List<MatchRemoteEntity> matchesEntities) {
+    final manipulatedMatchesToSplitBetweenTodayAndTomorrow =
+        matchesEntities.map(
+      (match) {
+        final matchesLength = matchesEntities.length;
+        final isInFirstHalf =
+            matchesEntities.indexOf(match) < matchesLength / 2;
 
-  final String test1;
-  final String test2;
+        final manipulatedDate = isInFirstHalf
+            ? DateTime.now().millisecondsSinceEpoch
+            : DateTime.now()
+                .add(const Duration(days: 1))
+                .millisecondsSinceEpoch;
+
+        final manipulatedMatch = MatchRemoteEntity(
+          id: match.id,
+          date: manipulatedDate,
+          arrivingPlayers: match.arrivingPlayers,
+          description: match.description,
+          location: match.location,
+          name: match.name,
+          organizer: match.organizer,
+        );
+
+        return manipulatedMatch;
+      },
+    ).toList();
+
+    return manipulatedMatchesToSplitBetweenTodayAndTomorrow;
+  }
 }

@@ -70,7 +70,5 @@ void main() {
 
 class _MockDioWrapper extends Mock implements DioWrapper {}
 
-class _FakeSomethingElse extends Fake implements SomethingElse {}
-
 class _FakeHttpRequestUriPartsValue extends Fake
     implements HttpRequestUriPartsValue {}

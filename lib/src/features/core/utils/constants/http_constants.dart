@@ -3,7 +3,8 @@ enum HttpConstants {
   HTTP_PROTOCOL('http'),
 
   // backend url
-  BACKEND_BASE_URL_FAKE('localhost'),
+  // TODO only for emulators
+  BACKEND_BASE_URL_FAKE('10.0.2.2'),
   BACKEND_CONTEXT_PATH_FAKE(''),
   BACKEND_PORT_STRING_FAKE("3000");
 
