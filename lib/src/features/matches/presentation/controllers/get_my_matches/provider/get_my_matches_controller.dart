@@ -41,7 +41,6 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     final initialData = await _getDataFromDb(
       isRemoteFetchDone: false,
     );
-    // await Future.delayed(Duration.zero);
     _handleLoadUpdatedData();
 
     return initialData;
