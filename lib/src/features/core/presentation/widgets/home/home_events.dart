@@ -22,7 +22,8 @@ class HomeEvents extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // context.go(location)
-            context.go("/${RoutePathsConstants.MATCH.value}");
+            final path = "/${RoutePathsConstants.MATCH.value}" "/${match.id}";
+            context.go(path);
           },
           child: MatchBriefExtended(
             date: match.date.toString(),

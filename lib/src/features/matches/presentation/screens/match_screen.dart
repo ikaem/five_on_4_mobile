@@ -3,7 +3,12 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match
 import 'package:flutter/material.dart';
 
 class MatchScreen extends StatelessWidget {
-  const MatchScreen({super.key});
+  const MatchScreen({
+    super.key,
+    required this.matchId,
+  });
+
+  final int matchId;
 
   @override
   Widget build(BuildContext context) {

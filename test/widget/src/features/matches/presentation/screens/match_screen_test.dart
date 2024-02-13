@@ -17,7 +17,7 @@ void main() {
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 const MaterialApp(
-                  home: MatchScreen(),
+                  home: MatchScreen(matchId: 1),
                 ),
               );
 

@@ -66,11 +66,25 @@ class GoRouterWrapper {
                   },
                 ),
                 GoRoute(
-                  path: RoutePathsConstants.MATCH.value,
+                  path: "${RoutePathsConstants.MATCH.value}/:id",
                   // has to be _rootNavigatorKey to make sure navigatorBar is not visible
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    return const MatchScreen();
+                    final matchId =
+                        int.tryParse(state.pathParameters['id'] ?? "");
+
+                    if (matchId == null) {
+                      // TODO this should redirect to ErrorPage later
+                      return Scaffold(
+                        appBar: AppBar(),
+                        body: const Center(
+                          child: Text("Match id is null"),
+                        ),
+                      );
+                    }
+                    return MatchScreen(
+                      matchId: matchId,
+                    );
                   },
                 ),
               ],
