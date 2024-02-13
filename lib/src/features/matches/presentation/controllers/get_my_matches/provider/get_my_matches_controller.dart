@@ -40,6 +40,35 @@ class GetMyMatchesController extends _$GetMyMatchesController {
   }
 
   // TODO will need functions to manually retrieve more matches of each type - getNextBatch
+  Future<void> onLoadMatches({
+    required MatchesType matchesType,
+  }) async {
+    switch (matchesType) {
+      case MatchesType.today:
+        {
+          // TODO load today maches from server into db
+          await Future.delayed(const Duration(milliseconds: 100));
+          // TODO retrieve from db
+          await Future.delayed(const Duration(milliseconds: 10));
+        }
+      // TODO: Handle this case.
+      case MatchesType.upcoming:
+        {
+          // TODO load upcoming maches from server into db
+          await Future.delayed(const Duration(milliseconds: 100));
+          // TODO retrieve from db
+          await Future.delayed(const Duration(milliseconds: 10));
+        }
+      // TODO: Handle this case.
+      case MatchesType.past:
+        {
+          // TODO load past maches from server into db
+          await Future.delayed(const Duration(milliseconds: 100));
+          // TODO retrieve from db
+          await Future.delayed(const Duration(milliseconds: 10));
+        }
+    }
+  }
 
   // Getting data from db
   Future<MatchesControllerStateValue> _getDataFromDb({
@@ -75,4 +104,11 @@ class GetMyMatchesController extends _$GetMyMatchesController {
       state = AsyncValue.error(e, s);
     }
   }
+}
+
+// TODO test only - move elsewhere
+enum MatchesType {
+  today,
+  upcoming,
+  past,
 }

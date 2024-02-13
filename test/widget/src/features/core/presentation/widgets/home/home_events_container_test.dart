@@ -22,14 +22,15 @@ void main() {
               const isToday = true;
 
               await widgetTester.pumpWidget(
-                const MaterialApp(
+                MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: false,
                       isError: false,
+                      onRetry: () async {},
                       isToday: isToday,
-                      matches: [],
+                      matches: const [],
                     ),
                   ),
                 ),
@@ -51,14 +52,15 @@ void main() {
               const isToday = false;
 
               await widgetTester.pumpWidget(
-                const MaterialApp(
+                MaterialApp(
                   home: Scaffold(
                     body: HomeEventsContainer(
                       isLoading: false,
                       isSyncing: false,
                       isError: false,
+                      onRetry: () async {},
                       isToday: isToday,
-                      matches: [],
+                      matches: const [],
                     ),
                   ),
                 ),
@@ -86,6 +88,7 @@ void main() {
                       isLoading: false,
                       isSyncing: false,
                       isError: false,
+                      onRetry: () async {},
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -117,6 +120,7 @@ void main() {
                       isLoading: true,
                       isSyncing: false,
                       isError: false,
+                      onRetry: () async {},
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -150,7 +154,7 @@ void main() {
                       isLoading: false,
                       isSyncing: true,
                       isError: false,
-                      onRetry: () {},
+                      onRetry: () async {},
                       isToday: true, // irrelevant for this test,
                       matches: matches,
                     ),
@@ -176,7 +180,9 @@ void main() {
             "then should show ErrorStatus widget with expected arguments",
             (widgetTester) async {
               const isError = true;
-              onRetryCallback() {}
+              onRetryCallback() async {
+                print("hello");
+              }
 
               await widgetTester.pumpWidget(
                 MaterialApp(
@@ -193,6 +199,8 @@ void main() {
                 ),
               );
 
+              print("hello: ${onRetryCallback == onRetryCallback}");
+
               final errorStatus = find.byWidgetPredicate(
                 (widget) {
                   if (widget is! ErrorStatus) return false;
@@ -200,11 +208,17 @@ void main() {
                       "There was an issue retrieving matches") {
                     return false;
                   }
-                  if (widget.onRetry != onRetryCallback) return false;
+
+                  final onRetry = widget.onRetry;
+                  if (onRetry != onRetryCallback) {
+                    return false;
+                  }
 
                   return true;
                 },
               );
+
+              expect(errorStatus, findsOneWidget);
             },
           );
         },

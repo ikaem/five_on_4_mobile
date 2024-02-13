@@ -19,10 +19,12 @@ class MatchesUIStateValue {
     required this.todayMatches,
     required this.upcomingMatches,
     required this.pastMatches,
+    required this.isError,
   });
 
   final bool isLoading;
   final bool isSyncing;
+  final bool isError;
   final List<MatchModel> todayMatches;
   final List<MatchModel> upcomingMatches;
   final List<MatchModel> pastMatches;
@@ -38,10 +40,13 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    final matchesController = ref.read(getMyMatchesControllerProvider.notifier);
+
     final matchesControllerState = ref.watch(getMyMatchesControllerProvider);
     final matchesUIState = _getMatchesUIState(matchesControllerState);
     final togglerOptions = _getTogglerOptions(
       matchesUIState: matchesUIState,
+      onRetry: matchesController.onLoadMatches,
     );
 
     return Column(
@@ -63,7 +68,18 @@ class HomeScreenView extends ConsumerWidget {
 
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchesUIStateValue matchesUIState,
+    required Future<void> Function({
+      required MatchesType matchesType,
+    }) onRetry,
   }) {
+    onRetryToday() => onRetry(
+          matchesType: MatchesType.today,
+        );
+
+    onRetryUpcoming() => onRetry(
+          matchesType: MatchesType.upcoming,
+        );
+
     return [
       TabTogglerOptionValue(
         title: "Today",
@@ -72,6 +88,8 @@ class HomeScreenView extends ConsumerWidget {
           isLoading: matchesUIState.isLoading,
           isSyncing: matchesUIState.isSyncing,
           matches: matchesUIState.todayMatches,
+          isError: matchesUIState.isError,
+          onRetry: onRetryToday,
         ),
       ),
       TabTogglerOptionValue(
@@ -81,6 +99,8 @@ class HomeScreenView extends ConsumerWidget {
           isLoading: matchesUIState.isLoading,
           isSyncing: matchesUIState.isSyncing,
           matches: matchesUIState.upcomingMatches,
+          isError: matchesUIState.isError,
+          onRetry: onRetryUpcoming,
         ),
       ),
     ];
@@ -90,30 +110,34 @@ class HomeScreenView extends ConsumerWidget {
   MatchesUIStateValue _getMatchesUIState(
     AsyncValue<MatchesControllerStateValue> matchesControllerState,
   ) {
-    final isLoading = matchesControllerState.when(
-      data: (data) => false,
-      error: (error, stackTrace) => false,
+    final isLoading = matchesControllerState.maybeWhen(
       loading: () => true,
+      orElse: () => false,
     );
-    final isSyncing = matchesControllerState.when(
+
+    final isSyncing = matchesControllerState.maybeWhen(
       data: (data) => !data.isRemoteFetchDone,
-      error: (error, stackTrace) => false,
-      loading: () => false,
+      orElse: () => false,
     );
-    final todayMatches = matchesControllerState.when<List<MatchModel>>(
+
+    final todayMatches = matchesControllerState.maybeWhen<List<MatchModel>>(
       data: (data) => data.todayMatches,
-      error: (error, stackTrace) => [],
-      loading: () => [],
+      orElse: () => [],
     );
-    final upcomingMatches = matchesControllerState.when<List<MatchModel>>(
+
+    final upcomingMatches = matchesControllerState.maybeWhen<List<MatchModel>>(
       data: (data) => data.upcomingMatches,
-      error: (error, stackTrace) => [],
-      loading: () => [],
+      orElse: () => [],
     );
-    final pastMatches = matchesControllerState.when<List<MatchModel>>(
+
+    final pastMatches = matchesControllerState.maybeWhen<List<MatchModel>>(
       data: (data) => data.pastMatches,
-      error: (error, stackTrace) => [],
-      loading: () => [],
+      orElse: () => [],
+    );
+
+    final isError = matchesControllerState.maybeWhen(
+      error: (error, stackTrace) => true,
+      orElse: () => false,
     );
 
     return MatchesUIStateValue(
@@ -122,6 +146,7 @@ class HomeScreenView extends ConsumerWidget {
       todayMatches: todayMatches,
       upcomingMatches: upcomingMatches,
       pastMatches: pastMatches,
+      isError: isError,
     );
   }
 }
