@@ -67,7 +67,7 @@
         "description": "Enroll in our beginner tennis class and learn the basics of the game.",
         "arrivingPlayers": [
           {
-            "id": 3,
+            "id": 1,
             "name": "Lisa Miller",
             "avatarUri": "https://picsum.photos/200/306",
             "nickname": "lisamiller"
@@ -123,7 +123,7 @@
         "description": "Let's get our badminton rackets out and have some fun! Open to all levels.",
         "arrivingPlayers": [
           {
-            "id": 7,
+            "id": 1,
             "name": "Sarah Williams",
             "avatarUri": "https://picsum.photos/200/312",
             "nickname": "sarahwilliams"
@@ -151,7 +151,7 @@
         "description": "Calling all squash enthusiasts! Join us for a competitive match.",
         "arrivingPlayers": [
           {
-            "id": 9,
+            "id": 1,
             "name": "Mark Williams",
             "avatarUri": "https://picsum.photos/200/315",
             "nickname": "markwilliams"
@@ -179,7 +179,7 @@
         "description": "Get ready for a fast-paced table tennis match! All skill levels welcome.",
         "arrivingPlayers": [
           {
-            "id": 11,
+            "id": 1,
             "name": "Elizabeth Williams",
             "avatarUri": "https://picsum.photos/200/318",
             "nickname": "elizabethwilliams"

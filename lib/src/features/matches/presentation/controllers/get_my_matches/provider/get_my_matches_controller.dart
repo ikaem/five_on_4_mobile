@@ -1,24 +1,30 @@
 import 'dart:developer';
 
-import 'package:equatable/equatable.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/provider/get_my_past_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mocktail/mocktail.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_my_matches_controller.g.dart";
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
-  late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
-      ref.read(getMyTodayMatchesUseCaseProvider);
   late final LoadMyMatchesUseCase loadMyMatchesUseCase =
       ref.read(loadMyMatchesUseCaseProvider);
+
+  late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
+      ref.read(getMyTodayMatchesUseCaseProvider);
+  late final GetMyPastMatchesUseCase getMyPastMatchesUseCase =
+      ref.read(getMyPastMatchesUseCaseProvider);
+  late final GetMyUpcomingMatchesUseCase getMyUpcomingMatchesUseCase =
+      ref.read(getMyUpcomingMatchesUseCaseProvider);
 
   Future<void> handleDispose() async {
     ref.onDispose(() {
@@ -84,8 +90,8 @@ class GetMyMatchesController extends _$GetMyMatchesController {
 
     final matchesData = await Future.wait([
       getMyTodayMatchesUseCase(),
-      getMyTodayMatchesUseCase(),
-      getMyTodayMatchesUseCase(),
+      getMyPastMatchesUseCase(),
+      getMyUpcomingMatchesUseCase(),
     ]);
     final todayMatches = matchesData[0];
     final pastMatches = matchesData[1];
