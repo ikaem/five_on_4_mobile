@@ -1,7 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
-import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,6 +28,14 @@ void main() {
     authStatusDataSource: authStatusDataSource,
   );
 
+  setUpAll(
+    () {
+      registerFallbackValue(
+        _FakeMatchLocalEntity(),
+      );
+    },
+  );
+
   tearDown(() {
     reset(matchesLocalDataSource);
     reset(matchesRemoteDataSource);
@@ -37,6 +45,79 @@ void main() {
   group(
     "MatchesRepository",
     () {
+      group(
+        ".loadMatch",
+        () {
+          test(
+            "given a match id"
+            "when call .loadMatch()"
+            "then should ping remote data source to retrieve match",
+            () async {
+              final remoteEntityMatch = testRemoteMatches.first;
+
+              // given
+              final matchId = remoteEntityMatch.id;
+              when(
+                () => matchesRemoteDataSource.getMatch(
+                  matchId: matchId,
+                ),
+              ).thenAnswer(
+                (_) async => remoteEntityMatch,
+              );
+
+              // when
+              await matchesRepository.loadMatch(matchId: matchId);
+
+              // then
+              verify(
+                () => matchesRemoteDataSource.getMatch(
+                  matchId: matchId,
+                ),
+              ).called(1);
+            },
+          );
+
+          test(
+            "given a match id"
+            "when call .loadMatch()"
+            "then should ping local data source to store the match",
+            () async {
+              final remoteEntityMatch = testRemoteMatches.first;
+              final localEntityMatch =
+                  MatchesConverter.fromRemoteEntityToLocalEntity(
+                      matchRemote: remoteEntityMatch);
+
+              // given
+              final matchId = remoteEntityMatch.id;
+              when(
+                () => matchesRemoteDataSource.getMatch(
+                  matchId: matchId,
+                ),
+              ).thenAnswer(
+                (_) async => remoteEntityMatch,
+              );
+
+              when(
+                () => matchesLocalDataSource.saveMatch(
+                  match: any(named: "match"),
+                ),
+              ).thenAnswer(
+                (invocation) async => matchId,
+              );
+
+              // when
+              await matchesRepository.loadMatch(matchId: matchId);
+
+              // then
+              verify(
+                () => matchesLocalDataSource.saveMatch(
+                  match: localEntityMatch,
+                ),
+              ).called(1);
+            },
+          );
+        },
+      );
       group(
         ".loadMyMatches",
         () {
@@ -245,6 +326,8 @@ void main() {
     },
   );
 }
+
+class _FakeMatchLocalEntity extends Fake implements MatchLocalEntity {}
 
 class _MockMatchesLocalDataSource extends Mock
     implements MatchesLocalDataSource {}

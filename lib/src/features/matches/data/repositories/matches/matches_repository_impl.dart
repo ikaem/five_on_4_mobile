@@ -82,4 +82,20 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
     return modelMatches;
   }
+
+  @override
+  Future<int> loadMatch({
+    required int matchId,
+  }) async {
+    final matchRemote =
+        await _matchesRemoteDataSource.getMatch(matchId: matchId);
+
+    final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
+      matchRemote: matchRemote,
+    );
+
+    final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
+
+    return id;
+  }
 }

@@ -42,6 +42,21 @@ void main() {
               expect(result, equals(testMatch));
             },
           );
+
+          test(
+            "given a match"
+            "when '.saveMatch() is called"
+            "then should return expected id",
+            () async {
+              final testMatch = getTestMatchLocalEntities(count: 1).first;
+              final id = testMatch.id;
+
+              final storedMatchId =
+                  await matchesLocalDataSource.saveMatch(match: testMatch);
+
+              expect(storedMatchId, equals(id));
+            },
+          );
         },
       );
 
