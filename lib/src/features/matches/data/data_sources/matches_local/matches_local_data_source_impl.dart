@@ -122,4 +122,16 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
 
     return matches;
   }
+
+  @override
+  Future<int> saveMatch({
+    required MatchLocalEntity match,
+  }) async {
+    final response = await _isarWrapper.db.writeTxn(() async {
+      final id = await _isarWrapper.db.matchLocalEntitys.put(match);
+      return id;
+    });
+
+    return response;
+  }
 }

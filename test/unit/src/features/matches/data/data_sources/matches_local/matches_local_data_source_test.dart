@@ -22,6 +22,30 @@ void main() {
     "MatchesLocalDataSource",
     () {
       group(
+        ".saveMatch",
+        () {
+          test(
+            "given a match"
+            "when '.saveMatch() is called"
+            "then should save the match to the database",
+            () async {
+              final testMatch = getTestMatchLocalEntities(count: 1).first;
+              final id = testMatch.id;
+
+              await matchesLocalDataSource.saveMatch(match: testMatch);
+
+              final result = await isarWrapper.db.matchLocalEntitys
+                  .where()
+                  .idEqualTo(id)
+                  .findFirst();
+
+              expect(result, equals(testMatch));
+            },
+          );
+        },
+      );
+
+      group(
         ".saveMatches()",
         () {
           test(
