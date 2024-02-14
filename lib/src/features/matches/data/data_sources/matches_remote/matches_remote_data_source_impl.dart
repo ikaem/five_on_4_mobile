@@ -81,6 +81,9 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
 
   List<MatchRemoteEntity> _generateTempManipulatedMatches(
       List<MatchRemoteEntity> matchesEntities) {
+// TODO temp
+    return matchesEntities;
+
     final manipulatedMatchesToSplitBetweenTodayAndTomorrow =
         matchesEntities.map(
       (match) {
