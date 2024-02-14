@@ -59,8 +59,8 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
       port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
       apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
       apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
-      apiEndpointPath:
-          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES_FAKE.value,
+      apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
+          .getMatchPathWithId(matchId),
       queryParameters: null,
     );
 

@@ -1,6 +1,8 @@
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -52,6 +54,50 @@ void main() {
               );
 
               expect(match, equals(testMatch));
+            },
+          );
+
+          test(
+            "given a match request"
+            "when call '.getMatch()'"
+            "then should call dioWrapper with expected arguments",
+            () async {
+              final testMatch = getTestMatchRemoteEntities().first;
+              final testMatchJson = testMatch.toJson();
+              final matchResponse = {
+                "ok": true,
+                "data": testMatchJson,
+              };
+
+              final matchId = testMatch.id;
+
+              when(
+                () => dioWrapper.get<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                ),
+              ).thenAnswer((invocation) async => matchResponse);
+
+              final expectedUriPartsArgs = HttpRequestUriPartsValue(
+                // TODO use https when we have real server eventually
+                apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
+                port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+                apiEndpointPath: HttpMatchesConstants
+                    .BACKEND_ENDPOINT_PATH_MATCH
+                    .getMatchPathWithId(matchId),
+                queryParameters: null,
+              );
+
+              await matchesRemoteDataSource.getMatch(
+                matchId: testMatch.id,
+              );
+
+              verify(
+                () => dioWrapper.get<Map<String, dynamic>>(
+                  uriParts: expectedUriPartsArgs,
+                ),
+              );
             },
           );
         },
