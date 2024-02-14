@@ -116,6 +116,39 @@ void main() {
               ).called(1);
             },
           );
+
+          test(
+            "given a match is loaded"
+            "when .loadMatch() returns"
+            "then should return expected match id ",
+            () async {
+              final remoteEntityMatch = testRemoteMatches.first;
+
+              final matchId = remoteEntityMatch.id;
+              when(
+                () => matchesRemoteDataSource.getMatch(
+                  matchId: matchId,
+                ),
+              ).thenAnswer(
+                (_) async => remoteEntityMatch,
+              );
+
+              when(
+                () => matchesLocalDataSource.saveMatch(
+                  match: any(named: "match"),
+                ),
+              ).thenAnswer(
+                (invocation) async => matchId,
+              );
+
+              // given / when
+              final result =
+                  await matchesRepository.loadMatch(matchId: matchId);
+
+              // then
+              expect(result, equals(matchId));
+            },
+          );
         },
       );
       group(
