@@ -26,6 +26,36 @@ void main() {
     "MatchesRemoteDataSource",
     () {
       group(
+        ".getMatch()",
+        () {
+          test(
+            "given a match id"
+            "when call '.getMatch()'"
+            "then should return expected match",
+            () async {
+              final testMatch = getTestMatchRemoteEntities().first;
+              final testMatchJson = testMatch.toJson();
+              final matchResponse = {
+                "ok": true,
+                "data": testMatchJson,
+              };
+
+              when(
+                () => dioWrapper.get<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                ),
+              ).thenAnswer((invocation) async => matchResponse);
+
+              final match = await matchesRemoteDataSource.getMatch(
+                matchId: testMatch.id,
+              );
+
+              expect(match, equals(testMatch));
+            },
+          );
+        },
+      );
+      group(
         // TODO rename this to loadMyFollowingMatches
         ".getMyFollowingMatches()",
         () {
@@ -55,7 +85,7 @@ void main() {
               // TODO we should also test that correct arguments are used
 
               final matches =
-                  await matchesRemoteDataSource.getMyFollowingMatches();
+                  await matchesRemoteDataSource.getPlayerInitialMatches();
 
               expect(matches, equals(testMatches));
             },

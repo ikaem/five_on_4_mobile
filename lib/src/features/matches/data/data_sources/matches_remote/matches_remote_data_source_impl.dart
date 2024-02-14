@@ -14,7 +14,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
 
   // TODO this might not even be needed - we might have some endpoint like getInitialData, which would get all today, following matches, and stuff like that, maybe the whole home thing
   @override
-  Future<List<MatchRemoteEntity>> getMyFollowingMatches() async {
+  Future<List<MatchRemoteEntity>> getPlayerInitialMatches() async {
     final uriParts = HttpRequestUriPartsValue(
       // TODO use https when we have real server eventually
       apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
@@ -47,6 +47,36 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     final manipulatedMatches = _generateTempManipulatedMatches(matchesEntities);
 
     return manipulatedMatches;
+  }
+
+  @override
+  Future<MatchRemoteEntity> getMatch({
+    required int matchId,
+  }) async {
+    final uriParts = HttpRequestUriPartsValue(
+      // TODO use https when we have real server eventually
+      apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
+      port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+      apiEndpointPath:
+          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES_FAKE.value,
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.get<Map<String, dynamic>>(
+      uriParts: uriParts,
+    );
+
+    if (response["ok"] != true) {
+      throw Exception("Something went wrong with getting match");
+    }
+
+    final matchJson = response["data"] as Map<String, dynamic>;
+
+    final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
+
+    return matchEntity;
   }
 
   List<MatchRemoteEntity> _generateTempManipulatedMatches(

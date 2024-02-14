@@ -22,7 +22,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
   @override
   Future<void> loadMyMatches() async {
     final matchesRemote =
-        await _matchesRemoteDataSource.getMyFollowingMatches();
+        await _matchesRemoteDataSource.getPlayerInitialMatches();
 
     final matchesLocal = MatchesConverter.fromRemoteEntitiesToLocalEntities(
       matchesRemote: matchesRemote,
@@ -33,6 +33,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
   @override
   Future<List<MatchModel>> getMyTodayMatches() async {
+    // TODO useCases could also possibly get playerId and then ping some generic fucntions inside the repository
     final playerId = _authStatusDataSource.playerId;
     if (playerId == null) {
       // TODO responsible controller here should have access to logoutusecase, and use it to logout

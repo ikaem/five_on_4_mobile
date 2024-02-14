@@ -1,4 +1,35 @@
 {
+  "match": {
+    "ok": true,
+    "data": {
+      "id": 1,
+      "date": 20240201,
+      "name": "Basketball Match",
+      "location": "City Park Court",
+      "organizer": "John Doe",
+      "description": "Come join us for a friendly basketball match. All skill levels are welcome.",
+      "arrivingPlayers": [
+        {
+          "id": 1,
+          "name": "Jane Doe",
+          "avatarUri": "https://picsum.photos/200/300",
+          "nickname": "janedoe"
+        },
+        {
+          "id": 2,
+          "name": "Peter Jones",
+          "avatarUri": "https://picsum.photos/200/301",
+          "nickname": "peterjones"
+        },
+        {
+          "id": 3,
+          "name": "Mary Smith",
+          "avatarUri": "https://picsum.photos/200/302",
+          "nickname": "marysmith"
+        }
+      ]
+    }
+  },
   "matches": {
     "ok": true,
     "data": [

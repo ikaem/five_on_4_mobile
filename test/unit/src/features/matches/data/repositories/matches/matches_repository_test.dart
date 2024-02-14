@@ -44,7 +44,7 @@ void main() {
             () {
               // remote data source
               when(
-                () => matchesRemoteDataSource.getMyFollowingMatches(),
+                () => matchesRemoteDataSource.getPlayerInitialMatches(),
               ).thenAnswer(
                 (_) async => testRemoteMatches,
               );
@@ -68,7 +68,7 @@ void main() {
               await matchesRepository.loadMyMatches();
 
               verify(
-                () => matchesRemoteDataSource.getMyFollowingMatches(),
+                () => matchesRemoteDataSource.getPlayerInitialMatches(),
               ).called(1);
             },
           );
