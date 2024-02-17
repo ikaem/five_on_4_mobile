@@ -5,7 +5,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
 import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter/material.dart';

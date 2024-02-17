@@ -22,8 +22,8 @@ class MatchUIState {
   final MatchModel? match;
 }
 
-class MatchView extends ConsumerStatefulWidget {
-  const MatchView({
+class MatchScreenView extends ConsumerStatefulWidget {
+  const MatchScreenView({
     super.key,
     required this.matchId,
   });
@@ -34,7 +34,7 @@ class MatchView extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MatchViewState();
 }
 
-class _MatchViewState extends ConsumerState<MatchView> {
+class _MatchViewState extends ConsumerState<MatchScreenView> {
   late final getMatchControllerProviderInstance = getMatchControllerProvider(
     matchId: widget.matchId,
   );
@@ -68,12 +68,18 @@ class _MatchViewState extends ConsumerState<MatchView> {
         title: "Info",
         child: MatchInfoContainer(
           match: match,
+          isError: isError,
+          isLoading: isLoading,
+          isSyncing: isSyncing,
         ),
       ),
       TabTogglerOptionValue(
         title: "Participants",
         child: MatchParticipantsContainer(
           participants: participants,
+          isError: isError,
+          isLoading: isLoading,
+          isSyncing: isSyncing,
         ),
       ),
     ];

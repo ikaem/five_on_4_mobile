@@ -324,6 +324,7 @@ void main() {
               expect(tabTogglerFinder, findsOneWidget);
             },
           );
+          // TODO error state as well
         },
       );
     },

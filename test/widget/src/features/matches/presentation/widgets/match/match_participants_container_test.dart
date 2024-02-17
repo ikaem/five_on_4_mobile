@@ -21,10 +21,14 @@ void main() {
           (widgetTester) async {
             final participants = <PlayerModel>[];
 
+// TODO need to test other fields too
             await widgetTester.pumpWidget(
               MaterialApp(
                 home: MatchParticipantsContainer(
                   participants: participants,
+                  isError: false,
+                  isLoading: false,
+                  isSyncing: false,
                 ),
               ),
             );
@@ -49,6 +53,9 @@ void main() {
                 MaterialApp(
                   home: MatchParticipantsContainer(
                     participants: participants,
+                    isError: false,
+                    isLoading: false,
+                    isSyncing: false,
                   ),
                 ),
               );

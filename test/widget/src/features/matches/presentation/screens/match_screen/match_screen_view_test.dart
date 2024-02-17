@@ -6,7 +6,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_matc
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/provider/load_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_view.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +32,7 @@ void main() {
   });
 
   group(
-    "MatchView",
+    "$MatchScreenView",
     () {
       group(
         "Layout",
@@ -42,20 +42,18 @@ void main() {
             "when widget is rendered"
             "should show a [TabToggler] with expected arguments",
             (widgetTester) async {
-              const matchId = 1;
-
               _stubGetMatchUseCases(
                 getMatchUseCase: getMatchUseCase,
                 loadMatchUseCase: loadMatchUseCase,
-                matchId: matchId,
-                match: testMatch,
+                loadMatchCallback: () => testMatch.id,
+                getMatchCallback: () => testMatch,
               );
 
               await widgetTester.pumpWithProviderScope(
-                widget: const MaterialApp(
+                widget: MaterialApp(
                   home: Scaffold(
-                    body: MatchView(
-                      matchId: matchId,
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
                     ),
                   ),
                 ),
@@ -63,6 +61,92 @@ void main() {
               );
 
               final tabTogglerFinder = _findTabToggler();
+
+              expect(tabTogglerFinder, findsOneWidget);
+            },
+          );
+        },
+      );
+
+      group(
+        "State Reactivity",
+        () {
+          testWidgets(
+            "given GetMatchController emits loading state "
+            "when widget is rendered "
+            "then should show [TabToggler] widget with expected arguments passed to it",
+            (widgetTester) async {
+              _stubGetMatchUseCases(
+                getMatchUseCase: getMatchUseCase,
+                loadMatchUseCase: loadMatchUseCase,
+                loadMatchCallback: () => testMatch.id,
+                getMatchCallback: () => testMatch,
+              );
+
+              await widgetTester.pumpWithProviderScope(
+                widget: MaterialApp(
+                  home: Scaffold(
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
+                    ),
+                  ),
+                ),
+                overrides: overrides,
+              );
+
+              final tabTogglerFinder = _findTabToggler(
+                propertyChecker: ({
+                  required MatchInfoContainer matchInfoContainer,
+                  required MatchParticipantsContainer
+                      matchParticipantsContainer,
+                }) {
+                  if (!matchInfoContainer.isLoading) return false;
+                  if (!matchParticipantsContainer.isLoading) return false;
+
+                  return true;
+                },
+              );
+
+              expect(tabTogglerFinder, findsOneWidget);
+            },
+          );
+          testWidgets(
+            "given GetMatchController emits error state "
+            "when widget is rendered "
+            "then should show [TabToggler] widget with expected arguments passed to it",
+            (widgetTester) async {
+              _stubGetMatchUseCases(
+                getMatchUseCase: getMatchUseCase,
+                loadMatchUseCase: loadMatchUseCase,
+                loadMatchCallback: () => throw Exception(),
+                getMatchCallback: () => testMatch,
+              );
+
+              await widgetTester.pumpWithProviderScope(
+                widget: MaterialApp(
+                  home: Scaffold(
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
+                    ),
+                  ),
+                ),
+                overrides: overrides,
+              );
+
+              await widgetTester.pump();
+
+              final tabTogglerFinder = _findTabToggler(
+                propertyChecker: ({
+                  required MatchInfoContainer matchInfoContainer,
+                  required MatchParticipantsContainer
+                      matchParticipantsContainer,
+                }) {
+                  if (!matchInfoContainer.isError) return false;
+                  if (!matchParticipantsContainer.isError) return false;
+
+                  return true;
+                },
+              );
 
               expect(tabTogglerFinder, findsOneWidget);
             },
@@ -80,14 +164,14 @@ class _MockLoadMatchUseCase extends Mock implements LoadMatchUseCase {}
 void _stubGetMatchUseCases({
   required GetMatchUseCase getMatchUseCase,
   required LoadMatchUseCase loadMatchUseCase,
-  required int matchId,
-  required MatchModel match,
+  required int Function() loadMatchCallback,
+  required MatchModel Function() getMatchCallback,
 }) {
   when(
     () => getMatchUseCase(
       matchId: any(named: "matchId"),
     ),
-  ).thenAnswer((_) async => match);
+  ).thenAnswer((_) async => getMatchCallback());
 
   when(
     () => loadMatchUseCase(
@@ -96,12 +180,15 @@ void _stubGetMatchUseCases({
       ),
     ),
   ).thenAnswer(
-    (_) async => matchId,
+    (_) async => loadMatchCallback(),
   );
 }
 
 Finder _findTabToggler({
-  bool Function()? propertyChecker,
+  bool Function({
+    required MatchInfoContainer matchInfoContainer,
+    required MatchParticipantsContainer matchParticipantsContainer,
+  })? propertyChecker,
 }) {
   final tabTogglerFinder = find.byWidgetPredicate((widget) {
     if (widget is! TabToggler) return false;
@@ -124,7 +211,10 @@ Finder _findTabToggler({
 
     if (propertyChecker == null) return true;
 
-    final doChildrenPropertiesMatch = propertyChecker();
+    final doChildrenPropertiesMatch = propertyChecker(
+      matchInfoContainer: option1Child,
+      matchParticipantsContainer: option2Child,
+    );
     return doChildrenPropertiesMatch;
 
     // final option1ChildMatch = option1Child.match;

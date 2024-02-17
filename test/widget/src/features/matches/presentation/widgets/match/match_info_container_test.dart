@@ -18,6 +18,7 @@ void main() {
     "MatchInfoContainer",
     () {
       group(
+        // TODO will need to test other stuff too - when fields
         "Layout",
         () {
           testWidgets(
@@ -29,6 +30,9 @@ void main() {
                 MaterialApp(
                   home: MatchInfoContainer(
                     match: match,
+                    isError: false,
+                    isLoading: false,
+                    isSyncing: false,
                   ),
                 ),
               );

@@ -1,5 +1,5 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_view.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -22,7 +22,7 @@ void main() {
               );
 
               // TODO come back to this - will need to override controller to provide match
-              final matchViewFinder = find.byType(MatchView);
+              final matchViewFinder = find.byType(MatchScreenView);
 
               expect(matchViewFinder, findsOneWidget);
             },
