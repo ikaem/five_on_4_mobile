@@ -7,7 +7,7 @@ part of 'get_my_matches_controller.dart';
 // **************************************************************************
 
 String _$getMyMatchesControllerHash() =>
-    r'53b0672df63bd3db83c84810a2de315a371cf9b3';
+    r'67fc3c1d9c6b4866fb71e8296bf1df7e386525a9';
 
 /// See also [GetMyMatchesController].
 @ProviderFor(GetMyMatchesController)

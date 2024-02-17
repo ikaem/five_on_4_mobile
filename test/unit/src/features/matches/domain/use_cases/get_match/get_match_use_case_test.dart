@@ -1,23 +1,25 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../../../../../utils/data/test_models.dart';
+
 void main() {
   final matchesRepository = _MockMatchesRepository();
-  final loadMatchUseCase = LoadMatchUseCase(
+  final getMatchUseCase = GetMatchUseCase(
     matchesRepository: matchesRepository,
   );
 
-  const matchId = 1;
+  final match = getTestMatchModel();
 
   setUp(() {
     when(
-      () => matchesRepository.loadMatch(
+      () => matchesRepository.getMatch(
         matchId: any(named: "matchId"),
       ),
     ).thenAnswer(
-      (_) async => matchId,
+      (_) async => match,
     );
   });
 
@@ -26,7 +28,7 @@ void main() {
   });
 
   group(
-    "LoadMatchUseCase",
+    "GetMatchUseCase",
     () {
       group(
         ".call()",
@@ -36,13 +38,13 @@ void main() {
             "when when call() is called"
             "then should return expected value",
             () async {
-              final result = await loadMatchUseCase(
-                matchId: matchId,
+              final result = await getMatchUseCase(
+                matchId: match.id,
               );
 
               expect(
                 result,
-                matchId,
+                match,
               );
             },
           );
@@ -50,15 +52,15 @@ void main() {
           test(
             "given a matchId"
             "when call() is called"
-            "should call repository to load match",
+            "should call repository to get match",
             () async {
-              await loadMatchUseCase(
-                matchId: matchId,
+              await getMatchUseCase(
+                matchId: match.id,
               );
 
               verify(
-                () => matchesRepository.loadMatch(
-                  matchId: matchId,
+                () => matchesRepository.getMatch(
+                  matchId: match.id,
                 ),
               ).called(1);
             },

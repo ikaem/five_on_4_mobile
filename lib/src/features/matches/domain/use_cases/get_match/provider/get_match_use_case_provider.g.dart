@@ -1,27 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'load_my_matches_use_case_provider.dart';
+part of 'get_match_use_case_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loadMyMatchesUseCaseHash() =>
-    r'1b27802ea472d72a5e0eb3104441c99bbeaaf7e5';
+String _$getMatchUseCaseHash() => r'848a88c7a5058790fc74c16fbaae40fed2174745';
 
-/// See also [loadMyMatchesUseCase].
-@ProviderFor(loadMyMatchesUseCase)
-final loadMyMatchesUseCaseProvider =
-    AutoDisposeProvider<LoadMyMatchesUseCase>.internal(
-  loadMyMatchesUseCase,
-  name: r'loadMyMatchesUseCaseProvider',
+/// See also [getMatchUseCase].
+@ProviderFor(getMatchUseCase)
+final getMatchUseCaseProvider = AutoDisposeProvider<GetMatchUseCase>.internal(
+  getMatchUseCase,
+  name: r'getMatchUseCaseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$loadMyMatchesUseCaseHash,
+      : _$getMatchUseCaseHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef LoadMyMatchesUseCaseRef = AutoDisposeProviderRef<LoadMyMatchesUseCase>;
+typedef GetMatchUseCaseRef = AutoDisposeProviderRef<GetMatchUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
