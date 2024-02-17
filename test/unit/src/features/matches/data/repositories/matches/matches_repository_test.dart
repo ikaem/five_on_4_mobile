@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/matchers/throws_auth_exception_with_message.dart';
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   final matchesLocalDataSource = _MockMatchesLocalDataSource();
@@ -63,6 +64,14 @@ void main() {
                 ),
               ).thenAnswer(
                 (_) async => remoteEntityMatch,
+              );
+
+              when(
+                () => matchesLocalDataSource.saveMatch(
+                  match: any(named: "match"),
+                ),
+              ).thenAnswer(
+                (invocation) async => matchId,
               );
 
               // when
@@ -224,7 +233,7 @@ void main() {
           // auth status data source
           when(
             () => authStatusDataSource.playerId,
-          ).thenReturn(null);
+          ).thenReturn(1);
 
           final matches = await matchesRepository.getMyTodayMatches();
 
@@ -238,17 +247,15 @@ void main() {
         "when getMyTodayMatches()"
         "should throw AuthStatusNotLoggedInException",
         () async {
-          // auth status data source
-
           // Given
           when(
             () => authStatusDataSource.playerId,
-          ).thenReturn(1);
+          ).thenReturn(null);
 
           // When & Then
           expect(
             () => matchesRepository.getMyTodayMatches(),
-            throwsAuthExceptionWithMessage(
+            throwsExceptionWithMessage<AuthNotLoggedInException>(
               "User is not logged in",
             ),
           );
@@ -299,7 +306,7 @@ void main() {
           // When & Then
           expect(
             () => matchesRepository.getMyPastMatches(),
-            throwsAuthExceptionWithMessage(
+            throwsExceptionWithMessage<AuthNotLoggedInException>(
               "User is not logged in",
             ),
           );
@@ -350,7 +357,10 @@ void main() {
           // When & Then
           expect(
             () => matchesRepository.getMyUpcomingMatches(),
-            throwsAuthExceptionWithMessage(
+            // throwsAuthExceptionWithMessage(
+            //   "User is not logged in",
+            // ),
+            throwsExceptionWithMessage<AuthNotLoggedInException>(
               "User is not logged in",
             ),
           );

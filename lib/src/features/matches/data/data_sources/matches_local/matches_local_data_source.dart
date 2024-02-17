@@ -21,4 +21,8 @@ abstract interface class MatchesLocalDataSource {
   Future<List<MatchLocalEntity>> getPastMatchesForPlayer({
     required int playerId,
   });
+
+  Future<MatchLocalEntity> getMatch({
+    required int matchId,
+  });
 }

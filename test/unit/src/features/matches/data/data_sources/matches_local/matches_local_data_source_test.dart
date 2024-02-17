@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';
@@ -7,6 +8,7 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
 import '../../../../../../../utils/helpers/db/setup_db.dart';
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   // final isarWrapper = _MockIsarWrapper();
@@ -22,7 +24,52 @@ void main() {
     "MatchesLocalDataSource",
     () {
       group(
-        ".saveMatch",
+        ".getMatch()",
+        () {
+          test(
+            "given a match id with no match in the database"
+            "when '.getMatch() is called"
+            "then should throw expected exception",
+            () {
+              // Given
+              const id = 999;
+
+              // When / Then
+              expectLater(
+                  () => matchesLocalDataSource.getMatch(matchId: id),
+                  // throwsExceptionWithMessage,
+                  throwsExceptionWithMessage<MatchNotFoundException>(
+                    "Match with id: $id not found",
+                  ));
+            },
+          );
+
+          test(
+            "given a valid match id"
+            "when '.getMatch() is called"
+            "then should retrieve the match from the database",
+            () async {
+              // setup - save match to db
+              final testMatch = getTestMatchLocalEntities(count: 1).first;
+              await isarWrapper.db.writeTxn(() async {
+                await isarWrapper.db.matchLocalEntitys.put(testMatch);
+              });
+
+              // Given
+              final id = testMatch.id;
+
+              // When
+              final result = await matchesLocalDataSource.getMatch(matchId: id);
+
+              // Then
+              expect(result, equals(testMatch));
+            },
+          );
+        },
+      );
+
+      group(
+        ".saveMatch()",
         () {
           test(
             "given a match"
