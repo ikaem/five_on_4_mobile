@@ -59,7 +59,7 @@ void main() {
 
               // create a listener
               final listener =
-                  _MockListener<AsyncValue<MatchControllerState>>();
+                  _MockListener<AsyncValue<GetMatchControllerState>>();
 
               final getMatchControllerProviderInstance =
                   getMatchControllerProvider(
@@ -77,25 +77,25 @@ void main() {
               verifyInOrder([
                 () => listener(
                       null,
-                      const AsyncValue<MatchControllerState>.loading(),
+                      const AsyncValue<GetMatchControllerState>.loading(),
                     ),
                 () => listener(
-                      const AsyncValue<MatchControllerState>.loading(),
-                      AsyncValue<MatchControllerState>.data(
-                          MatchControllerState(
+                      const AsyncValue<GetMatchControllerState>.loading(),
+                      AsyncValue<GetMatchControllerState>.data(
+                          GetMatchControllerState(
                         isRemoteFetchDone: false,
                         match: match,
                       )),
                     ),
                 () => listener(
-                      AsyncValue<MatchControllerState>.data(
-                        MatchControllerState(
+                      AsyncValue<GetMatchControllerState>.data(
+                        GetMatchControllerState(
                           isRemoteFetchDone: false,
                           match: match,
                         ),
                       ),
-                      AsyncValue<MatchControllerState>.data(
-                        MatchControllerState(
+                      AsyncValue<GetMatchControllerState>.data(
+                        GetMatchControllerState(
                           isRemoteFetchDone: true,
                           match: match,
                         ),

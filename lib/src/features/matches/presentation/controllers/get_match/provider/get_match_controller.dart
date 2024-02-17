@@ -9,7 +9,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_matc
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_match_controller.g.dart";
-part "match_controller_state.dart";
+part 'get_match_controller_state.dart';
 
 @riverpod
 class GetMatchController extends _$GetMatchController {
@@ -27,7 +27,7 @@ class GetMatchController extends _$GetMatchController {
   }
 
   @override
-  Future<MatchControllerState> build({
+  Future<GetMatchControllerState> build({
     required int matchId,
   }) async {
     handleDispose();
@@ -41,12 +41,12 @@ class GetMatchController extends _$GetMatchController {
     return initialData;
   }
 
-  Future<MatchControllerState> _getDataFromDb({
+  Future<GetMatchControllerState> _getDataFromDb({
     required int matchId,
     required bool isRemoteFetchDone,
   }) async {
     final match = await getMatchUseCase(matchId: matchId);
-    final stateValue = MatchControllerState(
+    final stateValue = GetMatchControllerState(
       isRemoteFetchDone: isRemoteFetchDone,
       match: match,
     );

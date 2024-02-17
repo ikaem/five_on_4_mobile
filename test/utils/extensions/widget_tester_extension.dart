@@ -14,4 +14,16 @@ extension WidgetTesterExtension on WidgetTester {
       ),
     );
   }
+
+  Future<void> pumpWithProviderScope({
+    required Widget widget,
+    List<Override> overrides = const [],
+  }) async {
+    await pumpWidget(
+      ProviderScope(
+        overrides: overrides,
+        child: widget,
+      ),
+    );
+  }
 }

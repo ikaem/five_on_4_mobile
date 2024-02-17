@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$GetMatchController
-    extends BuildlessAutoDisposeAsyncNotifier<MatchControllerState> {
+    extends BuildlessAutoDisposeAsyncNotifier<GetMatchControllerState> {
   late final int matchId;
 
-  Future<MatchControllerState> build({
+  Future<GetMatchControllerState> build({
     required int matchId,
   });
 }
@@ -45,7 +45,7 @@ const getMatchControllerProvider = GetMatchControllerFamily();
 
 /// See also [GetMatchController].
 class GetMatchControllerFamily
-    extends Family<AsyncValue<MatchControllerState>> {
+    extends Family<AsyncValue<GetMatchControllerState>> {
   /// See also [GetMatchController].
   const GetMatchControllerFamily();
 
@@ -84,7 +84,7 @@ class GetMatchControllerFamily
 
 /// See also [GetMatchController].
 class GetMatchControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    GetMatchController, MatchControllerState> {
+    GetMatchController, GetMatchControllerState> {
   /// See also [GetMatchController].
   GetMatchControllerProvider({
     required int matchId,
@@ -115,7 +115,7 @@ class GetMatchControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final int matchId;
 
   @override
-  Future<MatchControllerState> runNotifierBuild(
+  Future<GetMatchControllerState> runNotifierBuild(
     covariant GetMatchController notifier,
   ) {
     return notifier.build(
@@ -141,7 +141,7 @@ class GetMatchControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   AutoDisposeAsyncNotifierProviderElement<GetMatchController,
-      MatchControllerState> createElement() {
+      GetMatchControllerState> createElement() {
     return _GetMatchControllerProviderElement(this);
   }
 
@@ -160,14 +160,14 @@ class GetMatchControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
 }
 
 mixin GetMatchControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<MatchControllerState> {
+    on AutoDisposeAsyncNotifierProviderRef<GetMatchControllerState> {
   /// The parameter `matchId` of this provider.
   int get matchId;
 }
 
 class _GetMatchControllerProviderElement
     extends AutoDisposeAsyncNotifierProviderElement<GetMatchController,
-        MatchControllerState> with GetMatchControllerRef {
+        GetMatchControllerState> with GetMatchControllerRef {
   _GetMatchControllerProviderElement(super.provider);
 
   @override

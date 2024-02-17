@@ -2,22 +2,44 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/hom
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen_view.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/provider/get_my_past_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
 import '../../../../../../../utils/data/test_models.dart';
+import '../../../../../../../utils/extensions/widget_tester_extension.dart';
 
 void main() {
   final getMyTodayMatchesUseCase = _MockGetMyTodayMatchesUseCase();
+  final getMyPastMatchesUseCase = _MockGetMyPastMatchesUseCase();
+  final getMyUpcomingMatchesUseCase = _MockGetMyUpcomingMatchesUseCase();
+
   final loadMyMatchesUseCase = _MockLoadMyMatchesUseCase();
+
+  final overrides = [
+    getMyTodayMatchesUseCaseProvider.overrideWith(
+      (ref) => getMyTodayMatchesUseCase,
+    ),
+    getMyPastMatchesUseCaseProvider.overrideWith(
+      (ref) => getMyPastMatchesUseCase,
+    ),
+    getMyUpcomingMatchesUseCaseProvider.overrideWith(
+      (ref) => getMyUpcomingMatchesUseCase,
+    ),
+    loadMyMatchesUseCaseProvider.overrideWith(
+      (ref) => loadMyMatchesUseCase,
+    ),
+  ];
 
   tearDown(() {
     reset(getMyTodayMatchesUseCase);
@@ -35,23 +57,19 @@ void main() {
             "when widget is rendered"
             "should show [CurrentUserGreeting] with expected arguments passed to it",
             (widgetTester) async {
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async => [],
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {},
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: [],
+                pastMatches: [],
+                upcomingMatches: [],
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -76,23 +94,19 @@ void main() {
             "when widget is rendered"
             "should show [TabToggler] with expected arguments passed to it",
             (widgetTester) async {
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async => [],
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {},
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: [],
+                pastMatches: [],
+                upcomingMatches: [],
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -121,23 +135,19 @@ void main() {
               final matchesToday =
                   getTestMatchesModels(count: 2, namesPrefix: "today_");
 
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async => matchesToday,
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {},
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: matchesToday,
+                pastMatches: [],
+                upcomingMatches: [],
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -170,28 +180,20 @@ void main() {
               final matchesToday =
                   getTestMatchesModels(count: 2, namesPrefix: "today_");
 
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async {
-                  return matchesToday;
-                },
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {
-                  // simulate loading from server
-                  await Future.delayed(Duration.zero);
-                },
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: matchesToday,
+                pastMatches: [],
+                upcomingMatches: [],
+                shouldSimulateLoadFromServerDelay: true,
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -231,28 +233,19 @@ void main() {
               final matchesToday =
                   getTestMatchesModels(count: 2, namesPrefix: "today_");
 
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async {
-                  return matchesToday;
-                },
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {
-                  // simulate loading from server
-                  await Future.delayed(Duration.zero);
-                },
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: matchesToday,
+                pastMatches: [],
+                upcomingMatches: [],
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -288,25 +281,19 @@ void main() {
               final matchesToday =
                   getTestMatchesModels(count: 2, namesPrefix: "today_");
 
-              when(() => getMyTodayMatchesUseCase()).thenAnswer(
-                (_) async {
-                  return matchesToday;
-                },
-              );
-              when(() => loadMyMatchesUseCase()).thenAnswer(
-                (_) async {},
+              _stubGetMyMatchesUseCases(
+                getMyTodayMatchesUseCase: getMyTodayMatchesUseCase,
+                getMyPastMatchesUseCase: getMyPastMatchesUseCase,
+                getMyUpcomingMatchesUseCase: getMyUpcomingMatchesUseCase,
+                loadMyMatchesUseCase: loadMyMatchesUseCase,
+                todayMatches: matchesToday,
+                pastMatches: [],
+                upcomingMatches: [],
               );
 
               await mockNetworkImages(() async {
                 await widgetTester.pumpWithProviderScope(
-                  overrides: [
-                    getMyTodayMatchesUseCaseProvider.overrideWith(
-                      (ref) => getMyTodayMatchesUseCase,
-                    ),
-                    loadMyMatchesUseCaseProvider.overrideWith(
-                      (ref) => loadMyMatchesUseCase,
-                    ),
-                  ],
+                  overrides: overrides,
                   widget: const MaterialApp(
                     home: Scaffold(
                       body: HomeScreenView(),
@@ -343,12 +330,19 @@ void main() {
   );
 }
 
-class _FakeMatchesStateValue extends Fake implements MatchesControllerState {}
-
 class _MockGetMyTodayMatchesUseCase extends Mock
     implements GetMyTodayMatchesUseCase {}
 
+class _MockGetMyPastMatchesUseCase extends Mock
+    implements GetMyPastMatchesUseCase {}
+
+class _MockGetMyUpcomingMatchesUseCase extends Mock
+    implements GetMyUpcomingMatchesUseCase {}
+
 class _MockLoadMyMatchesUseCase extends Mock implements LoadMyMatchesUseCase {}
+
+// TODO in future we will mock the repository, not the data source
+// class _MockAuthStatusDataSource extends Mock implements AuthStatusDataSource {}
 
 Finder _findTabToggler({
   bool Function({
@@ -388,17 +382,36 @@ Finder _findTabToggler({
   return tabTogglerFinder;
 }
 
-// TODO potentially move this to some extension general on widget tester
-extension on WidgetTester {
-  Future<void> pumpWithProviderScope({
-    required Widget widget,
-    List<Override> overrides = const [],
-  }) async {
-    await pumpWidget(
-      ProviderScope(
-        overrides: overrides,
-        child: widget,
-      ),
-    );
-  }
+void _stubGetMyMatchesUseCases({
+  required GetMyTodayMatchesUseCase getMyTodayMatchesUseCase,
+  required GetMyPastMatchesUseCase getMyPastMatchesUseCase,
+  required GetMyUpcomingMatchesUseCase getMyUpcomingMatchesUseCase,
+  required LoadMyMatchesUseCase loadMyMatchesUseCase,
+  required List<MatchModel> todayMatches,
+  required List<MatchModel> pastMatches,
+  required List<MatchModel> upcomingMatches,
+  bool shouldSimulateLoadFromServerDelay = false,
+}) {
+  when(() => getMyTodayMatchesUseCase()).thenAnswer(
+    (_) async {
+      return todayMatches;
+    },
+  );
+  when(() => getMyPastMatchesUseCase()).thenAnswer(
+    (_) async {
+      return pastMatches;
+    },
+  );
+  when(() => getMyUpcomingMatchesUseCase()).thenAnswer(
+    (_) async {
+      return upcomingMatches;
+    },
+  );
+  when(() => loadMyMatchesUseCase()).thenAnswer(
+    (_) async {
+      if (shouldSimulateLoadFromServerDelay) {
+        await Future.delayed(Duration.zero);
+      }
+    },
+  );
 }
