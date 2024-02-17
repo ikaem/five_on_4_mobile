@@ -61,8 +61,13 @@ void main() {
               final listener =
                   _MockListener<AsyncValue<MatchControllerState>>();
 
+              final getMatchControllerProviderInstance =
+                  getMatchControllerProvider(
+                matchId: match.id,
+              );
+
               providerContaiuner.listen(
-                getMatchControllerProvider,
+                getMatchControllerProviderInstance,
                 listener,
                 fireImmediately: true,
               );

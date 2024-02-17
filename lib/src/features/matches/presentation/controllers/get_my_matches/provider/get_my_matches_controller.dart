@@ -15,6 +15,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_my_matches_controller.g.dart";
 part "matches_controller_state.dart";
+part "matches_type.dart";
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
@@ -122,11 +123,4 @@ class GetMyMatchesController extends _$GetMyMatchesController {
       state = AsyncValue.error(e, s);
     }
   }
-}
-
-// TODO test only - move elsewhere
-enum MatchesType {
-  today,
-  upcoming,
-  past,
 }
