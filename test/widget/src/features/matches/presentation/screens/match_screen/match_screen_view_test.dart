@@ -353,12 +353,6 @@ Finder _findTabToggler({
       matchParticipantsContainer: option2Child,
     );
     return doChildrenPropertiesMatch;
-
-    // final option1ChildMatch = option1Child.match;
-    // final option2ChildParticipants = option2Child.participants;
-
-    // if (option1ChildMatch != testMatch) return false;
-    // if (option2ChildParticipants != testPlayers) return false;
   });
 
   return tabTogglerFinder;

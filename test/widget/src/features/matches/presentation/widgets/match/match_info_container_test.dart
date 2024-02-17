@@ -22,9 +22,17 @@ void main() {
         "Layout",
         () {
           testWidgets(
-            "given nothing in particular"
+            "given 'isLoading' argument is set to true "
             "when widget is rendered"
-            "should render expected widgets",
+            "then should show LoadingStatus widget with expected arguments",
+            (widgetTester) async {
+              // write the test
+            },
+          );
+          testWidgets(
+            "given valid match argument is provided "
+            "when widget is rendered"
+            "should render expected widget",
             (widgetTester) async {
               await widgetTester.pumpWidget(
                 MaterialApp(
