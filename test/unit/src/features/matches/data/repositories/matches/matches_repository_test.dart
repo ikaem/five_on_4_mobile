@@ -47,7 +47,72 @@ void main() {
     "MatchesRepository",
     () {
       group(
-        ".loadMatch",
+        ".getMatch()",
+        () {
+          test(
+            "given a match id"
+            "when call .getMatch()"
+            "then should return expected result",
+            () async {
+              // setup
+              final matchLocalEntity = testLocalMatches.first;
+              final matchModel = MatchesConverter.fromLocalEntityToModel(
+                matchLocal: matchLocalEntity,
+              );
+
+              when(
+                () => matchesLocalDataSource.getMatch(
+                  matchId: any(named: "matchId"),
+                ),
+              ).thenAnswer((invocation) async => matchLocalEntity);
+
+              // given
+              final matchId = matchLocalEntity.id;
+
+              // when
+              final result = await matchesRepository.getMatch(
+                matchId: matchId,
+              );
+
+              // then
+              expect(result, equals(matchModel));
+            },
+          );
+
+          test(
+            "given a match id"
+            "when call .getMatch()"
+            "then should call local data source to retrieve the match",
+            () {
+              // setup
+              final matchLocalEntity = testLocalMatches.first;
+
+              when(
+                () => matchesLocalDataSource.getMatch(
+                  matchId: any(named: "matchId"),
+                ),
+              ).thenAnswer(
+                (invocation) async => matchLocalEntity,
+              );
+
+              // given
+              final matchId = matchLocalEntity.id;
+
+              // when
+              matchesRepository.getMatch(matchId: matchId);
+
+              // then
+              verify(
+                () => matchesLocalDataSource.getMatch(
+                  matchId: matchId,
+                ),
+              ).called(1);
+            },
+          );
+        },
+      );
+      group(
+        ".loadMatch()",
         () {
           test(
             "given a match id"

@@ -98,4 +98,14 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
     return id;
   }
+
+  @override
+  Future<MatchModel> getMatch({required int matchId}) async {
+    final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
+
+    final modelMatch =
+        MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
+
+    return modelMatch;
+  }
 }
