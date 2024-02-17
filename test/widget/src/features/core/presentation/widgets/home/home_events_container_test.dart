@@ -166,6 +166,9 @@ void main() {
                 (widget) {
                   if (widget is! LoadingStatus) return false;
                   if (!widget.isLinear) return false;
+                  if (widget.message != "Synchronizing with remote data...") {
+                    return false;
+                  }
 
                   return true;
                 },

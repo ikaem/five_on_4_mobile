@@ -20,17 +20,11 @@ class GetMatchController extends _$GetMatchController {
     getMatchUseCaseProvider,
   );
 
-  Future<void> handleDispose() async {
-    ref.onDispose(() {
-      // NOTE for now nothing is needed here
-    });
-  }
-
   @override
   Future<GetMatchControllerState> build({
     required int matchId,
   }) async {
-    handleDispose();
+    _handleDispose();
 
     final initialData = await _getDataFromDb(
       matchId: matchId,
@@ -39,6 +33,10 @@ class GetMatchController extends _$GetMatchController {
     _handleLoadUpdatedData(matchId: matchId);
 
     return initialData;
+  }
+
+  Future<void> onMatchReload() async {
+    await _handleLoadUpdatedData(matchId: matchId);
   }
 
   Future<GetMatchControllerState> _getDataFromDb({
@@ -54,7 +52,7 @@ class GetMatchController extends _$GetMatchController {
     return stateValue;
   }
 
-  void _handleLoadUpdatedData({
+  Future<void> _handleLoadUpdatedData({
     required int matchId,
   }) async {
     try {
@@ -70,5 +68,11 @@ class GetMatchController extends _$GetMatchController {
       log("Error loading match with id: $matchId into db");
       state = AsyncValue.error(e, s);
     }
+  }
+
+  Future<void> _handleDispose() async {
+    ref.onDispose(() {
+      // NOTE for now nothing is needed here
+    });
   }
 }

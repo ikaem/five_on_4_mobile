@@ -22,8 +22,7 @@ class MatchInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
+    return Row(
       children: [
         Expanded(
           child: _DateElement(
@@ -81,7 +80,7 @@ class MatchInfo extends StatelessWidget {
           ),
         ),
       ],
-    ));
+    );
   }
 }
 

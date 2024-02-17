@@ -38,6 +38,8 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
   late final getMatchControllerProviderInstance = getMatchControllerProvider(
     matchId: widget.matchId,
   );
+  late final onMatchReload =
+      ref.read(getMatchControllerProviderInstance.notifier).onMatchReload;
 
   @override
   Widget build(
@@ -47,6 +49,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     final matchUIState = _getMatchUIState(matchControllerState);
     final togglerOptions = _getTogglerOptions(
       matchUIState: matchUIState,
+      onRetry: onMatchReload,
     );
 
     return TabToggler(
@@ -56,6 +59,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
 
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchUIState matchUIState,
+    required Future<void> Function() onRetry,
   }) {
     final match = matchUIState.match;
     final participants = match?.arrivingPlayers ?? [];
@@ -71,6 +75,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
           isError: isError,
           isLoading: isLoading,
           isSyncing: isSyncing,
+          onRetry: onRetry,
         ),
       ),
       TabTogglerOptionValue(
