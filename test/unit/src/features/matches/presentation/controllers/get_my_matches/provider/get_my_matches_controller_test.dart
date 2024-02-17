@@ -2,7 +2,6 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_to
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,15 +14,11 @@ void main() {
   group(
     "$GetMyMatchesController",
     () {
-      // TODO will need another group level
-      // - success retrieval
-      // - error retrieval
-
       group(
-        "Success retrieval",
+        "NON-error state",
         () {
           test(
-            "given a GetMyMatchesController instance and connected to internet"
+            "given a controller instance and connected to internet"
             "when instance is created"
             "then emits state in specific order",
             () async {
@@ -55,7 +50,7 @@ void main() {
 
               // create a listener
               final listener =
-                  _MockListener<AsyncValue<MatchesControllerStateValue>>();
+                  _MockListener<AsyncValue<MatchesControllerState>>();
 
               providerContainer.listen(
                 getMyMatchesControllerProvider,
@@ -70,12 +65,12 @@ void main() {
                 [
                   () => listener(
                         null,
-                        const AsyncValue<MatchesControllerStateValue>.loading(),
+                        const AsyncValue<MatchesControllerState>.loading(),
                       ),
                   () => listener(
-                        const AsyncValue<MatchesControllerStateValue>.loading(),
-                        const AsyncValue<MatchesControllerStateValue>.data(
-                          MatchesControllerStateValue(
+                        const AsyncValue<MatchesControllerState>.loading(),
+                        const AsyncValue<MatchesControllerState>.data(
+                          MatchesControllerState(
                             isRemoteFetchDone: false,
                             todayMatches: [],
                             pastMatches: [],
@@ -84,16 +79,16 @@ void main() {
                         ),
                       ),
                   () => listener(
-                        const AsyncValue<MatchesControllerStateValue>.data(
-                          MatchesControllerStateValue(
+                        const AsyncValue<MatchesControllerState>.data(
+                          MatchesControllerState(
                             isRemoteFetchDone: false,
                             todayMatches: [],
                             pastMatches: [],
                             upcomingMatches: [],
                           ),
                         ),
-                        const AsyncValue<MatchesControllerStateValue>.data(
-                          MatchesControllerStateValue(
+                        const AsyncValue<MatchesControllerState>.data(
+                          MatchesControllerState(
                             isRemoteFetchDone: true,
                             todayMatches: [],
                             pastMatches: [],
@@ -112,8 +107,7 @@ void main() {
   );
 }
 
-class _FakeMatchesStateValue extends Fake
-    implements MatchesControllerStateValue {}
+class _FakeMatchesStateValue extends Fake implements MatchesControllerState {}
 
 class _MockGetMyTodayMatchesUseCase extends Mock
     implements GetMyTodayMatchesUseCase {}

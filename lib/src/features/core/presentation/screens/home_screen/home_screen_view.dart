@@ -1,9 +1,7 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -108,7 +106,7 @@ class HomeScreenView extends ConsumerWidget {
 
   // TODO this is a convertor of some kind - maybe move it to converter eventually
   MatchesUIStateValue _getMatchesUIState(
-    AsyncValue<MatchesControllerStateValue> matchesControllerState,
+    AsyncValue<MatchesControllerState> matchesControllerState,
   ) {
     final isLoading = matchesControllerState.maybeWhen(
       loading: () => true,

@@ -6,7 +6,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_to
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -343,8 +343,7 @@ void main() {
   );
 }
 
-class _FakeMatchesStateValue extends Fake
-    implements MatchesControllerStateValue {}
+class _FakeMatchesStateValue extends Fake implements MatchesControllerState {}
 
 class _MockGetMyTodayMatchesUseCase extends Mock
     implements GetMyTodayMatchesUseCase {}
