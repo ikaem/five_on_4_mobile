@@ -262,8 +262,8 @@ void main() {
                   required HomeEventsContainer todayContainerChild,
                   required HomeEventsContainer upcomingContainerChild,
                 }) {
-                  if (todayContainerChild.isLoading) return false;
-                  if (upcomingContainerChild.isLoading) return false;
+                  if (todayContainerChild.isSyncing) return false;
+                  if (upcomingContainerChild.isSyncing) return false;
 
                   return true;
                 },

@@ -151,6 +151,137 @@ void main() {
               expect(tabTogglerFinder, findsOneWidget);
             },
           );
+
+          testWidgets(
+            "given GetMatchController emits data state with 'isRemoteFetchDone' set to false "
+            "when widget is rendered "
+            "then should show [TabToggler] widget with expected arguments passed to it",
+            (widgetTester) async {
+              _stubGetMatchUseCases(
+                getMatchUseCase: getMatchUseCase,
+                loadMatchUseCase: loadMatchUseCase,
+                loadMatchCallback: () => testMatch.id,
+                getMatchCallback: () => testMatch,
+                shouldSimulateLoadFromServerDelay: true,
+              );
+
+              await widgetTester.pumpWithProviderScope(
+                widget: MaterialApp(
+                  home: Scaffold(
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
+                    ),
+                  ),
+                ),
+                overrides: overrides,
+              );
+
+              await widgetTester.pump();
+
+              final tabTogglerFinder = _findTabToggler(
+                propertyChecker: ({
+                  required MatchInfoContainer matchInfoContainer,
+                  required MatchParticipantsContainer
+                      matchParticipantsContainer,
+                }) {
+                  if (!matchInfoContainer.isSyncing) return false;
+                  if (!matchParticipantsContainer.isSyncing) return false;
+
+                  return true;
+                },
+              );
+
+              expect(tabTogglerFinder, findsOneWidget);
+
+              // await for server delay to finish
+              await widgetTester.pumpAndSettle();
+            },
+          );
+
+          testWidgets(
+            "given GetMatchController emits data state with 'isRemoteFetchDone' set to true "
+            "when widget is rendered "
+            "then should show [TabToggler] widget with expected arguments passed to it",
+            (widgetTester) async {
+              _stubGetMatchUseCases(
+                getMatchUseCase: getMatchUseCase,
+                loadMatchUseCase: loadMatchUseCase,
+                loadMatchCallback: () => testMatch.id,
+                getMatchCallback: () => testMatch,
+              );
+
+              await widgetTester.pumpWithProviderScope(
+                widget: MaterialApp(
+                  home: Scaffold(
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
+                    ),
+                  ),
+                ),
+                overrides: overrides,
+              );
+
+              await widgetTester.pumpAndSettle();
+
+              final tabTogglerFinder = _findTabToggler(
+                propertyChecker: ({
+                  required MatchInfoContainer matchInfoContainer,
+                  required MatchParticipantsContainer
+                      matchParticipantsContainer,
+                }) {
+                  if (matchInfoContainer.isSyncing) return false;
+                  if (matchParticipantsContainer.isSyncing) return false;
+
+                  return true;
+                },
+              );
+
+              expect(tabTogglerFinder, findsOneWidget);
+            },
+          );
+
+          testWidgets(
+            "given GetMatchController emits data state "
+            "when widget is rendered "
+            "then should show [TabToggler] widget with expected arguments passed to it",
+            (widgetTester) async {
+              _stubGetMatchUseCases(
+                getMatchUseCase: getMatchUseCase,
+                loadMatchUseCase: loadMatchUseCase,
+                loadMatchCallback: () => testMatch.id,
+                getMatchCallback: () => testMatch,
+              );
+
+              await widgetTester.pumpWithProviderScope(
+                widget: MaterialApp(
+                  home: Scaffold(
+                    body: MatchScreenView(
+                      matchId: testMatch.id,
+                    ),
+                  ),
+                ),
+                overrides: overrides,
+              );
+
+              await widgetTester.pumpAndSettle();
+
+              final tabTogglerFinder = _findTabToggler(
+                propertyChecker: ({
+                  required MatchInfoContainer matchInfoContainer,
+                  required MatchParticipantsContainer
+                      matchParticipantsContainer,
+                }) {
+                  if (matchInfoContainer.match != testMatch) return false;
+                  if (matchParticipantsContainer.participants !=
+                      testMatch.arrivingPlayers) return false;
+
+                  return true;
+                },
+              );
+
+              expect(tabTogglerFinder, findsOneWidget);
+            },
+          );
         },
       );
     },
@@ -166,6 +297,7 @@ void _stubGetMatchUseCases({
   required LoadMatchUseCase loadMatchUseCase,
   required int Function() loadMatchCallback,
   required MatchModel Function() getMatchCallback,
+  bool shouldSimulateLoadFromServerDelay = false,
 }) {
   when(
     () => getMatchUseCase(
@@ -180,7 +312,12 @@ void _stubGetMatchUseCases({
       ),
     ),
   ).thenAnswer(
-    (_) async => loadMatchCallback(),
+    (_) async {
+      if (shouldSimulateLoadFromServerDelay) {
+        await Future.delayed(Duration.zero);
+      }
+      return loadMatchCallback();
+    },
   );
 }
 
