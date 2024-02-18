@@ -53,6 +53,8 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   Future<MatchRemoteEntity> getMatch({
     required int matchId,
   }) async {
+    // TODO temp only
+    await Future.delayed(const Duration(seconds: 1));
     final uriParts = HttpRequestUriPartsValue(
       // TODO use https when we have real server eventually
       apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
@@ -82,7 +84,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   List<MatchRemoteEntity> _generateTempManipulatedMatches(
       List<MatchRemoteEntity> matchesEntities) {
 // TODO temp
-    return matchesEntities;
+    // return matchesEntities;
 
     final manipulatedMatchesToSplitBetweenTodayAndTomorrow =
         matchesEntities.map(

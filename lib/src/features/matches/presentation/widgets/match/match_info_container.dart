@@ -46,17 +46,19 @@ class MatchInfoContainer extends StatelessWidget {
 
     return Column(
       children: [
-        MatchInfo(
-          // TODO pass entire match here eventually
-          // TODO eventually, this needs only date in string
-          date: thisMatch.date.toString(),
-          // TODO this also needs valida data
-          dayName: "dayName",
-          time: "time",
-          title: thisMatch.name,
-          location: thisMatch.location,
-          organizer: thisMatch.organizer,
-          arrivingPlayersNumber: thisMatch.arrivingPlayers.length,
+        Expanded(
+          child: MatchInfo(
+            // TODO pass entire match here eventually
+            // TODO eventually, this needs only date in string
+            date: thisMatch.date.toString(),
+            // TODO this also needs valida data
+            dayName: "dayName",
+            time: "time",
+            title: thisMatch.name,
+            location: thisMatch.location,
+            organizer: thisMatch.organizer,
+            arrivingPlayersNumber: thisMatch.arrivingPlayers.length,
+          ),
         ),
         if (isSyncing)
           const LoadingStatus(
