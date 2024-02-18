@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:isar/isar.dart';
 
@@ -121,5 +122,35 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     ).findAll();
 
     return matches;
+  }
+
+  @override
+  Future<int> saveMatch({
+    required MatchLocalEntity match,
+  }) async {
+    final response = await _isarWrapper.db.writeTxn(() async {
+      final id = await _isarWrapper.db.matchLocalEntitys.put(match);
+      return id;
+    });
+
+    return response;
+  }
+
+  @override
+  Future<MatchLocalEntity> getMatch({
+    required int matchId,
+  }) async {
+    final match = await _isarWrapper.db.matchLocalEntitys
+        .where()
+        .idEqualTo(matchId)
+        .findFirst();
+
+    if (match == null) {
+      throw MatchNotFoundException(
+        message: "Match with id: $matchId not found",
+      );
+    }
+
+    return match;
   }
 }

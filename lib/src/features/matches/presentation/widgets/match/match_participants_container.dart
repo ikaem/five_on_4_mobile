@@ -3,10 +3,19 @@ import 'package:five_on_4_mobile/src/features/players/models/player/player_model
 import 'package:flutter/material.dart';
 
 class MatchParticipantsContainer extends StatelessWidget {
-  const MatchParticipantsContainer({super.key, required this.participants});
+  const MatchParticipantsContainer({
+    super.key,
+    required this.participants,
+    required this.isError,
+    required this.isLoading,
+    required this.isSyncing,
+  });
 
 // TODO possible that we would need to introduce a model for participant
   final List<PlayerModel> participants;
+  final bool isError;
+  final bool isSyncing;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {

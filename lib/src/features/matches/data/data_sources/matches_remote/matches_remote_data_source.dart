@@ -1,8 +1,18 @@
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 
 abstract interface class MatchesRemoteDataSource {
+  Future<MatchRemoteEntity> getMatch({
+    required int matchId,
+  });
   // TODO eventually change this to pass playerId Parameter as well
-  Future<List<MatchRemoteEntity>> getMyFollowingMatches(
-      // TODO no need to provide anything  - interceptor will retrieve logged in user id and send it together with request - on backend, we will extract it from the token
+  Future<List<MatchRemoteEntity>> getPlayerInitialMatches(
+      // TODO also we should make this called something like - getInitialPlayerMatches
+      // TODO this function should get 5 matches for today, and 5 for past, and 5 for upcogming
+      // TODO we should make this generic
+      /* 
+      pass info:
+      - playerId
+      - page
+       */
       );
 }

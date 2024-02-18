@@ -1,19 +1,13 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// TODO views are legitimate parts of screens
-// screen views should retrieve state
-
-// TODO move to domain value and explain why it's here and what it is used for - or maybe it is good to be used here because this is the only place to be used
-class MatchesUIStateValue {
-  const MatchesUIStateValue({
+class MatchesUIState {
+  const MatchesUIState({
     required this.isLoading,
     required this.isSyncing,
     required this.todayMatches,
@@ -67,7 +61,7 @@ class HomeScreenView extends ConsumerWidget {
   }
 
   List<TabTogglerOptionValue> _getTogglerOptions({
-    required MatchesUIStateValue matchesUIState,
+    required MatchesUIState matchesUIState,
     required Future<void> Function({
       required MatchesType matchesType,
     }) onRetry,
@@ -107,8 +101,8 @@ class HomeScreenView extends ConsumerWidget {
   }
 
   // TODO this is a convertor of some kind - maybe move it to converter eventually
-  MatchesUIStateValue _getMatchesUIState(
-    AsyncValue<MatchesControllerStateValue> matchesControllerState,
+  MatchesUIState _getMatchesUIState(
+    AsyncValue<MatchesControllerState> matchesControllerState,
   ) {
     final isLoading = matchesControllerState.maybeWhen(
       loading: () => true,
@@ -140,7 +134,7 @@ class HomeScreenView extends ConsumerWidget {
       orElse: () => false,
     );
 
-    return MatchesUIStateValue(
+    final state = MatchesUIState(
       isLoading: isLoading,
       isSyncing: isSyncing,
       todayMatches: todayMatches,
@@ -148,5 +142,7 @@ class HomeScreenView extends ConsumerWidget {
       pastMatches: pastMatches,
       isError: isError,
     );
+
+    return state;
   }
 }

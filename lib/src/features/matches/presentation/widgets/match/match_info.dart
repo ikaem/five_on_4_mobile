@@ -22,8 +22,8 @@ class MatchInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: _DateElement(
@@ -34,11 +34,14 @@ class MatchInfo extends StatelessWidget {
         ),
         Expanded(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+              Flexible(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Text(
@@ -81,7 +84,7 @@ class MatchInfo extends StatelessWidget {
           ),
         ),
       ],
-    ));
+    );
   }
 }
 

@@ -1,6 +1,10 @@
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 
 abstract interface class MatchesLocalDataSource {
+  // TODO not sure if i even need a response here
+  Future<int> saveMatch({
+    required MatchLocalEntity match,
+  });
   Future<List<int>> saveMatches({
     required List<MatchLocalEntity> matches,
   });
@@ -16,5 +20,9 @@ abstract interface class MatchesLocalDataSource {
 
   Future<List<MatchLocalEntity>> getPastMatchesForPlayer({
     required int playerId,
+  });
+
+  Future<MatchLocalEntity> getMatch({
+    required int matchId,
   });
 }

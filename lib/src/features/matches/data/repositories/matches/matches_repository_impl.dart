@@ -22,7 +22,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
   @override
   Future<void> loadMyMatches() async {
     final matchesRemote =
-        await _matchesRemoteDataSource.getMyFollowingMatches();
+        await _matchesRemoteDataSource.getPlayerInitialMatches();
 
     final matchesLocal = MatchesConverter.fromRemoteEntitiesToLocalEntities(
       matchesRemote: matchesRemote,
@@ -33,6 +33,7 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
   @override
   Future<List<MatchModel>> getMyTodayMatches() async {
+    // TODO useCases could also possibly get playerId and then ping some generic fucntions inside the repository
     final playerId = _authStatusDataSource.playerId;
     if (playerId == null) {
       // TODO responsible controller here should have access to logoutusecase, and use it to logout
@@ -80,5 +81,31 @@ class MatchesRepositoryImpl implements MatchesRepository {
         MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
 
     return modelMatches;
+  }
+
+  @override
+  Future<int> loadMatch({
+    required int matchId,
+  }) async {
+    final matchRemote =
+        await _matchesRemoteDataSource.getMatch(matchId: matchId);
+
+    final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
+      matchRemote: matchRemote,
+    );
+
+    final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
+
+    return id;
+  }
+
+  @override
+  Future<MatchModel> getMatch({required int matchId}) async {
+    final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
+
+    final modelMatch =
+        MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
+
+    return modelMatch;
   }
 }

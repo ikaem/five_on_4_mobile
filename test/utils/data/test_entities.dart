@@ -4,13 +4,13 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 
 final testAuthDataEntity = AuthDataEntity(
-  playerInfo: AuthDataPlayerInfoEntity(
+  playerInfo: const AuthDataPlayerInfoEntity(
     id: 1,
     firstName: "John",
     lastName: "Doe",
     nickName: "JD",
   ),
-  teamInfo: AuthDataTeamInfoEntity(
+  teamInfo: const AuthDataTeamInfoEntity(
     id: 1,
     teamName: "Team 1",
   ),
@@ -106,6 +106,7 @@ MatchLocalEntity getTestMatchLocalEntity({
   );
 }
 
+// TODO this is ultimately not needed - remove it and use multip0le matches with count specified
 List<MatchLocalEntity> getTestMatchLocalEntities({
   int count = 10,
   String namesPrefix = "test_",

@@ -7,12 +7,12 @@ part of 'get_my_matches_controller.dart';
 // **************************************************************************
 
 String _$getMyMatchesControllerHash() =>
-    r'53b0672df63bd3db83c84810a2de315a371cf9b3';
+    r'045683fb28b8099dc3d3fae4e0ae64085352e091';
 
 /// See also [GetMyMatchesController].
 @ProviderFor(GetMyMatchesController)
 final getMyMatchesControllerProvider = AutoDisposeAsyncNotifierProvider<
-    GetMyMatchesController, MatchesControllerStateValue>.internal(
+    GetMyMatchesController, MatchesControllerState>.internal(
   GetMyMatchesController.new,
   name: r'getMyMatchesControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final getMyMatchesControllerProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$GetMyMatchesController
-    = AutoDisposeAsyncNotifier<MatchesControllerStateValue>;
+    = AutoDisposeAsyncNotifier<MatchesControllerState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

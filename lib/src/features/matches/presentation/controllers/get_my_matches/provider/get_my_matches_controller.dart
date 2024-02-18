@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:equatable/equatable.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/provider/get_my_past_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
@@ -8,11 +10,12 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_up
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/matches_controller_state_value.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_my_matches_controller.g.dart";
+part "matches_controller_state.dart";
+part "matches_type.dart";
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
@@ -33,7 +36,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
   }
 
   @override
-  Future<MatchesControllerStateValue> build() async {
+  Future<MatchesControllerState> build() async {
     handleDispose();
     // If this method throws or returns a future that fails, the error will be caught and an [AsyncError] will be emitted. -> official docs
 
@@ -41,7 +44,6 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     final initialData = await _getDataFromDb(
       isRemoteFetchDone: false,
     );
-    // await Future.delayed(Duration.zero);
     _handleLoadUpdatedData();
 
     return initialData;
@@ -79,7 +81,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
   }
 
   // Getting data from db
-  Future<MatchesControllerStateValue> _getDataFromDb({
+  Future<MatchesControllerState> _getDataFromDb({
     required bool isRemoteFetchDone,
   }) async {
     // TODO dont forget to make it so that we only fetch max 5 matches at time for each type
@@ -97,7 +99,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     final pastMatches = matchesData[1];
     final upcomingMatches = matchesData[2];
 
-    final stateValue = MatchesControllerStateValue(
+    final stateValue = MatchesControllerState(
       isRemoteFetchDone: isRemoteFetchDone,
       todayMatches: todayMatches,
       pastMatches: pastMatches,
@@ -121,11 +123,4 @@ class GetMyMatchesController extends _$GetMyMatchesController {
       state = AsyncValue.error(e, s);
     }
   }
-}
-
-// TODO test only - move elsewhere
-enum MatchesType {
-  today,
-  upcoming,
-  past,
 }

@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class HttpRequestUriPartsValue {
+class HttpRequestUriPartsValue extends Equatable {
   const HttpRequestUriPartsValue({
     required this.apiUrlScheme,
     required this.apiBaseUrl,
@@ -18,6 +19,17 @@ class HttpRequestUriPartsValue {
   final String apiEndpointPath;
   final Map<String, String>? queryParameters;
   final int? port;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        apiUrlScheme,
+        apiBaseUrl,
+        apiContextPath,
+        apiEndpointPath,
+        queryParameters,
+        port,
+      ];
 }
 
 @immutable
