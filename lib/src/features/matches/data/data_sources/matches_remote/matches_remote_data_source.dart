@@ -1,6 +1,12 @@
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 
+// TODO move to values
+
 abstract interface class MatchesRemoteDataSource {
+  Future<int> createMatch({
+    required MatchRemoteEntity match,
+  });
+
   Future<MatchRemoteEntity> getMatch({
     required int matchId,
   });
