@@ -11,21 +11,10 @@ class MatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final dummyMatch = MatchModel(
-    //   id: 1,
-    //   arrivingPlayers: const [],
-    //   date: DateTime.now(),
-    //   location: "location",
-    //   name: "name",
-    //   organizer: "organizer",
-    //   description: "description",
-    // );
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
         body: MatchScreenView(
-          // match: dummyMatch,
           matchId: matchId,
         ),
       ),
