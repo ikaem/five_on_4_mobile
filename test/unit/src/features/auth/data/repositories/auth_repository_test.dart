@@ -45,6 +45,22 @@ void main() {
               expect(result, authDataModel);
             },
           );
+
+          test(
+            "given user is NOT logged in"
+            "when .authDataStatus is called"
+            "then should return expected value",
+            () {
+              // Given
+              when(() => authStatusDataSource.authDataStatus).thenReturn(null);
+
+              // When
+              final result = authRepository.authDataStatus;
+
+              // Then
+              expect(result, isNull);
+            },
+          );
         },
       );
     },
