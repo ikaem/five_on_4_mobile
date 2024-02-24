@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class MatchCreateDataValue extends Equatable {
   const MatchCreateDataValue({
-    required this.date,
+    // required this.date,
     required this.name,
     required this.location,
     required this.organizer,
@@ -10,7 +10,7 @@ class MatchCreateDataValue extends Equatable {
     required this.invitedPlayers,
   });
 
-  final int date;
+  // final int date;
   final String name;
   final String location;
 // TODO get this from use case inside the controller to get name of the current user
@@ -35,7 +35,7 @@ class MatchCreateDataValue extends Equatable {
     // };
 
     return {
-      "date": date,
+      // "date": date,
       "name": name,
       "location": location,
       "organizer": organizer,
@@ -48,7 +48,7 @@ class MatchCreateDataValue extends Equatable {
 
   @override
   List<Object> get props => [
-        date,
+        // date,
         name,
         location,
         organizer,
