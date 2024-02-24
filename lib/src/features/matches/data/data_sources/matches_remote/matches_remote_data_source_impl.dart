@@ -25,9 +25,10 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
       apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
       apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
       apiEndpointPath:
-          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE_FAKE.value,
+          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
       queryParameters: null,
     );
+    final bodyData = matchData.toJson();
 
     final response = await _dioWrapper.post<Map<String, dynamic>>(
       uriParts: uriParts,

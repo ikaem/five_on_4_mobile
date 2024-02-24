@@ -1,7 +1,7 @@
 enum HttpMatchesConstants {
   BACKEND_ENDPOINT_PATH_MATCHES('matches'),
   BACKEND_ENDPOINT_PATH_MATCH('matches/:id'),
-  BACKEND_ENDPOINT_PATH_MATCH_CREATE_FAKE('matches');
+  BACKEND_ENDPOINT_PATH_MATCH_CREATE('matches');
 
   const HttpMatchesConstants(this.value);
   final String value;

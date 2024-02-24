@@ -40,6 +40,7 @@ void main() {
             "then should return expected match id",
             () async {
               const matchId = 1;
+              // TODO in this group can possibly unify this - for specific
               when(
                 () => dioWrapper.post<Map<String, dynamic>>(
                   uriParts: any(named: "uriParts"),
@@ -64,6 +65,56 @@ void main() {
 
               // Then
               expect(id, equals(matchId));
+            },
+          );
+
+          test(
+            "given valid MatchCreateDataValue argument is passed "
+            "when call '.createMatch()'"
+            "then should call dioWrapper with expected arguments",
+            () async {
+              const matchId = 1;
+              // TODO in this group can possibly unify this - for specific
+              when(
+                () => dioWrapper.post<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  bodyData: any(named: "bodyData"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return {
+                    "ok": true,
+                    "data": matchId,
+                  };
+                },
+              );
+
+              // Given
+              final createMatchValue = getTestMatchCreateValues(count: 1).first;
+
+              // When
+              await matchesRemoteDataSource.createMatch(
+                matchData: createMatchValue,
+              );
+
+              final expectedUriParts = HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
+                port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+                apiEndpointPath: HttpMatchesConstants
+                    .BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
+                queryParameters: null,
+              );
+              final expectedBodyData = createMatchValue.toJson();
+
+              // Then
+              verify(
+                () => dioWrapper.post<Map<String, dynamic>>(
+                  uriParts: expectedUriParts,
+                  bodyData: expectedBodyData,
+                ),
+              ).called(1);
             },
           );
         },
