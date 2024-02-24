@@ -17,6 +17,11 @@ void main() {
     authStatusDataSource: authStatusDataSource,
   );
 
+  tearDown(() {
+    reset(authStatusDataSource);
+    reset(authLocalDataSource);
+  });
+
   group(
     "$AuthRepository",
     () {
