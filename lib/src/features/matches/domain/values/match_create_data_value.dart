@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class MatchCreateValue extends Equatable {
-  const MatchCreateValue({
+class MatchCreateDataValue extends Equatable {
+  const MatchCreateDataValue({
     required this.date,
     required this.name,
     required this.location,
@@ -20,6 +20,20 @@ class MatchCreateValue extends Equatable {
   final List<int> invitedPlayers;
 
   Map<String, dynamic> toJson() {
+    // TODO temp only for fake server
+    // return {
+    //   "ok": true,
+    //   "data": {
+    //     "date": date,
+    //     "name": name,
+    //     "location": location,
+    //     "organizer": organizer,
+    //     "description": description,
+    //     "invitedPlayers": invitedPlayers,
+    //     "id": 1,
+    //   },
+    // };
+
     return {
       "date": date,
       "name": name,
@@ -27,6 +41,8 @@ class MatchCreateValue extends Equatable {
       "organizer": organizer,
       "description": description,
       "invitedPlayers": invitedPlayers,
+      // TODO temp only for fake server
+      // "id": 1,
     };
   }
 

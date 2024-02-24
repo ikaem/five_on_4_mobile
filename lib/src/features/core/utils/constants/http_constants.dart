@@ -4,9 +4,10 @@ enum HttpConstants {
 
   // backend url
   // TODO only for emulators
-  BACKEND_BASE_URL_FAKE('10.0.2.2'),
-  BACKEND_CONTEXT_PATH_FAKE(''),
-  BACKEND_PORT_STRING_FAKE("3000");
+  // BACKEND_BASE_URL_FAKE('10.0.2.2'),
+  BACKEND_BASE_URL_FAKE('localhost'),
+  BACKEND_CONTEXT_PATH_FAKE('api'),
+  BACKEND_PORT_STRING_FAKE("4000");
 
   const HttpConstants(this.value);
 

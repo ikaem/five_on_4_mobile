@@ -1,6 +1,7 @@
 enum HttpMatchesConstants {
-  BACKEND_ENDPOINT_PATH_MATCHES_FAKE('matches'),
-  BACKEND_ENDPOINT_PATH_MATCH('match/:id');
+  BACKEND_ENDPOINT_PATH_MATCHES('matches'),
+  BACKEND_ENDPOINT_PATH_MATCH('matches/:id'),
+  BACKEND_ENDPOINT_PATH_MATCH_CREATE_FAKE('matches');
 
   const HttpMatchesConstants(this.value);
   final String value;
@@ -8,8 +9,6 @@ enum HttpMatchesConstants {
 
 extension HttpMatchesExtension on HttpMatchesConstants {
   String getMatchPathWithId(int id) {
-    return value.replaceAll('/:id', "");
-    // TODO this is for prod latr when we have real server
-    // return value.replaceAll(':id', id.toString());
+    return value.replaceAll('/:id', id.toString());
   }
 }

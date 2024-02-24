@@ -2,12 +2,15 @@ import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_va
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/data/test_values.dart';
 
 void main() {
   // TODO we will try not to expose it via riverpod
@@ -28,6 +31,43 @@ void main() {
   group(
     "MatchesRemoteDataSource",
     () {
+      group(
+        ".createMatch()",
+        () {
+          test(
+            "given valid $MatchCreateDataValue argument is passed "
+            "when call '.createMatch()'"
+            "then should return expected match id",
+            () async {
+              const matchId = 1;
+              when(
+                () => dioWrapper.post<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  bodyData: any(named: "bodyData"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return {
+                    "ok": true,
+                    "data": matchId,
+                  };
+                },
+              );
+
+              // Given
+              final createMatchValue = getTestMatchCreateValues(count: 1).first;
+
+              // When
+              final id = await matchesRemoteDataSource.createMatch(
+                matchData: createMatchValue,
+              );
+
+              // Then
+              expect(id, equals(matchId));
+            },
+          );
+        },
+      );
       group(
         ".getMatch()",
         () {

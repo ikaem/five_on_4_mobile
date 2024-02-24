@@ -2,6 +2,7 @@ import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_va
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 
@@ -12,6 +13,36 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
 
   final DioWrapper _dioWrapper;
 
+  @override
+  Future<int> createMatch({
+    required MatchCreateDataValue matchData,
+  }) async {
+    // TODO constants are temp only
+    final uriParts = HttpRequestUriPartsValue(
+      // TODO use https when we have real server eventually
+      apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
+      port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+      apiEndpointPath:
+          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE_FAKE.value,
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.post<Map<String, dynamic>>(
+      uriParts: uriParts,
+      bodyData: matchData.toJson(),
+    );
+
+    // TODO wait for backend for this
+    if (response["ok"] != true) {
+      throw Exception("Something went wrong with creating match");
+    }
+
+    final matchId = response["data"] as int;
+    return matchId;
+  }
+
   // TODO this might not even be needed - we might have some endpoint like getInitialData, which would get all today, following matches, and stuff like that, maybe the whole home thing
   @override
   Future<List<MatchRemoteEntity>> getPlayerInitialMatches() async {
@@ -21,8 +52,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
       port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
       apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
       apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
-      apiEndpointPath:
-          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES_FAKE.value,
+      apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES.value,
       queryParameters: null,
     );
 
@@ -43,10 +73,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         )
         .toList();
 
-    // TODO temp only until real matches
-    final manipulatedMatches = _generateTempManipulatedMatches(matchesEntities);
-
-    return manipulatedMatches;
+    return matchesEntities;
   }
 
   @override
