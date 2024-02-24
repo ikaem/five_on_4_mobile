@@ -1,6 +1,10 @@
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 
 abstract interface class MatchesRepository {
+  Future<int> createMatch({
+    required MatchCreateDataValue matchData,
+  });
   Future<int> loadMatch({
     required int matchId,
   });

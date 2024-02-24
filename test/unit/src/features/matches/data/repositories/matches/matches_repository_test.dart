@@ -4,11 +4,13 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/data/test_values.dart';
 import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
@@ -34,6 +36,9 @@ void main() {
       registerFallbackValue(
         _FakeMatchLocalEntity(),
       );
+      registerFallbackValue(
+        _FakeMatchCreateDataValue(),
+      );
     },
   );
 
@@ -46,6 +51,38 @@ void main() {
   group(
     "MatchesRepository",
     () {
+      group(
+        ".createMatch()",
+        () {
+          test(
+            "given valid match data"
+            "when call .createMatch()"
+            "then should return expected match id",
+            () async {
+              final matchData = getTestMatchCreateValues(count: 1).first;
+
+              // Given
+              const matchId = 1;
+              when(
+                () => matchesRemoteDataSource.createMatch(
+                  matchData: any(named: "matchData"),
+                ),
+              ).thenAnswer(
+                (_) async => matchId,
+              );
+
+              // When
+              final id = await matchesRepository.createMatch(
+                matchData: matchData,
+              );
+
+              // Then
+              expect(id, equals(matchId));
+            },
+          );
+        },
+      );
+
       group(
         ".getMatch()",
         () {
@@ -436,6 +473,8 @@ void main() {
 }
 
 class _FakeMatchLocalEntity extends Fake implements MatchLocalEntity {}
+
+class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
 
 class _MockMatchesLocalDataSource extends Mock
     implements MatchesLocalDataSource {}

@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 
 class MatchesRepositoryImpl implements MatchesRepository {
@@ -107,5 +108,14 @@ class MatchesRepositoryImpl implements MatchesRepository {
         MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
 
     return modelMatch;
+  }
+
+  @override
+  Future<int> createMatch({
+    required MatchCreateDataValue matchData,
+  }) async {
+    final id = await _matchesRemoteDataSource.createMatch(matchData: matchData);
+
+    return id;
   }
 }
