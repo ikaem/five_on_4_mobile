@@ -10,7 +10,6 @@ class MatchCreateDataValue extends Equatable {
     required this.invitedPlayers,
   });
 
-  // final int date;
   final String name;
   final String location;
 // TODO get this from use case inside the controller to get name of the current user
@@ -20,22 +19,7 @@ class MatchCreateDataValue extends Equatable {
   final List<int> invitedPlayers;
 
   Map<String, dynamic> toJson() {
-    // TODO temp only for fake server
-    // return {
-    //   "ok": true,
-    //   "data": {
-    //     "date": date,
-    //     "name": name,
-    //     "location": location,
-    //     "organizer": organizer,
-    //     "description": description,
-    //     "invitedPlayers": invitedPlayers,
-    //     "id": 1,
-    //   },
-    // };
-
     return {
-      // "date": date,
       "name": name,
       "location": location,
       "organizer": organizer,
@@ -48,7 +32,6 @@ class MatchCreateDataValue extends Equatable {
 
   @override
   List<Object> get props => [
-        // date,
         name,
         location,
         organizer,
