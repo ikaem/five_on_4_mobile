@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class AuthDataModel {
+class AuthDataModel extends Equatable {
   const AuthDataModel({
     required this.playerId,
     required this.fullName,
@@ -15,4 +16,13 @@ class AuthDataModel {
   final String nickName;
   final int teamId;
   final String teamName;
+
+  @override
+  List<Object?> get props => [
+        playerId,
+        fullName,
+        nickName,
+        teamId,
+        teamName,
+      ];
 }

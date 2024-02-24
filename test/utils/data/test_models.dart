@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/auth/domain/models/auth_data/auth_data_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 
@@ -84,4 +85,24 @@ List<MatchModel> getTestMatchesModels({
   );
 
   return matches;
+}
+
+List<AuthDataModel> getTestAuthDataModels({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final authData = List<AuthDataModel>.generate(
+    count,
+    (index) {
+      return AuthDataModel(
+        playerId: index,
+        fullName: "${namesPrefix}fullName$index",
+        nickName: "${namesPrefix}nickName$index",
+        teamId: index,
+        teamName: "${namesPrefix}teamName$index",
+      );
+    },
+  );
+
+  return authData;
 }

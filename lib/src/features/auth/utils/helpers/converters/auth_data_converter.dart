@@ -2,7 +2,9 @@ import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_
 import 'package:five_on_4_mobile/src/features/auth/domain/models/auth_data/auth_data_model.dart';
 
 abstract class AuthDataConverter {
-  static toModelFromEntity({required AuthDataEntity entity}) {
+  static toModelFromEntity({
+    required AuthDataEntity entity,
+  }) {
     final model = AuthDataModel(
       playerId: entity.playerInfo.id!,
       fullName: '${entity.playerInfo.firstName} ${entity.playerInfo.lastName}',
