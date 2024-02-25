@@ -9,6 +9,6 @@ enum HttpMatchesConstants {
 
 extension HttpMatchesExtension on HttpMatchesConstants {
   String getMatchPathWithId(int id) {
-    return value.replaceAll('/:id', id.toString());
+    return value.replaceAll(':id', id.toString());
   }
 }

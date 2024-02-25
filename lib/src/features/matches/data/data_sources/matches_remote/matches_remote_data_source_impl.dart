@@ -20,10 +20,10 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     // TODO constants are temp only
     final uriParts = HttpRequestUriPartsValue(
       // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
-      port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
       apiEndpointPath:
           HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
       queryParameters: null,
@@ -49,10 +49,10 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   Future<List<MatchRemoteEntity>> getPlayerInitialMatches() async {
     final uriParts = HttpRequestUriPartsValue(
       // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
-      port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
       apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES.value,
       queryParameters: null,
     );
@@ -82,13 +82,13 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     required int matchId,
   }) async {
     // TODO temp only
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     final uriParts = HttpRequestUriPartsValue(
       // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
-      port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
       apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
           .getMatchPathWithId(matchId),
       queryParameters: null,

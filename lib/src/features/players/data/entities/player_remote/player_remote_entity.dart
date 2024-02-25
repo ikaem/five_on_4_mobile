@@ -14,7 +14,7 @@ class PlayerRemoteEntity extends Equatable {
   }) {
     final id = json["id"] as int;
     final name = json["name"] as String;
-    final avatarUri = json["avatarUri"] as String;
+    final avatarUri = json["avatarUrl"] as String;
     final nickname = json["nickname"] as String;
 
     return PlayerRemoteEntity(

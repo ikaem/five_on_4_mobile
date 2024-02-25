@@ -3,6 +3,8 @@
 
 import 'package:dio/dio.dart';
 
+// TODO could possibly create interceptor logic that would redirect requests to local server
+
 class DioInterceptor extends Interceptor {
   @override
   void onRequest(

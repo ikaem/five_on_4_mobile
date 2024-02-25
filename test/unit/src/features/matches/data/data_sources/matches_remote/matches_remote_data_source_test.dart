@@ -98,10 +98,10 @@ void main() {
               );
 
               final expectedUriParts = HttpRequestUriPartsValue(
-                apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
-                port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-                apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
-                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
                 apiEndpointPath: HttpMatchesConstants
                     .BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
                 queryParameters: null,
@@ -170,10 +170,10 @@ void main() {
 
               final expectedUriPartsArgs = HttpRequestUriPartsValue(
                 // TODO use https when we have real server eventually
-                apiUrlScheme: HttpConstants.HTTP_PROTOCOL.value,
-                port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-                apiBaseUrl: HttpConstants.BACKEND_BASE_URL_FAKE.value,
-                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH_FAKE.value,
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
                 apiEndpointPath: HttpMatchesConstants
                     .BACKEND_ENDPOINT_PATH_MATCH
                     .getMatchPathWithId(matchId),

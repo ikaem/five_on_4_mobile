@@ -10,7 +10,7 @@ class HttpRequestUriPartsValue extends Equatable {
     required this.apiContextPath,
     required this.apiEndpointPath,
     required this.queryParameters,
-    required this.port,
+    // required this.port,
   });
 
   final String apiUrlScheme;
@@ -18,7 +18,7 @@ class HttpRequestUriPartsValue extends Equatable {
   final String apiContextPath;
   final String apiEndpointPath;
   final Map<String, String>? queryParameters;
-  final int? port;
+  // final int? port;
 
   @override
   // TODO: implement props
@@ -28,7 +28,7 @@ class HttpRequestUriPartsValue extends Equatable {
         apiContextPath,
         apiEndpointPath,
         queryParameters,
-        port,
+        // port,
       ];
 }
 
