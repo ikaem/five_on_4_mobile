@@ -19,15 +19,15 @@ class MatchCreateInfo extends StatelessWidget {
         TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            labelText: "MATCH DATE",
+            labelText: "MATCH DATE AND TIME",
           ),
         ),
-        TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: "MATCH TIME",
-          ),
-        ),
+        // TextField(
+        //   decoration: InputDecoration(
+        //     border: OutlineInputBorder(),
+        //     labelText: "MATCH TIME",
+        //   ),
+        // ),
         TextField(
           minLines: 5,
           maxLines: 5,
