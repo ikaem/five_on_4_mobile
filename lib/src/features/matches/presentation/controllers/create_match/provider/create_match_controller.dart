@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_dat
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/provider/get_auth_data_status_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/match_create_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -14,28 +15,6 @@ part "create_match_controller.g.dart";
 part "create_match_controller_state.dart";
 
 // TODO not sure if this should be here? it probably should...
-
-class CreateMatchArgs extends Equatable {
-  const CreateMatchArgs({
-    required this.name,
-    required this.description,
-    required this.location,
-    required this.playersForInvite,
-  });
-
-  final String name;
-  final String description;
-  final String location;
-  final List<int> playersForInvite;
-
-  @override
-  List<Object?> get props => [
-        name,
-        description,
-        location,
-        playersForInvite,
-      ];
-}
 
 @riverpod
 class CreateMatchController extends _$CreateMatchController {
@@ -58,7 +37,7 @@ class CreateMatchController extends _$CreateMatchController {
     // nothing needed on initialization
   }
 
-  Future<void> onCreateMatch(CreateMatchArgs createMatchArgs) async {
+  Future<void> onCreateMatch(MatchCreateInputArgs createMatchArgs) async {
     state = const AsyncValue.loading();
     try {
       // TODO maybe it is good to delegate this generation of Value to use case

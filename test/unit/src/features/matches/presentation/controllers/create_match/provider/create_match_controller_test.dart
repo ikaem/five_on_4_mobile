@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_dat
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match/provider/create_match_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,7 +38,7 @@ void main() {
           const matchId = 1;
           final authDataModel = getTestAuthDataModels(count: 1).first;
           final matchData = getTestMatchCreateValues(count: 1).first;
-          final createMatchArgs = CreateMatchArgs(
+          final createMatchArgs = MatchCreateInputArgs(
             name: matchData.name,
             description: matchData.description,
             location: matchData.location,

@@ -23,7 +23,7 @@ class CreateMatchInputsController
       _nameStream.transform(genericStringValidationTransformer);
   Stream<String> get validatedLocationStream =>
       _locationStream.transform(genericStringValidationTransformer);
-  // TODO this can be empty
+  // TODO no need to validate i think
   Stream<String> get validatedDescriptionStream => _descriptionStream;
 
   // combined streams
