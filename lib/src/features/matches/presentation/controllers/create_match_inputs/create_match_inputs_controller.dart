@@ -1,19 +1,50 @@
 // TODO this might not need to be provided
 import 'package:five_on_4_mobile/src/features/core/utils/inputs_validation/inputs_validation_mixin.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/inputs_validation/stream_inputs_validation_mixin.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:rxdart/rxdart.dart';
 
+part "create_match_inputs_validator_mixin.dart";
+
+// TODO this needs testing
+// TODO should probably be provided to make sure it is disposed easier
 class CreateMatchInputsController
-    with InputsValidationMixin, StreamInputsValidationMixin {
+    with
+        InputsValidationMixin,
+        StreamInputsValidationMixin,
+        CreateMatchInputsValidationMixin {
   // CreateMatchInputsController();
 
   // TODO dont forget to dispose of these
+  Future<void> dispose() async {
+    // await _nameSubject.close();
+    // await _locationSubject.close();
+    // await _descriptionSubject.close();
+    // await _dateTimeSubject.close();
+    // await _playersForInviteSubject.close();
+
+    await Future.wait([
+      _nameSubject.close(),
+      _locationSubject.close(),
+      _descriptionSubject.close(),
+      _dateTimeSubject.close(),
+      _playersForInviteSubject.close(),
+    ]);
+  }
 
   // subjects
-  final BehaviorSubject<String> _nameSubject = BehaviorSubject();
-  final BehaviorSubject<String> _locationSubject = BehaviorSubject();
-  final BehaviorSubject<String> _descriptionSubject = BehaviorSubject();
-  final BehaviorSubject<DateTime> _dateTimeSubject = BehaviorSubject();
+  // final BehaviorSubject<String> _nameSubject = BehaviorSubject();
+  // final BehaviorSubject<String> _locationSubject = BehaviorSubject();
+  // final BehaviorSubject<String> _descriptionSubject = BehaviorSubject();
+  // final BehaviorSubject<DateTime> _dateTimeSubject = BehaviorSubject();
+  // TODO maybe seeded is good
+  final BehaviorSubject<String> _nameSubject = BehaviorSubject.seeded("");
+  final BehaviorSubject<String> _locationSubject = BehaviorSubject.seeded("");
+  final BehaviorSubject<String> _descriptionSubject =
+      BehaviorSubject.seeded("");
+  final BehaviorSubject<DateTime> _dateTimeSubject =
+      BehaviorSubject.seeded(DateTime.now());
+
   // NOTE seeding because we need to have a value to start with
   final BehaviorSubject<List<int>> _playersForInviteSubject =
       BehaviorSubject.seeded([]);
@@ -24,11 +55,40 @@ class CreateMatchInputsController
   Stream<String> get validatedLocationStream =>
       _locationStream.transform(genericStringValidationTransformer);
   // TODO no need to validate i think
-  Stream<String> get validatedDescriptionStream => _descriptionStream;
+  Stream<String?> get validatedDescriptionStream => _descriptionStream;
+  Stream<DateTime> get validatedDateTimeStream =>
+      _dateTimeStream.transform(futureDateTimeValidationTransformer);
+  Stream<List<int>> get validatedPlayersForInviteStream =>
+      _playersForInviteStream;
+  Stream<bool> get areInputsValidStream => Rx.combineLatest([
+        _nameStream,
+        _locationStream,
+        _descriptionStream,
+        _dateTimeStream,
+        _playersForInviteStream,
+      ], (values) {
+        final validatedArgs = getValidatedArgsFromInputs(
+          name: values[0] as String,
+          location: values[1] as String,
+          description: values[2] as String,
+          dateTime: values[3] as DateTime,
+          playersForInvite: values[4] as List<int>,
+        );
 
-  // combined streams
-  // validatedCreateMatchArgs
-  // isValid -> derive it from the args
+        return validatedArgs == null ? false : true;
+      });
+
+  MatchCreateInputArgs? get validatedMatchCreateInputArgs {
+    final validatedArgs = getValidatedArgsFromInputs(
+      name: _nameSubject.value,
+      location: _locationSubject.value,
+      description: _descriptionSubject.value,
+      dateTime: _dateTimeSubject.value,
+      playersForInvite: _playersForInviteSubject.value,
+    );
+
+    return validatedArgs;
+  }
 
   // handlers
   void onNameChanged(String value) {
@@ -56,10 +116,10 @@ class CreateMatchInputsController
   }
 
   // streams
-  Stream<String> get _nameStream => _nameSubject.distinct();
-  Stream<String> get _locationStream => _locationSubject.distinct();
-  Stream<String> get _descriptionStream => _descriptionSubject.distinct();
-  Stream<DateTime> get _dateTimeStream => _dateTimeSubject.distinct();
+  Stream<String?> get _nameStream => _nameSubject.distinct();
+  Stream<String?> get _locationStream => _locationSubject.distinct();
+  Stream<String?> get _descriptionStream => _descriptionSubject.distinct();
+  Stream<DateTime?> get _dateTimeStream => _dateTimeSubject.distinct();
   Stream<List<int>> get _playersForInviteStream =>
       _playersForInviteSubject.distinct();
 
@@ -70,18 +130,3 @@ class CreateMatchInputsController
   Sink<DateTime> get _dateTimeSink => _dateTimeSubject.sink;
   Sink<List<int>> get _playersForInviteSink => _playersForInviteSubject.sink;
 }
-
-/* 
-
-  final BehaviorSubject<String> _nameSubject = BehaviorSubject();
-  final BehaviorSubject<String> _locationNameSubject = BehaviorSubject();
-  final BehaviorSubject<String> _locationAddressSubject = BehaviorSubject();
-  final BehaviorSubject<String> _locationCitySubject = BehaviorSubject();
-  final BehaviorSubject<String> _locationCountrySubject = BehaviorSubject();
-  final BehaviorSubject<DateTime?> _dateSubject = BehaviorSubject();
-  final BehaviorSubject<TimeOfDay?> _timeSubject = BehaviorSubject();
-  final BehaviorSubject<bool> _joinMatchSubject = BehaviorSubject.seeded(false);
-  final BehaviorSubject<List<MatchParticipationValue>>
-      _participantInvitationsSubject = BehaviorSubject.seeded([]);
-
- */
