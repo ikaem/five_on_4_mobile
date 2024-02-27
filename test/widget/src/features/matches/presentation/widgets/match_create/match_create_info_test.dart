@@ -45,7 +45,7 @@ void main() {
               );
 
               final matchDateTextFieldFinder = find.ancestor(
-                of: find.text("MATCH DATE"),
+                of: find.text("MATCH DATE AND TIME"),
                 matching: find.byType(TextField),
               );
 
@@ -53,27 +53,28 @@ void main() {
             },
           );
 
-          testWidgets(
-            "given nothing in particular"
-            "when widget is rendered"
-            "should show expected 'MATCH TIME' TextField input",
-            (widgetTester) async {
-              await widgetTester.pumpWidget(
-                const MaterialApp(
-                  home: Scaffold(
-                    body: MatchCreateInfo(),
-                  ),
-                ),
-              );
+          // TODO not needed
+          // testWidgets(
+          //   "given nothing in particular"
+          //   "when widget is rendered"
+          //   "should show expected 'MATCH TIME' TextField input",
+          //   (widgetTester) async {
+          //     await widgetTester.pumpWidget(
+          //       const MaterialApp(
+          //         home: Scaffold(
+          //           body: MatchCreateInfo(),
+          //         ),
+          //       ),
+          //     );
 
-              final matchTimeTextFieldFinder = find.ancestor(
-                of: find.text("MATCH TIME"),
-                matching: find.byType(TextField),
-              );
+          //     final matchTimeTextFieldFinder = find.ancestor(
+          //       of: find.text("MATCH TIME"),
+          //       matching: find.byType(TextField),
+          //     );
 
-              expect(matchTimeTextFieldFinder, findsOneWidget);
-            },
-          );
+          //     expect(matchTimeTextFieldFinder, findsOneWidget);
+          //   },
+          // );
 
           testWidgets(
             "given nothing in particular"
