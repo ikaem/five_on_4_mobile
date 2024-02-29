@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:flutter/material.dart';
 
 class MatchCreateInfo extends StatelessWidget {

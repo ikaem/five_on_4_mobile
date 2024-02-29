@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,12 +8,13 @@ void main() {
   group(
     "$StreamedTextField",
     () {
+      // TODO need more and better tests here still
       group(
         ".onChanged()",
         () {
           testWidgets(
-            "given a stream is provided "
-            "when the onChanged callback is called with a valid value"
+            "given an onChanged callback is provided "
+            "when valid input is entered "
             "then should NOT show error message",
             (widgetTester) async {
               final streamController = StreamController<String>.broadcast();
@@ -54,8 +55,8 @@ void main() {
           );
 
           testWidgets(
-            "given a stream is provided "
-            "when the onChanged callback is called with an invalid value"
+            "given an onChanged callback is provided "
+            "when invalid input is entered "
             "then should show expected error message",
             (widgetTester) async {
               final streamController = StreamController<String>.broadcast();
@@ -97,6 +98,7 @@ void main() {
       );
       // test label
       // test controller has correct value
+      // test onChanged is called
     },
   );
 }

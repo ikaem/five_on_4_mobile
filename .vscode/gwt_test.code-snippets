@@ -24,7 +24,7 @@
       "  \"when <behavior we are specifying>\"",
       "  \"then should <state we expect to happen>\",",
       "  () {",
-      "    // write the test",
+      "    // setup",
       "  },",
       ");"
     ],
@@ -38,7 +38,7 @@
       "  \"when <behavior we are specifying>\"",
       "  \"then should <state we expect to happen>\",",
       "  (widgetTester) async {",
-      "    // write the test",
+      "    // setup",
       "  },",
       ");"
     ],

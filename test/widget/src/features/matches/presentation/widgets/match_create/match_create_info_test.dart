@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

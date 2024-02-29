@@ -29,6 +29,7 @@ dependencies:
   mocktail_image_network: ^1.0.0
   dio: ^5.4.0
   equatable: ^2.0.5
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

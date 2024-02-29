@@ -13,9 +13,26 @@ class SearchScreen extends StatelessWidget {
         children: [
           const Text("Search Screen"),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // TODO has to have "/" in front of it to make sure it navigates to root/match - match is nested to make sure we have back button
-              context.go("/${RoutePathsConstants.MATCH.value}");
+              // context.go("/${RoutePathsConstants.MATCH.value}");
+              final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2025),
+              );
+
+              if (date == null) return;
+
+              final time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+
+                // initialDate: DateTime.now(),
+                // firstDate: DateTime(2000),
+                // lastDate: DateTime(2025),
+              );
             },
             child: const Text("Go to match"),
           ),

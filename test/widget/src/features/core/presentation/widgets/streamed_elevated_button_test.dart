@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../streamed_elevated_button.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/streamed_elevated_button.dart';
 
 void main() {
   group(
