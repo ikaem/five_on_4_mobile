@@ -1,4 +1,7 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_date_time_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/extensions/date_time_extension.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/helpers/date_time_input_on_tap_setter.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,7 +49,7 @@ void main() {
                       // TODO temp
                       dateTimeController: genericTextController,
                       onDateTimeChanged: (value) {},
-                      dateTimeStream: Stream.fromIterable([""]),
+                      dateTimeStream: const Stream<DateTime>.empty(),
                     ),
                   ),
                 ),
@@ -79,8 +82,12 @@ void main() {
             "when widget is rendered"
             "should show expected 'Match Date & Time' TextField input",
             (widgetTester) async {
-              // TODO create mock stream
+              // given
+              const stream = Stream<DateTime>.empty();
+              final textEditingController = TextEditingController();
+              onChangedCallback(DateTime? value) {}
 
+              // when
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
@@ -88,46 +95,41 @@ void main() {
                       nameController: genericTextController,
                       onNameChanged: (value) {},
                       nameStream: Stream.fromIterable([""]),
-                      // TODO temp
-                      dateTimeController: genericTextController,
-                      onDateTimeChanged: (value) {},
-                      dateTimeStream: Stream.fromIterable([""]),
+                      dateTimeController: textEditingController,
+                      onDateTimeChanged: onChangedCallback,
+                      dateTimeStream: stream,
                     ),
                   ),
                 ),
               );
 
-              final matchDateTextFieldFinder = find.ancestor(
-                of: find.text("MATCH DATE AND TIME"),
-                matching: find.byType(TextField),
+              // then
+              final expectedOnTapSetter = DateTimeInputOnTapSetter(
+                initiallySelectedDate: DateTime.now().dayStart,
+                fromDate: DateTime.now().dayStart,
+                toDate: DateTime.now().add(const Duration(days: 365)).dayStart,
+                onDateTimeChanged: onChangedCallback,
+                textController: textEditingController,
               );
 
-              expect(matchDateTextFieldFinder, findsOneWidget);
+              final streamedMatchDateTimeFieldFinder = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! StreamedDateTimeField) return false;
+                  if (widget.label != "Match Date & Time") return false;
+                  if (widget.stream != stream) return false;
+                  if (widget.onTapSetter != expectedOnTapSetter) return false;
+
+                  return true;
+                },
+              );
+
+              expect(streamedMatchDateTimeFieldFinder, findsOneWidget);
+
+              addTearDown(() {
+                textEditingController.dispose();
+              });
             },
           );
-
-          // TODO not needed
-          // testWidgets(
-          //   "given nothing in particular"
-          //   "when widget is rendered"
-          //   "should show expected 'MATCH TIME' TextField input",
-          //   (widgetTester) async {
-          //     await widgetTester.pumpWidget(
-          //       const MaterialApp(
-          //         home: Scaffold(
-          //           body: MatchCreateInfo(),
-          //         ),
-          //       ),
-          //     );
-
-          //     final matchTimeTextFieldFinder = find.ancestor(
-          //       of: find.text("MATCH TIME"),
-          //       matching: find.byType(TextField),
-          //     );
-
-          //     expect(matchTimeTextFieldFinder, findsOneWidget);
-          //   },
-          // );
 
           testWidgets(
             "given nothing in particular"
@@ -151,7 +153,7 @@ void main() {
                       // TODO temp
                       dateTimeController: genericTextController,
                       onDateTimeChanged: (value) {},
-                      dateTimeStream: Stream.fromIterable([""]),
+                      dateTimeStream: const Stream<DateTime>.empty(),
                     ),
                   ),
                 ),

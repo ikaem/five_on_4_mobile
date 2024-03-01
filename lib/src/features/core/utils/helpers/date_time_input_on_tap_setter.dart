@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 /// Helper class to abstract the onTap logic for the DateTime input fields
 ///
 /// It handles opening the date and time pickers, formatting the date and time
-class DateTimeInputOnTapSetter {
-  DateTimeInputOnTapSetter({
+class DateTimeInputOnTapSetter extends Equatable {
+  const DateTimeInputOnTapSetter({
     required this.initiallySelectedDate,
     required this.fromDate,
     required this.toDate,
@@ -83,4 +84,14 @@ class DateTimeInputOnTapSetter {
     onDateTimeChanged(null);
     textController.text = "";
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        initiallySelectedDate,
+        fromDate,
+        toDate,
+        onDateTimeChanged,
+        textController,
+      ];
 }

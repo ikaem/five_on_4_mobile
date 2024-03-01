@@ -29,7 +29,7 @@ class _MatchCreateInfoContainerState extends State<MatchCreateInfoContainer> {
         // TODO temp
       },
       // TODO temp only
-      dateTimeStream: Stream.fromIterable([""]),
+      dateTimeStream: const Stream<DateTime>.empty(),
       dateTimeController: TextEditingController(),
       onDateTimeChanged: (value) {
         // TODO temp

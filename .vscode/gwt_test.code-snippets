@@ -25,6 +25,15 @@
       "  \"then should <state we expect to happen>\",",
       "  () {",
       "    // setup",
+      "",
+      "    // given",
+      "",
+      "    // when",
+      "",
+      "    // then",
+      "",
+      "    // cleanup"
+
       "  },",
       ");"
     ],
@@ -39,6 +48,15 @@
       "  \"then should <state we expect to happen>\",",
       "  (widgetTester) async {",
       "    // setup",
+      "",
+      "    // given",
+      "",
+      "    // when",
+      "",
+      "    // then",
+      "",
+      "    // cleanup"
+
       "  },",
       ");"
     ],

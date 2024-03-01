@@ -1,4 +1,7 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_date_time_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/extensions/date_time_extension.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/helpers/date_time_input_on_tap_setter.dart';
 import 'package:flutter/material.dart';
 
 class MatchCreateInfo extends StatelessWidget {
@@ -8,8 +11,8 @@ class MatchCreateInfo extends StatelessWidget {
     required ValueSetter<String> onNameChanged,
     required Stream<String> nameStream,
     required TextEditingController dateTimeController,
-    required ValueSetter<DateTime> onDateTimeChanged,
-    required Stream<String> dateTimeStream,
+    required ValueSetter<DateTime?> onDateTimeChanged,
+    required Stream<DateTime> dateTimeStream,
   })  : _nameController = nameController,
         _onNameChanged = onNameChanged,
         _nameStream = nameStream,
@@ -23,12 +26,20 @@ class MatchCreateInfo extends StatelessWidget {
   final ValueSetter<String> _onNameChanged;
 
   // date & time
-  final Stream<String> _dateTimeStream;
+  final Stream<DateTime> _dateTimeStream;
   final TextEditingController _dateTimeController;
-  final ValueSetter<DateTime> _onDateTimeChanged;
+  final ValueSetter<DateTime?> _onDateTimeChanged;
 
   @override
   Widget build(BuildContext context) {
+    final dateTimeInputOnTapSetter = DateTimeInputOnTapSetter(
+      initiallySelectedDate: DateTime.now().dayStart,
+      fromDate: DateTime.now().dayStart,
+      toDate: DateTime.now().add(const Duration(days: 365)).dayStart,
+      onDateTimeChanged: _onDateTimeChanged,
+      textController: _dateTimeController,
+    );
+
     return Column(
       children: [
         StreamedTextField(
@@ -40,26 +51,11 @@ class MatchCreateInfo extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-
-        // StreamedTextField(
-        //   stream: _dateTimeStream,
-        //   textController: _dateTimeController,
-        //   onChanged: _onDateTimeChanged,
-        //   label: "Match Date & Time",
-        // ),
-
-        const TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: "MATCH DATE AND TIME",
-          ),
+        StreamedDateTimeField(
+          stream: _dateTimeStream,
+          label: "Match Date & Time",
+          onTapSetter: dateTimeInputOnTapSetter,
         ),
-        // TextField(
-        //   decoration: InputDecoration(
-        //     border: OutlineInputBorder(),
-        //     labelText: "MATCH TIME",
-        //   ),
-        // ),
         const TextField(
           minLines: 5,
           maxLines: 5,
