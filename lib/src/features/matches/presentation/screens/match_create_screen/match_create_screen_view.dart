@@ -3,8 +3,8 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
 import 'package:flutter/material.dart';
 
-class MatchCreateView extends StatelessWidget {
-  const MatchCreateView({
+class MatchCreateScreenView extends StatelessWidget {
+  const MatchCreateScreenView({
     super.key,
   });
 
@@ -18,9 +18,19 @@ class MatchCreateView extends StatelessWidget {
   }
 
   List<TabTogglerOptionValue> get _togglerOptions => [
-        const TabTogglerOptionValue(
+        TabTogglerOptionValue(
           title: "Info",
-          child: MatchCreateInfoContainer(),
+          child: MatchCreateInfoContainer(
+            nameStream: const Stream<String>.empty(),
+            onNameChanged: (String name) {},
+            dateTimeStream: const Stream<DateTime>.empty(),
+            onDateTimeChanged: (DateTime? dateTime) {},
+            descriptionStream: const Stream<String>.empty(),
+            onDescriptionChanged: (String description) {},
+            isLoading: false,
+            isError: false,
+            onRetry: () async {},
+          ),
         ),
         const TabTogglerOptionValue(
           title: "Participants",

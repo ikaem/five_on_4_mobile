@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_view.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen_view.dart';
 import 'package:flutter/material.dart';
 
 class MatchCreateScreen extends StatelessWidget {
@@ -9,7 +9,7 @@ class MatchCreateScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
-        body: const MatchCreateView(),
+        body: const MatchCreateScreenView(),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_date_time_field.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_mutliline_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/date_time_extension.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/helpers/date_time_input_on_tap_setter.dart';
@@ -46,10 +47,12 @@ void main() {
                       nameController: textEditingController,
                       onNameChanged: onChangedCallback,
                       nameStream: stream,
-                      // TODO temp
                       dateTimeController: genericTextController,
                       onDateTimeChanged: (value) {},
                       dateTimeStream: const Stream<DateTime>.empty(),
+                      descriptionController: genericTextController,
+                      onDescriptionChanged: (value) {},
+                      descriptionStream: const Stream<String>.empty(),
                     ),
                   ),
                 ),
@@ -80,7 +83,7 @@ void main() {
           testWidgets(
             "given dateTime-related arguments are provided"
             "when widget is rendered"
-            "should show expected 'Match Date & Time' TextField input",
+            "should show expected 'Match Date & Time' StreamedDateTimeField input",
             (widgetTester) async {
               // given
               const stream = Stream<DateTime>.empty();
@@ -98,6 +101,9 @@ void main() {
                       dateTimeController: textEditingController,
                       onDateTimeChanged: onChangedCallback,
                       dateTimeStream: stream,
+                      descriptionController: genericTextController,
+                      onDescriptionChanged: (value) {},
+                      descriptionStream: const Stream<String>.empty(),
                     ),
                   ),
                 ),
@@ -132,47 +138,56 @@ void main() {
           );
 
           testWidgets(
-            "given nothing in particular"
+            "given description-related arguments are provided"
             "when widget is rendered"
-            "should show expected 'MATCH DESCRIPTION' TextField input",
+            "should show expected 'Description' StreamedMultilineTextField input",
             (widgetTester) async {
-              // TODO create mock stream
-              // final stream = _MockStream();
-              // // TODO create mock controller
-              // final textEditingController = _MockTextEditingController();
-              // TODO create mock on changed
+              // given
               final onChangedCallback = _MockOnChangedCallbackWrapper();
+              const stream = Stream<String>.empty();
+              final textEditingController = TextEditingController();
 
+              // when
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
                     body: MatchCreateInfo(
                       nameController: genericTextController,
-                      onNameChanged: onChangedCallback,
+                      onNameChanged: (value) {},
                       nameStream: Stream.fromIterable([""]),
-                      // TODO temp
                       dateTimeController: genericTextController,
                       onDateTimeChanged: (value) {},
                       dateTimeStream: const Stream<DateTime>.empty(),
+                      //
+                      descriptionController: textEditingController,
+                      onDescriptionChanged: onChangedCallback,
+                      descriptionStream: stream,
                     ),
                   ),
                 ),
               );
 
+              // then
               final matchDescriptionTextFieldFinder = find.byWidgetPredicate(
                 (widget) {
-                  if (widget is! TextField) return false;
-                  if (widget.decoration?.labelText != "MATCH DESCRIPTION") {
+                  if (widget is! StreamedMultilineTextField) return false;
+                  if (widget.label != "Match Description") return false;
+                  if (widget.stream != stream) return false;
+                  if (widget.onChanged != onChangedCallback.call) return false;
+                  if (widget.textController != textEditingController) {
                     return false;
                   }
-                  if (widget.minLines != 5) return false;
-                  if (widget.maxLines != 5) return false;
 
                   return true;
                 },
               );
 
               expect(matchDescriptionTextFieldFinder, findsOneWidget);
+
+              // cleanup
+              addTearDown(() {
+                textEditingController.dispose();
+              });
             },
           );
           // TODO should do interaction test to make sure that time picker is shown

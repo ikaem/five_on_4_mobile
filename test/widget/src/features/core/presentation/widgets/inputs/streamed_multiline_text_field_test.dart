@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_mutliline_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 void main() {
   group(
@@ -97,6 +98,53 @@ void main() {
           );
         },
       );
+
+      group(
+        ".onChange()",
+        () {
+          testWidgets(
+            "given widget is rendered "
+            "when the user types in the TextField "
+            "then should call the onChanged callback",
+            (widgetTester) async {
+              // setup
+              final onChangedCallback = _MockOnChangedCallbackWrapper();
+              final textController = TextEditingController();
+
+              when(() => onChangedCallback.call(any())).thenReturn(null);
+
+              // given
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: StreamedMultilineTextField(
+                      label: "Some label",
+                      stream: const Stream<String>.empty(),
+                      textController: TextEditingController(),
+                      onChanged: onChangedCallback,
+                    ),
+                  ),
+                ),
+              );
+
+              // when
+              await widgetTester.enterText(find.byType(TextField), "Some text");
+
+              // then
+              verify(() => onChangedCallback.call("Some text")).called(1);
+
+              // cleanup
+              addTearDown(() {
+                textController.dispose();
+              });
+            },
+          );
+        },
+      );
     },
   );
+}
+
+class _MockOnChangedCallbackWrapper extends Mock {
+  void call(String value);
 }

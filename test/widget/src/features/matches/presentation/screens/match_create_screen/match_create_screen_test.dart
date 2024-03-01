@@ -1,5 +1,5 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_view.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -22,7 +22,7 @@ void main() {
               );
 
               // TODO come back to this - will need to override controller to provide create match data
-              final matchCreateViewFinder = find.byType(MatchCreateView);
+              final matchCreateViewFinder = find.byType(MatchCreateScreenView);
 
               expect(matchCreateViewFinder, findsOneWidget);
             },
