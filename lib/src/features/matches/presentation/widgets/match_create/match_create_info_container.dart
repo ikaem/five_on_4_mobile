@@ -25,6 +25,7 @@ class MatchCreateInfoContainer extends StatefulWidget {
         _isError = isError,
         _onRetry = onRetry;
 
+// TODO remove private variables here - there is no need for it in widgets
   final Stream<String> _nameStream;
   final ValueSetter<String> _onNameChanged;
   final Stream<DateTime> _dateTimeStream;

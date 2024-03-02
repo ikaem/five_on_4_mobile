@@ -5,11 +5,12 @@ mixin CreateMatchInputsValidationMixin {
     required String name,
     required String location,
     required String description,
-    required DateTime dateTime,
+    required DateTime? dateTime,
     required List<int> playersForInvite,
   }) {
     if (name.isEmpty) return null;
     if (location.isEmpty) return null;
+    if (dateTime == null) return null;
     if (dateTime.isBefore(DateTime.now())) return null;
 
     return MatchCreateInputArgs(

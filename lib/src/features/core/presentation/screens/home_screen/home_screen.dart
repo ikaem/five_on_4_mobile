@@ -10,9 +10,7 @@ class HomeScreen extends StatelessWidget {
     BuildContext context,
   ) {
     return const SafeArea(
-      child: Scaffold(
-        body: HomeScreenView(),
-      ),
+      child: HomeScreenView(),
     );
   }
 }

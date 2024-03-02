@@ -43,20 +43,22 @@ class HomeScreenView extends ConsumerWidget {
       onRetry: matchesController.onLoadMatches,
     );
 
-    return Column(
-      children: [
-        HomeGreeting(
-          nickName: "nickName",
-          teamName: "teamName",
-          avatarUrl: Uri.parse(
-              "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
-        ),
-        Expanded(
-          child: TabToggler(
-            options: togglerOptions,
+    return Scaffold(
+      body: Column(
+        children: [
+          HomeGreeting(
+            nickName: "nickName",
+            teamName: "teamName",
+            avatarUrl: Uri.parse(
+                "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
           ),
-        ),
-      ],
+          Expanded(
+            child: TabToggler(
+              options: togglerOptions,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

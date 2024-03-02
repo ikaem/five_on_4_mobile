@@ -17,12 +17,6 @@ class CreateMatchInputsController
 
   // TODO dont forget to dispose of these
   Future<void> dispose() async {
-    // await _nameSubject.close();
-    // await _locationSubject.close();
-    // await _descriptionSubject.close();
-    // await _dateTimeSubject.close();
-    // await _playersForInviteSubject.close();
-
     await Future.wait([
       _nameSubject.close(),
       _locationSubject.close(),
@@ -32,17 +26,11 @@ class CreateMatchInputsController
     ]);
   }
 
-  // subjects
-  // final BehaviorSubject<String> _nameSubject = BehaviorSubject();
-  // final BehaviorSubject<String> _locationSubject = BehaviorSubject();
-  // final BehaviorSubject<String> _descriptionSubject = BehaviorSubject();
-  // final BehaviorSubject<DateTime> _dateTimeSubject = BehaviorSubject();
-  // TODO maybe seeded is good
   final BehaviorSubject<String> _nameSubject = BehaviorSubject.seeded("");
   final BehaviorSubject<String> _locationSubject = BehaviorSubject.seeded("");
   final BehaviorSubject<String> _descriptionSubject =
       BehaviorSubject.seeded("");
-  final BehaviorSubject<DateTime> _dateTimeSubject =
+  final BehaviorSubject<DateTime?> _dateTimeSubject =
       BehaviorSubject.seeded(DateTime.now());
 
   // NOTE seeding because we need to have a value to start with
@@ -55,7 +43,7 @@ class CreateMatchInputsController
   Stream<String> get validatedLocationStream =>
       _locationStream.transform(genericStringValidationTransformer);
   // TODO no need to validate i think
-  Stream<String?> get validatedDescriptionStream => _descriptionStream;
+  Stream<String> get validatedDescriptionStream => _descriptionStream;
   Stream<DateTime> get validatedDateTimeStream =>
       _dateTimeStream.transform(futureDateTimeValidationTransformer);
   Stream<List<int>> get validatedPlayersForInviteStream =>
@@ -103,7 +91,7 @@ class CreateMatchInputsController
     _descriptionSink.add(value);
   }
 
-  void onDateTimeChanged(DateTime value) {
+  void onDateTimeChanged(DateTime? value) {
     _dateTimeSink.add(value);
   }
 
@@ -118,7 +106,7 @@ class CreateMatchInputsController
   // streams
   Stream<String?> get _nameStream => _nameSubject.distinct();
   Stream<String?> get _locationStream => _locationSubject.distinct();
-  Stream<String?> get _descriptionStream => _descriptionSubject.distinct();
+  Stream<String> get _descriptionStream => _descriptionSubject.distinct();
   Stream<DateTime?> get _dateTimeStream => _dateTimeSubject.distinct();
   Stream<List<int>> get _playersForInviteStream =>
       _playersForInviteSubject.distinct();
@@ -127,6 +115,6 @@ class CreateMatchInputsController
   Sink<String> get _nameSink => _nameSubject.sink;
   Sink<String> get _locationSink => _locationSubject.sink;
   Sink<String> get _descriptionSink => _descriptionSubject.sink;
-  Sink<DateTime> get _dateTimeSink => _dateTimeSubject.sink;
+  Sink<DateTime?> get _dateTimeSink => _dateTimeSubject.sink;
   Sink<List<int>> get _playersForInviteSink => _playersForInviteSubject.sink;
 }

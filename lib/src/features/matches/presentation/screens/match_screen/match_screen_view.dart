@@ -52,8 +52,11 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
       onRetry: onMatchReload,
     );
 
-    return TabToggler(
-      options: togglerOptions,
+    return Scaffold(
+      appBar: AppBar(),
+      body: TabToggler(
+        options: togglerOptions,
+      ),
     );
   }
 
@@ -121,39 +124,3 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     );
   }
 }
-
-// class MatchView extends ConsumerWidget {
-//   const MatchView({
-//     super.key,
-//     // required this.match,
-//     required this.matchId,
-//   });
-
-//   // final MatchModel match;ž
-//   final int matchId;
-
-//   @override
-//   Widget build(
-//     BuildContext context,
-//     WidgetRef ref,
-//   ) {
-//     return TabToggler(
-//       options: _togglerOptions,
-//     );
-//   }
-
-//   List<TabTogglerOptionValue> get _togglerOptions => [
-//         TabTogglerOptionValue(
-//           title: "Info",
-//           child: MatchInfoContainer(
-//             match: match,
-//           ),
-//         ),
-//         TabTogglerOptionValue(
-//           title: "Participants",
-//           child: MatchParticipantsContainer(
-//             participants: match.arrivingPlayers,
-//           ),
-//         ),
-//       ];
-// }

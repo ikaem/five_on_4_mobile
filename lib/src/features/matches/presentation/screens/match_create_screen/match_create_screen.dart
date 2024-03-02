@@ -6,11 +6,8 @@ class MatchCreateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: const MatchCreateScreenView(),
-      ),
+    return const SafeArea(
+      child: MatchCreateScreenView(),
     );
   }
 }
