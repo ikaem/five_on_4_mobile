@@ -32,7 +32,8 @@ class CreateMatchInputsController
   final BehaviorSubject<String> _descriptionSubject =
       BehaviorSubject.seeded("");
   final BehaviorSubject<DateTime?> _dateTimeSubject =
-      BehaviorSubject.seeded(DateTime.now());
+      // BehaviorSubject.seeded(DateTime.now());
+      BehaviorSubject();
 
   // NOTE seeding because we need to have a value to start with
   final BehaviorSubject<List<int>> _playersForInviteSubject =

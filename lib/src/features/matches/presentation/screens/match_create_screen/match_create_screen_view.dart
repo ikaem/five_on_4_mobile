@@ -1,3 +1,5 @@
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match/provider/create_match_controller.dart';
@@ -44,6 +46,23 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO also can setup listener here
+    ref.listen(
+      createMatchControllerProvider,
+      (previous, next) {
+        next.maybeWhen(
+          orElse: () {},
+          data: (state) {
+            if (state?.matchId == null) {
+              return;
+            }
+
+            // now - navigate to match screen
+            // also - show message in snackbar
+          },
+        );
+      },
+    );
     final matchCreateControllerState = ref.watch(createMatchControllerProvider);
     final matchCreateUIState =
         _getMatchCreateUIState(matchCreateControllerState);
@@ -60,13 +79,52 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
       onDateTimeChanged: createMatchInputsController.onDateTimeChanged,
       descriptionStream: createMatchInputsController.validatedDescriptionStream,
       onDescriptionChanged: createMatchInputsController.onDescriptionChanged,
+      locationStream: createMatchInputsController.validatedLocationStream,
+      onLocationChanged: createMatchInputsController.onLocationChanged,
     );
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              // TODO this needs to be tested
+              await ref
+                  .read(createMatchControllerProvider.notifier)
+                  .onCreateMatch(
+                    createMatchInputsController.validatedMatchCreateInputArgs,
+                  );
+            },
+            icon: const Icon(Icons.save),
+          ),
+        ],
+      ),
       body: TabToggler(
         options: togglerOptions,
       ),
+      // TODO view should show loading and error instead of passing it to the children
+      // TODO it could use when
+      // TODO do change to this
+      // body: matchCreateControllerState.when(
+      //   data: (data) {
+      //     return TabToggler(
+      //       options: togglerOptions,
+      //     );
+      //   },
+      //   error: (error, stackTrace) {
+      //     return ErrorStatus(
+      //       message: "There was an issue creating match",
+      //       onRetry: () async {
+      //         context.go(RoutePathsConstants.ROOT.value);
+      //       },
+      //     );
+      //   },
+      //   loading: () {
+      //     return const LoadingStatus(
+      //       message: "Creating match...",
+      //     );
+      //   },
+      // ),
     );
   }
 
@@ -80,6 +138,8 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     required ValueSetter<DateTime?> onDateTimeChanged,
     required Stream<String> descriptionStream,
     required ValueSetter<String> onDescriptionChanged,
+    required Stream<String> locationStream,
+    required ValueSetter<String> onLocationChanged,
   }) {
     return [
       // TODO stopped here
@@ -92,15 +152,21 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
           onDateTimeChanged: onDateTimeChanged,
           descriptionStream: descriptionStream,
           onDescriptionChanged: onDescriptionChanged,
+          locationStream: locationStream,
+          onLocationChanged: onLocationChanged,
           isLoading: matchCreateUIState.isLoading,
           isError: matchCreateUIState.isError,
           onRetry: onRetry,
         ),
       ),
-      const TabTogglerOptionValue(
+      TabTogglerOptionValue(
         title: "Participants",
+        // TODO this should have loading as well, and error and such
         child: MatchCreateParticipantsContainer(
-          playersToInvite: [],
+          playersToInvite: const [],
+          isLoading: matchCreateUIState.isLoading,
+          isError: matchCreateUIState.isError,
+          onRetry: onRetry,
         ),
       ),
     ];

@@ -27,6 +27,9 @@ void main() {
                       // TODO both toggler and toggler option should be extracted
                       body: MatchCreateParticipantsContainer(
                         playersToInvite: playersToInvite,
+                        isLoading: false,
+                        isError: false,
+                        onRetry: () async {},
                       ),
                     ),
                   ),

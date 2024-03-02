@@ -17,6 +17,9 @@ class MatchCreateInfo extends StatelessWidget {
     required this.descriptionStream,
     required this.descriptionController,
     required this.onDescriptionChanged,
+    required this.locationStream,
+    required this.locationController,
+    required this.onLocationChanged,
   });
 
   // name
@@ -34,6 +37,11 @@ class MatchCreateInfo extends StatelessWidget {
   final TextEditingController descriptionController;
   final ValueSetter<String> onDescriptionChanged;
 
+  // location
+  final Stream<String> locationStream;
+  final TextEditingController locationController;
+  final ValueSetter<String> onLocationChanged;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,6 +51,15 @@ class MatchCreateInfo extends StatelessWidget {
           textController: nameController,
           onChanged: onNameChanged,
           label: "Match Name",
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        StreamedTextField(
+          stream: locationStream,
+          textController: locationController,
+          onChanged: onLocationChanged,
+          label: "Location",
         ),
         const SizedBox(
           height: 10,

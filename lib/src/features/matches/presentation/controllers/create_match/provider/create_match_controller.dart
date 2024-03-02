@@ -37,7 +37,10 @@ class CreateMatchController extends _$CreateMatchController {
     // nothing needed on initialization
   }
 
-  Future<void> onCreateMatch(MatchCreateInputArgs createMatchArgs) async {
+  Future<void> onCreateMatch(MatchCreateInputArgs? createMatchArgs) async {
+    if (createMatchArgs == null) {
+      return;
+    }
     state = const AsyncValue.loading();
     try {
       // TODO maybe it is good to delegate this generation of Value to use case

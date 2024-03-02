@@ -53,6 +53,9 @@ void main() {
                       descriptionController: genericTextController,
                       onDescriptionChanged: (value) {},
                       descriptionStream: const Stream<String>.empty(),
+                      locationController: genericTextController,
+                      onLocationChanged: (value) {},
+                      locationStream: const Stream<String>.empty(),
                     ),
                   ),
                 ),
@@ -62,6 +65,58 @@ void main() {
                 (widget) {
                   if (widget is! StreamedTextField) return false;
                   if (widget.label != "Match Name") return false;
+                  if (widget.textController != textEditingController) {
+                    return false;
+                  }
+                  if (widget.onChanged != onChangedCallback) return false;
+                  if (widget.stream != stream) return false;
+
+                  return true;
+                },
+              );
+
+              expect(streamedMatchNameTextFieldFinder, findsOneWidget);
+
+              addTearDown(() {
+                textEditingController.dispose();
+              });
+            },
+          );
+
+          testWidgets(
+            "given location-related arguments are provided"
+            "when widget is rendered"
+            "should show expected StreamedTextField for 'Location' input",
+            (widgetTester) async {
+              const stream = Stream<String>.empty();
+              final textEditingController = TextEditingController();
+              onChangedCallback(String value) {}
+
+              await widgetTester.pumpWidget(
+                MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateInfo(
+                      nameController: genericTextController,
+                      onNameChanged: (value) {},
+                      nameStream: stream,
+                      dateTimeController: genericTextController,
+                      onDateTimeChanged: (value) {},
+                      dateTimeStream: const Stream<DateTime>.empty(),
+                      descriptionController: genericTextController,
+                      onDescriptionChanged: (value) {},
+                      descriptionStream: const Stream<String>.empty(),
+                      locationController: textEditingController,
+                      onLocationChanged: onChangedCallback,
+                      locationStream: stream,
+                    ),
+                  ),
+                ),
+              );
+
+              final streamedMatchNameTextFieldFinder = find.byWidgetPredicate(
+                (widget) {
+                  if (widget is! StreamedTextField) return false;
+                  if (widget.label != "Location") return false;
                   if (widget.textController != textEditingController) {
                     return false;
                   }
@@ -104,6 +159,9 @@ void main() {
                       descriptionController: genericTextController,
                       onDescriptionChanged: (value) {},
                       descriptionStream: const Stream<String>.empty(),
+                      locationController: genericTextController,
+                      onLocationChanged: (value) {},
+                      locationStream: const Stream<String>.empty(),
                     ),
                   ),
                 ),
@@ -162,6 +220,9 @@ void main() {
                       descriptionController: textEditingController,
                       onDescriptionChanged: onChangedCallback,
                       descriptionStream: stream,
+                      locationController: genericTextController,
+                      onLocationChanged: (value) {},
+                      locationStream: const Stream<String>.empty(),
                     ),
                   ),
                 ),
