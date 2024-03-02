@@ -22,10 +22,14 @@ mixin StreamInputsValidationMixin on InputsValidationMixin {
     },
   );
 
-  late final StreamTransformer<DateTime, DateTime>
+  late final StreamTransformer<DateTime?, DateTime>
       futureDateTimeValidationTransformer =
-      StreamTransformer<DateTime, DateTime>.fromHandlers(
+      StreamTransformer<DateTime?, DateTime>.fromHandlers(
     handleData: (data, sink) {
+      if (data == null) {
+        sink.addError(InputError.invalid);
+        return;
+      }
       final InputError? error = validateFutureDateTimeInput(data);
 
       if (error != null) {

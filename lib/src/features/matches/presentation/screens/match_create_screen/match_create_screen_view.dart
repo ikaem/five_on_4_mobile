@@ -2,6 +2,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_togg
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match/provider/create_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/create_match_inputs_controller.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/provider/create_match_inputs_controller_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,9 @@ class MatchCreateScreenView extends ConsumerStatefulWidget {
 class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
 // TODO test
 
-  final matchCreateInputsController = CreateMatchInputsController();
+  // final matchCreateInputsController = CreateMatchInputsController();
+  late final createMatchInputsController =
+      ref.read(createMatchInputsControllerProvider);
 
   @override
   void dispose() {
@@ -51,12 +54,12 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
         context.go(RoutePathsConstants.ROOT.value);
       },
       // input controller values
-      nameStream: matchCreateInputsController.validatedNameStream,
-      onNameChanged: matchCreateInputsController.onNameChanged,
-      dateTimeStream: matchCreateInputsController.validatedDateTimeStream,
-      onDateTimeChanged: matchCreateInputsController.onDateTimeChanged,
-      descriptionStream: matchCreateInputsController.validatedDescriptionStream,
-      onDescriptionChanged: matchCreateInputsController.onDescriptionChanged,
+      nameStream: createMatchInputsController.validatedNameStream,
+      onNameChanged: createMatchInputsController.onNameChanged,
+      dateTimeStream: createMatchInputsController.validatedDateTimeStream,
+      onDateTimeChanged: createMatchInputsController.onDateTimeChanged,
+      descriptionStream: createMatchInputsController.validatedDescriptionStream,
+      onDescriptionChanged: createMatchInputsController.onDescriptionChanged,
     );
 
     return Scaffold(
@@ -104,7 +107,8 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
   }
 
   Future<void> _onDispose() async {
-    await matchCreateInputsController.dispose();
+    // await matchCreateInputsController.dispose();
+    await createMatchInputsController.dispose();
   }
 }
 

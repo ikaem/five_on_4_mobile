@@ -5,6 +5,8 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../../../../../utils/extensions/widget_tester_extension.dart';
+
 void main() {
   group(
     "$MatchCreateScreenView",
@@ -12,6 +14,32 @@ void main() {
       group(
         "Layout",
         () {
+          testWidgets(
+            "given MatchCreateScreenView dependencies are provided "
+            "when the widget is rendered "
+            "then should should show a [TabToggler] with expected arguments",
+            (tester) async {
+              // setup
+
+              // given
+
+              // when
+              await tester.pumpWithProviderScope(
+                widget: const MaterialApp(
+                  home: Scaffold(
+                    body: MatchCreateScreenView(),
+                  ),
+                ),
+              );
+
+              // then
+              final tabTogglerFinder = _findTabToggler();
+              expect(tabTogglerFinder, findsOneWidget);
+
+              // cleanup
+            },
+          );
+
           // TODO use MatchScreenViewTest as a reference
           // testWidgets(
           //   "given nothing in particular"

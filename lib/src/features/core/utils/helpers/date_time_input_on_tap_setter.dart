@@ -67,6 +67,11 @@ class DateTimeInputOnTapSetter extends Equatable {
       pickedTime.minute,
     );
 
+    if (picked.isBefore(DateTime.now())) {
+      _resetSetters();
+      return;
+    }
+
     // format the date and time
     // TODO put this format to constants
     final formattedDateTime =

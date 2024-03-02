@@ -7,7 +7,7 @@ part of 'create_match_controller.dart';
 // **************************************************************************
 
 String _$createMatchControllerHash() =>
-    r'2ecc1ffe9fb93e1e48f5be543e4703e02d20ab4e';
+    r'53a7003eb5d2720a170193ec21ddff9905eedcde';
 
 /// See also [CreateMatchController].
 @ProviderFor(CreateMatchController)
