@@ -19,6 +19,7 @@ mixin CreateMatchInputsValidationMixin {
       description: description,
       // dateTime: dateTime,
       playersForInvite: playersForInvite,
+      dateTime: dateTime.millisecondsSinceEpoch,
     );
   }
 }

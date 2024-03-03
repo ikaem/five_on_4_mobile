@@ -37,6 +37,8 @@ void main() {
                     onDateTimeChanged: (DateTime? dateTime) {},
                     onDescriptionChanged: (String description) {},
                     onNameChanged: (String name) {},
+                    locationStream: const Stream<String>.empty(),
+                    onLocationChanged: (String location) {},
                   ),
                 ),
               );
@@ -79,6 +81,8 @@ void main() {
                     onDateTimeChanged: (DateTime? dateTime) {},
                     onDescriptionChanged: (String description) {},
                     onNameChanged: (String name) {},
+                    locationStream: const Stream<String>.empty(),
+                    onLocationChanged: (String location) {},
                   ),
                 ),
               );
@@ -106,10 +110,12 @@ void main() {
               const nameStream = Stream<String>.empty();
               const dateTimeStream = Stream<DateTime>.empty();
               const descriptionStream = Stream<String>.empty();
+              const locationStream = Stream<String>.empty();
               onRetry() async {}
               onDateTimeChanged(DateTime? dateTime) {}
               onDescriptionChanged(String description) {}
               onNameChanged(String name) {}
+              onLocationChanged(String location) {}
 
               // when
               await widgetTester.pumpWidget(
@@ -122,9 +128,11 @@ void main() {
                       dateTimeStream: dateTimeStream,
                       descriptionStream: descriptionStream,
                       nameStream: nameStream,
+                      locationStream: locationStream,
                       onDateTimeChanged: onDateTimeChanged,
                       onDescriptionChanged: onDescriptionChanged,
                       onNameChanged: onNameChanged,
+                      onLocationChanged: onLocationChanged,
                     ),
                   ),
                 ),

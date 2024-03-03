@@ -42,6 +42,7 @@ void main() {
                 organizer: "organizer",
                 description: "description",
                 invitedPlayers: [],
+                dateTime: 1,
               );
 
               // When
@@ -76,6 +77,7 @@ void main() {
                 organizer: "organizer",
                 description: "description",
                 invitedPlayers: [],
+                dateTime: 1,
               );
 
               // When

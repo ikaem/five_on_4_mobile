@@ -13,6 +13,7 @@ abstract class MatchCreateConverter {
       organizer: organizer,
       invitedPlayers: args.playersForInvite,
       name: args.name,
+      dateTime: args.dateTime,
     );
   }
 }

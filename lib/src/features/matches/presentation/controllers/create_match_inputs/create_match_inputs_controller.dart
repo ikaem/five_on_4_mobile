@@ -70,10 +70,10 @@ class CreateMatchInputsController
 
   MatchCreateInputArgs? get validatedMatchCreateInputArgs {
     final validatedArgs = getValidatedArgsFromInputs(
-      name: _nameSubject.value,
-      location: _locationSubject.value,
-      description: _descriptionSubject.value,
-      dateTime: _dateTimeSubject.value,
+      name: _nameSubject.valueOrNull ?? "",
+      location: _locationSubject.valueOrNull ?? "",
+      description: _descriptionSubject.valueOrNull ?? "",
+      dateTime: _dateTimeSubject.valueOrNull,
       playersForInvite: _playersForInviteSubject.value,
     );
 

@@ -8,6 +8,7 @@ class MatchCreateDataValue extends Equatable {
     required this.organizer,
     required this.description,
     required this.invitedPlayers,
+    required this.dateTime,
   });
 
   final String name;
@@ -17,6 +18,7 @@ class MatchCreateDataValue extends Equatable {
   final String description;
 // TODO for now this is arriving players - and will be empty for now because we will not be ading players for now
   final List<int> invitedPlayers;
+  final int dateTime;
 
   Map<String, dynamic> toJson() {
     return {
@@ -25,6 +27,7 @@ class MatchCreateDataValue extends Equatable {
       "organizer": organizer,
       "description": description,
       "invitedPlayers": invitedPlayers,
+      "dateTime": dateTime,
       // TODO temp only for fake server
       // "id": 1,
     };

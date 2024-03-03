@@ -12,6 +12,8 @@ List<MatchCreateDataValue> getTestMatchCreateValues({
         location: "${namesPrefix}location$index",
         organizer: "${namesPrefix}organizer$index",
         description: "${namesPrefix}description$index",
+        dateTime:
+            DateTime.now().add(Duration(hours: index)).millisecondsSinceEpoch,
         // TODO for now we will have this is empty
         invitedPlayers: const [],
       );

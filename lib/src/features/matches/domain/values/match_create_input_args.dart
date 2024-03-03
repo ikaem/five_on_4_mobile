@@ -6,12 +6,14 @@ class MatchCreateInputArgs extends Equatable {
     required this.description,
     required this.location,
     required this.playersForInvite,
+    required this.dateTime,
   });
 
   final String name;
   final String description;
   final String location;
   final List<int> playersForInvite;
+  final int dateTime;
 
   @override
   List<Object?> get props => [
@@ -19,5 +21,6 @@ class MatchCreateInputArgs extends Equatable {
         description,
         location,
         playersForInvite,
+        dateTime,
       ];
 }

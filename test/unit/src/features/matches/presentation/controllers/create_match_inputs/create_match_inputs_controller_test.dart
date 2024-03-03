@@ -431,12 +431,13 @@ void main() {
               expect(
                   controller.validatedMatchCreateInputArgs,
                   equals(
-                    const MatchCreateInputArgs(
+                    MatchCreateInputArgs(
                       name: name,
                       location: location,
                       description: description,
                       // dateTime: dateTime,
-                      playersForInvite: [playerForInvite],
+                      playersForInvite: const [playerForInvite],
+                      dateTime: dateTime.millisecondsSinceEpoch,
                     ),
                   ));
 

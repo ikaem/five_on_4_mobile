@@ -2,6 +2,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_st
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match/provider/create_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/create_match_inputs_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/provider/create_match_inputs_controller_provider.dart';
@@ -86,17 +87,27 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () async {
-              // TODO this needs to be tested
-              await ref
-                  .read(createMatchControllerProvider.notifier)
-                  .onCreateMatch(
-                    createMatchInputsController.validatedMatchCreateInputArgs,
-                  );
-            },
-            icon: const Icon(Icons.save),
-          ),
+          // TODO extract to streamed icon button
+          StreamBuilder<bool>(
+              stream: createMatchInputsController.areInputsValidStream,
+              builder: (context, snapshot) {
+                final areInputsValid = snapshot.data ?? false;
+
+                return IconButton(
+                  onPressed: !areInputsValid
+                      ? null
+                      : () async {
+                          // TODO this needs to be tested
+                          await ref
+                              .read(createMatchControllerProvider.notifier)
+                              .onCreateMatch(
+                                createMatchInputsController
+                                    .validatedMatchCreateInputArgs,
+                              );
+                        },
+                  icon: const Icon(Icons.save),
+                );
+              }),
         ],
       ),
       body: TabToggler(

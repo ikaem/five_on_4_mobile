@@ -43,6 +43,7 @@ void main() {
             description: matchData.description,
             location: matchData.location,
             playersForInvite: matchData.invitedPlayers,
+            dateTime: matchData.dateTime,
           );
 
           test(
