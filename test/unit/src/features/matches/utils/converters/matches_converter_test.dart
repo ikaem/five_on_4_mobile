@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 import 'package:flutter_test/flutter_test.dart';

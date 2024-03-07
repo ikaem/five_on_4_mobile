@@ -1,4 +1,4 @@
-/// Helper to get environment values
+/// Helper to get environment variables
 ///
 /// It relies on:
 /// - existing .env file where the values are stored
@@ -31,7 +31,8 @@
 /// 	flutter build appbundle --release --dart-define-from-file=.env
 /// ```
 
-class EnvValuesWrapper {
+// TODO test this somehow
+class EnvVarsWrapper {
   // auth
   String get googleAuthServerId =>
       const String.fromEnvironment('GOOGLE_AUTH_SERVER_ID');

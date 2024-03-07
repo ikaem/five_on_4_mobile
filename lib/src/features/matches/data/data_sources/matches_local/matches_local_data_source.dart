@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 
 abstract interface class MatchesLocalDataSource {
   // TODO not sure if i even need a response here

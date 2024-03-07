@@ -2,7 +2,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status
 import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
