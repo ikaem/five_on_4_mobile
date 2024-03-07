@@ -6,10 +6,14 @@ class DioWrapper {
   DioWrapper({
     required Interceptor interceptor,
   }) {
-    _dio.interceptors.add(interceptor);
+    final dio = Dio();
+    dio.interceptors.add(interceptor);
+
+    _dio = dio;
   }
 
-  final Dio _dio = Dio();
+// TODO we could pass instance of dio here, so we can test this wrapper
+  late final Dio _dio;
 
   Future<T> get<T>({
     required HttpRequestUriPartsValue uriParts,

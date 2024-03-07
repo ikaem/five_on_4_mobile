@@ -3,6 +3,8 @@
 
 import 'package:dio/dio.dart';
 
+// TODO as per https://medium.com/readytowork-org/dio-interceptors-in-flutter-e813f08c2017
+
 // TODO could possibly create interceptor logic that would redirect requests to local server
 
 class DioInterceptor extends Interceptor {
@@ -29,18 +31,23 @@ class DioInterceptor extends Interceptor {
     // }
 
     // handler.next(options);
-    super.onRequest(options, handler);
+    // super.onRequest(options, handler);
+    // handler.resolve(response)
+    handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
-    super.onResponse(response, handler);
+    // super.onResponse(response, handler);
+    handler.resolve(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // TODO we can reuse this to send for refresh token in future if we get 401, and then possibly retry the request
     // TODO: implement onError
-    super.onError(err, handler);
+    // super.onError(err, handler);
+    handler.next(err);
   }
 }
