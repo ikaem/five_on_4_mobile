@@ -36,6 +36,12 @@ class EnvVarsWrapper {
   // auth
   String get googleAuthServerId =>
       const String.fromEnvironment('GOOGLE_AUTH_SERVER_ID');
+
+  // dev
+  bool get shouldUseLocalServer => const bool.fromEnvironment(
+        'SHOULD_USE_LOCAL_SERVER',
+        defaultValue: false,
+      );
 }
 
 // more info at 

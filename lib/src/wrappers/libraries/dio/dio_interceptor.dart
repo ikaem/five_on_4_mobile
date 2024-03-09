@@ -3,12 +3,19 @@
 
 import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
 // TODO as per https://medium.com/readytowork-org/dio-interceptors-in-flutter-e813f08c2017
 
 // TODO could possibly create interceptor logic that would redirect requests to local server
 
 class DioInterceptor extends Interceptor {
+  const DioInterceptor({
+    required EnvVarsWrapper envVarsWrapper,
+  }) : _envVarsWrapper = envVarsWrapper;
+
+  final EnvVarsWrapper _envVarsWrapper;
+
   @override
   void onRequest(
     RequestOptions options,
@@ -36,7 +43,8 @@ class DioInterceptor extends Interceptor {
     // handler.resolve(response)
     final requestApiAuthority = options.uri.authority;
     final shouldRedirectToLocalApi =
-        requestApiAuthority == HttpConstants.BACKEND_BASE_URL.value;
+        requestApiAuthority == HttpConstants.BACKEND_BASE_URL.value &&
+            _envVarsWrapper.shouldUseLocalServer;
     if (shouldRedirectToLocalApi) {
       final localApiOptions = _getRedirectToLocalApiOptions(options: options);
 

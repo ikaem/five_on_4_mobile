@@ -11,7 +11,19 @@
       "program": "lib/main.dart",
       "toolArgs": [
         "--dart-define-from-file",
-        ".env" // for env files // make sure prod has its own env file when building
+        ".env" // for env files // make sure prod has its own env file when building,
+      ]
+    },
+    {
+      "name": "five_on_4_mobile-local-api",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define-from-file",
+        ".env", // for env files // make sure prod has its own env file when building
+        "--dart-define",
+        "SHOULD_USE_LOCAL_SERVER=true"
       ]
     },
     {

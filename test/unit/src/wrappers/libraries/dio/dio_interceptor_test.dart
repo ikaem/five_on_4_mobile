@@ -2,7 +2,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final dioInterceptor = DioInterceptor();
+  // final dioInterceptor = DioInterceptor();
 
   group(
     "$DioInterceptor",
