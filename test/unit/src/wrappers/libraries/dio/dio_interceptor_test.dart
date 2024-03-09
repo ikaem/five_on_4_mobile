@@ -13,7 +13,7 @@ void main() {
           test(
             "given a request"
             "when .onRequest() is called"
-            "then should return expected result",
+            "then should include auth token ",
             () async {
               // write the
               // TODO we need to write tests

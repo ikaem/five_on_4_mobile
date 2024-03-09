@@ -33,7 +33,14 @@ class DioInterceptor extends Interceptor {
     // handler.next(options);
     // super.onRequest(options, handler);
     // handler.resolve(response)
-    handler.next(options);
+    const localApiPath = "http://10.0.2.2:4000";
+
+    final localApiOptions = options.copyWith(
+      path: localApiPath + options.uri.path,
+    );
+
+    // handler.next(options);
+    handler.next(localApiOptions);
   }
 
   @override
