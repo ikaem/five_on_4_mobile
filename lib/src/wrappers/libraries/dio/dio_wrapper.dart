@@ -1,13 +1,44 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/dio_cookie_interceptor/dio_cookie_interceptor_wrapper.dart';
+
+/* 
+
+void main() async {
+  final dio = Dio();
+  final cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
+  // First request, and save cookies (CookieManager do it).
+  await dio.get("https://dart.dev");
+  // Print cookies
+  print(await cookieJar.loadForRequest(Uri.parse("https://dart.dev")));
+  // Second request with the cookies
+  await dio.get('https://dart.dev');
+}
+
+
+
+
+
+
+ */
 
 class DioWrapper {
   DioWrapper({
     required Interceptor interceptor,
   }) {
+    // test cookie jar manager interceptor
+    final cookieJar = CookieJar();
+    // final cookieManagerInterceptor = CookieManager(cookieJar);
+    final dioCookieInterceptorWrapper = DioCookieInterceptorWrapper(cookieJar);
+
     final dio = Dio();
+    // dio.interceptors.add(dioCookieInterceptorWrapper);
     dio.interceptors.add(interceptor);
+    // TODO test
 
     _dio = dio;
   }

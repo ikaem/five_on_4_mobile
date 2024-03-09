@@ -1,9 +1,12 @@
 // TODO sourcing intercepotor solution form here
 // https://dhruvnakum.xyz/networking-in-flutter-interceptors
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
+
+// TODO cookies as per https://stackoverflow.com/a/77069921
 
 // TODO as per https://medium.com/readytowork-org/dio-interceptors-in-flutter-e813f08c2017
 
@@ -21,26 +24,7 @@ class DioInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) {
-    // TODO will need to insert auth token into header or something from here
-    // TODO leave for reference
-    // final routeAuthority = options.uri.authority;
-    // if (routeAuthority == WeatherConstants.baseUrl) {
-    //   final String googleServicesApiKey = ValueFromEnv.weatherApiKey;
-    //   ;
-
-    //   final RequestOptions updatedOptions = options.copyWith(
-    //     queryParameters: {
-    //       "key": googleServicesApiKey,
-    //     },
-    //   );
-
-    //   handler.next(updatedOptions);
-    //   return;
-    // }
-
-    // handler.next(options);
-    // super.onRequest(options, handler);
-    // handler.resolve(response)
+    //
     final requestApiAuthority = options.uri.authority;
     final shouldRedirectToLocalApi =
         requestApiAuthority == HttpConstants.BACKEND_BASE_URL.value &&
@@ -57,9 +41,41 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    // final headers = response.headers.value("set-cookie");
+
+    // const cookie = Cookie
+
+    // TODO extract to function
+    // TODO make sure that if no cookies are included, this still passes
+
+    Map<String, Cookie> cookies = {};
+
+    final rawCookiesString = response.headers.value("set-cookie") ?? "";
+    // TODO make sure to use that regex
+    final regex = RegExp('(?:[^,]|, )+');
+
+    Iterable<Match> rawCookies = regex.allMatches(rawCookiesString).toList();
+    final firstRawCookie = rawCookies.first;
+    // this will be entire match - the actual cookie string
+    final matchedGroup = firstRawCookie.group(0)!;
+
+// TODO this could throw if invalid cookie or something - handle it in try
+    final cookie = Cookie.fromSetCookieValue(matchedGroup);
+
+    final cookieName = cookie.name;
+    final cookieValue = cookie.value;
+
+    // TODO this should be added to secure storage
+    final cookieString = cookie.toString();
+
+    cookies[cookieName] = cookie;
+
+    // test
     // TODO: implement onResponse
     // super.onResponse(response, handler);
+    // TODO this if this is last in chain
     handler.resolve(response);
+    // handler.next(response);
   }
 
   @override
