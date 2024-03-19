@@ -1,183 +1,127 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 void main() {
-  final cookiesHandlerWrapper = CookiesHandlerWrapper();
+  const cookiesHandlerWrapper = CookiesHandlerWrapper();
+
   group('$CookiesHandlerWrapper', () {
-    group(".handleRequestCookie", () {
-      test(
-        "given no cookies are found in the headers"
-        "when handleRequestCookie() is called"
-        "then should return false",
-        () async {
-          // setup
-          final headers = Headers();
-          headers.add("nothing", "no");
+    group(
+      ".getRequestOptionsWithCookieInHeaders()",
+      () {
+        final getCookie = _GetCookieCallbackWrapper();
 
-          // when
-          final isSuccess =
-              await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: "someCookie",
-            onCookieFound: (String cookie) async {},
+        late RequestOptions options;
+
+        setUp(() {
+          options = RequestOptions(
+            path: "/",
+            method: "GET",
           );
+        });
+        // should call getCookie() callback
+        test(
+          "given .getCookie() callback is provided"
+          "when .getRequestOptionsWithCookieInHeaders() is called "
+          "then call getCookie() callback",
+          () {
+            // setup
 
-          // then
-          expect(isSuccess, equals(false));
-        },
-      );
-      test(
-        "given a cookie with provided cookie name is not found"
-        "when handleFoundRequestCookie() is called"
-        "then should return false",
-        () async {
-          // setup
-          final headers = Headers();
-          headers.add("set-cookie", "random=someValue; HttpOnly; Secure");
+            // given
+            when(() => getCookie()).thenAnswer((_) async => "cookie");
 
-          // given
-          const nonExistingCookie = "notExistingCookie";
+            // when
+            cookiesHandlerWrapper.getRequestOptionsWithCookieInHeaders(
+              requestOptions: options,
+              getCookie: getCookie,
+            );
 
-          // when
-          final isSuccess =
-              await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: nonExistingCookie,
-            onCookieFound: (String cookie) async {},
-          );
+            // then
+            verify(() => getCookie()).called(1);
 
-          // then
-          expect(isSuccess, equals(false));
-        },
-      );
+            // cleanup
+          },
+        );
 
-      test(
-        "given a cookie with provided cookie name is not found"
-        "when handleFoundRequestCookie() is called"
-        "then should not call the provided onCookieFound() callback",
-        () async {
-          // setup
-          final headers = Headers();
-          headers.add("nothing", "no");
-          headers.add("set-cookie", "random=someValue; HttpOnly; Secure");
+        // if no cookie is retrieved, should return same request options
+        test(
+          "given .getCookie() callback returns null"
+          "when .getRequestOptionsWithCookieInHeaders() is called "
+          "then should return provided RequestOptions",
+          () async {
+            // setup
 
-          final onCookieFoundCallback = _OnCookieFoundCallback();
+            // given
+            when(() => getCookie()).thenAnswer((_) async => null);
 
-          when(() => onCookieFoundCallback(any())).thenAnswer((_) async {});
+            // when
+            final result = await cookiesHandlerWrapper
+                .getRequestOptionsWithCookieInHeaders(
+              requestOptions: options,
+              getCookie: getCookie,
+            );
 
-          // given
-          const nonExistingCookie = "notExistingCookie";
+            // then
+            expect(result, equals(options));
 
-          // when
-          await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: nonExistingCookie,
-            onCookieFound: onCookieFoundCallback,
-          );
+            // cleanup
+          },
+        );
 
-          // then
-          verifyNever(() => onCookieFoundCallback(any()));
-        },
-      );
+        // if error when retrieving cookie, should log something - not sure how to test this
+        // if error when retrieving cookie, should return same request options
+        test(
+          "given .getCookie() callback throws"
+          "when .getRequestOptionsWithCookieInHeaders() is called "
+          "then should return provided RequestOptions",
+          () async {
+            // setup
 
-      test(
-        "given a cookie with provided cookie name exists in the headers"
-        "when handleFoundRequestCookie() is called"
-        "then should return true",
-        () async {
-          // setup
-          const existingCookieName = "existingCookie";
-          final headers = Headers();
+            // given
+            when(() => getCookie()).thenThrow(Exception());
 
-          headers.add(
-              "set-cookie", "$existingCookieName=someValue; HttpOnly; Secure");
+            // when
+            final result = await cookiesHandlerWrapper
+                .getRequestOptionsWithCookieInHeaders(
+              requestOptions: options,
+              getCookie: getCookie,
+            );
 
-          // when
-          final isSuccess =
-              await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: existingCookieName,
-            onCookieFound: (String cookie) async {},
-          );
+            // then
+            expect(result, equals(options));
 
-          // then
-          expect(isSuccess, equals(true));
-        },
-      );
+            // cleanup
+          },
+        );
 
-      test(
-        "given a cookie with provided cookie name exists in the headers"
-        "when handleFoundRequestCookie() is called"
-        "then should call the provided onCookieFound() callback",
-        () async {
-          // setup
-          const existingCookieName = "existingCookie";
-          const cookieString =
-              "$existingCookieName=someValue; Max-Age=1200; Secure; HttpOnly";
+        // if invalid cookie is retrieved, should return same request options
 
-          final headers = Headers();
+        // if valid cookie is retrieved, and no cookies in options, should return options with this only cookie
 
-          final onCookieFoundCallback = _OnCookieFoundCallback();
-          when(() => onCookieFoundCallback(any())).thenAnswer((_) async {});
+        // if valid cookie is retrieved, and cookies in options, should return options with this cookie added to the list
 
-          // given
-          headers.add("set-cookie", cookieString);
+        // if valid cookie is retrieved, and cookies in options, and this cookie is already in the list, should return options with updated cookie added to the list
 
-          // when
-          await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: existingCookieName,
-            // onCookieFound: (String cookie) async {},
-            onCookieFound: onCookieFoundCallback,
-          );
+        // if valid cookie is retrieved, and invalid cookies in options, should return options with this cookie added to the list and all invalid cookies removed
 
-          // then
-          verify(() => onCookieFoundCallback(cookieString)).called(1);
-        },
-      );
+        // if valid cookie, should always return different instance of options
+      },
+    );
 
-      test(
-        "given the provided onCookieFound() callback throws an error"
-        "when handleFoundRequestCookie() is called"
-        "then should return false",
-        () async {
-          // setup
-          const existingCookieName = "existingCookie";
-          const cookieString =
-              "$existingCookieName=someValue; Max-Age=1200; Secure; HttpOnly";
-
-          final headers = Headers();
-          headers.add("set-cookie", cookieString);
-
-          final onCookieFoundCallback = _OnCookieFoundCallback();
-
-          // given
-          when(() => onCookieFoundCallback(any())).thenThrow(Exception());
-
-          // when
-          final isSuccess =
-              await cookiesHandlerWrapper.handleFoundRequestCookie(
-            headers: headers,
-            cookieName: existingCookieName,
-            onCookieFound: onCookieFoundCallback,
-          );
-
-          // then
-          expect(isSuccess, equals(false));
-        },
-      );
-    });
+    group(
+      ".handleStoreResponseCookie",
+      () {},
+    );
   });
 }
 
-class _OnCookieFoundCallback extends Mock {
-  // TODO this cannot have implementation when mock
+class _StoreCookieCallbackWrapper extends Mock {
   Future<void> call(String cookie);
-  // void call(String cookie);
 }
 
-// class _MockOnChangedCallbackWrapper extends Mock {
-//   void call(String value);
-// }
+class _GetCookieCallbackWrapper extends Mock {
+  Future<String?> call();
+}

@@ -3,71 +3,77 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FlutterSecureStorageWrapper {
-  const FlutterSecureStorageWrapper();
+  const FlutterSecureStorageWrapper({
+    required FlutterSecureStorage secureStorage,
+  }) : _secureStorage = secureStorage;
 
-  final secureStorage = const FlutterSecureStorage();
+  // TODO this might be good to be provided to the wrapper
+  final FlutterSecureStorage _secureStorage;
 
-  Future<(String, int)?> getAuthData() async {
-    final token = await _readKeyValue(
-      key: SecureStorageAuthKeyConstants.TOKEN.value,
-    );
-    if (token == null) return null;
+  // TODO much of this migth not be needed
 
-    final authIdString = await _readKeyValue(
-      key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-    );
-    if (authIdString == null) return null;
-
-    final authId = int.tryParse(authIdString);
-    if (authId == null) return null;
-
-    return (token, authId);
-  }
-
-  Future<void> storeAuthData({
-    required String token,
-    required int authId,
-  }) async {
-    await _saveKeyValue(
-      key: SecureStorageAuthKeyConstants.TOKEN.value,
-      value: token,
-    );
+  Future<void> storeAuthId(int authId) async {
     await _saveKeyValue(
       key: SecureStorageAuthKeyConstants.AUTH_ID.value,
       value: authId.toString(),
     );
   }
 
-  Future<void> clearAuthData() async {
-    await _deleteKeyValue(
-      key: SecureStorageAuthKeyConstants.TOKEN.value,
-    );
-    await _deleteKeyValue(
+  Future<int?> getAuthId() async {
+    final authIdString = await _readKeyValue(
       key: SecureStorageAuthKeyConstants.AUTH_ID.value,
     );
+
+    final authId = int.tryParse(authIdString ?? "");
+
+    return authId;
+  }
+
+  Future<String?> getAccessCookie() {
+    return _readKeyValue(
+      key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+    );
+  }
+
+  Future<void> storeAccessCookie(String cookie) {
+    return _saveKeyValue(
+      key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      value: cookie,
+    );
+  }
+
+  Future<void> clearAuthData() async {
+    await Future.wait([
+      _deleteKeyValue(
+        key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      ),
+      _deleteKeyValue(
+        key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      ),
+    ]);
   }
 
   Future<void> _saveKeyValue({
     required String key,
     required String value,
   }) {
-    return secureStorage.write(key: key, value: value);
+    return _secureStorage.write(key: key, value: value);
   }
 
   Future<void> _deleteKeyValue({
     required String key,
   }) {
-    return secureStorage.delete(key: key);
+    return _secureStorage.delete(key: key);
   }
 
   Future<String?> _readKeyValue({
     required String key,
   }) {
-    return secureStorage.read(key: key);
+    return _secureStorage.read(key: key);
   }
 
   @visibleForTesting
   Future<void> deleteAll() {
-    return secureStorage.deleteAll();
+    return _secureStorage.deleteAll();
   }
 }

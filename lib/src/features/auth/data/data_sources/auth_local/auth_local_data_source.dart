@@ -1,9 +1,12 @@
-import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
 
 abstract interface class AuthLocalDataSource {
-  Future<AuthDataEntity?> getAuthData();
-  Future<void> setAuthData({
-    required AuthDataEntity authDataEntityDraft,
-    required String authToken,
-  });
+  // Future<AuthDataEntity?> getLoggedInAuthLocalEntity();
+  // Future<void> storeAuthData({
+  //   // TODO this type needs rename
+  //   required AuthDataEntity authLocalEntityDraft,
+  // });
+
+  Future<AuthLocalEntity?> getAuthEntity(int authId);
+  Future<int> storeAuthEntity(AuthLocalEntity authLocalEntity);
 }

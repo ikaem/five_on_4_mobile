@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +26,9 @@ class IsarWrapper {
 
     db = await Isar.open(
       [
+        // TODO maybe we dont need this
         AuthDataEntitySchema,
+        AuthLocalEntitySchema,
         MatchLocalEntitySchema,
       ],
       directory: directory.path,

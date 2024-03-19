@@ -13,8 +13,10 @@ FlutterSecureStorageWrapper setupTestSecureStorage() {
   // as per https://stackoverflow.com/questions/71873139/missingpluginexceptionno-implementation-found-for-method-read-on-channel-plugin
   FlutterSecureStorage.setMockInitialValues({});
 
-  const secureStorageWrapper = FlutterSecureStorageWrapper();
-  // });
+  const secureStorage = FlutterSecureStorage();
+  const secureStorageWrapper = FlutterSecureStorageWrapper(
+    secureStorage: secureStorage,
+  );
 
   tearDown(() async {
     await secureStorageWrapper.deleteAll();

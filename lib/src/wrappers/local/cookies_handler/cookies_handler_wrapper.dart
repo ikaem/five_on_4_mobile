@@ -1,58 +1,99 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 
-/// Helper class that excplicitly requires dio's [Header] class
+/// Helper class that excplicitly requires Dio http client
 class CookiesHandlerWrapper {
   // TODO name could be better here
+  const CookiesHandlerWrapper();
 
-  // what does it need to do
-
-  // when it receives a valid cookie string, it should - maybe it receives a map
-  // also, receive a key of the cookie we need
-  // it should also receive callback to call on the found cookie string
-  Future<bool> handleFoundRequestCookie({
-    required Headers headers,
-    required String cookieName,
-    required Future<void> Function(String) onCookieFound,
+  // function to get request options with cookie from getCookie() function in headers
+  Future<RequestOptions> getRequestOptionsWithCookieInHeaders({
+    required RequestOptions requestOptions,
+    required Future<String?> Function() getCookie,
   }) async {
-    final rawCookiesString = headers.value("set-cookie");
-    if (rawCookiesString == null) {
+    try {
+      final cookieString = await getCookie();
+      if (cookieString == null) {
+        return requestOptions;
+      }
+
+      final cookie = Cookie.fromSetCookieValue(cookieString);
+      final clonedRequestOptions = requestOptions.copyWith();
+      final headersMap = _getRequestHeadersMapWithAddedCookie(
+        headersMap: clonedRequestOptions.headers,
+        cookie: cookie,
+      );
+
+      final newRequestOptions = clonedRequestOptions.copyWith(
+        headers: headersMap,
+      );
+
+      return newRequestOptions;
+    } catch (e) {
+      log("Error getting request options with cookie in headers -> Returning original RequestOptions: $e");
+      return requestOptions;
+    }
+  }
+
+  Future<bool> handleStoreResponseCookie({
+    required Response response,
+    required String cookieName,
+    required Future<void> Function(String cookie) storeCookie,
+  }) async {
+    final cookies = _getCookiesFromResponse(response: response);
+    if (cookies.isEmpty) {
+      log("No cookies found in response");
       return false;
     }
 
-    final cookiesMap =
-        _getCookiesMapFromString(rawCookiesString: rawCookiesString);
-
-    final foundCookie = cookiesMap[cookieName];
+    final foundCookie =
+        cookies.firstWhereOrNull((cookie) => cookie.name == cookieName);
     if (foundCookie == null) {
+      log("No cookie found by name: $cookieName");
       return false;
     }
 
     try {
       final cookieString = foundCookie.toString();
-      await onCookieFound(cookieString);
+      await storeCookie(cookieString);
+
+      return true;
     } catch (e) {
-      log("Error calling onCookieFound(): $e");
+      log("Error storing cookie: $e");
       return false;
     }
-
-    return true;
   }
 
-  // other function is a function to generate cookie from a callback that is passed to it
-  // - receive a cookie retriever or someting
-  // validate that the cookie retrieved is valid whatever that means
-  // if it is valid, return it as string
+  List<Cookie> _getCookiesFromResponse({
+    required Response response,
+  }) {
+    final headersMap = response.headers.map;
+    final cookiesStrings = headersMap["set-cookie"];
 
-  // maybe also a function to add cookie to request options object
+    if (cookiesStrings == null) {
+      return [];
+    }
 
-  // maybe also a function to remove cookie from request options object
+    if (cookiesStrings.isEmpty) {
+      return [];
+    }
 
-  // maybe also a function to remove all cookies from request options object
+    final cookies = cookiesStrings.map((cs) {
+      try {
+        final cookie = Cookie.fromSetCookieValue(cs);
+        return cookie;
+      } catch (e) {
+        return null;
+      }
+    }).toList();
 
-  // TODO logic will be needed for merging existing cookies - because this logic could be used for multiple cookies
+    final validCookies = cookies.whereNotNull().toList();
+
+    return validCookies;
+  }
 
   Map<String, Cookie> _getCookiesMapFromString({
     required String rawCookiesString,
@@ -79,5 +120,43 @@ class CookiesHandlerWrapper {
     }
 
     return cookiesMap;
+  }
+
+  Map<String, dynamic> _getRequestHeadersMapWithAddedCookie({
+    required Map<String, dynamic> headersMap,
+    required Cookie cookie,
+  }) {
+    final newHeaders = Map<String, dynamic>.from(headersMap);
+
+    final cookiesString = newHeaders["cookie"] as String?;
+    if (cookiesString == null) {
+      // if no cookies string, add cookie to headers and return new headers map
+      newHeaders["cookie"] = cookie.toString();
+
+      return newHeaders;
+    }
+
+    final cookiesMap =
+        _getCookiesMapFromString(rawCookiesString: cookiesString);
+
+    // add new cookie to map
+    cookiesMap[cookie.name] = cookie;
+
+    final updatedCookiesString =
+        _getCookiesStringFromMap(cookiesMap: cookiesMap);
+
+    // add new cookies string to headers
+    newHeaders["cookie"] = updatedCookiesString;
+
+    return newHeaders;
+  }
+
+  String _getCookiesStringFromMap({
+    required Map<String, Cookie> cookiesMap,
+  }) {
+    final cookiesList = cookiesMap.values.toList();
+    final cookiesString = cookiesList.join(", ");
+
+    return cookiesString;
   }
 }
