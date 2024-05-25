@@ -9,6 +9,8 @@ class GetAuthDataStatusUseCase {
   final AuthRepository _authRepository;
 
   Future<AuthDataModel?> call() async {
-    return _authRepository.authDataStatus;
+    return null;
+
+    // return _authRepository.authDataStatus;
   }
 }

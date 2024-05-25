@@ -12,7 +12,9 @@ class GetAuthDataStatusStreamUseCase {
 
   final AuthRepository _authRepository;
 
-  Stream<bool> call() {
-    return _authRepository.authDataStatusStream;
+// TODO fix this
+  Stream<bool> call() async* {
+    // return _authRepository.authDataStatusStream;
+    yield false;
   }
 }

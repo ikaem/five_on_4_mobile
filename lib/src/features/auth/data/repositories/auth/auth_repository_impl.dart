@@ -31,7 +31,9 @@ class AuthRepositoryImpl implements AuthRepository {
     // 2. get auth data from db
     final authDataEntity = await _authLocalDataSource.getAuthEntity(authId);
 
-    _authStatusDataSource.setAuthDataStatus(authDataEntity);
+    // _authStatusDataSource.setAuthDataStatus(authDataEntity);
+    // TODO temp
+    _authStatusDataSource.setAuthDataStatus(null);
     // 3. set auth data status
     // final authDataEntity = await _authLocalDataSource.getAuthData();
 
