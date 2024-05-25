@@ -1,5 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_remote/auth_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 
@@ -16,7 +18,28 @@ final testAuthDataEntity = AuthDataEntity(
   ),
 );
 
+List<AuthLocalEntity> getTestAuthLocalEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final authLocalEntities = List<AuthLocalEntity>.generate(
+    count,
+    (index) {
+      return AuthLocalEntity(
+        id: index,
+        avatarUrl: "https://source.unsplash.com/random/300x300",
+        email: "${namesPrefix}email$index",
+        name: "${namesPrefix}name$index",
+        nickname: "${namesPrefix}nickname$index",
+      );
+    },
+  );
+
+  return authLocalEntities;
+}
+
 // NOTE: this is only for testing isar wrapper works - this would never happen in real life
+// TODO this needs to be removed
 List<AuthDataEntity> getTestAuthDataEntities({
   int count = 10,
   String namesPrefix = "test_",
@@ -165,4 +188,24 @@ List<MatchLocalPlayerEntity> getTestMatchLocalPlayerEntities({
   );
 
   return players;
+}
+
+List<AuthRemoteEntity> getTestAuthRemoteEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final authRemoteEntities = List<AuthRemoteEntity>.generate(
+    count,
+    (index) {
+      return AuthRemoteEntity(
+        id: index,
+        avatarUrl: "https://source.unsplash.com/random/300x300",
+        email: "${namesPrefix}email$index",
+        name: "${namesPrefix}name$index",
+        nickname: "${namesPrefix}nickname$index",
+      );
+    },
+  );
+
+  return authRemoteEntities;
 }

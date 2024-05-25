@@ -7,7 +7,7 @@ part of 'flutter_secure_storage_wrapper_provider.dart';
 // **************************************************************************
 
 String _$flutterSecureStorageWrapperHash() =>
-    r'8f25bf37af377b30d635d21aaf502d41c11a3012';
+    r'ec0e0b8ff28ef069093eca0786beefcb8d624f7e';
 
 /// See also [flutterSecureStorageWrapper].
 @ProviderFor(flutterSecureStorageWrapper)

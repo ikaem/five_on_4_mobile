@@ -4,6 +4,8 @@ import 'package:isar/isar.dart';
 
 part "auth_data_entity.g.dart";
 
+// TODO rename this only to AuthLocalEntity and AuthRemoteEntity
+
 // TODO rename this to AuthDataLocalEntity
 @Collection(inheritance: false)
 class AuthDataEntity extends Equatable implements IsarLocalEntity {

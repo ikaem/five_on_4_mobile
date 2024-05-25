@@ -28,7 +28,7 @@ void main() {
           () async {
             // setup
             final authDataModel = getTestAuthDataModels(count: 1).first;
-            when(() => authRepository.authDataStatus).thenReturn(authDataModel);
+            when(() => authRepository.auth).thenReturn(authDataModel);
 
             // Given
 

@@ -8,19 +8,43 @@
       "name": "five_on_4_mobile",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main.dart"
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define-from-file",
+        ".env" // for env files // make sure prod has its own env file when building,
+      ]
+    },
+    {
+      "name": "five_on_4_mobile-local-api",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define-from-file",
+        ".env", // for env files // make sure prod has its own env file when building
+        "--dart-define",
+        "SHOULD_USE_LOCAL_SERVER=true"
+      ]
     },
     {
       "name": "five_on_4_mobile (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "toolArgs": [
+        "--dart-define-from-file",
+        ".env" // for env files // make sure prod has its own env file when building
+      ]
     },
     {
       "name": "five_on_4_mobile (release mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "toolArgs": [
+        "--dart-define-from-file",
+        ".env" // for env files // make sure prod has its own env file when building
+      ]
     }
   ]
 }

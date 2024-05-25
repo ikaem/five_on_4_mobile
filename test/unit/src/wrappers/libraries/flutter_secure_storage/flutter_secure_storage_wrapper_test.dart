@@ -3,8 +3,6 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/f
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// TODO this should probably test some other tuff
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   // as per https://stackoverflow.com/questions/71873139/missingpluginexceptionno-implementation-found-for-method-read-on-channel-plugin
@@ -12,6 +10,9 @@ void main() {
 
   // use for validation only
   const secureStorage = FlutterSecureStorage();
+  const secureStorageWrapper = FlutterSecureStorageWrapper(
+    secureStorage: secureStorage,
+  );
 
   tearDown(() async {
     await secureStorage.deleteAll();
@@ -20,63 +21,159 @@ void main() {
     "FlutterSecureStorageWrapper",
     () {
       group(
-        ".getAuthData",
+        ".storeAuthId",
         () {
           test(
-            "given authId and authToken stored in secure storage"
-            "when '.getAuthData' is called"
-            "should retrieve expected authId and authToken",
+            "given authId argument is provided"
+            "when '.storeAuthId()' is called"
+            "then should store authId in secure storage",
             () async {
-              const secureStorageWrapper = FlutterSecureStorageWrapper();
-              const expectedAuthId = 1;
-              const expectedToken = "testToken";
+              // setup
 
-              await secureStorage.write(
+              // given
+              const authId = 1;
+
+              // when
+              await secureStorageWrapper.storeAuthId(authId);
+
+              // then
+              final storedAuthIdString = await secureStorage.read(
                 key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-                value: expectedAuthId.toString(),
               );
-              await secureStorage.write(
-                key: SecureStorageAuthKeyConstants.TOKEN.value,
-                value: expectedToken,
-              );
+              final storedAuthId = int.tryParse(storedAuthIdString ?? "");
 
-              final (token, authId) =
-                  (await secureStorageWrapper.getAuthData())!;
+              expect(storedAuthId, authId);
 
-              expect(token, expectedToken);
-              expect(authId, expectedAuthId);
+              // cleanup
             },
           );
         },
       );
 
       group(
-        ".storeAuthData()",
+        ".getAuthId",
         () {
-          test("should store token and authId to secure storage WHEN called",
-              () async {
-            const secureStorageWrapper = FlutterSecureStorageWrapper();
+          test(
+            "given authId is stored in secure storage"
+            "when '.getAuthId()' is called"
+            "then should return expectedAuthId",
+            () async {
+              // setup
+              const authId = 1;
+              // store manually
 
-            const token = "token";
-            const authId = 1;
+              // given
+              secureStorage.write(
+                key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+                value: authId.toString(),
+              );
 
-            await secureStorageWrapper.storeAuthData(
-              token: token,
-              authId: authId,
-            );
+              // when
+              final retrievedAuthId = await secureStorageWrapper.getAuthId();
 
-            final storedToken = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.TOKEN.value,
-            );
+              // then
+              expect(retrievedAuthId, authId);
 
-            final storedAuthIdString = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-            );
-            final storedAuthId = int.tryParse(storedAuthIdString ?? "");
+              // cleanup
+            },
+          );
 
-            expect(storedToken, token);
-            expect(storedAuthId, authId);
-          });
+          test(
+            "given authId is not stored in secure storage"
+            "when '.getAuthId()' is called"
+            "then should return null",
+            () async {
+              // setup
+              // given
+
+              // when
+              final retrievedAuthId = await secureStorageWrapper.getAuthId();
+
+              // then
+              expect(retrievedAuthId, isNull);
+
+              // cleanup
+            },
+          );
+        },
+      );
+
+      group(
+        ".storeAccessCookie()",
+        () {
+          test(
+            "given accessCookie argument is provided"
+            "when '.storeAccessCookie()' is called"
+            "then should store accessCookie in secure storage",
+            () async {
+              // setup
+
+              // given
+              const accessCookie = "accessCookie";
+
+              // when
+              await secureStorageWrapper.storeAccessCookie(accessCookie);
+
+              // then
+              final storedAccessCookie = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+              );
+
+              expect(storedAccessCookie, accessCookie);
+
+              // cleanup
+            },
+          );
+        },
+      );
+
+      group(
+        ".getAccessCookie()",
+        () {
+          test(
+            "given accessCookie is stored in secure storage"
+            "when '.getAccessCookie()' is called"
+            "then should return expectedAccessCookie",
+            () async {
+              // setup
+              const accessCookie = "accessCookie";
+              // store manually
+
+              // given
+              secureStorage.write(
+                key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+                value: accessCookie,
+              );
+
+              // when
+              final retrievedAccessCookie =
+                  await secureStorageWrapper.getAccessCookie();
+
+              // then
+              expect(retrievedAccessCookie, accessCookie);
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given accessCookie is not stored in secure storage"
+            "when '.getAccessCookie()' is called"
+            "then should return null",
+            () async {
+              // setup
+              // given
+
+              // when
+              final retrievedAccessCookie =
+                  await secureStorageWrapper.getAccessCookie();
+
+              // then
+              expect(retrievedAccessCookie, isNull);
+
+              // cleanup
+            },
+          );
         },
       );
 
@@ -85,9 +182,7 @@ void main() {
         () {
           test("should delete token and authId from secure storage WHEN called",
               () async {
-            const secureStorageWrapper = FlutterSecureStorageWrapper();
-
-            const token = "token";
+            const accessCookie = "accessCookie";
             const authId = 1;
 
             await secureStorage.write(
@@ -95,20 +190,20 @@ void main() {
               value: authId.toString(),
             );
             await secureStorage.write(
-              key: SecureStorageAuthKeyConstants.TOKEN.value,
-              value: token,
+              key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+              value: accessCookie,
             );
 
             await secureStorageWrapper.clearAuthData();
 
-            final deletedToken = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.TOKEN.value,
+            final deletedAccessCookie = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
             );
             final deletedAuthIdString = await secureStorage.read(
               key: SecureStorageAuthKeyConstants.AUTH_ID.value,
             );
 
-            expect(deletedToken, isNull);
+            expect(deletedAccessCookie, isNull);
             expect(deletedAuthIdString, isNull);
           });
         },

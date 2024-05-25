@@ -46,3 +46,6 @@ app.*.map.json
 # isar db
 *.isar
 *.isar.lock
+
+# env
+.env

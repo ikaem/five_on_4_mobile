@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/database_name_constants.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';

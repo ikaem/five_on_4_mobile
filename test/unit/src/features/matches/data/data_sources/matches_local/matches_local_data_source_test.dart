@@ -1,5 +1,5 @@
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source_impl.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';

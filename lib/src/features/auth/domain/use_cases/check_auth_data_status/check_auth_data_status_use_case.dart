@@ -12,7 +12,7 @@ class CheckAuthDataStatusUseCase {
 
   final AuthRepository _authRepository;
 
-  Future<void> call() {
-    return _authRepository.checkAuthDataStatus();
+  Future<void> call() async {
+    // return _authRepository.checkAuthDataStatus();
   }
 }

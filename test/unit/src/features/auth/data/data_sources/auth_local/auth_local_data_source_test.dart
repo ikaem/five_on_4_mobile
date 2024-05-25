@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,91 +13,293 @@ import '../../../../../../../utils/helpers/secure_storage/setup_secure_storage.d
 
 void main() {
   final isarWrapper = setupTestDb();
-  final secureStorageWrapper = setupTestSecureStorage();
+  // final secureStorageWrapper = setupTestSecureStorage();
   // final secureStorageWrapper = _MockFlutterSecureStorageWrapper();
 
   final authLocalDataSource = AuthLocalDataSourceImpl(
     // secureStorageWrapper: secureStorageWrapper,
-    secureStorageWrapper: secureStorageWrapper,
+    // secureStorageWrapper: secureStorageWrapper,
     isarWrapper: isarWrapper,
   );
 
   group("AuthLocalDataSource", () {
     group(
-      ".getAuthData()",
+      ".getAuthEntity()",
       () {
-        // TODO these tests fail - fix them
-        // TODO this will pass when authlocaldata source logic is uncommented
+        // given there is no auth, retur null
         test(
-          "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
-          "when '.getAuthData() is called"
-          "should return expected [AuthDataEntity]",
+          "given an auth entity with provided id does not exist in db"
+          "when '.getAuthEntity()' is called"
+          "then should return null",
           () async {
-            final entity = AuthDataEntity(
-              playerInfo: testAuthDataEntity.playerInfo,
-              teamInfo: testAuthDataEntity.teamInfo,
-            )..id = 1;
+            // setup
+            const id = 1;
 
-            await secureStorageWrapper.storeAuthData(
-              token: "authToken",
-              authId: 1,
-            );
+            // given
 
-            await isarWrapper.db.writeTxn(() async {
-              await isarWrapper.db.authDataEntitys.put(entity);
-            });
+            // when
+            final result = await authLocalDataSource.getAuthEntity(id);
 
-            final authDataEntity = await authLocalDataSource.getAuthData();
+            // then
+            expect(result, equals(null));
 
-            expect(authDataEntity, equals(entity));
+            // cleanup
           },
         );
 
-        // tests when not all data is present, or when data is not present
-        // test then data is delete from secure stroage if something is off
+        test(
+          "given an auth entity with provided id exists in db"
+          "when '.getAuthEntity()' is called"
+          "then should return expected auth entity",
+          () async {
+            // setup
+            final entity = getTestAuthLocalEntities(count: 1).first;
+
+            // given
+            final id = await isarWrapper.db.writeTxn(() async {
+              return await isarWrapper.db.authLocalEntitys.put(entity);
+            });
+
+            // when
+            final result = await authLocalDataSource.getAuthEntity(id);
+
+            // then
+            expect(result, equals(entity));
+
+            // cleanup
+          },
+        );
+
+        // given there is an auth, return the auth
       },
     );
 
-    group(".setAuthData()", () {
-      final draftEntity = testAuthDataEntity;
+    group(
+      ".storeAuthEntity()",
+      () {
+        // should store it in db
+        test(
+          "given an auth entity"
+          "when '.storeAuthEntity()' is called"
+          "then should store the entity in db",
+          () async {
+            // setup
 
-      test(
-        "given draft of [AuthDataEntity] and authToken"
-        "when '.setAuthData()' is called"
-        "should store the draft in isar",
-        () async {
-          await authLocalDataSource.setAuthData(
-            authDataEntityDraft: draftEntity,
-            authToken: "authToken",
-          );
+            // given
+            final entity = getTestAuthLocalEntities(count: 1).first;
 
-          final storedEntities =
-              await isarWrapper.db.authDataEntitys.where().findAll();
+            // when
+            await authLocalDataSource.storeAuthEntity(entity);
 
-          expect(storedEntities.length, equals(1));
-          expect(storedEntities.first, equals(draftEntity));
-        },
-      );
+            // then
+            final storedEntity = await isarWrapper.db.authLocalEntitys
+                .where()
+                .idEqualTo(entity.id)
+                .findFirst();
+            expect(storedEntity, equals(entity));
 
-      test(
-        "given draft of [AuthDataEntity] and authToken"
-        "when '.setAuthData()' is called"
-        "should store the authToken and authId in secure storage",
-        () async {
-          await authLocalDataSource.setAuthData(
-            authDataEntityDraft: draftEntity,
-            authToken: "authToken",
-          );
+            // cleanup
+          },
+        );
 
-          verify(
-            () => secureStorageWrapper.storeAuthData(
-              token: "authToken",
-              authId: 1,
-            ),
-          ).called(1);
-        },
-      );
-    });
+        // should return the id of the stored entity
+        test(
+          "given an auth entity"
+          "when '.storeAuthEntity()' is called"
+          "then should return the id of the stored entity",
+          () async {
+            // setup
+
+            // given
+            final entity = getTestAuthLocalEntities(count: 1).first;
+
+            // when
+            final id = await authLocalDataSource.storeAuthEntity(entity);
+
+            // then
+            expect(id, equals(entity.id));
+
+            // cleanup
+          },
+        );
+      },
+    );
+
+    group(
+      ".getLoggedInAuthLocalEntity()",
+      () {
+        // test(
+        //   "given there is no authId in secure storage"
+        //   "when '.getLoggedInAuthLocalEntity()' is called"
+        //   "then should return null and clear authId from secure storage",
+        //   () async {
+        //     // setup
+
+        //     // given
+
+        //     // when
+        //     final dbResult =
+        //         await authLocalDataSource.getLoggedInAuthLocalEntity();
+        //     final secureStorageResult = await secureStorageWrapper.getAuthId();
+
+        //     // then
+        //     expect(dbResult, equals(null));
+        //     expect(secureStorageResult, equals(null));
+
+        //     // cleanup
+        //   },
+        // );
+
+        // test(
+        //   "given an authId in secure storage and NO authDataEntity in db"
+        //   "when '.getLoggedInAuthLocalEntity()' is called"
+        //   "then should retur null and clear authId from secure storage",
+        //   () async {
+        //     // setup
+        //     const authId = 1;
+
+        //     // given
+        //     await secureStorageWrapper.storeAuthId(authId);
+
+        //     // when
+        //     final dbResult =
+        //         await authLocalDataSource.getLoggedInAuthLocalEntity();
+        //     final secureStorageResult = await secureStorageWrapper.getAuthId();
+
+        //     // then
+        //     expect(dbResult, equals(null));
+        //     expect(secureStorageResult, equals(null));
+
+        //     // cleanup
+        //   },
+        // );
+
+        // test(
+        //   "given an authId in secure storage and NO matching authDataEntity in db"
+        //   "when '.getLoggedInAuthLocalEntity()' is called"
+        //   "then should retur null",
+        //   () async {
+        //     // setup
+        //     const authId = 1;
+        //     final nonMatchEntity = getTestAuthDataEntities(count: 1).first
+        //       ..id = 2;
+        //     // final nonMatchingEntity = AuthDataEntity(
+        //     //   playerInfo: testAuthDataEntity.playerInfo,
+        //     //   teamInfo: testAuthDataEntity.teamInfo,
+        //     // )..id = 2;
+
+        //     // given
+        //     await secureStorageWrapper.storeAuthId(authId);
+        //     await isarWrapper.db.writeTxn(() async {
+        //       await isarWrapper.db.authDataEntitys.put(nonMatchEntity);
+        //     });
+
+        //     // when
+        //     final result =
+        //         await authLocalDataSource.getLoggedInAuthLocalEntity();
+
+        //     // then
+        //     expect(result, equals(null));
+
+        //     // cleanup
+        //   },
+        // );
+
+        test(
+          "given an authId in secure storage and multiple "
+          "when <behavior we are specifying>"
+          "then should <state we expect to happen>",
+          () {
+            // setup
+
+            // given
+
+            // when
+
+            // then
+
+            // cleanup
+          },
+        );
+      },
+    );
+
+    // TODO this will probably go away
+/*     // group(
+    //   ".getAuthData()",
+    //   () {
+    //     // TODO these tests fail - fix them
+    //     // TODO this will pass when authlocaldata source logic is uncommented
+    //     test(
+    //       "given authId and authToken stored in secure storage AND matching authDataEntity exists in isar"
+    //       "when '.getAuthData() is called"
+    //       "should return expected [AuthDataEntity]",
+    //       () async {
+    //         final entity = AuthDataEntity(
+    //           playerInfo: testAuthDataEntity.playerInfo,
+    //           teamInfo: testAuthDataEntity.teamInfo,
+    //         )..id = 1;
+
+    //         await secureStorageWrapper.storeAuthData(
+    //           token: "authToken",
+    //           authId: 1,
+    //         );
+
+    //         await isarWrapper.db.writeTxn(() async {
+    //           await isarWrapper.db.authDataEntitys.put(entity);
+    //         });
+
+    //         final authDataEntity = await authLocalDataSource.getAuthData();
+
+    //         expect(authDataEntity, equals(entity));
+    //       },
+    //     );
+
+    //     // tests when not all data is present, or when data is not present
+    //     // test then data is delete from secure stroage if something is off
+    //   },
+    // );
+
+    // group(".setAuthData()", () {
+    //   final draftEntity = testAuthDataEntity;
+
+    //   test(
+    //     "given draft of [AuthDataEntity] and authToken"
+    //     "when '.setAuthData()' is called"
+    //     "should store the draft in isar",
+    //     () async {
+    //       await authLocalDataSource.setAuthData(
+    //         authDataEntityDraft: draftEntity,
+    //         authToken: "authToken",
+    //       );
+
+    //       final storedEntities =
+    //           await isarWrapper.db.authDataEntitys.where().findAll();
+
+    //       expect(storedEntities.length, equals(1));
+    //       expect(storedEntities.first, equals(draftEntity));
+    //     },
+    //   );
+
+    //   test(
+    //     "given draft of [AuthDataEntity] and authToken"
+    //     "when '.setAuthData()' is called"
+    //     "should store the authToken and authId in secure storage",
+    //     () async {
+    //       await authLocalDataSource.setAuthData(
+    //         authDataEntityDraft: draftEntity,
+    //         authToken: "authToken",
+    //       );
+
+    //       verify(
+    //         () => secureStorageWrapper.storeAuthData(
+    //           token: "authToken",
+    //           authId: 1,
+    //         ),
+    //       ).called(1);
+    //     },
+    //   );
+    // }); */
   });
 }
 

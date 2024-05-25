@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+// TODO this should go away
+
 @immutable
 class AuthDataModel extends Equatable {
   const AuthDataModel({
