@@ -22,6 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> checkAuth() async {
     // 1. get auth id from secure storage
+    // /* TODO not that g */
     final authId = await _flutterSecureStorageWrapper.getAuthId();
     if (authId == null) {
       _authStatusDataSource.setAuthDataStatus(null);
