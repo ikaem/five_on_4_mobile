@@ -3,10 +3,9 @@ import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.da
 
 // TODO this wrapper might not even be needed
 class TestDatabaseWrapper {
-  TestDatabaseWrapper({required DatabaseWrapper databaseWrapper})
-      : _databaseWrapper = databaseWrapper;
+  TestDatabaseWrapper({required this.databaseWrapper});
 
-  final DatabaseWrapper _databaseWrapper;
+  final DatabaseWrapper databaseWrapper;
 }
 
 // TODO there is no need for this to be async
