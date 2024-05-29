@@ -1,5 +1,5 @@
 generate: 
-	dart run build_runner build --delete-conflicting-outputs
+	dart run build_runner build --delete-conflicting-outputs && flutter pub get
 
 serve_fake: 
 	cd fake_server; npx json-server --watch db.json
