@@ -1,5 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_remote/auth_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
@@ -46,5 +48,28 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
     final authRemoteEntity = AuthRemoteEntity.fromJson(response["data"]);
     return authRemoteEntity;
+  }
+
+  @override
+  Future<AuthenticatedPlayerRemoteEntity> getAuth() async {
+    final uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.get<Map<String, dynamic>>(
+      uriParts: uriParts,
+    );
+
+    if (response["ok"] != true) {
+      throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
+    }
+
+    final authenticatedPlayerRemoteEntity =
+        AuthenticatedPlayerRemoteEntity.fromJson(response["data"]);
+    return authenticatedPlayerRemoteEntity;
   }
 }

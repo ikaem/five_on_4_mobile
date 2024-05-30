@@ -1,6 +1,8 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_remote/auth_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   final dioWrapper = _MockDioWrapper();
@@ -31,6 +34,126 @@ void main() {
   group(
     "$AuthRemoteDataSource",
     () {
+      group(
+        ".getAuth",
+        () {
+          // should throw expected exception if not authenticated
+          test(
+            "given there is no authenticated user"
+            "when .getAuth() is called"
+            "then should throw expected exception",
+            () {
+              // setup
+
+              // given
+              when(() => dioWrapper.get<Map<String, dynamic>>(
+                    uriParts: any(named: "uriParts"),
+                  )).thenAnswer((_) async {
+                return {
+                  "ok": false,
+                  "mesasge": "Invalid access token",
+                  "data": null,
+                };
+              });
+
+              // when
+
+              // then
+              expect(
+                () => authRemoteDataSource.getAuth(),
+                throwsExceptionWithMessage<AuthSomethingWentWrongException>(
+                    "Something went wrong with authentication: .getAuth()"),
+              );
+
+              // cleanup
+            },
+          );
+
+          // should return expected result if authenticated
+          test(
+            "given user is authenticated"
+            "when getAuth() is called"
+            "then should return expected result",
+            () async {
+              // setup
+
+              // given
+              when(() => dioWrapper.get<Map<String, dynamic>>(
+                    uriParts: any(named: "uriParts"),
+                  )).thenAnswer((_) async {
+                return {
+                  "ok": true,
+                  "message": "User authentication retrieved successfully",
+                  "data": {
+                    "id": 1,
+                    "name": "John Doe",
+                    "nickname": "John",
+                  }
+                };
+              });
+
+              // when
+              final result = await authRemoteDataSource.getAuth();
+
+              // then
+              const expectedResult = AuthenticatedPlayerRemoteEntity(
+                playerId: 1,
+                playerName: "John Doe",
+                playerNickname: "John",
+              );
+
+              expect(result, equals(expectedResult));
+
+              // cleanup
+            },
+          );
+
+          // should call dioWrapper.get with expected arguments
+          test(
+            "given a request to the server is made"
+            "when getAuth() is called"
+            "then should make the request with correct arguments",
+            () async {
+              // setup
+
+              // given
+              when(() => dioWrapper.get<Map<String, dynamic>>(
+                    uriParts: any(named: "uriParts"),
+                  )).thenAnswer((_) async {
+                return {
+                  "ok": true,
+                  "message": "User authentication retrieved successfully",
+                  "data": {
+                    "id": 1,
+                    "name": "John Doe",
+                    "nickname": "John",
+                  }
+                };
+              });
+
+              // when
+              await authRemoteDataSource.getAuth();
+
+              // then
+              final uriParts = HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+                apiEndpointPath:
+                    HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+                queryParameters: null,
+              );
+
+              verify(() => dioWrapper.get<Map<String, dynamic>>(
+                    uriParts: uriParts,
+                  ));
+
+              // cleanup
+            },
+          );
+        },
+      );
+
       group(
         ".authenticateWithGoogle()",
         () {

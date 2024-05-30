@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class AuthenticatedPlayerLocalEntity extends Equatable {
-  const AuthenticatedPlayerLocalEntity({
+class AuthenticatedPlayerRemoteEntity extends Equatable {
+  const AuthenticatedPlayerRemoteEntity({
     required this.playerId,
     required this.playerName,
     required this.playerNickname,
@@ -11,8 +11,8 @@ class AuthenticatedPlayerLocalEntity extends Equatable {
   final String playerName;
   final String playerNickname;
 
-  factory AuthenticatedPlayerLocalEntity.fromJson(Map<String, dynamic> json) {
-    return AuthenticatedPlayerLocalEntity(
+  factory AuthenticatedPlayerRemoteEntity.fromJson(Map<String, dynamic> json) {
+    return AuthenticatedPlayerRemoteEntity(
       playerId: json['id'],
       playerName: json['name'],
       playerNickname: json['nickname'],
