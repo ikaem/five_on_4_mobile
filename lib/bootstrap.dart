@@ -19,6 +19,7 @@ Future<void> bootstrap() async {
   final providerContainer = ProviderContainer();
 
   // TODO database needs to be initialized before this
+  // TODO this should be removed
   final isarWrapper = providerContainer.read(isarWrapperProvider);
   await isarWrapper.initialize();
   // final goRouterWrapper = providerContainer.read(goRouterWrapperProvider);
