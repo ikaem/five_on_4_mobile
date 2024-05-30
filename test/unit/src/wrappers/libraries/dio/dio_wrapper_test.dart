@@ -16,6 +16,9 @@ void main() {
             () async {
               // write the
               // TODO we need to write tests
+              // TODO how to write tests for this
+              // TODO we could pass it mock dio instance, and check that stuff is called
+              // TODO this should accept dio inteceptor too
             },
           );
         },

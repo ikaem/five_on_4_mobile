@@ -30,11 +30,6 @@ class DioWrapper {
   DioWrapper({
     required Interceptor interceptor,
   }) {
-    // test cookie jar manager interceptor
-    final cookieJar = CookieJar();
-    // final cookieManagerInterceptor = CookieManager(cookieJar);
-    final dioCookieInterceptorWrapper = DioCookieInterceptorWrapper(cookieJar);
-
     final dio = Dio();
     // dio.interceptors.add(dioCookieInterceptorWrapper);
     dio.interceptors.add(interceptor);
@@ -43,7 +38,6 @@ class DioWrapper {
     _dio = dio;
   }
 
-// TODO we could pass instance of dio here, so we can test this wrapper
   late final Dio _dio;
 
   Future<T> get<T>({
@@ -155,6 +149,7 @@ class DioWrapper {
       if (response.statusCode != 200) {
         // TODO temp
         // ignore: only_throw_errors
+        // TODO will need more info here
         throw 'Invalid response';
       }
 

@@ -36,6 +36,7 @@ class GoogleSignInWrapper {
     return idToken;
   }
 
+// TODO dont forget to call this as well on regular logout
   Future<void> signOut() async {
     await _googleSignIn.signOut();
   }

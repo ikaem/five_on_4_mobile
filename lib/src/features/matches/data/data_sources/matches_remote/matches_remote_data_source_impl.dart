@@ -61,6 +61,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
       uriParts: uriParts,
     );
 
+    // TODO make extension or class out of the responseBody or responseData or something
     if (response["ok"] != true) {
       throw Exception("Something went wrong with getting matches");
     }

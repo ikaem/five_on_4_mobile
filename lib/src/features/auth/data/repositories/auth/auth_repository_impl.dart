@@ -21,24 +21,24 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> checkAuth() async {
-    // 1. get auth id from secure storage
-    // /* TODO not that g */
-    final authId = await _flutterSecureStorageWrapper.getAuthId();
-    if (authId == null) {
-      _authStatusDataSource.setAuthDataStatus(null);
-      return;
-    }
+    // // 1. get auth id from secure storage
+    // // /* TODO not that g */
+    // final authId = await _flutterSecureStorageWrapper.getAuthId();
+    // if (authId == null) {
+    //   _authStatusDataSource.setAuthDataStatus(null);
+    //   return;
+    // }
 
-    // 2. get auth data from db
-    final authDataEntity = await _authLocalDataSource.getAuthEntity(authId);
+    // // 2. get auth data from db
+    // final authDataEntity = await _authLocalDataSource.getAuthEntity(authId);
 
-    // _authStatusDataSource.setAuthDataStatus(authDataEntity);
-    // TODO temp
-    _authStatusDataSource.setAuthDataStatus(null);
-    // 3. set auth data status
-    // final authDataEntity = await _authLocalDataSource.getAuthData();
+    // // _authStatusDataSource.setAuthDataStatus(authDataEntity);
+    // // TODO temp
+    // _authStatusDataSource.setAuthDataStatus(null);
+    // // 3. set auth data status
+    // // final authDataEntity = await _authLocalDataSource.getAuthData();
 
-    // _authStatusDataSource.setAuthDataStatus(authDataEntity);
+    // // _authStatusDataSource.setAuthDataStatus(authDataEntity);
   }
 
 // TODO rename this

@@ -20,3 +20,18 @@ class AuthNotLoggedInException extends AuthException {
           message: "User is not logged in",
         );
 }
+
+class AuthSomethingWentWrongException extends AuthException {
+  const AuthSomethingWentWrongException({
+    required String contextMessage,
+  }) : super(
+          message: "Something went wrong with authentication: $contextMessage",
+        );
+}
+
+class AuthMultipleLocalAuthenticatedPlayersException extends AuthException {
+  const AuthMultipleLocalAuthenticatedPlayersException()
+      : super(
+          message: "Multiple local authenticated players found",
+        );
+}
