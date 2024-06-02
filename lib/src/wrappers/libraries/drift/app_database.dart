@@ -19,6 +19,12 @@ class AppDatabase extends _$AppDatabase {
 
   final MigrationWrapper _migrationWrapper = MigrationWrapper();
 
+  // @override
+  // SimpleSelectStatement<T, R> select<T extends HasResultSet, R>(ResultSetImplementation<T, R> table, {bool distinct = false}) {
+  //   // TODO: implement select
+  //   return super.select(table, distinct);
+  // }
+
   @override
   int get schemaVersion => 1;
 

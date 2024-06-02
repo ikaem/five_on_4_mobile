@@ -1,8 +1,9 @@
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNull;
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/values/anthenticated_player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
@@ -15,6 +16,7 @@ import '../../../../../../../utils/data/test_entities.dart';
 import '../../../../../../../utils/helpers/db/setup_db.dart';
 import '../../../../../../../utils/helpers/secure_storage/setup_secure_storage.dart';
 import '../../../../../../../utils/helpers/test_database/setup_test_database.dart';
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() async {
   // final isarWrapper = setupTestDb();
@@ -50,6 +52,174 @@ void main() async {
   });
 
   group("$AuthLocalDataSource", () {
+    // get strea of authenticated player entity - from db
+    group(".getAuthenticatedPlayerLocalEntityDataStream", () {
+      test(
+        "given a stream of AuthenticatedPlayerLocalEntityData"
+        "when no elements in the db"
+        "then should emit expected initial state",
+        () async {
+          // setup
+
+          // given
+
+          // then
+          expectLater(
+            authLocalDataSource.getAuthenticatedPlayerLocalEntityDataStream(),
+            emitsInOrder([
+              null,
+              // equals([]),
+            ]),
+          );
+        },
+      );
+      test(
+        "given a stream of AuthenticatedPlayerLocalEntityData"
+        "when add element to the db"
+        "then should emit expected element",
+        () async {
+          // setup
+          const entityData = AuthenticatedPlayerLocalEntityData(
+            playerId: 1,
+            playerName: "playerName",
+            playerNickname: "playerNickname",
+          );
+
+          // given
+          final stream =
+              authLocalDataSource.getAuthenticatedPlayerLocalEntityDataStream();
+
+          // then
+          expectLater(
+            stream,
+            emitsInOrder([
+              null,
+              entityData,
+            ]),
+          );
+
+          // when
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .insertOne(entityData);
+
+          // cleanup
+        },
+      );
+
+      test(
+        "given a stream of AuthenticatedPlayerLocalEntityData"
+        "when remove elements from table with elements"
+        "then should emit expected events",
+        () async {
+          // setup
+          const entityData = AuthenticatedPlayerLocalEntityData(
+            playerId: 1,
+            playerName: "playerName",
+            playerNickname: "playerNickname",
+          );
+
+          // given
+          final stream =
+              authLocalDataSource.getAuthenticatedPlayerLocalEntityDataStream();
+
+          // then
+          expectLater(
+            stream,
+            emitsInOrder([
+              null,
+              entityData,
+              null,
+            ]),
+          );
+
+          // then
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .insertOne(entityData);
+
+          await Future.delayed(Duration.zero);
+
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .deleteAll();
+        },
+      );
+
+      test(
+        "given a stream of AuthenticatedPlayerLocalEntityData"
+        "when remove elements from table without elements"
+        "then should emit expected events",
+        () async {
+          // setup
+
+          // given
+
+          // then
+          expectLater(
+            authLocalDataSource.getAuthenticatedPlayerLocalEntityDataStream(),
+            emitsInOrder([
+              null,
+            ]),
+          );
+
+          // when
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .deleteAll();
+
+          // cleanup
+        },
+      );
+
+      test(
+        "given a stream of AuthenticatedPlayerLocalEntityData"
+        "when add multiple elements to the db table"
+        "then should emit expected Exception",
+        () async {
+          // setup
+          const entityData1 = AuthenticatedPlayerLocalEntityData(
+            playerId: 1,
+            playerName: "playerName",
+            playerNickname: "playerNickname",
+          );
+          const entityData2 = AuthenticatedPlayerLocalEntityData(
+            playerId: 2,
+            playerName: "playerName",
+            playerNickname: "playerNickname",
+          );
+
+          // given
+          final stream =
+              authLocalDataSource.getAuthenticatedPlayerLocalEntityDataStream();
+
+          // then
+          expectLater(
+            stream,
+            emitsInOrder([
+              null,
+              entityData1,
+              emitsError(
+                  isA<AuthMultipleLocalAuthenticatedPlayersException>().having(
+                (exception) {
+                  return exception.message; // feature we want to check
+                },
+                "message", // description of the feature
+                "Multiple local authenticated players found", // matcher - the actual error message
+              ))
+            ]),
+          );
+
+          // when
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .insertOne(entityData1);
+          await Future.delayed(Duration.zero);
+          await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+              .insertOne(entityData2);
+
+          // cleanup
+        },
+      );
+
+      // TODO: not sure if this should happen -> should throw if there is more than one entity in db
+    });
+
 // store authenticated player entity
     group(
       ".storeAuthenticatedPlayerEntity",

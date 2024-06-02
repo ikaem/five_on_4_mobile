@@ -2,11 +2,13 @@ import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_local/authenticated_player_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/values/anthenticated_player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:isar/isar.dart';
+import "package:drift/sqlite_keywords.dart";
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   // const AuthLocalDataSourceImpl({
@@ -63,5 +65,79 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     // final id = await _databaseWrapper.transaction(() async {
     //   return await _databaseWrapper.authenticatedPlayerRepo.insert(companion);
     // });
+  }
+
+  @override
+  Stream<AuthenticatedPlayerLocalEntityData?>
+      getAuthenticatedPlayerLocalEntityDataStream() {
+    final stream =
+        _databaseWrapper.db.authenticatedPlayerLocalEntity.select().watch();
+
+    final singleValueStream = stream.map((event) {
+      // return null;
+
+      if (event.length > 1) {
+        // throw Exception("Some expection -> more than 1 value inside");
+        throw const AuthMultipleLocalAuthenticatedPlayersException();
+        // return null;
+        // return null;
+        // TODO maybe even throw exception
+      }
+
+      if (event.isNotEmpty) {
+        return event.first;
+      }
+
+      return null;
+    });
+
+    return singleValueStream;
+  }
+
+  @override
+  Stream<List<AuthenticatedPlayerLocalEntityData?>>
+      getAuthenticatedPlayersLocalEntityDataStream() {
+    final stream =
+        _databaseWrapper.db.authenticatedPlayerLocalEntity.select().watch();
+
+    final mappedStream = stream.map((event) {
+      // return null;
+
+      return event;
+    });
+
+    return mappedStream;
+
+    // TODO: implement getAuthenticatedPlayerLocalEntityDataStream
+    // throw UnimplementedError();
+
+    // TODO not usable because there could be 0 elements
+    // final stream =
+    //     _databaseWrapper.authenticatedPlayerRepo.select().watchSingle();
+
+    // final mappedStream = stream.map((event) {
+    //   // return null;
+    //   return event;
+    // });
+
+    // return mappedStream;
+
+    // final stream = _databaseWrapper.db.authenticatedPlayerLocalEntity
+    //     .select()
+    //     .watch()
+    //     .asBroadcastStream();
+    // final singleValueStream = stream.map((event) {
+    //   if (event.length > 1) {
+    //     throw Exception("Some expection -> more than 1 value inside");
+    //   }
+
+    //   if (event.isEmpty) {
+    //     return null;
+    //   }
+
+    //   return event.first;
+    // });
+
+    // return singleValueStream;
   }
 }
