@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/auth/domain/repository_interfaces/auth/auth_repository.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
