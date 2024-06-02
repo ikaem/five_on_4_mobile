@@ -17,11 +17,7 @@ class $AuthenticatedPlayerLocalEntityTable
   @override
   late final GeneratedColumn<int> playerId = GeneratedColumn<int>(
       'player_id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _playerNameMeta =
       const VerificationMeta('playerName');
   @override

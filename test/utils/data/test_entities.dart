@@ -1,9 +1,12 @@
+import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_data/auth_data_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_local/auth_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/auth_remote/auth_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_local/authenticated_player_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
 final testAuthDataEntity = AuthDataEntity(
   playerInfo: const AuthDataPlayerInfoEntity(
@@ -17,6 +20,27 @@ final testAuthDataEntity = AuthDataEntity(
     teamName: "Team 1",
   ),
 );
+
+// TODO all other auths will probably be gone later
+List<AuthenticatedPlayerLocalEntityCompanion>
+    generateTestAuthenticatedPlayerLocalEntityCompanions({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final authLocalEntities =
+      List<AuthenticatedPlayerLocalEntityCompanion>.generate(
+    count,
+    (index) {
+      return AuthenticatedPlayerLocalEntityCompanion.insert(
+        playerId: Value(index),
+        playerName: "${namesPrefix}name$index",
+        playerNickname: "${namesPrefix}nickname$index",
+      );
+    },
+  );
+
+  return authLocalEntities;
+}
 
 List<AuthLocalEntity> getTestAuthLocalEntities({
   int count = 10,
