@@ -16,9 +16,12 @@ abstract interface class AuthLocalDataSource {
     AuthenticatedPlayerLocalEntityValue entityValue,
   );
 
-  Stream<List<AuthenticatedPlayerLocalEntityData?>>
-      getAuthenticatedPlayersLocalEntityDataStream();
+  // Stream<List<AuthenticatedPlayerLocalEntityData?>>
+  //     getAuthenticatedPlayersLocalEntityDataStream();
 
   Stream<AuthenticatedPlayerLocalEntityData?>
       getAuthenticatedPlayerLocalEntityDataStream();
+
+  Future<AuthenticatedPlayerLocalEntityData?>
+      getAuthenticatedPlayerLocalEntityData();
 }

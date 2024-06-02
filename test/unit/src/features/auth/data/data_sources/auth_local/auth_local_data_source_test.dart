@@ -52,6 +52,96 @@ void main() async {
   });
 
   group("$AuthLocalDataSource", () {
+    group(
+      ".getAuthenticatedPlayerLocalEntityData",
+      () {
+        // should return null if no elements in db
+        test(
+          "given no elements in the db"
+          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "then should return expected result",
+          () async {
+            // setup
+
+            // given
+
+            // when
+            final result = await authLocalDataSource
+                .getAuthenticatedPlayerLocalEntityData();
+
+            // then
+            expect(result, isNull);
+
+            // cleanup
+          },
+        );
+
+        // should return expected entity if element in db
+        test(
+          "given an element in the db"
+          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "then should return expected element",
+          () async {
+            // setup
+            const entityData = AuthenticatedPlayerLocalEntityData(
+              playerId: 1,
+              playerName: "playerName",
+              playerNickname: "playerNickname",
+            );
+
+            // given
+            await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+                .insertOne(entityData);
+
+            // when
+            final result = await authLocalDataSource
+                .getAuthenticatedPlayerLocalEntityData();
+
+            // then
+            expect(result, equals(entityData));
+
+            // cleanup
+          },
+        );
+
+        // should throw if multiple elements in db
+        test(
+          "given multiple elements in the db"
+          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "then should throw expected exception",
+          () async {
+            // setup
+            const entityData1 = AuthenticatedPlayerLocalEntityData(
+              playerId: 1,
+              playerName: "playerName",
+              playerNickname: "playerNickname",
+            );
+            const entityData2 = AuthenticatedPlayerLocalEntityData(
+              playerId: 2,
+              playerName: "playerName",
+              playerNickname: "playerNickname",
+            );
+
+            // given
+            await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+                .insertOne(entityData1);
+            await testDatabaseWrapper.databaseWrapper.authenticatedPlayerRepo
+                .insertOne(entityData2);
+
+            // when /then
+            expect(() async {
+              await authLocalDataSource.getAuthenticatedPlayerLocalEntityData();
+            },
+                throwsExceptionWithMessage<
+                        AuthMultipleLocalAuthenticatedPlayersException>(
+                    "Multiple local authenticated players found"));
+
+            // cleanup
+          },
+        );
+      },
+    );
+
     // get strea of authenticated player entity - from db
     group(".getAuthenticatedPlayerLocalEntityDataStream", () {
       test(

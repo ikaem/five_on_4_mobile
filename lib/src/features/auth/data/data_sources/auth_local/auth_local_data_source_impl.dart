@@ -51,6 +51,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 // TODO delete all existing authenticated players
     await _databaseWrapper.authenticatedPlayerRepo.deleteAll();
 
+    // TODO this is also acceptable by the insertOne signature - maybe could be better because all items are required
+    final entityData = AuthenticatedPlayerLocalEntityData(
+      playerId: entityValue.playerId,
+      playerName: entityValue.playerName,
+      playerNickname: entityValue.playerNickname,
+    );
+
     final companion = AuthenticatedPlayerLocalEntityCompanion.insert(
       playerId: Value(entityValue.playerId),
       playerName: entityValue.playerName,
@@ -95,49 +102,19 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Stream<List<AuthenticatedPlayerLocalEntityData?>>
-      getAuthenticatedPlayersLocalEntityDataStream() {
-    final stream =
-        _databaseWrapper.db.authenticatedPlayerLocalEntity.select().watch();
+  Future<AuthenticatedPlayerLocalEntityData?>
+      getAuthenticatedPlayerLocalEntityData() async {
+    final authenticatedPlayerLocalEntityData =
+        await _databaseWrapper.authenticatedPlayerRepo.select().get();
 
-    final mappedStream = stream.map((event) {
-      // return null;
+    if (authenticatedPlayerLocalEntityData.length > 1) {
+      throw const AuthMultipleLocalAuthenticatedPlayersException();
+    }
 
-      return event;
-    });
+    if (authenticatedPlayerLocalEntityData.isNotEmpty) {
+      return authenticatedPlayerLocalEntityData.first;
+    }
 
-    return mappedStream;
-
-    // TODO: implement getAuthenticatedPlayerLocalEntityDataStream
-    // throw UnimplementedError();
-
-    // TODO not usable because there could be 0 elements
-    // final stream =
-    //     _databaseWrapper.authenticatedPlayerRepo.select().watchSingle();
-
-    // final mappedStream = stream.map((event) {
-    //   // return null;
-    //   return event;
-    // });
-
-    // return mappedStream;
-
-    // final stream = _databaseWrapper.db.authenticatedPlayerLocalEntity
-    //     .select()
-    //     .watch()
-    //     .asBroadcastStream();
-    // final singleValueStream = stream.map((event) {
-    //   if (event.length > 1) {
-    //     throw Exception("Some expection -> more than 1 value inside");
-    //   }
-
-    //   if (event.isEmpty) {
-    //     return null;
-    //   }
-
-    //   return event.first;
-    // });
-
-    // return singleValueStream;
+    return null;
   }
 }
