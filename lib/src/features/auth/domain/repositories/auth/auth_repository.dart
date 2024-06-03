@@ -1,4 +1,5 @@
 import 'package:five_on_4_mobile/src/features/auth/domain/models/auth_data/auth_data_model.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
 
 abstract interface class AuthRepository {
   AuthDataModel? get auth;
@@ -6,6 +7,11 @@ abstract interface class AuthRepository {
   Stream<bool> get authStatusStream;
 
   Future<void> loginWithGoogle();
+
+  Stream<AuthenticatedPlayerModel?> getAuthenticatedPlayerModelStream();
+
+  // this will check auth
+  Future<void> checkAuthenticatedPlayer();
 }
 
 /* 

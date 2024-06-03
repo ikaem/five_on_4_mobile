@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/provider/flutter_secure_storage_wrapper_provider.dart';
@@ -23,8 +24,12 @@ DioWrapper dioWrapper(
     flutterSecureStorageWrapper: flutterSecureStorageWrapper,
   );
 
+  // NOTE do not configure Dio instance here
+  final dio = Dio();
+
   final dioWrapper = DioWrapper(
     interceptor: interceptor,
+    dio: dio,
   );
 
   return dioWrapper;

@@ -34,6 +34,32 @@ void main() {
   group(
     "$AuthRemoteDataSource",
     () {
+      // TODO new
+      group(".getAuthenticatedPlayerRemoteEntity", () {
+        // should return null if no authenticated
+        test(
+          "given <pre-condition to the test>"
+          "when <behavior we are specifying>"
+          "then should throw expected exception",
+          () async {
+            // setup
+            //
+
+            // given
+
+            // when
+
+            // then
+
+            // cleanup
+          },
+        );
+
+        // should return expected entity if authenticated
+
+        // should call dio wrapper with expected arguments
+      });
+
       group(
         ".getAuth",
         () {
@@ -319,7 +345,6 @@ class _FakeHttpRequestUriPartsValue extends Fake
 class _MockGoogleSignInWrapper extends Mock implements GoogleSignInWrapper {}
 
 class _MockDioWrapper extends Mock implements DioWrapper {}
-
 
 // TODO plan
 

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:five_on_4_mobile/src/features/core/domain/exceptions/http_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/dio_cookie_interceptor/dio_cookie_interceptor_wrapper.dart';
@@ -29,8 +32,9 @@ void main() async {
 class DioWrapper {
   DioWrapper({
     required Interceptor interceptor,
+    required Dio dio,
   }) {
-    final dio = Dio();
+    // final dio = Dio();
     // dio.interceptors.add(dioCookieInterceptorWrapper);
     dio.interceptors.add(interceptor);
     // TODO test
@@ -56,15 +60,13 @@ class DioWrapper {
       method: HttpMethodConstants.get,
     );
 
-    final response = await _makeRequest<T>(
+    final data = await _makeRequest<T>(
       args: args,
     );
 
-    final data = response.data;
-
-    if (data == null) {
-      throw Exception(response.statusMessage ?? 'Data not found');
-    }
+    // if (data == null) {
+    //   throw Exception(response.statusMessage ?? 'Data not found');
+    // }
 
     return data;
   }
@@ -87,16 +89,14 @@ class DioWrapper {
       data: bodyData,
     );
 
-    final response = await _makeRequest<T>(
+    final data = await _makeRequest<T>(
       args: args,
     );
 
-    final data = response.data;
-
-    if (data == null) {
-      // TODO not sure if this is even needed
-      throw Exception(response.statusMessage ?? 'Data not found');
-    }
+    // if (data == null) {
+    //   // TODO not sure if this is even needed
+    //   throw Exception(response.statusMessage ?? 'Data not found');
+    // }
 
     return data;
   }
@@ -119,21 +119,19 @@ class DioWrapper {
       data: bodyData,
     );
 
-    final response = await _makeRequest<T>(
+    final data = await _makeRequest<T>(
       args: args,
     );
 
-    final data = response.data;
-
-    if (data == null) {
-      // TODO not sure if this is even needed
-      throw Exception(response.statusMessage ?? 'Data not found');
-    }
+    // if (data == null) {
+    //   // TODO not sure if this is even needed
+    //   throw Exception(response.statusMessage ?? 'Data not found');
+    // }
 
     return data;
   }
 
-  Future<Response<T>> _makeRequest<T>({
+  Future<T> _makeRequest<T>({
     required HttpRequestArgsValue args,
   }) async {
     try {
@@ -146,22 +144,54 @@ class DioWrapper {
         ),
       );
 
-      if (response.statusCode != 200) {
-        // TODO temp
-        // ignore: only_throw_errors
-        // TODO will need more info here
-        throw 'Invalid response';
+      final data = response.data;
+      // TODO not sure if we should do this - maybe we should just return the response
+      // TODO but if we build a response from backend, there will always be a data field on it i think
+      if (data == null) {
+        // throw Exception("Data not found");
+        throw HttpNoResponseDataException(
+            contextMessage: response.requestOptions.toString());
       }
 
-      return response;
+      return data;
     } catch (e) {
-      final fallbackMesage = 'Failed to make request: $e';
+      // TODO get better logger
+      log("Error making request: $e");
 
-      if (e is DioException) {
-        throw Exception(e.response?.statusMessage ?? fallbackMesage);
-      }
-
-      throw Exception(fallbackMesage);
+      rethrow;
     }
   }
+
+  // TODO old - but maybe good...
+  // Future<Response<T>> _makeRequest<T>({
+  //   required HttpRequestArgsValue args,
+  // }) async {
+  //   try {
+  //     final response = await _dio.requestUri<T>(
+  //       args.uri,
+  //       // Uri.parse("localhost:3000/matches"),
+  //       data: args.data,
+  //       options: Options(
+  //         method: args.method.name,
+  //       ),
+  //     );
+
+  //     if (response.statusCode != 200) {
+  //       // TODO temp
+  //       // ignore: only_throw_errors
+  //       // TODO will need more info here
+  //       throw 'Invalid response';
+  //     }
+
+  //     return response;
+  //   } catch (e) {
+  //     final fallbackMesage = 'Failed to make request: $e';
+
+  //     if (e is DioException) {
+  //       throw Exception(e.response?.statusMessage ?? fallbackMesage);
+  //     }
+
+  //     throw Exception(fallbackMesage);
+  //   }
+  // }
 }

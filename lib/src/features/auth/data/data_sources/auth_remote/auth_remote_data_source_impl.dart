@@ -42,7 +42,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       },
     );
 
+    // TODO temp
+    if (response == null) {
+      throw const AuthSomethingWentWrongException(
+          contextMessage: ".authenticateWithGoogle()");
+    }
+
     if (response["ok"] != true) {
+      // TODO this will also need to be rethought
       throw Exception("Something went wrong with google sign in");
     }
 
@@ -64,7 +71,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       uriParts: uriParts,
     );
 
+    // TODO temp
+    if (response == null) {
+      throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
+    }
+
     if (response["ok"] != true) {
+      // TODO this will also need to be rethought
       throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
     }
 
