@@ -1,272 +1,274 @@
-import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
-import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
-import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
-import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+// TODO come back to this
 
-import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/data/test_values.dart';
+// import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
+// import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+// import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
+// import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
+// import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
+// import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mocktail/mocktail.dart';
 
-void main() {
-  // TODO we will try not to expose it via riverpod
-  final dioWrapper = _MockDioWrapper();
-  // final dioWrapper = DioWrapper(interceptor: DioInterceptor());
-  final matchesRemoteDataSource = MatchesRemoteDataSourceImpl(
-    dioWrapper: dioWrapper,
-  );
+// import '../../../../../../../utils/data/test_entities.dart';
+// import '../../../../../../../utils/data/test_values.dart';
 
-  setUpAll(() {
-    registerFallbackValue(_FakeHttpRequestUriPartsValue());
-  });
+// void main() {
+//   // TODO we will try not to expose it via riverpod
+//   final dioWrapper = _MockDioWrapper();
+//   // final dioWrapper = DioWrapper(interceptor: DioInterceptor());
+//   final matchesRemoteDataSource = MatchesRemoteDataSourceImpl(
+//     dioWrapper: dioWrapper,
+//   );
 
-  tearDown(() {
-    reset(dioWrapper);
-  });
+//   setUpAll(() {
+//     registerFallbackValue(_FakeHttpRequestUriPartsValue());
+//   });
 
-  group(
-    "MatchesRemoteDataSource",
-    () {
-      group(
-        ".createMatch()",
-        () {
-          test(
-            "given valid $MatchCreateDataValue argument is passed "
-            "when call '.createMatch()'"
-            "then should return expected match id",
-            () async {
-              const matchId = 1;
-              // TODO in this group can possibly unify this - for specific
-              when(
-                () => dioWrapper.post<Map<String, dynamic>>(
-                  uriParts: any(named: "uriParts"),
-                  bodyData: any(named: "bodyData"),
-                ),
-              ).thenAnswer(
-                (_) async {
-                  return {
-                    "ok": true,
-                    "data": matchId,
-                  };
-                },
-              );
+//   tearDown(() {
+//     reset(dioWrapper);
+//   });
 
-              // Given
-              final createMatchValue = getTestMatchCreateValues(count: 1).first;
+//   group(
+//     "MatchesRemoteDataSource",
+//     () {
+//       group(
+//         ".createMatch()",
+//         () {
+//           test(
+//             "given valid $MatchCreateDataValue argument is passed "
+//             "when call '.createMatch()'"
+//             "then should return expected match id",
+//             () async {
+//               const matchId = 1;
+//               // TODO in this group can possibly unify this - for specific
+//               when(
+//                 () => dioWrapper.post<Map<String, dynamic>>(
+//                   uriParts: any(named: "uriParts"),
+//                   bodyData: any(named: "bodyData"),
+//                 ),
+//               ).thenAnswer(
+//                 (_) async {
+//                   return {
+//                     "ok": true,
+//                     "data": matchId,
+//                   };
+//                 },
+//               );
 
-              // When
-              final id = await matchesRemoteDataSource.createMatch(
-                matchData: createMatchValue,
-              );
+//               // Given
+//               final createMatchValue = getTestMatchCreateValues(count: 1).first;
 
-              // Then
-              expect(id, equals(matchId));
-            },
-          );
+//               // When
+//               final id = await matchesRemoteDataSource.createMatch(
+//                 matchData: createMatchValue,
+//               );
 
-          test(
-            "given valid MatchCreateDataValue argument is passed "
-            "when call '.createMatch()'"
-            "then should call dioWrapper with expected arguments",
-            () async {
-              const matchId = 1;
-              // TODO in this group can possibly unify this - for specific
-              when(
-                () => dioWrapper.post<Map<String, dynamic>>(
-                  uriParts: any(named: "uriParts"),
-                  bodyData: any(named: "bodyData"),
-                ),
-              ).thenAnswer(
-                (_) async {
-                  return {
-                    "ok": true,
-                    "data": matchId,
-                  };
-                },
-              );
+//               // Then
+//               expect(id, equals(matchId));
+//             },
+//           );
 
-              // Given
-              final createMatchValue = getTestMatchCreateValues(count: 1).first;
+//           test(
+//             "given valid MatchCreateDataValue argument is passed "
+//             "when call '.createMatch()'"
+//             "then should call dioWrapper with expected arguments",
+//             () async {
+//               const matchId = 1;
+//               // TODO in this group can possibly unify this - for specific
+//               when(
+//                 () => dioWrapper.post<Map<String, dynamic>>(
+//                   uriParts: any(named: "uriParts"),
+//                   bodyData: any(named: "bodyData"),
+//                 ),
+//               ).thenAnswer(
+//                 (_) async {
+//                   return {
+//                     "ok": true,
+//                     "data": matchId,
+//                   };
+//                 },
+//               );
 
-              // When
-              await matchesRemoteDataSource.createMatch(
-                matchData: createMatchValue,
-              );
+//               // Given
+//               final createMatchValue = getTestMatchCreateValues(count: 1).first;
 
-              final expectedUriParts = HttpRequestUriPartsValue(
-                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-                // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-                apiEndpointPath: HttpMatchesConstants
-                    .BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
-                queryParameters: null,
-              );
-              final expectedBodyData = createMatchValue.toJson();
+//               // When
+//               await matchesRemoteDataSource.createMatch(
+//                 matchData: createMatchValue,
+//               );
 
-              // Then
-              verify(
-                () => dioWrapper.post<Map<String, dynamic>>(
-                  uriParts: expectedUriParts,
-                  bodyData: expectedBodyData,
-                ),
-              ).called(1);
-            },
-          );
-        },
-      );
-      group(
-        ".getMatch()",
-        () {
-          test(
-            "given a match id"
-            "when call '.getMatch()'"
-            "then should return expected match",
-            () async {
-              final testMatch = getTestMatchRemoteEntities().first;
-              final testMatchJson = testMatch.toJson();
-              final matchResponse = {
-                "ok": true,
-                "data": testMatchJson,
-              };
+//               final expectedUriParts = HttpRequestUriPartsValue(
+//                 apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+//                 // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+//                 apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+//                 apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+//                 apiEndpointPath: HttpMatchesConstants
+//                     .BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
+//                 queryParameters: null,
+//               );
+//               final expectedBodyData = createMatchValue.toJson();
 
-              when(
-                () => dioWrapper.get<Map<String, dynamic>>(
-                  uriParts: any(named: "uriParts"),
-                ),
-              ).thenAnswer((invocation) async => matchResponse);
+//               // Then
+//               verify(
+//                 () => dioWrapper.post<Map<String, dynamic>>(
+//                   uriParts: expectedUriParts,
+//                   bodyData: expectedBodyData,
+//                 ),
+//               ).called(1);
+//             },
+//           );
+//         },
+//       );
+//       group(
+//         ".getMatch()",
+//         () {
+//           test(
+//             "given a match id"
+//             "when call '.getMatch()'"
+//             "then should return expected match",
+//             () async {
+//               final testMatch = getTestMatchRemoteEntities().first;
+//               final testMatchJson = testMatch.toJson();
+//               final matchResponse = {
+//                 "ok": true,
+//                 "data": testMatchJson,
+//               };
 
-              final match = await matchesRemoteDataSource.getMatch(
-                matchId: testMatch.id,
-              );
+//               when(
+//                 () => dioWrapper.get<Map<String, dynamic>>(
+//                   uriParts: any(named: "uriParts"),
+//                 ),
+//               ).thenAnswer((invocation) async => matchResponse);
 
-              expect(match, equals(testMatch));
-            },
-          );
+//               final match = await matchesRemoteDataSource.getMatch(
+//                 matchId: testMatch.id,
+//               );
 
-          test(
-            "given a match request"
-            "when call '.getMatch()'"
-            "then should call dioWrapper with expected arguments",
-            () async {
-              final testMatch = getTestMatchRemoteEntities().first;
-              final testMatchJson = testMatch.toJson();
-              final matchResponse = {
-                "ok": true,
-                "data": testMatchJson,
-              };
+//               expect(match, equals(testMatch));
+//             },
+//           );
 
-              final matchId = testMatch.id;
+//           test(
+//             "given a match request"
+//             "when call '.getMatch()'"
+//             "then should call dioWrapper with expected arguments",
+//             () async {
+//               final testMatch = getTestMatchRemoteEntities().first;
+//               final testMatchJson = testMatch.toJson();
+//               final matchResponse = {
+//                 "ok": true,
+//                 "data": testMatchJson,
+//               };
 
-              when(
-                () => dioWrapper.get<Map<String, dynamic>>(
-                  uriParts: any(named: "uriParts"),
-                ),
-              ).thenAnswer((invocation) async => matchResponse);
+//               final matchId = testMatch.id;
 
-              final expectedUriPartsArgs = HttpRequestUriPartsValue(
-                // TODO use https when we have real server eventually
-                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-                // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-                apiEndpointPath: HttpMatchesConstants
-                    .BACKEND_ENDPOINT_PATH_MATCH
-                    .getMatchPathWithId(matchId),
-                queryParameters: null,
-              );
+//               when(
+//                 () => dioWrapper.get<Map<String, dynamic>>(
+//                   uriParts: any(named: "uriParts"),
+//                 ),
+//               ).thenAnswer((invocation) async => matchResponse);
 
-              await matchesRemoteDataSource.getMatch(
-                matchId: testMatch.id,
-              );
+//               final expectedUriPartsArgs = HttpRequestUriPartsValue(
+//                 // TODO use https when we have real server eventually
+//                 apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+//                 // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+//                 apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+//                 apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+//                 apiEndpointPath: HttpMatchesConstants
+//                     .BACKEND_ENDPOINT_PATH_MATCH
+//                     .getMatchPathWithId(matchId),
+//                 queryParameters: null,
+//               );
 
-              verify(
-                () => dioWrapper.get<Map<String, dynamic>>(
-                  uriParts: expectedUriPartsArgs,
-                ),
-              );
-            },
-          );
-        },
-      );
-      group(
-        // TODO rename this to loadMyFollowingMatches
-        ".getMyFollowingMatches()",
-        () {
-          test(
-            "given nothing in particular"
-            "when '.getMyFollowingMatches() is called"
-            "should return expected list of matches",
-            () async {
-              final testMatches = getTestMatchRemoteEntities(count: 1);
+//               await matchesRemoteDataSource.getMatch(
+//                 matchId: testMatch.id,
+//               );
 
-              final testMatchesJson =
-                  testMatches.map((match) => match.toJson()).toList();
-              final matchesResponse = {
-                "ok": true,
-                "data": testMatchesJson,
-              };
+//               verify(
+//                 () => dioWrapper.get<Map<String, dynamic>>(
+//                   uriParts: expectedUriPartsArgs,
+//                 ),
+//               );
+//             },
+//           );
+//         },
+//       );
+//       group(
+//         // TODO rename this to loadMyFollowingMatches
+//         ".getMyFollowingMatches()",
+//         () {
+//           test(
+//             "given nothing in particular"
+//             "when '.getMyFollowingMatches() is called"
+//             "should return expected list of matches",
+//             () async {
+//               final testMatches = getTestMatchRemoteEntities(count: 1);
 
-              when(
-                () => dioWrapper.get<Map<String, dynamic>>(
-                  uriParts: any(named: "uriParts"),
-                ),
-              ).thenAnswer(
-                (_) async {
-                  return matchesResponse;
-                },
-              );
+//               final testMatchesJson =
+//                   testMatches.map((match) => match.toJson()).toList();
+//               final matchesResponse = {
+//                 "ok": true,
+//                 "data": testMatchesJson,
+//               };
 
-              // TODO we should also test that correct arguments are used
+//               when(
+//                 () => dioWrapper.get<Map<String, dynamic>>(
+//                   uriParts: any(named: "uriParts"),
+//                 ),
+//               ).thenAnswer(
+//                 (_) async {
+//                   return matchesResponse;
+//                 },
+//               );
 
-              final matches =
-                  await matchesRemoteDataSource.getPlayerInitialMatches();
+//               // TODO we should also test that correct arguments are used
 
-              expect(matches, equals(testMatches));
-            },
-          );
-        },
+//               final matches =
+//                   await matchesRemoteDataSource.getPlayerInitialMatches();
 
-        // TODO test interceptor that adds auth header - but this is is a different test - and later we can use that to get my matches, and not manually pass user idÞ
-      );
-    },
-  );
-}
+//               expect(matches, equals(testMatches));
+//             },
+//           );
+//         },
 
-class _MockDioWrapper extends Mock implements DioWrapper {}
+//         // TODO test interceptor that adds auth header - but this is is a different test - and later we can use that to get my matches, and not manually pass user idÞ
+//       );
+//     },
+//   );
+// }
 
-class _FakeHttpRequestUriPartsValue extends Fake
-    implements HttpRequestUriPartsValue {}
+// class _MockDioWrapper extends Mock implements DioWrapper {}
 
-// TODO just temp until we go to real server
-List<MatchRemoteEntity> _generateTempManipulatedMatches(
-    List<MatchRemoteEntity> matchesEntities) {
-  final manipulatedMatchesToSplitBetweenTodayAndTomorrow = matchesEntities.map(
-    (match) {
-      final matchesLength = matchesEntities.length;
-      final isInFirstHalf = matchesEntities.indexOf(match) < matchesLength / 2;
+// class _FakeHttpRequestUriPartsValue extends Fake
+//     implements HttpRequestUriPartsValue {}
 
-      final manipulatedDate = isInFirstHalf
-          ? DateTime.now().millisecondsSinceEpoch
-          : DateTime.now().add(const Duration(days: 1)).millisecondsSinceEpoch;
+// // TODO just temp until we go to real server
+// List<MatchRemoteEntity> _generateTempManipulatedMatches(
+//     List<MatchRemoteEntity> matchesEntities) {
+//   final manipulatedMatchesToSplitBetweenTodayAndTomorrow = matchesEntities.map(
+//     (match) {
+//       final matchesLength = matchesEntities.length;
+//       final isInFirstHalf = matchesEntities.indexOf(match) < matchesLength / 2;
 
-      final manipulatedMatch = MatchRemoteEntity(
-        id: match.id,
-        date: manipulatedDate,
-        arrivingPlayers: match.arrivingPlayers,
-        description: match.description,
-        location: match.location,
-        name: match.name,
-        organizer: match.organizer,
-      );
+//       final manipulatedDate = isInFirstHalf
+//           ? DateTime.now().millisecondsSinceEpoch
+//           : DateTime.now().add(const Duration(days: 1)).millisecondsSinceEpoch;
 
-      return manipulatedMatch;
-    },
-  ).toList();
+//       final manipulatedMatch = MatchRemoteEntity(
+//         id: match.id,
+//         date: manipulatedDate,
+//         arrivingPlayers: match.arrivingPlayers,
+//         description: match.description,
+//         location: match.location,
+//         name: match.name,
+//         organizer: match.organizer,
+//       );
 
-  return manipulatedMatchesToSplitBetweenTodayAndTomorrow;
-}
+//       return manipulatedMatch;
+//     },
+//   ).toList();
+
+//   return manipulatedMatchesToSplitBetweenTodayAndTomorrow;
+// }

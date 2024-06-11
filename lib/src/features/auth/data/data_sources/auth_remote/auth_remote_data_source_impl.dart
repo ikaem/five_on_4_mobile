@@ -20,69 +20,76 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<String> verifyGoogleSignIn() async {
-    final token = await _googleSignInWrapper.signInAndGetIdToken();
-    return token;
+    // final token = await _googleSignInWrapper.signInAndGetIdToken();
+    // return token;
+    throw UnimplementedError();
   }
 
   @override
   Future<AuthRemoteEntity> authenticateWithGoogle(String idToken) async {
-    final urilParts = HttpRequestUriPartsValue(
-      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath:
-          HttpAuthConstants.BACKEND_ENDPOINT_PATH_AUTH_GOOGLE.value,
-      queryParameters: null,
-    );
+    throw UnimplementedError();
 
-    final response = await _dioWrapper.post<Map<String, dynamic>>(
-      uriParts: urilParts,
-      bodyData: {
-        "idToken": idToken,
-      },
-    );
+    // TODO come back to this
+    // final urilParts = HttpRequestUriPartsValue(
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath:
+    //       HttpAuthConstants.BACKEND_ENDPOINT_PATH_AUTH_GOOGLE.value,
+    //   queryParameters: null,
+    // );
 
-    // TODO temp
-    if (response == null) {
-      throw const AuthSomethingWentWrongException(
-          contextMessage: ".authenticateWithGoogle()");
-    }
+    // final response = await _dioWrapper.post<Map<String, dynamic>>(
+    //   uriParts: urilParts,
+    //   bodyData: {
+    //     "idToken": idToken,
+    //   },
+    // );
 
-    if (response["ok"] != true) {
-      // TODO this will also need to be rethought
-      throw Exception("Something went wrong with google sign in");
-    }
+    // // TODO temp
+    // if (response == null) {
+    //   throw const AuthSomethingWentWrongException(
+    //       contextMessage: ".authenticateWithGoogle()");
+    // }
 
-    final authRemoteEntity = AuthRemoteEntity.fromJson(response["data"]);
-    return authRemoteEntity;
+    // if (response["ok"] != true) {
+    //   // TODO this will also need to be rethought
+    //   throw Exception("Something went wrong with google sign in");
+    // }
+
+    // final authRemoteEntity = AuthRemoteEntity.fromJson(response["data"]);
+    // return authRemoteEntity;
   }
 
   @override
   Future<AuthenticatedPlayerRemoteEntity> getAuth() async {
-    final uriParts = HttpRequestUriPartsValue(
-      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
-      queryParameters: null,
-    );
+    throw UnimplementedError();
 
-    final response = await _dioWrapper.get<Map<String, dynamic>>(
-      uriParts: uriParts,
-    );
+    // TODO come back to this
+    // final uriParts = HttpRequestUriPartsValue(
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+    //   queryParameters: null,
+    // );
 
-    // TODO temp
-    if (response == null) {
-      throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
-    }
+    // final response = await _dioWrapper.get<Map<String, dynamic>>(
+    //   uriParts: uriParts,
+    // );
 
-    if (response["ok"] != true) {
-      // TODO this will also need to be rethought
-      throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
-    }
+    // // TODO temp
+    // if (response == null) {
+    //   throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
+    // }
 
-    final authenticatedPlayerRemoteEntity =
-        AuthenticatedPlayerRemoteEntity.fromJson(response["data"]);
-    return authenticatedPlayerRemoteEntity;
+    // if (response["ok"] != true) {
+    //   // TODO this will also need to be rethought
+    //   throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
+    // }
+
+    // final authenticatedPlayerRemoteEntity =
+    //     AuthenticatedPlayerRemoteEntity.fromJson(response["data"]);
+    // return authenticatedPlayerRemoteEntity;
   }
 }

@@ -17,131 +17,140 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   Future<int> createMatch({
     required MatchCreateDataValue matchData,
   }) async {
+    throw UnimplementedError();
+    // TODO come back to this
     // TODO constants are temp only
-    final uriParts = HttpRequestUriPartsValue(
-      // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath:
-          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
-      queryParameters: null,
-    );
-    final bodyData = matchData.toJson();
+    // final uriParts = HttpRequestUriPartsValue(
+    //   // TODO use https when we have real server eventually
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath:
+    //       HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
+    //   queryParameters: null,
+    // );
+    // final bodyData = matchData.toJson();
 
-    final response = await _dioWrapper.post<Map<String, dynamic>>(
-      uriParts: uriParts,
-      bodyData: matchData.toJson(),
-    );
+    // final response = await _dioWrapper.post<Map<String, dynamic>>(
+    //   uriParts: uriParts,
+    //   bodyData: matchData.toJson(),
+    // );
 
-    // TODO wait for backend for this
-    if (response["ok"] != true) {
-      throw Exception("Something went wrong with creating match");
-    }
+    // // TODO wait for backend for this
+    // if (response["ok"] != true) {
+    //   throw Exception("Something went wrong with creating match");
+    // }
 
-    final matchId = response["data"] as int;
-    return matchId;
+    // final matchId = response["data"] as int;
+    // return matchId;
   }
 
   // TODO this might not even be needed - we might have some endpoint like getInitialData, which would get all today, following matches, and stuff like that, maybe the whole home thing
   @override
   Future<List<MatchRemoteEntity>> getPlayerInitialMatches() async {
-    final uriParts = HttpRequestUriPartsValue(
-      // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES.value,
-      queryParameters: null,
-    );
+    throw UnimplementedError();
+    // TODO come back to this
+    // final uriParts = HttpRequestUriPartsValue(
+    //   // TODO use https when we have real server eventually
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCHES.value,
+    //   queryParameters: null,
+    // );
 
-    final response = await _dioWrapper.get<Map<String, dynamic>>(
-      uriParts: uriParts,
-    );
+    // final response = await _dioWrapper.get<Map<String, dynamic>>(
+    //   uriParts: uriParts,
+    // );
 
-    // TODO make extension or class out of the responseBody or responseData or something
-    if (response["ok"] != true) {
-      throw Exception("Something went wrong with getting matches");
-    }
-    // TODO this should be typed better I guess
-    final matchesJson =
-        (response["data"] as List<dynamic>).cast<Map<String, dynamic>>();
+    // // TODO make extension or class out of the responseBody or responseData or something
+    // if (response["ok"] != true) {
+    //   throw Exception("Something went wrong with getting matches");
+    // }
+    // // TODO this should be typed better I guess
+    // final matchesJson =
+    //     (response["data"] as List<dynamic>).cast<Map<String, dynamic>>();
 
-    final matchesEntities = matchesJson
-        .map(
-          (matchJson) => MatchRemoteEntity.fromJson(json: matchJson),
-        )
-        .toList();
+    // final matchesEntities = matchesJson
+    //     .map(
+    //       (matchJson) => MatchRemoteEntity.fromJson(json: matchJson),
+    //     )
+    //     .toList();
 
-    return matchesEntities;
+    // return matchesEntities;
   }
 
   @override
   Future<MatchRemoteEntity> getMatch({
     required int matchId,
   }) async {
-    // TODO temp only
-    // await Future.delayed(const Duration(seconds: 1));
-    final uriParts = HttpRequestUriPartsValue(
-      // TODO use https when we have real server eventually
-      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
-      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
-          .getMatchPathWithId(matchId),
-      queryParameters: null,
-    );
+    throw UnimplementedError();
 
-    final response = await _dioWrapper.get<Map<String, dynamic>>(
-      uriParts: uriParts,
-    );
+    // // TODO temp only
+    // // await Future.delayed(const Duration(seconds: 1));
+    // final uriParts = HttpRequestUriPartsValue(
+    //   // TODO use https when we have real server eventually
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
+    //       .getMatchPathWithId(matchId),
+    //   queryParameters: null,
+    // );
 
-    if (response["ok"] != true) {
-      throw Exception("Something went wrong with getting match");
-    }
+    // final response = await _dioWrapper.get<Map<String, dynamic>>(
+    //   uriParts: uriParts,
+    // );
 
-    final matchJson = response["data"] as Map<String, dynamic>;
+    // if (response["ok"] != true) {
+    //   throw Exception("Something went wrong with getting match");
+    // }
 
-    final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
+    // final matchJson = response["data"] as Map<String, dynamic>;
 
-    return matchEntity;
+    // final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
+
+    // return matchEntity;
   }
 
   List<MatchRemoteEntity> _generateTempManipulatedMatches(
-      List<MatchRemoteEntity> matchesEntities) {
-// TODO temp
-    // return matchesEntities;
+    List<MatchRemoteEntity> matchesEntities,
+  ) {
+    throw UnimplementedError();
 
-    final manipulatedMatchesToSplitBetweenTodayAndTomorrow =
-        matchesEntities.map(
-      (match) {
-        final matchesLength = matchesEntities.length;
-        final isInFirstHalf =
-            matchesEntities.indexOf(match) < matchesLength / 2;
+// // TODO temp
+//     // return matchesEntities;
 
-        final manipulatedDate = isInFirstHalf
-            ? DateTime.now().millisecondsSinceEpoch
-            : DateTime.now()
-                .add(const Duration(days: 1))
-                .millisecondsSinceEpoch;
+//     final manipulatedMatchesToSplitBetweenTodayAndTomorrow =
+//         matchesEntities.map(
+//       (match) {
+//         final matchesLength = matchesEntities.length;
+//         final isInFirstHalf =
+//             matchesEntities.indexOf(match) < matchesLength / 2;
 
-        final manipulatedMatch = MatchRemoteEntity(
-          id: match.id,
-          date: manipulatedDate,
-          arrivingPlayers: match.arrivingPlayers,
-          description: match.description,
-          location: match.location,
-          name: match.name,
-          organizer: match.organizer,
-        );
+//         final manipulatedDate = isInFirstHalf
+//             ? DateTime.now().millisecondsSinceEpoch
+//             : DateTime.now()
+//                 .add(const Duration(days: 1))
+//                 .millisecondsSinceEpoch;
 
-        return manipulatedMatch;
-      },
-    ).toList();
+//         final manipulatedMatch = MatchRemoteEntity(
+//           id: match.id,
+//           date: manipulatedDate,
+//           arrivingPlayers: match.arrivingPlayers,
+//           description: match.description,
+//           location: match.location,
+//           name: match.name,
+//           organizer: match.organizer,
+//         );
 
-    return manipulatedMatchesToSplitBetweenTodayAndTomorrow;
+//         return manipulatedMatch;
+//       },
+//     ).toList();
+
+//     return manipulatedMatchesToSplitBetweenTodayAndTomorrow;
   }
 }

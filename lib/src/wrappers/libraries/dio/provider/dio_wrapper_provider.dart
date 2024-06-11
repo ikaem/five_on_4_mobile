@@ -12,25 +12,29 @@ part 'dio_wrapper_provider.g.dart';
 DioWrapper dioWrapper(
   DioWrapperRef ref,
 ) {
-  // TODO no need to expose via provider
-  const cookiesHandlerWrapper = CookiesHandlerWrapper();
-  final envWrapper = ref.read(envVarsWrapperProvider);
-  final flutterSecureStorageWrapper =
-      ref.read(flutterSecureStorageWrapperProvider);
-
-  final interceptor = DioInterceptor(
-    cookiesHandlerWrapper: cookiesHandlerWrapper,
-    envVarsWrapper: envWrapper,
-    flutterSecureStorageWrapper: flutterSecureStorageWrapper,
-  );
-
-  // NOTE do not configure Dio instance here
-  final dio = Dio();
-
-  final dioWrapper = DioWrapper(
-    interceptor: interceptor,
-    dio: dio,
-  );
-
+  final dioWrapper = DioWrapper.createDefault();
   return dioWrapper;
+
+  // TODO come back to this
+  // TODO no need to expose via provider
+  // const cookiesHandlerWrapper = CookiesHandlerWrapper();
+  // final envWrapper = ref.read(envVarsWrapperProvider);
+  // final flutterSecureStorageWrapper =
+  //     ref.read(flutterSecureStorageWrapperProvider);
+
+  // final interceptor = DioInterceptor(
+  //   cookiesHandlerWrapper: cookiesHandlerWrapper,
+  //   envVarsWrapper: envWrapper,
+  //   flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+  // );
+
+  // // NOTE do not configure Dio instance here
+  // final dio = Dio();
+
+  // final dioWrapper = DioWrapper(
+  //   interceptor: interceptor,
+  //   dio: dio,
+  // );
+
+  // return dioWrapper;
 }
