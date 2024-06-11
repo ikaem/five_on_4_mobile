@@ -18,7 +18,7 @@ class AuthStatusController extends ChangeNotifier {
 
   late final StreamSubscription<bool> _authDataStatusSubscription;
 
-  bool _isLoggedIn = false;
+  final bool _isLoggedIn = false;
   bool _isError = false;
   bool _isLoading = true;
 
@@ -34,7 +34,10 @@ class AuthStatusController extends ChangeNotifier {
     // _isLoading = true;
     // notifyListeners();
 
-    try {
+/*     
+
+// TODO old come back to it
+  try {
       await _checkAuthDataStatusUseCase();
     } catch (e) {
       _handleError(e);
@@ -49,7 +52,7 @@ class AuthStatusController extends ChangeNotifier {
         notifyListeners();
       },
       onError: _handleError,
-    );
+    ); */
   }
 
   // TODO how to imoplement .when() function?
