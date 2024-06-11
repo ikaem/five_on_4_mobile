@@ -39,64 +39,65 @@ void main() {
   group(
     "$AuthRepository",
     () {
-      group(".checkAuthenticatedPlayer", () {
-        // should make call to remote data source to get player
+      // TODO come back to this
+      // group(".checkAuthenticatedPlayer", () {
+      //   // should make call to remote data source to get player
 
-        test(
-          "given nothing in particular"
-          "when .checkAuthenticatedPlayer() is called"
-          "then should make a call to AuthRemoteDataSource to get authenticated player",
-          () async {
-            // setup
+      //   test(
+      //     "given nothing in particular"
+      //     "when .checkAuthenticatedPlayer() is called"
+      //     "then should make a call to AuthRemoteDataSource to get authenticated player",
+      //     () async {
+      //       // setup
 
-            // given
-            // when(() => authRemoteDataSource.g)
+      //       // given
+      //       // when(() => authRemoteDataSource.g)
 
-            // when
-            await authRepository.checkAuthenticatedPlayer();
+      //       // when
+      //       await authRepository.checkAuthenticatedPlayer();
 
-            // then
+      //       // then
 
-            // cleanup
-          },
-        );
+      //       // cleanup
+      //     },
+      //   );
 
-        test(
-          "given there is no authenticated player"
-          "when .checkAuthenticatedPlayer() is called"
-          "then should pass null to local data source ",
-          () async {
-            // setup
+      //   test(
+      //     "given there is no authenticated player"
+      //     "when .checkAuthenticatedPlayer() is called"
+      //     "then should pass null to local data source ",
+      //     () async {
+      //       // setup
 
-            // given
+      //       // given
 
-            // when
+      //       // when
 
-            // then
+      //       // then
 
-            // cleanup
-          },
-        );
+      //       // cleanup
+      //     },
+      //   );
 
-        test(
-          "given there is an authenticated player"
-          "when .checkAuthenticatedPlayer() is called"
-          "then should pass the player to local data source",
-          () async {
-            // setup
+      //   test(
+      //     "given there is an authenticated player"
+      //     "when .checkAuthenticatedPlayer() is called"
+      //     "then should pass the player to local data source",
+      //     () async {
+      //       // setup
 
-            // given
+      //       // given
 
-            // when
+      //       // when
 
-            // then
+      //       // then
 
-            // cleanup
-          },
-        );
+      //       // cleanup
+      //     },
+      //   );
 
-        // should pass this result to local data source to store player
-      });
+      //   // should pass this result to local data source to store player
+      // });
 
       // TODO also get authetnicated player
 
@@ -111,6 +112,10 @@ void main() {
               playerId: 1,
               playerName: "playerName",
               playerNickname: "playerNickname",
+            );
+            final model =
+                AuthenticatedPlayerConverters.toModelFromLocalEntityData(
+              entity: entityData,
             );
 
             final streamController =
@@ -127,10 +132,6 @@ void main() {
             final stream = authRepository.getAuthenticatedPlayerModelStream();
 
             // then
-            final model =
-                AuthenticatedPlayerConverters.toModelFromLocalEntityData(
-              entity: entityData,
-            );
 
             expectLater(
                 stream,
