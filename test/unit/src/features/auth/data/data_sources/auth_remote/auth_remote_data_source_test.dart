@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
@@ -98,6 +99,56 @@ void main() {
 
               // then
               expect(result, isNull);
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given .getAuth() is called"
+            "when examine request to the server"
+            "then should call DioWrapper.makeRequest() with expected arguments",
+            () async {
+              // setup
+              final expectedUriParts = HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+                apiEndpointPath:
+                    HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+                queryParameters: null,
+              );
+              const expectedMethod = HttpMethodConstants.POST;
+
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                    "ok": false,
+                    "message": "Invalid access token",
+                  }));
+
+              // given
+              await dataSource.getAuth();
+
+              // when
+              final captured = verify(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: captureAny(named: "uriParts"),
+                  method: captureAny(named: "method"),
+                ),
+              ).captured;
+
+              // then
+              final actualUriParts = captured[0] as HttpRequestUriPartsValue;
+              final actualMethod = captured[1] as HttpMethodConstants;
+
+              expect(actualUriParts, equals(expectedUriParts));
+              expect(actualMethod, equals(expectedMethod));
+
+              print("what");
 
               // cleanup
             },
