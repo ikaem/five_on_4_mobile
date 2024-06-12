@@ -1,3 +1,129 @@
+import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/google_sign_in/google_sign_in_wrapper.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+void main() {
+  final googleSignInWrapper = _MockGoogleSignInWrapper();
+  final dioWrapper = _MockDioWrapper();
+
+  // tested class
+  final dataSource = AuthRemoteDataSourceImpl(
+    googleSignInWrapper: googleSignInWrapper,
+    dioWrapper: dioWrapper,
+  );
+
+  setUpAll(() {
+    registerFallbackValue(_FakeHttpRequestUriPartsValue());
+    registerFallbackValue(HttpMethodConstants.GET);
+  });
+
+  tearDown(() {
+    reset(googleSignInWrapper);
+    reset(dioWrapper);
+  });
+
+  group(
+    "$AuthRemoteDataSource",
+    () {
+      group(
+        ".getAuth",
+        () {
+          // should return AuthenitcatedPlayerRemoteRemoteEntity when authenticated
+          test(
+            "given user is authenticated"
+            "when .getAuth() is called"
+            "then should return AuthenticatedPlayerRemoteEntity",
+            () async {
+              // setup
+              const expectedEntity = AuthenticatedPlayerRemoteEntity(
+                playerId: 1,
+                playerName: "playerName",
+                playerNickname: "playerNickname",
+              );
+
+              // given
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                    "ok": true,
+                    "message": "User authentication retrieved successfully",
+                    "data": {
+                      "id": expectedEntity.playerId,
+                      "name": expectedEntity.playerName,
+                      "nickname": expectedEntity.playerNickname,
+                    },
+                  }));
+
+              // when
+              final result = await dataSource.getAuth();
+
+              // then
+              expect(result, equals(expectedEntity));
+
+              // cleanup
+            },
+          );
+
+          // should return null when not authenticated
+          test(
+            "given user is not authenticated"
+            "when .getAuth() is called"
+            "then should return null",
+            () async {
+              // setup
+
+              // given
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                    "ok": false,
+                    "message": "Invalid access token",
+                  }));
+
+              // when
+              final result = await dataSource.getAuth();
+
+              // then
+              expect(result, isNull);
+
+              // cleanup
+            },
+          );
+        },
+      );
+    },
+  );
+}
+
+class _MockGoogleSignInWrapper extends Mock implements GoogleSignInWrapper {}
+
+class _MockDioWrapper extends Mock implements DioWrapper {}
+
+class _FakeHttpRequestUriPartsValue extends Fake
+    implements HttpRequestUriPartsValue {}
+
+
+
+
+
+
+
+
+
+
 // TODO come back to this
 
 

@@ -100,7 +100,7 @@ class DioWrapper {
   //   return data;
   // }
 
-  Future<T> makeRequest<T>({
+  Future<HttpResponseValue<T>> makeRequest<T extends Map>({
     required HttpRequestUriPartsValue uriParts,
     required HttpMethodConstants method,
     Object? bodyData,
@@ -124,7 +124,11 @@ class DioWrapper {
       args: args,
     );
 
-    return data;
+    final responseValue = HttpResponseValue<T>(
+      payload: data,
+    );
+
+    return responseValue;
   }
 
   Future<T> _makeRequest<T>({
@@ -156,11 +160,17 @@ class DioWrapper {
   }
 }
 
+// TODO move to values
+class HttpResponseValue<T extends Map> {
+  HttpResponseValue({
+    required this.payload,
+  });
 
+  final T payload;
 
-
-
-
+  bool get isOk => payload["ok"] == true;
+  String get message => payload["message"];
+}
 
 // OLD
 
@@ -174,7 +184,7 @@ class DioWrapper {
 // import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 // import 'package:five_on_4_mobile/src/wrappers/local/dio_cookie_interceptor/dio_cookie_interceptor_wrapper.dart';
 
-// /* 
+// /*
 
 // void main() async {
 //   final dio = Dio();
@@ -187,11 +197,6 @@ class DioWrapper {
 //   // Second request with the cookies
 //   await dio.get('https://dart.dev');
 // }
-
-
-
-
-
 
 //  */
 

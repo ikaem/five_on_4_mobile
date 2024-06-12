@@ -4,5 +4,5 @@ import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_p
 abstract interface class AuthRemoteDataSource {
   Future<String> verifyGoogleSignIn();
   Future<AuthRemoteEntity> authenticateWithGoogle(String idToken);
-  Future<AuthenticatedPlayerRemoteEntity> getAuth();
+  Future<AuthenticatedPlayerRemoteEntity?> getAuth();
 }
