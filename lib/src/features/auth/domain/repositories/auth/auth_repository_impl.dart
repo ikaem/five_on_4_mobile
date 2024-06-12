@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status
 import 'package:five_on_4_mobile/src/features/auth/domain/models/auth_data/auth_data_model.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/values/anthenticated_player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/converters/authenticated_player_converters.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/helpers/converters/auth_data_converter.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
@@ -50,22 +51,23 @@ class AuthRepositoryImpl implements AuthRepository {
 // TODO rename this
   @override
   Stream<bool> get authStatusStream {
-    return _authStatusDataSource.authDataStatusStream
-        .distinct()
-        .map((authData) {
-      final isLoggedIn = authData != null;
-      return isLoggedIn;
-    });
-  }
+    throw UnimplementedError();
+    //   return _authStatusDataSource.authDataStatusStream
+    //       .distinct()
+    //       .map((authData) {
+    //     final isLoggedIn = authData != null;
+    //     return isLoggedIn;
+    //   });
+    // }
 
-  @override
-  AuthDataModel? get auth {
-    final authDataEntity = _authStatusDataSource.authDataStatus;
-    if (authDataEntity == null) return null;
+    // @override
+    // AuthDataModel? get auth {
+    //   final authDataEntity = _authStatusDataSource.authDataStatus;
+    //   if (authDataEntity == null) return null;
 
-    final authDataModel =
-        AuthDataConverter.toModelFromEntity(entity: authDataEntity);
-    return authDataModel;
+    //   final authDataModel =
+    //       AuthDataConverter.toModelFromEntity(entity: authDataEntity);
+    //   return authDataModel;
   }
 
   @override
@@ -93,5 +95,23 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> checkAuthenticatedPlayer() async {
     // TODO: implement checkAuthenticatedPlayer
     throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement auth
+  AuthDataModel? get auth => throw UnimplementedError();
+
+  @override
+  Future<void> loadAuthenticatedPlayerFromRemote() async {
+    final remoteEntity = await _authRemoteDataSource.getAuth();
+    if (remoteEntity == null) return;
+
+    final localEntityValue = AuthenticatedPlayerLocalEntityValue(
+      playerId: remoteEntity.playerId,
+      playerName: remoteEntity.playerName,
+      playerNickname: remoteEntity.playerNickname,
+    );
+
+    await _authLocalDataSource.storeAuthenticatedPlayerEntity(localEntityValue);
   }
 }

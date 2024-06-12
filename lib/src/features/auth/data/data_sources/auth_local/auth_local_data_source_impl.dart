@@ -52,11 +52,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     await _databaseWrapper.authenticatedPlayerRepo.deleteAll();
 
     // TODO this is also acceptable by the insertOne signature - maybe could be better because all items are required
-    final entityData = AuthenticatedPlayerLocalEntityData(
-      playerId: entityValue.playerId,
-      playerName: entityValue.playerName,
-      playerNickname: entityValue.playerNickname,
-    );
+    // final entityData = AuthenticatedPlayerLocalEntityData(
+    //   playerId: entityValue.playerId,
+    //   playerName: entityValue.playerName,
+    //   playerNickname: entityValue.playerNickname,
+    // );
 
     final companion = AuthenticatedPlayerLocalEntityCompanion.insert(
       playerId: Value(entityValue.playerId),

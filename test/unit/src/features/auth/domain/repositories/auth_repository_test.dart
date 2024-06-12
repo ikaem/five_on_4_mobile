@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
+import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/values/anthenticated_player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/converters/authenticated_player_converters.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/helpers/converters/auth_data_converter.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
@@ -29,6 +31,10 @@ void main() {
     authRemoteDataSource: authRemoteDataSource,
   );
 
+  setUpAll(() {
+    registerFallbackValue(_FakeAuthenticatedPlayerLocalEntityValue());
+  });
+
   tearDown(() {
     reset(authStatusDataSource);
     reset(authLocalDataSource);
@@ -39,67 +45,90 @@ void main() {
   group(
     "$AuthRepository",
     () {
-      // TODO come back to this
-      // group(".checkAuthenticatedPlayer", () {
-      //   // should make call to remote data source to get player
+      group(
+        ".loadAuthenticatedPlayerFromRemote",
+        () {
+          // should load authenticated player from remote
 
-      //   test(
-      //     "given nothing in particular"
-      //     "when .checkAuthenticatedPlayer() is called"
-      //     "then should make a call to AuthRemoteDataSource to get authenticated player",
-      //     () async {
-      //       // setup
+          test(
+            "given remote player is authenticated"
+            "when call .loadAuthenticatedPlayerFromRemote()"
+            "then should pass remote AuthenticatedPlayerEntity to local data source to store",
+            () async {
+              // setup
+              const remoteEntity = AuthenticatedPlayerRemoteEntity(
+                playerId: 1,
+                playerName: "playerName",
+                playerNickname: "playerNickname",
+              );
+              final localEntityValue = AuthenticatedPlayerLocalEntityValue(
+                playerId: remoteEntity.playerId,
+                playerName: remoteEntity.playerName,
+                playerNickname: remoteEntity.playerNickname,
+              );
 
-      //       // given
-      //       // when(() => authRemoteDataSource.g)
+              // given
+              when(() => authRemoteDataSource.getAuth()).thenAnswer(
+                (_) async {
+                  return remoteEntity;
+                },
+              );
+              when(() => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                    any(),
+                  )).thenAnswer(
+                (_) async {
+                  return remoteEntity.playerId;
+                },
+              );
 
-      //       // when
-      //       await authRepository.checkAuthenticatedPlayer();
+              // when
+              await authRepository.loadAuthenticatedPlayerFromRemote();
 
-      //       // then
+              // then
 
-      //       // cleanup
-      //     },
-      //   );
+              verify(() => authRemoteDataSource.getAuth()).called(1);
+              verify(
+                () => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                  localEntityValue,
+                ),
+              ).called(1);
 
-      //   test(
-      //     "given there is no authenticated player"
-      //     "when .checkAuthenticatedPlayer() is called"
-      //     "then should pass null to local data source ",
-      //     () async {
-      //       // setup
+              // cleanup
+            },
+          );
 
-      //       // given
+          test(
+            "given remote player is NOT authenticated"
+            "when call .loadAuthenticatedPlayerFromRemote()"
+            "then should NOT call local data source to store",
+            () async {
+              // setup
+              const remoteEntity = null;
 
-      //       // when
+              // given
+              when(() => authRemoteDataSource.getAuth()).thenAnswer(
+                (_) async {
+                  return remoteEntity;
+                },
+              );
 
-      //       // then
+              // when
+              await authRepository.loadAuthenticatedPlayerFromRemote();
 
-      //       // cleanup
-      //     },
-      //   );
+              // then
 
-      //   test(
-      //     "given there is an authenticated player"
-      //     "when .checkAuthenticatedPlayer() is called"
-      //     "then should pass the player to local data source",
-      //     () async {
-      //       // setup
+              verify(() => authRemoteDataSource.getAuth()).called(1);
+              verifyNever(
+                () => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                  any(),
+                ),
+              );
 
-      //       // given
-
-      //       // when
-
-      //       // then
-
-      //       // cleanup
-      //     },
-      //   );
-
-      //   // should pass this result to local data source to store player
-      // });
-
-      // TODO also get authetnicated player
+              // cleanup
+            },
+          );
+        },
+      );
 
       group(".getAuthenticatedPlayerModelStream()", () {
         test(
@@ -217,5 +246,6 @@ class _MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
 
 class _MockFlutterSecureStorageWrapper extends Mock
     implements FlutterSecureStorageWrapper {}
-// TODO we will need remote data source
-// class _MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
+
+class _FakeAuthenticatedPlayerLocalEntityValue extends Fake
+    implements AuthenticatedPlayerLocalEntityValue {}
