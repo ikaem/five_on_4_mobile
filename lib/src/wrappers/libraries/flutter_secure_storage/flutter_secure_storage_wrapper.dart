@@ -3,12 +3,20 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class FlutterSecureStorageWrapper {
+  // TODO make this for all
+  @visibleForTesting
   const FlutterSecureStorageWrapper({
     required FlutterSecureStorage secureStorage,
   }) : _secureStorage = secureStorage;
 
   // TODO this might be good to be provided to the wrapper
   final FlutterSecureStorage _secureStorage;
+
+  factory FlutterSecureStorageWrapper.createDefault() {
+    return const FlutterSecureStorageWrapper(
+      secureStorage: FlutterSecureStorage(),
+    );
+  }
 
   Future<void> storeAccessToken(String accessToken) async {
     await _saveKeyValue(

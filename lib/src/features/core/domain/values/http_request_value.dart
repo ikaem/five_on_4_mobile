@@ -35,7 +35,9 @@ class HttpRequestUriPartsValue extends Equatable {
       // port: port,
       scheme: apiUrlScheme,
       host: apiBaseUrl,
-      path: '$apiContextPath/$apiEndpointPath',
+      // TODO api contect path not needed for now
+      // path: '$apiContextPath/$apiEndpointPath',
+      path: apiEndpointPath,
       queryParameters: queryParameters,
     );
   }

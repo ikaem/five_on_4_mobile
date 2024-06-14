@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/provider/get_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/provider/load_match_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_match_controller.g.dart";
@@ -13,12 +14,15 @@ part 'get_match_controller_state.dart';
 
 @riverpod
 class GetMatchController extends _$GetMatchController {
-  late final LoadMatchUseCase loadMatchUseCase = ref.read(
-    loadMatchUseCaseProvider,
-  );
-  late final GetMatchUseCase getMatchUseCase = ref.read(
-    getMatchUseCaseProvider,
-  );
+  // late final LoadMatchUseCase loadMatchUseCase = ref.read(
+  //   loadMatchUseCaseProvider,
+  // );
+  // late final GetMatchUseCase getMatchUseCase = ref.read(
+  //   getMatchUseCaseProvider,
+  // );
+
+  final loadMatchUseCase = GetItWrapper.get<LoadMatchUseCase>();
+  final getMatchUseCase = GetItWrapper.get<GetMatchUseCase>();
 
   @override
   Future<GetMatchControllerState> build({

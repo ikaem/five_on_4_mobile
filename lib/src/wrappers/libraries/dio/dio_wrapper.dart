@@ -5,6 +5,9 @@ import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_va
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
 
+// errors throwing solution
+// https://github.com/cfug/dio/issues/2056
+
 class DioWrapper {
   DioWrapper({
     required Interceptor interceptor,

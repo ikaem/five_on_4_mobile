@@ -1,3 +1,7 @@
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller_provider.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/provider/go_router_wrapper_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,12 +34,35 @@ class FiveOn4App extends ConsumerStatefulWidget {
 }
 
 class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
-  late final _router = ref.read(goRouterWrapperProvider).getRouter();
+  // late final _router = ref.read(goRouterWrapperProvider).getRouter();
   // final router = getRouter();
   // final router = GoRouterWrapper().getRouter();
 
+// TODO maaaybe this can go up outside the app
+  late final _router = GoRouterWrapper(
+          authStatusController:
+              ref.read<AuthStatusController>(authStatusControllerProvider))
+      .getRouter();
+
   @override
   Widget build(BuildContext context) {
+    // ref.listen<AuthStatusController>(authStatusControllerProvider,
+    //     (previous, next) {
+    //   final isError = next.isError;
+    //   if (!isError) return;
+
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text(
+    //           "There was an error with getting the authentication status. Please try again later,"),
+    //     ),
+    //   );
+
+    //   context.go(RoutePathsConstants.LOGIN.value);
+    // });
+
+    // authStatusController.
+
     // final isLoggedIn = ref.watch(authStatusControllerProvider).when(
     //       data: (data) => data == true,
     //       loading: () => false,

@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // TODO test this
@@ -17,6 +18,19 @@ class GoogleSignInWrapper {
   //           // TODO no scopes for now
   //         ],
   //       );
+
+  factory GoogleSignInWrapper.createDefault({
+    required EnvVarsWrapper envVarsWrapper,
+  }) {
+    return GoogleSignInWrapper(
+      googleSignIn: GoogleSignIn(
+        serverClientId: envVarsWrapper.googleAuthServerId,
+        scopes: [
+          // TODO no scopes for now
+        ],
+      ),
+    );
+  }
 
   final GoogleSignIn _googleSignIn;
 

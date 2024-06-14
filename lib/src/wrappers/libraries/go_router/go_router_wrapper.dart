@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/error_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
@@ -135,7 +136,8 @@ class GoRouterWrapper {
           path: RoutePathsConstants.ERROR.value,
           // parentNavigatorKey: _rootNavigatorKey,
           builder: (context, state) {
-            return const Text("This is error");
+            // return const Text("This is error");
+            return const ErrorScreen();
           },
         ),
       ],
@@ -148,9 +150,10 @@ class GoRouterWrapper {
           return RoutePathsConstants.LOADING.value;
         }
 
-        if (isError) {
-          return RoutePathsConstants.ERROR.value;
-        }
+        // TODO test only
+        // if (isError) {
+        //   return RoutePathsConstants.ERROR.value;
+        // }
 
         if (!isLoggedIn) {
           return RoutePathsConstants.LOGIN.value;

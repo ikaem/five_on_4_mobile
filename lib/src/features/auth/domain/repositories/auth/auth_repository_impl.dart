@@ -13,18 +13,18 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/p
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({
     required AuthLocalDataSource authLocalDataSource,
-    required AuthStatusDataSource authStatusDataSource,
+    // required AuthStatusDataSource authStatusDataSource,
     required AuthRemoteDataSource authRemoteDataSource,
-    required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
+    // required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
   })  : _authLocalDataSource = authLocalDataSource,
-        _authStatusDataSource = authStatusDataSource,
-        _authRemoteDataSource = authRemoteDataSource,
-        _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+        // _authStatusDataSource = authStatusDataSource,
+        _authRemoteDataSource = authRemoteDataSource;
+  // _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
 
   final AuthLocalDataSource _authLocalDataSource;
-  final AuthStatusDataSource _authStatusDataSource;
+  // final AuthStatusDataSource _authStatusDataSource;
   final AuthRemoteDataSource _authRemoteDataSource;
-  final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
+  // final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
 
   @override
   Future<void> checkAuth() async {
