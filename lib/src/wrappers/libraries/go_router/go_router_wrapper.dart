@@ -40,6 +40,7 @@ class GoRouterWrapper {
       //   error: (error, stackTrace) => null,
       // ),
       refreshListenable: authStatusController,
+      // refreshListenable: GoRouterRefreshStream
 
       navigatorKey: _rootNavigatorKey,
       routes: [
@@ -146,20 +147,40 @@ class GoRouterWrapper {
         final isError = authStatusController.isError;
         final isLoading = authStatusController.isLoading;
 
-        if (isLoading) {
-          return RoutePathsConstants.LOADING.value;
+        // TODO abstract this
+        if (isError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "There was an error with getting the authentication status. Please login or try again later,"),
+            ),
+          );
         }
-
-        // TODO test only
-        // if (isError) {
-        //   return RoutePathsConstants.ERROR.value;
-        // }
 
         if (!isLoggedIn) {
           return RoutePathsConstants.LOGIN.value;
+          // context.replace(RoutePathsConstants.LOGIN.value);
+          // return null;
         }
 
-        return state.uri.path;
+        return null;
+
+        // return null;
+
+        // if (isLoading) {
+        //   return RoutePathsConstants.LOADING.value;
+        // }
+
+        // // TODO test only
+        // // if (isError) {
+        // //   return RoutePathsConstants.ERROR.value;
+        // // }
+
+        // if (!isLoggedIn) {
+        //   return RoutePathsConstants.LOGIN.value;
+        // }
+
+        // return state.uri.path;
       },
     );
   }

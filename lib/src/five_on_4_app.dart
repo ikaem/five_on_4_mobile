@@ -46,6 +46,10 @@ class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
 
   @override
   Widget build(BuildContext context) {
+    // ref.listen(authStatusControllerProvider, (previous, next) {
+    //   print("hello");
+    // });
+
     // ref.listen<AuthStatusController>(authStatusControllerProvider,
     //     (previous, next) {
     //   final isError = next.isError;
@@ -58,7 +62,7 @@ class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
     //     ),
     //   );
 
-    //   context.go(RoutePathsConstants.LOGIN.value);
+    //   // context.go(RoutePathsConstants.LOGIN.value);
     // });
 
     // authStatusController.
