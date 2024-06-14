@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
@@ -9,6 +10,8 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/google_sign_in/google_sign_in_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   final googleSignInWrapper = _MockGoogleSignInWrapper();
@@ -33,6 +36,105 @@ void main() {
   group(
     "$AuthRemoteDataSource",
     () {
+      group(".authenticateWithGoogle", () {
+        // should return AuthenitcatedPlayerRemoteRemoteEntity when authenticated
+        test(
+          "given user is authenticated"
+          "when .authenticateWithGoogle() is called"
+          "then should return AuthenticatedPlayerRemoteEntity",
+          () async {
+            // setup
+            const expectedEntity = AuthenticatedPlayerRemoteEntity(
+              playerId: 1,
+              playerName: "playerName",
+              playerNickname: "playerNickname",
+            );
+
+            // given
+            when(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"),
+              ),
+            ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                  "ok": true,
+                  "message": "User authentication retrieved successfully",
+                  "data": {
+                    "id": expectedEntity.playerId,
+                    "name": expectedEntity.playerName,
+                    "nickname": expectedEntity.playerNickname,
+                  },
+                }));
+
+            // when
+            final result = await dataSource.authenticateWithGoogle("idToken");
+
+            // then
+            expect(result, equals(expectedEntity));
+
+            // cleanup
+          },
+        );
+
+        // should throw expected exception when not authenticated
+        test(
+          "given user is not authenticated"
+          "when .authenticateWithGoogle() is called"
+          "then should throw expected exception",
+          () async {
+            // setup
+
+            // given
+            when(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"),
+              ),
+            ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                  "ok": false,
+                  "message": "Unable to validate idToken",
+                }));
+
+            // when / then
+            expect(
+              () => dataSource.authenticateWithGoogle("idToken"),
+              throwsExceptionWithMessage<
+                  AuthExceptionFailedToAuthenticateWithGoogle>(
+                const AuthExceptionFailedToAuthenticateWithGoogle().message,
+              ),
+            );
+
+            // cleanup
+          },
+        );
+
+        // TODO this will all actually throw
+      });
+
+      group(".getGoogleSignInToken", () {
+        // should return expected token
+        test(
+          "given Google Sign in idToken is available"
+          "when .getGoogleSignInIdToken() is called"
+          "then should return expected token",
+          () async {
+            // setup
+
+            // given
+            when(() => googleSignInWrapper.signInAndGetIdToken())
+                .thenAnswer((_) async => "idToken");
+
+            // when
+            final result = await dataSource.getGoogleSignInIdToken();
+
+            // then
+            expect(result, equals("idToken"));
+
+            // cleanup
+          },
+        );
+      });
+
       group(
         ".getAuth",
         () {
@@ -166,24 +268,7 @@ class _MockDioWrapper extends Mock implements DioWrapper {}
 class _FakeHttpRequestUriPartsValue extends Fake
     implements HttpRequestUriPartsValue {}
 
-
-
-
-
-
-
-
-
-
 // TODO come back to this
-
-
-
-
-
-
-
-
 
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
@@ -535,23 +620,9 @@ class _FakeHttpRequestUriPartsValue extends Fake
 
 // // TODO plan
 
-// /* 
-// - we have logic to ping google sign in which returns token id to the controller 
+// /*
+// - we have logic to ping google sign in which returns token id to the controller
 // - we have logic that that accepts the token id and sends it in a request to the server
 // - once the response arrives to the app, its business as usual - we get usualy response as with all other login flows
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //  */

@@ -22,6 +22,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final DioWrapper _dioWrapper;
 
   @override
+  Future<String> getGoogleSignInIdToken() async {
+    final token = await _googleSignInWrapper.signInAndGetIdToken();
+    return token;
+  }
+
+  @Deprecated("Replaced by getGoogleSignInIdToken()")
+  @override
   Future<String> verifyGoogleSignIn() async {
     // final token = await _googleSignInWrapper.signInAndGetIdToken();
     // return token;
@@ -29,8 +36,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<AuthRemoteEntity> authenticateWithGoogle(String idToken) async {
-    throw UnimplementedError();
+  Future<AuthenticatedPlayerRemoteEntity> authenticateWithGoogle(
+      String idToken) async {
+    final uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.POST,
+    );
+
+    if (!response.isOk) {
+      // TODO this should probably be submitted to crashlitcs or sentry or something
+      log("Something went wrong with getAuth(): ${response.message}");
+
+      throw const AuthExceptionFailedToAuthenticateWithGoogle();
+      // return null;
+      // TODO throwing so that info can propagate to the controller and inform the user
+    }
+
+    final authenticatedPlayerRemoteEntity =
+        AuthenticatedPlayerRemoteEntity.fromJson(response.payload["data"]);
+    return authenticatedPlayerRemoteEntity;
 
     // TODO come back to this
     // final urilParts = HttpRequestUriPartsValue(
@@ -82,6 +114,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (!response.isOk) {
       // TODO this should probably be submitted to crashlitcs or sentry or something
       log("Something went wrong with getAuth(): ${response.message}");
+      // TODO maybe this should throw too
       return null;
     }
 
