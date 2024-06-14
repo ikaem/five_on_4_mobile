@@ -14,6 +14,20 @@ sealed class AuthException implements ExceptionWithMessage {
   }
 }
 
+class AuthCannotRetrieveGoogleAccountException extends AuthException {
+  const AuthCannotRetrieveGoogleAccountException()
+      : super(
+          message: "Unable to retrieve account from Google Sign In",
+        );
+}
+
+class AuthGoogleSignInIdTokenNullException extends AuthException {
+  const AuthGoogleSignInIdTokenNullException()
+      : super(
+          message: "Google SignIn idToken is null",
+        );
+}
+
 class AuthNotLoggedInException extends AuthException {
   const AuthNotLoggedInException()
       : super(
