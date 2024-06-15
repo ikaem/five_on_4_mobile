@@ -37,6 +37,8 @@ void main() {
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
 
+              // TODO will need to override getit to return a mock
+
               // given
 
               // when
