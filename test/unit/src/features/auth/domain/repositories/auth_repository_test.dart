@@ -19,15 +19,15 @@ import '../../../../../../utils/data/test_entities.dart';
 import '../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
-  final authStatusDataSource = _MockAuthStatusDataSource();
   final authLocalDataSource = _MockAuthLocalDataSource();
-  final flutterSecureStorageWrapper = _MockFlutterSecureStorageWrapper();
+  // final authStatusDataSource = _MockAuthStatusDataSource();
+  // final flutterSecureStorageWrapper = _MockFlutterSecureStorageWrapper();
   final authRemoteDataSource = _MockAuthRemoteDataSource();
 
   final authRepository = AuthRepositoryImpl(
     authLocalDataSource: authLocalDataSource,
-    authStatusDataSource: authStatusDataSource,
-    flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+    // authStatusDataSource: authStatusDataSource,
+    // flutterSecureStorageWrapper: flutterSecureStorageWrapper,
     authRemoteDataSource: authRemoteDataSource,
   );
 
@@ -36,15 +36,206 @@ void main() {
   });
 
   tearDown(() {
-    reset(authStatusDataSource);
     reset(authLocalDataSource);
-    reset(flutterSecureStorageWrapper);
     reset(authRemoteDataSource);
+    // reset(authStatusDataSource);
+    // reset(flutterSecureStorageWrapper);
   });
 
   group(
     "$AuthRepository",
     () {
+      group(
+        ".authenticateWithGoogle()",
+        () {
+          // it should call get google sign in id token
+          test(
+            "given nothing in particular"
+            "when call .authenticateWithGoogle()"
+            "then should call AuthRemoteDataSource.getGoogleSignInIdToken()",
+            () async {
+              // setup
+              when(() => authRemoteDataSource.getGoogleSignInIdToken())
+                  .thenAnswer(
+                (_) async {
+                  return "idToken";
+                },
+              );
+              when(() => authRemoteDataSource.authenticateWithGoogle("idToken"))
+                  .thenAnswer(
+                (_) async {
+                  return const AuthenticatedPlayerRemoteEntity(
+                    playerId: 1,
+                    playerName: "playerName",
+                    playerNickname: "playerNickname",
+                  );
+                },
+              );
+              when(() => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                    any(),
+                  )).thenAnswer(
+                (_) async {
+                  return 1;
+                },
+              );
+
+              // given
+
+              // when
+              await authRepository.authenticateWithGoogle();
+
+              // then
+              verify(() => authRemoteDataSource.getGoogleSignInIdToken())
+                  .called(1);
+
+              // cleanup
+            },
+          );
+
+          // it should call authenticate with google
+          test(
+            "given idToken is obtained successfully"
+            "when call .authenticateWithGoogle()"
+            "then should call AuthRemoteDataSource.authenticateWithGoogle()",
+            () async {
+              // setup
+              when(() => authRemoteDataSource.authenticateWithGoogle("idToken"))
+                  .thenAnswer(
+                (_) async {
+                  return const AuthenticatedPlayerRemoteEntity(
+                    playerId: 1,
+                    playerName: "playerName",
+                    playerNickname: "playerNickname",
+                  );
+                },
+              );
+              when(() => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                    any(),
+                  )).thenAnswer(
+                (_) async {
+                  return 1;
+                },
+              );
+
+              // given
+              when(() => authRemoteDataSource.getGoogleSignInIdToken())
+                  .thenAnswer(
+                (_) async {
+                  return "idToken";
+                },
+              );
+
+              // when
+              await authRepository.authenticateWithGoogle();
+
+              // then
+              verify(
+                () => authRemoteDataSource.authenticateWithGoogle("idToken"),
+              ).called(1);
+
+              // cleanup
+            },
+          );
+
+          // it should call store authenticated data when user is authenticated normally
+          test(
+            "given user is authenticated"
+            "when call .authenticateWithGoogle()"
+            "then should call AuthLocalDataSource.storeAuthenticatedPlayerEntity()",
+            () async {
+              // setup
+              when(() => authRemoteDataSource.getGoogleSignInIdToken())
+                  .thenAnswer(
+                (_) async {
+                  return "idToken";
+                },
+              );
+              when(() => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                    any(),
+                  )).thenAnswer(
+                (_) async {
+                  return 1;
+                },
+              );
+
+              // given
+              when(() => authRemoteDataSource.authenticateWithGoogle("idToken"))
+                  .thenAnswer(
+                (_) async {
+                  return const AuthenticatedPlayerRemoteEntity(
+                    playerId: 1,
+                    playerName: "playerName",
+                    playerNickname: "playerNickname",
+                  );
+                },
+              );
+
+              // when
+              await authRepository.authenticateWithGoogle();
+
+              // then
+              const expectedLocalEntityValue =
+                  AuthenticatedPlayerLocalEntityValue(
+                playerId: 1,
+                playerName: "playerName",
+                playerNickname: "playerNickname",
+              );
+
+              verify(
+                () => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                  expectedLocalEntityValue,
+                ),
+              ).called(1);
+
+              // cleanup
+            },
+          );
+
+          // it should return normally if user is authenticated
+          test(
+            "given user is authenticated"
+            "when call .authenticateWithGoogle()"
+            "then should return normally",
+            () async {
+              // setup
+              when(() => authRemoteDataSource.getGoogleSignInIdToken())
+                  .thenAnswer(
+                (_) async {
+                  return "idToken";
+                },
+              );
+              when(() => authRemoteDataSource.authenticateWithGoogle("idToken"))
+                  .thenAnswer(
+                (_) async {
+                  return const AuthenticatedPlayerRemoteEntity(
+                    playerId: 1,
+                    playerName: "playerName",
+                    playerNickname: "playerNickname",
+                  );
+                },
+              );
+              when(() => authLocalDataSource.storeAuthenticatedPlayerEntity(
+                    any(),
+                  )).thenAnswer(
+                (_) async {
+                  return 1;
+                },
+              );
+
+              // given
+
+              // when / then
+              expect(() => authRepository.authenticateWithGoogle(),
+                  returnsNormally);
+
+              // cleanup
+            },
+          );
+
+          // TODO there should be tests for throwing specific errors maybe? to make sure it does not handle errors
+        },
+      );
+
       group(
         ".loadAuthenticatedPlayerFromRemote",
         () {
@@ -191,49 +382,49 @@ void main() {
         );
       });
 
-      group(
-        ".authDataStatus",
-        () {
-          test(
-            "given user is logged in"
-            "when .authDataStatus is called"
-            "then should return expected value",
-            () {
-              // final authDataEntity =
-              final authDataEntity = getTestAuthDataEntities(count: 1).first;
-              final authDataModel = AuthDataConverter.toModelFromEntity(
-                entity: authDataEntity,
-              );
+      // group(
+      //   ".authDataStatus",
+      //   () {
+      //     test(
+      //       "given user is logged in"
+      //       "when .authDataStatus is called"
+      //       "then should return expected value",
+      //       () {
+      //         // final authDataEntity =
+      //         final authDataEntity = getTestAuthDataEntities(count: 1).first;
+      //         final authDataModel = AuthDataConverter.toModelFromEntity(
+      //           entity: authDataEntity,
+      //         );
 
-              // Given
-              when(() => authStatusDataSource.authDataStatus)
-                  .thenReturn(authDataEntity);
+      //         // Given
+      //         when(() => authStatusDataSource.authDataStatus)
+      //             .thenReturn(authDataEntity);
 
-              // When
-              final result = authRepository.auth;
+      //         // When
+      //         final result = authRepository.auth;
 
-              // Then
-              expect(result, authDataModel);
-            },
-          );
+      //         // Then
+      //         expect(result, authDataModel);
+      //       },
+      //     );
 
-          test(
-            "given user is NOT logged in"
-            "when .authDataStatus is called"
-            "then should return expected value",
-            () {
-              // Given
-              when(() => authStatusDataSource.authDataStatus).thenReturn(null);
+      //     test(
+      //       "given user is NOT logged in"
+      //       "when .authDataStatus is called"
+      //       "then should return expected value",
+      //       () {
+      //         // Given
+      //         when(() => authStatusDataSource.authDataStatus).thenReturn(null);
 
-              // When
-              final result = authRepository.auth;
+      //         // When
+      //         final result = authRepository.auth;
 
-              // Then
-              expect(result, isNull);
-            },
-          );
-        },
-      );
+      //         // Then
+      //         expect(result, isNull);
+      //       },
+      //     );
+      //   },
+      // );
     },
   );
 }

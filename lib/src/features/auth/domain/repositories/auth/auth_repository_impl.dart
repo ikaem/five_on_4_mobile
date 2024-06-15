@@ -114,4 +114,20 @@ class AuthRepositoryImpl implements AuthRepository {
 
     await _authLocalDataSource.storeAuthenticatedPlayerEntity(localEntityValue);
   }
+
+  @override
+  Future<void> authenticateWithGoogle() async {
+    final idToken = await _authRemoteDataSource.getGoogleSignInIdToken();
+
+    final authenticatedPlayerEntity =
+        await _authRemoteDataSource.authenticateWithGoogle(idToken);
+
+    // TODO make converter for this
+    final localEntityValue = AuthenticatedPlayerLocalEntityValue(
+      playerId: authenticatedPlayerEntity.playerId,
+      playerName: authenticatedPlayerEntity.playerName,
+      playerNickname: authenticatedPlayerEntity.playerNickname,
+    );
+    await _authLocalDataSource.storeAuthenticatedPlayerEntity(localEntityValue);
+  }
 }

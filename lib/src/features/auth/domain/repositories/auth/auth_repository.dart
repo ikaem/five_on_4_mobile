@@ -6,6 +6,7 @@ abstract interface class AuthRepository {
   Future<void> checkAuth();
   Stream<bool> get authStatusStream;
 
+// TODO deprecate this
   Future<void> loginWithGoogle();
 
   Stream<AuthenticatedPlayerModel?> getAuthenticatedPlayerModelStream();
@@ -15,6 +16,8 @@ abstract interface class AuthRepository {
   Future<void> checkAuthenticatedPlayer();
 
   Future<void> loadAuthenticatedPlayerFromRemote();
+
+  Future<void> authenticateWithGoogle();
 }
 
 /* 
