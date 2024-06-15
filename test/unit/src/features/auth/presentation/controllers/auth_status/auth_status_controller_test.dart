@@ -2,22 +2,33 @@ import 'dart:async';
 
 import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model_stream/get_authenticated_player_model_stream_use_case.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/load_authenticated_player_from_remote/load_authenticated_player_from_remote_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 void main() {
   final getAuthenticatedPlayerModelStreamUseCase =
       _MockGetAuthenticatedPlayerModelStreamUseCase();
+  final loadAuthenticatedPlayerFromRemoteUseCase =
+      _MockLoadAuthenticatedPlayerFromRemoteUseCase();
 
-  // tested class
-  // final controller = AuthStatusController(
-  //   getAuthenticatedPlayerModelStreamUseCase:
-  //       getAuthenticatedPlayerModelStreamUseCase,
-  // );
+// TODO missing tests for checking behavior with loadAuthenticatedPlayerFromRemoteUseCase
+
+  setUpAll(() {
+    // TODO will need to override getit to return a mock
+    getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
+      getAuthenticatedPlayerModelStreamUseCase,
+    );
+    getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
+      loadAuthenticatedPlayerFromRemoteUseCase,
+    );
+  });
 
   tearDown(() {
     reset(getAuthenticatedPlayerModelStreamUseCase);
+    reset(loadAuthenticatedPlayerFromRemoteUseCase);
   });
 
   group(
@@ -36,16 +47,17 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
-
-              // TODO will need to override getit to return a mock
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase())
+                  .thenAnswer((_) async {});
 
               // given
 
               // when
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
-              );
+              // final controller = AuthStatusController(
+              //   getAuthenticatedPlayerModelStreamUseCase:
+              //       getAuthenticatedPlayerModelStreamUseCase,
+              // );
+              final controller = AuthStatusController();
 
               // then
               expect(controller.isLoggedIn, false);
@@ -64,11 +76,15 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase())
+                  .thenAnswer((_) async {});
 
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
-              );
+              // final controller = AuthStatusController(
+              //   getAuthenticatedPlayerModelStreamUseCase:
+              //       getAuthenticatedPlayerModelStreamUseCase,
+              // );
+
+              final controller = AuthStatusController();
 
               // given
               streamController.add(const AuthenticatedPlayerModel(
@@ -97,11 +113,14 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase())
+                  .thenAnswer((_) async {});
 
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
-              );
+              // final controller = AuthStatusController(
+              //   getAuthenticatedPlayerModelStreamUseCase:
+              //       getAuthenticatedPlayerModelStreamUseCase,
+              // );
+              final controller = AuthStatusController();
 
               // given
               streamController.addError(Exception());
@@ -131,14 +150,13 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase())
+                  .thenAnswer((_) async {});
 
               // given
 
               // when
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
-              );
+              final controller = AuthStatusController();
 
               // then
               expect(controller.isError, false);
@@ -157,11 +175,15 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
-
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase()).thenAnswer(
+                (_) async {},
               );
+
+              // final controller = AuthStatusController(
+              //   getAuthenticatedPlayerModelStreamUseCase:
+              //       getAuthenticatedPlayerModelStreamUseCase,
+              // );
+              final controller = AuthStatusController();
 
               // given
               streamController.addError(Exception());
@@ -186,11 +208,15 @@ void main() {
                   StreamController<AuthenticatedPlayerModel?>();
               when(() => getAuthenticatedPlayerModelStreamUseCase())
                   .thenAnswer((_) => streamController.stream);
-
-              final controller = AuthStatusController(
-                getAuthenticatedPlayerModelStreamUseCase:
-                    getAuthenticatedPlayerModelStreamUseCase,
+              when(() => loadAuthenticatedPlayerFromRemoteUseCase()).thenAnswer(
+                (_) async {},
               );
+
+              // final controller = AuthStatusController(
+              //   getAuthenticatedPlayerModelStreamUseCase:
+              //       getAuthenticatedPlayerModelStreamUseCase,
+              // );
+              final controller = AuthStatusController();
 
               // given
               streamController.add(null);
@@ -218,14 +244,17 @@ void main() {
                 StreamController<AuthenticatedPlayerModel?>();
             when(() => getAuthenticatedPlayerModelStreamUseCase())
                 .thenAnswer((_) => streamController.stream);
+            when(() => loadAuthenticatedPlayerFromRemoteUseCase())
+                .thenAnswer((_) async {});
 
             // given
 
             // when
-            final controller = AuthStatusController(
-              getAuthenticatedPlayerModelStreamUseCase:
-                  getAuthenticatedPlayerModelStreamUseCase,
-            );
+            // final controller = AuthStatusController(
+            //   getAuthenticatedPlayerModelStreamUseCase:
+            //       getAuthenticatedPlayerModelStreamUseCase,
+            // );
+            final controller = AuthStatusController();
 
             // then
             expect(controller.isLoading, true);
@@ -244,11 +273,11 @@ void main() {
                 StreamController<AuthenticatedPlayerModel?>();
             when(() => getAuthenticatedPlayerModelStreamUseCase())
                 .thenAnswer((_) => streamController.stream);
-
-            final controller = AuthStatusController(
-              getAuthenticatedPlayerModelStreamUseCase:
-                  getAuthenticatedPlayerModelStreamUseCase,
+            when(() => loadAuthenticatedPlayerFromRemoteUseCase()).thenAnswer(
+              (_) async {},
             );
+
+            final controller = AuthStatusController();
 
             // given
             streamController.add(null);
@@ -273,11 +302,11 @@ void main() {
                 StreamController<AuthenticatedPlayerModel?>();
             when(() => getAuthenticatedPlayerModelStreamUseCase())
                 .thenAnswer((_) => streamController.stream);
-
-            final controller = AuthStatusController(
-              getAuthenticatedPlayerModelStreamUseCase:
-                  getAuthenticatedPlayerModelStreamUseCase,
+            when(() => loadAuthenticatedPlayerFromRemoteUseCase()).thenAnswer(
+              (_) async {},
             );
+
+            final controller = AuthStatusController();
 
             // given
             streamController.addError(Exception());
@@ -298,3 +327,6 @@ void main() {
 
 class _MockGetAuthenticatedPlayerModelStreamUseCase extends Mock
     implements GetAuthenticatedPlayerModelStreamUseCase {}
+
+class _MockLoadAuthenticatedPlayerFromRemoteUseCase extends Mock
+    implements LoadAuthenticatedPlayerFromRemoteUseCase {}

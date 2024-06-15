@@ -21,9 +21,11 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/google_sign_in/google_si
 import 'package:five_on_4_mobile/src/wrappers/libraries/path_provider/path_provider_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-final _getIt = GetIt.instance;
+@visibleForTesting
+final getIt = GetIt.instance;
 
 abstract class GetItWrapper {
   static T get<T extends Object>({
@@ -32,7 +34,7 @@ abstract class GetItWrapper {
     String? instanceName,
     Type? type,
   }) {
-    return _getIt.get<T>(
+    return getIt.get<T>(
       param1: param1,
       param2: param2,
       instanceName: instanceName,
@@ -119,21 +121,19 @@ abstract class GetItWrapper {
     );
 
     // register use case singletons
-    _getIt
-        .registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
-    _getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
-    _getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
-    _getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
-    _getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
-    _getIt
-        .registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
-    _getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
+    getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
+    getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
+    getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
+    getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
+    getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
+    getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
+    getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
         getAuthenticatedPlayerModelStreamUseCase);
-    _getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
+    getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
         loadAuthenticatedPlayerFromRemoteUseCase);
 
     // register wrappers
-    _getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);
+    getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);
     // _getIt.registerSingleton<GoRouterWrapper>(goRouterWrapper);
   }
 }
