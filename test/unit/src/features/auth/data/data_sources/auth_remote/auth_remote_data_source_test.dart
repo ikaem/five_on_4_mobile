@@ -108,6 +108,59 @@ void main() {
           },
         );
 
+        test(
+          "given .authenticateWithGoogle() is called"
+          "when examine request to the server"
+          "then should call DioWrapper.makeRequest() with expected arguments",
+          () async {
+            // setup
+            final expectedUriParts = HttpRequestUriPartsValue(
+              apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+              apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+              apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+              apiEndpointPath:
+                  HttpAuthConstants.BACKEND_ENDPOINT_PATH_AUTH_GOOGLE.value,
+              queryParameters: null,
+            );
+            const expectedMethod = HttpMethodConstants.POST;
+
+            when(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"),
+              ),
+            ).thenAnswer((invocation) async => HttpResponseValue(payload: {
+                  "ok": true,
+                  "message": "User authentication retrieved successfully",
+                  "data": {
+                    "id": 1,
+                    "name": "playerName",
+                    "nickname": "playerNickname",
+                  },
+                }));
+
+            // given
+            await dataSource.authenticateWithGoogle("idToken");
+
+            // when
+            final captured = verify(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: captureAny(named: "uriParts"),
+                method: captureAny(named: "method"),
+              ),
+            ).captured;
+
+            // then
+            final actualUriParts = captured[0] as HttpRequestUriPartsValue;
+            final actualMethod = captured[1] as HttpMethodConstants;
+
+            expect(actualUriParts, equals(expectedUriParts));
+            expect(actualMethod, equals(expectedMethod));
+
+            // cleanup
+          },
+        );
+
         // TODO this will all actually throw
       });
 

@@ -42,7 +42,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
       apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
       apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-      apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
+      apiEndpointPath:
+          HttpAuthConstants.BACKEND_ENDPOINT_PATH_AUTH_GOOGLE.value,
       queryParameters: null,
     );
 
