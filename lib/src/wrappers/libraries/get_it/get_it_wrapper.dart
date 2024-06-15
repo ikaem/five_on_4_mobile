@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/authenticate_with_google/authenticate_with_google_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model_stream/get_authenticated_player_model_stream_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/load_authenticated_player_from_remote/load_authenticated_player_from_remote_use_case.dart';
@@ -119,6 +120,9 @@ abstract class GetItWrapper {
         LoadAuthenticatedPlayerFromRemoteUseCase(
       authRepository: authRepository,
     );
+    final authenticateWithGoogleUseCase = AuthenticateWithGoogleUseCase(
+      authRepository: authRepository,
+    );
 
     // register use case singletons
     getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
@@ -131,6 +135,8 @@ abstract class GetItWrapper {
         getAuthenticatedPlayerModelStreamUseCase);
     getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
         loadAuthenticatedPlayerFromRemoteUseCase);
+    getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
+        authenticateWithGoogleUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);
