@@ -163,7 +163,9 @@ class GoRouterWrapper {
           // return null;
         }
 
-        return null;
+        // TODO this redirection needs more work
+        // return null;
+        return "/";
 
         // return null;
 

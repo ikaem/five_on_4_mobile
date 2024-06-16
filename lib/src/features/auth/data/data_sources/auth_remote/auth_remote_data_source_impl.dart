@@ -37,7 +37,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<AuthenticatedPlayerRemoteEntity> authenticateWithGoogle(
-      String idToken) async {
+    String idToken,
+  ) async {
     final uriParts = HttpRequestUriPartsValue(
       apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
       apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
@@ -50,6 +51,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
       uriParts: uriParts,
       method: HttpMethodConstants.POST,
+      bodyData: {
+        // TODO is there constants for this somewhere
+        "idToken": idToken,
+      },
     );
 
     if (!response.isOk) {

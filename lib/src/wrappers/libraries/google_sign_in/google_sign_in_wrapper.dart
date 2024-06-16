@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +56,8 @@ class GoogleSignInWrapper {
       // throw Exception('Google SignIn idToken is null');
       throw const AuthGoogleSignInIdTokenNullException();
     }
+
+    log("GoogleSignInWrapper: idToken: $idToken");
 
     return idToken;
   }

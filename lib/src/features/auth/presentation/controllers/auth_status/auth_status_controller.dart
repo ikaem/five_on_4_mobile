@@ -61,21 +61,21 @@ class AuthStatusController extends ChangeNotifier {
     // notifyListeners();
     try {
       await _loadAuthenticatedPlayerFromRemoteUseCase();
-
-      _authenticatedPlayerModelSubscription =
-          _getAuthenticatedPlayerModelStreamUseCase().listen(
-        (event) {
-          final isLoggedIn = event != null;
-          _isLoggedIn = isLoggedIn;
-          _isLoading = false;
-          _isError = false;
-          notifyListeners();
-        },
-        onError: _handleError,
-      );
     } catch (e) {
       _handleError(e);
     }
+
+    _authenticatedPlayerModelSubscription =
+        _getAuthenticatedPlayerModelStreamUseCase().listen(
+      (event) {
+        final isLoggedIn = event != null;
+        _isLoggedIn = isLoggedIn;
+        _isLoading = false;
+        _isError = false;
+        notifyListeners();
+      },
+      onError: _handleError,
+    );
 
 /*     
 
