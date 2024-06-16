@@ -17,20 +17,23 @@ class AuthenticateWithGoogleController
   // - error
 
   @override
-  AsyncValue<void> build() {
+  AsyncValue<bool> build() {
     _handleDispose();
 
-    return const AsyncValue.data(null);
+    return const AsyncValue.data(false);
   }
 
-  Future<void> handleAuthenticate() async {
+  Future<void> onAuthenticate() async {
     try {
       state = const AsyncValue.loading();
       await authenticateWithGoogleUseCase();
+      state = const AsyncValue.data(true);
     } catch (e, s) {
       // TODO handle error
 
-      state = AsyncValue.error(e, s);
+      // state = AsyncValue.error(e, s);
+      // TODO empty because i dont know how
+      state = AsyncValue.error(e, StackTrace.empty);
     }
   }
 

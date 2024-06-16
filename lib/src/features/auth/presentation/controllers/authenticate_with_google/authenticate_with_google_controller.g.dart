@@ -7,12 +7,12 @@ part of 'authenticate_with_google_controller.dart';
 // **************************************************************************
 
 String _$authenticateWithGoogleControllerHash() =>
-    r'1ef1676685e93c4f3fbb95c55fbbae88252783fb';
+    r'c012134895ed817ec775f928b3fb47c85988d29d';
 
 /// See also [AuthenticateWithGoogleController].
 @ProviderFor(AuthenticateWithGoogleController)
 final authenticateWithGoogleControllerProvider = AutoDisposeNotifierProvider<
-    AuthenticateWithGoogleController, AsyncValue<void>>.internal(
+    AuthenticateWithGoogleController, AsyncValue<bool>>.internal(
   AuthenticateWithGoogleController.new,
   name: r'authenticateWithGoogleControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final authenticateWithGoogleControllerProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$AuthenticateWithGoogleController
-    = AutoDisposeNotifier<AsyncValue<void>>;
+    = AutoDisposeNotifier<AsyncValue<bool>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
