@@ -50,15 +50,18 @@ abstract class GetItWrapper {
     // wrappers
 
     final envVarsWrapper = EnvVarsWrapper();
-    final dioWrapper = DioWrapper.createDefault();
+    final flutterSecureStorageWrapper =
+        FlutterSecureStorageWrapper.createDefault();
+
+    final dioWrapper = DioWrapper.createDefault(
+      flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+    );
     // final goRouterWrapper = GoRouterWrapper(
     //   authStatusController: authStatusController,
     // );
     final googleSignInWrapper =
         GoogleSignInWrapper.createDefault(envVarsWrapper: envVarsWrapper);
     const pathProviderWrapper = PathProviderWrapper();
-    final flutterSecureStorageWrapper =
-        FlutterSecureStorageWrapper.createDefault();
     final databaseWrapper = DatabaseWrapper.createDefault();
 
     // TODO maybe these dont need to be registered at all?

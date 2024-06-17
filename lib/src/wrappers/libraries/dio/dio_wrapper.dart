@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/core/domain/exceptions/http_except
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 
 // errors throwing solution
 // https://github.com/cfug/dio/issues/2056
@@ -18,9 +19,14 @@ class DioWrapper {
     _dio = dio;
   }
 
-  factory DioWrapper.createDefault() {
+  factory DioWrapper.createDefault({
+    required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
+  }) {
+    // TODO maybe even add some base options here
     final dio = Dio();
-    const interceptor = DioInterceptor();
+    final interceptor = DioInterceptor(
+      flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+    );
 
     return DioWrapper(
       interceptor: interceptor,
