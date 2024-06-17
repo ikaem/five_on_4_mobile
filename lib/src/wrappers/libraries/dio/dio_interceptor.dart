@@ -1,10 +1,20 @@
 // TODO sourcing intercepotor solution form here
 // https://dhruvnakum.xyz/networking-in-flutter-interceptors
 
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 
 class DioInterceptor extends Interceptor {
-  const DioInterceptor();
+  const DioInterceptor({
+    required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
+  }) : _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+
+  final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
 
   @override
   Future<void> onRequest(
@@ -21,7 +31,32 @@ class DioInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) async {
+    final requestUriPath = response.requestOptions.uri.path;
+
+    final isLogoutRequest =
+        requestUriPath == HttpAuthConstants.BACKEND_ENDPOINT_PATH_LOGOUT.value;
+    if (isLogoutRequest) {
+      return await _handleLogoutResponse(handler, response);
+    }
+
+    final accessToken = response.headers
+        .value(AuthResponseConstants.ACCESS_JWT_HEADER_KEY.value);
+    if (accessToken != null) {
+      await _handleStoreAccessTokenFromResponse(accessToken);
+    }
+
+    // TODO for now we know we will get only one cookie
+    // TODO do research how to split the string of cookins coming from backend to be able to handle multiple cookies
+    final cookiesString = response.headers.value(HttpHeaders.setCookieHeader);
+    if (cookiesString != null) {
+      await _handleStoreRefreshTokenCookieFromResponse(cookiesString);
+    }
+
     return handler.resolve(response);
+    // TODO this is ok too - it works
+    // super.onResponse(response, handler);
+
+    // return handler.resolve(response);
     // TODO this is also legit , it would be the same
     // super.onResponse(response, handler);
   }
@@ -34,6 +69,38 @@ class DioInterceptor extends Interceptor {
 
     // TODO this is also legit , it would be the same
     super.onError(err, handler);
+  }
+
+  Future<void> _handleLogoutResponse(
+    ResponseInterceptorHandler handler,
+    Response<dynamic> response,
+  ) async {
+    await _flutterSecureStorageWrapper.clearAccessToken();
+    await _flutterSecureStorageWrapper.clearRefreshTokenCookie();
+
+    return handler.resolve(response);
+  }
+
+  Future<void> _handleStoreRefreshTokenCookieFromResponse(
+    String cookiesString,
+  ) async {
+    try {
+      // TODO this parses the cookie string into a cookie object - only the cookie that is from set-cookie header
+      // it means it will have all values
+      // TODO delegate this to cookies handler
+      final cookie = Cookie.fromSetCookieValue(cookiesString);
+      if (cookie.name != "refreshToken") return;
+
+      final cookieString = cookie.toString();
+      await _flutterSecureStorageWrapper.storeRefreshTokenCookie(cookieString);
+    } catch (e) {
+      // TODO log this
+      log("Error parsing cookie string: $e");
+    }
+  }
+
+  Future<void> _handleStoreAccessTokenFromResponse(String accessToken) async {
+    await _flutterSecureStorageWrapper.storeAccessToken(accessToken);
   }
 }
 
