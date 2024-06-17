@@ -36,6 +36,160 @@ void main() {
   group(
     "$AuthRemoteDataSource",
     () {
+      group(
+        ".signOut",
+        () {
+          // should call google sign in wrapper sign out
+          test(
+            "given nothing in particular"
+            "when .signOut() is called"
+            "then should call GoogleSignInWrapper.signOut()",
+            () async {
+              // setup
+              when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                    uriParts: any(named: "uriParts"),
+                    method: any(named: "method"),
+                  )).thenAnswer(
+                (_) async => HttpResponseValue(
+                  payload: {
+                    "ok": true,
+                    "message": "Logout successful.",
+                  },
+                ),
+              );
+              when(() => googleSignInWrapper.signOut())
+                  .thenAnswer((_) async {});
+
+              // given
+
+              // when
+              await dataSource.signOut();
+
+              // then
+              verify(() => googleSignInWrapper.signOut());
+
+              // cleanup
+            },
+          );
+          // should call dio wrapper with expected arguments
+          test(
+            "given nothing in particular"
+            "when .signOut() is called"
+            "then should call DioWrapper.makeRequest() with expected arguments",
+            () async {
+              // setup
+              when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                    uriParts: any(named: "uriParts"),
+                    method: any(named: "method"),
+                  )).thenAnswer(
+                (_) async => HttpResponseValue(
+                  payload: {
+                    "ok": true,
+                    "message": "Logout successful.",
+                  },
+                ),
+              );
+              when(() => googleSignInWrapper.signOut())
+                  .thenAnswer((_) async {});
+
+              // given
+
+              // when
+              await dataSource.signOut();
+
+              // then
+              final expectedUriParts = HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+                apiEndpointPath:
+                    HttpAuthConstants.BACKEND_ENDPOINT_PATH_LOGOUT.value,
+                queryParameters: null,
+              );
+
+              verify(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                    uriParts: expectedUriParts,
+                    method: HttpMethodConstants.POST,
+                  ));
+
+              // cleanup
+            },
+          );
+
+          // should throw expected exception if response not ok
+          test(
+            "given a remote request non-ok response"
+            "when .signOut() is called"
+            "then should throw expected exception",
+            () async {
+              // setup
+
+              // given
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer((invocation) async => HttpResponseValue(
+                    payload: {
+                      "ok": false,
+                      "message": "Failed to sign out",
+                    },
+                  ));
+
+              // when // then
+              expect(
+                () => dataSource.signOut(),
+                throwsExceptionWithMessage<AuthExceptionSignoutFailed>(
+                  const AuthExceptionSignoutFailed().message,
+                ),
+              );
+
+              // then
+
+              // cleanup
+            },
+          );
+
+          // should return normally
+          test(
+            "given a non-error signout"
+            "when .signOut() is called"
+            "then should return normally",
+            () async {
+              // setup
+
+              // given
+              when(
+                () => googleSignInWrapper.signOut(),
+              ).thenAnswer((_) async {});
+
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer((invocation) async => HttpResponseValue(
+                    payload: {
+                      "ok": true,
+                      "message": "Logout successful.",
+                    },
+                  ));
+
+              // when / then
+              expect(
+                () => dataSource.signOut(),
+                returnsNormally,
+              );
+
+              // then
+
+              // cleanup
+            },
+          );
+        },
+      );
+
       group(".authenticateWithGoogle", () {
         // should return AuthenitcatedPlayerRemoteRemoteEntity when authenticated
         test(

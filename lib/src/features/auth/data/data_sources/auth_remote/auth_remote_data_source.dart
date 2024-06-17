@@ -9,4 +9,5 @@ abstract interface class AuthRemoteDataSource {
   // TODO outdated
   Future<String> verifyGoogleSignIn();
   Future<AuthenticatedPlayerRemoteEntity?> getAuth();
+  Future<void> signOut();
 }

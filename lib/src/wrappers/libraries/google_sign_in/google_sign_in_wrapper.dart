@@ -63,6 +63,7 @@ class GoogleSignInWrapper {
   }
 
 // TODO dont forget to call this as well on regular logout
+// TODO this is not tested yet
   Future<void> signOut() async {
     await _googleSignIn.signOut();
   }

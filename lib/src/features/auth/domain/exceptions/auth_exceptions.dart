@@ -28,6 +28,13 @@ class AuthGoogleSignInIdTokenNullException extends AuthException {
         );
 }
 
+class AuthExceptionSignoutFailed extends AuthException {
+  const AuthExceptionSignoutFailed()
+      : super(
+          message: "Failed to sign out",
+        );
+}
+
 // TODO rename all exceptions to have AuthException prefix
 class AuthExceptionFailedToAuthenticateWithGoogle extends AuthException {
   const AuthExceptionFailedToAuthenticateWithGoogle()

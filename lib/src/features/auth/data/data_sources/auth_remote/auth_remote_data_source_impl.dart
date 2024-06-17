@@ -36,6 +36,36 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
+  Future<void> signOut() async {
+    // TODO: implement signOut
+    // it needs to:
+    // 1. sign out of google
+    await _googleSignInWrapper.signOut();
+    // 2. sign out of the backend
+    final uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_LOGOUT.value,
+      queryParameters: null,
+    );
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.POST,
+    );
+
+    if (!response.isOk) {
+      // TODO this should probably be submitted to crashlitcs or sentry or something
+      log("Something went wrong with signOut(): ${response.message}");
+      throw const AuthExceptionSignoutFailed();
+    }
+    // TODO this should be done by the dio interceptor - because it has access to secure storage
+    // 3. remove the access token from the local storage
+    // 4. remove the refresh token from the local storage
+    // throw UnimplementedError();
+  }
+
+  @override
   Future<AuthenticatedPlayerRemoteEntity> authenticateWithGoogle(
     String idToken,
   ) async {
@@ -69,37 +99,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final authenticatedPlayerRemoteEntity =
         AuthenticatedPlayerRemoteEntity.fromJson(response.payload["data"]);
     return authenticatedPlayerRemoteEntity;
-
-    // TODO come back to this
-    // final urilParts = HttpRequestUriPartsValue(
-    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-    //   apiEndpointPath:
-    //       HttpAuthConstants.BACKEND_ENDPOINT_PATH_AUTH_GOOGLE.value,
-    //   queryParameters: null,
-    // );
-
-    // final response = await _dioWrapper.post<Map<String, dynamic>>(
-    //   uriParts: urilParts,
-    //   bodyData: {
-    //     "idToken": idToken,
-    //   },
-    // );
-
-    // // TODO temp
-    // if (response == null) {
-    //   throw const AuthSomethingWentWrongException(
-    //       contextMessage: ".authenticateWithGoogle()");
-    // }
-
-    // if (response["ok"] != true) {
-    //   // TODO this will also need to be rethought
-    //   throw Exception("Something went wrong with google sign in");
-    // }
-
-    // final authRemoteEntity = AuthRemoteEntity.fromJson(response["data"]);
-    // return authRemoteEntity;
   }
 
   @override
@@ -127,35 +126,5 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final authenticatedPlayerRemoteEntity =
         AuthenticatedPlayerRemoteEntity.fromJson(response.payload["data"]);
     return authenticatedPlayerRemoteEntity;
-
-    // make extension on this
-    // TODO or make some kind of wrapper around response
-
-    // TODO come back to this
-    // final uriParts = HttpRequestUriPartsValue(
-    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-    //   apiEndpointPath: HttpAuthConstants.BACKEND_ENDPOINT_PATH_GET_AUTH.value,
-    //   queryParameters: null,
-    // );
-
-    // final response = await _dioWrapper.get<Map<String, dynamic>>(
-    //   uriParts: uriParts,
-    // );
-
-    // // TODO temp
-    // if (response == null) {
-    //   throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
-    // }
-
-    // if (response["ok"] != true) {
-    //   // TODO this will also need to be rethought
-    //   throw const AuthSomethingWentWrongException(contextMessage: ".getAuth()");
-    // }
-
-    // final authenticatedPlayerRemoteEntity =
-    //     AuthenticatedPlayerRemoteEntity.fromJson(response["data"]);
-    // return authenticatedPlayerRemoteEntity;
   }
 }
