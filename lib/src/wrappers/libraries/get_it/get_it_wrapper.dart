@@ -5,6 +5,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/authenticate
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model_stream/get_authenticated_player_model_stream_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/load_authenticated_player_from_remote/load_authenticated_player_from_remote_use_case.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source_impl.dart';
@@ -126,8 +127,13 @@ abstract class GetItWrapper {
     final authenticateWithGoogleUseCase = AuthenticateWithGoogleUseCase(
       authRepository: authRepository,
     );
+    final signOutUseCase = SignOutUseCase(
+      authRepository: authRepository,
+    );
 
     // register use case singletons
+    // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
+    // but then we would have to expose repositories via getIt
     getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
     getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
@@ -140,6 +146,7 @@ abstract class GetItWrapper {
         loadAuthenticatedPlayerFromRemoteUseCase);
     getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
         authenticateWithGoogleUseCase);
+    getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);

@@ -7,7 +7,7 @@ part of 'authenticate_with_google_controller.dart';
 // **************************************************************************
 
 String _$authenticateWithGoogleControllerHash() =>
-    r'c012134895ed817ec775f928b3fb47c85988d29d';
+    r'081cf62f9dd1e61007daa10240f4610dd06ca7c6';
 
 /// See also [AuthenticateWithGoogleController].
 @ProviderFor(AuthenticateWithGoogleController)
