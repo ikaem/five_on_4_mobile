@@ -105,6 +105,9 @@ class AuthStatusController extends ChangeNotifier {
     _isLoading = false;
     // TODO dont forget to logout completely somehow
     _isLoggedIn = false;
+
+    // TODO this could also use signout use case to signout user
+
     notifyListeners();
   }
 

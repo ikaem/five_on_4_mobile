@@ -20,16 +20,6 @@ part "matches_type.dart";
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
-  // late final LoadMyMatchesUseCase loadMyMatchesUseCase =
-  //     ref.read(loadMyMatchesUseCaseProvider);
-
-  // late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
-  //     ref.read(getMyTodayMatchesUseCaseProvider);
-  // late final GetMyPastMatchesUseCase getMyPastMatchesUseCase =
-  //     ref.read(getMyPastMatchesUseCaseProvider);
-  // late final GetMyUpcomingMatchesUseCase getMyUpcomingMatchesUseCase =
-  //     ref.read(getMyUpcomingMatchesUseCaseProvider);
-
   final loadMyMatchesUseCase = GetItWrapper.get<LoadMyMatchesUseCase>();
   final getMyTodayMatchesUseCase = GetItWrapper.get<GetMyTodayMatchesUseCase>();
   final getMyPastMatchesUseCase = GetItWrapper.get<GetMyPastMatchesUseCase>();
