@@ -53,7 +53,49 @@ void main() async {
 
   group("$AuthLocalDataSource", () {
     group(
-      ".getAuthenticatedPlayerLocalEntityData",
+      ".deleteAuthenticatedPlayerEntity()",
+      () {
+        // should remove all elements from db
+        test(
+          "given existing elements in the db"
+          "when '.deleteAuthenticatedPlayerEntity()' is called"
+          "then should delete all elements from the db",
+          () async {
+            // setup
+
+            // given
+            testDatabaseWrapper.databaseWrapper.transaction(() async {
+              for (int i = 0; i < 3; i++) {
+                await testDatabaseWrapper
+                    .databaseWrapper.authenticatedPlayerRepo
+                    .insertOne(
+                  AuthenticatedPlayerLocalEntityData(
+                    playerId: i,
+                    playerName: "playerName",
+                    playerNickname: "playerNickname",
+                  ),
+                );
+              }
+            });
+
+            // when
+            await authLocalDataSource.deleteAuthenticatedPlayerEntities();
+
+            // then
+            final allEntities = await testDatabaseWrapper
+                .databaseWrapper.authenticatedPlayerRepo
+                .select()
+                .get();
+            expect(allEntities, isEmpty);
+
+            // cleanup
+          },
+        );
+      },
+    );
+
+    group(
+      ".getAuthenticatedPlayerLocalEntityData()",
       () {
         // should return null if no elements in db
         test(
@@ -325,7 +367,7 @@ void main() async {
             const playerName = "playerName";
             const playerNickname = "playerNickname";
 
-            final authenticatedPlayerEntityValue =
+            const authenticatedPlayerEntityValue =
                 AuthenticatedPlayerLocalEntityValue(
               playerId: playerId,
               playerName: playerName,
@@ -368,7 +410,7 @@ void main() async {
             const playerNickname = "playerNickname";
 
             // given
-            final authenticatedPlayerEntityValue =
+            const authenticatedPlayerEntityValue =
                 AuthenticatedPlayerLocalEntityValue(
               playerId: playerId,
               playerName: playerName,
@@ -398,7 +440,7 @@ void main() async {
             const playerName = "playerName";
             const playerNickname = "playerNickname";
 
-            final newAuthewnticatdPlayerEntityValue =
+            const newAuthewnticatdPlayerEntityValue =
                 AuthenticatedPlayerLocalEntityValue(
               playerId: playerId,
               playerName: playerName,

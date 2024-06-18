@@ -45,10 +45,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
+  Future<void> deleteAuthenticatedPlayerEntities() async {
+    await _databaseWrapper.authenticatedPlayerRepo.deleteAll();
+  }
+
+  @override
   Future<int> storeAuthenticatedPlayerEntity(
     AuthenticatedPlayerLocalEntityValue entityValue,
   ) async {
 // TODO delete all existing authenticated players
+// TODO this should probably go into transaction
     await _databaseWrapper.authenticatedPlayerRepo.deleteAll();
 
     // TODO this is also acceptable by the insertOne signature - maybe could be better because all items are required

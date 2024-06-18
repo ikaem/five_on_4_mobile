@@ -15,6 +15,7 @@ abstract interface class AuthLocalDataSource {
   Future<int> storeAuthenticatedPlayerEntity(
     AuthenticatedPlayerLocalEntityValue entityValue,
   );
+  Future<void> deleteAuthenticatedPlayerEntities();
 
   // Stream<List<AuthenticatedPlayerLocalEntityData?>>
   //     getAuthenticatedPlayersLocalEntityDataStream();
