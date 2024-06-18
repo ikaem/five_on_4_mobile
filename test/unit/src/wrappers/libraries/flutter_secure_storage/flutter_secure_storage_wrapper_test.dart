@@ -21,28 +21,29 @@ void main() {
     "FlutterSecureStorageWrapper",
     () {
       group(
-        ".storeAuthId",
+        ".storeAccessToken",
         () {
+          // should store access token in secure storage
+
           test(
-            "given authId argument is provided"
-            "when '.storeAuthId()' is called"
-            "then should store authId in secure storage",
+            "given accessToken argument is provided"
+            "when '.storeAccessToken()' is called"
+            "then should store accessToken in secure storage",
             () async {
               // setup
 
               // given
-              const authId = 1;
+              const accessToken = "accessToken";
 
               // when
-              await secureStorageWrapper.storeAuthId(authId);
+              await secureStorageWrapper.storeAccessToken(accessToken);
 
               // then
-              final storedAuthIdString = await secureStorage.read(
-                key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+              final storedAccessToken = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
               );
-              final storedAuthId = int.tryParse(storedAuthIdString ?? "");
 
-              expect(storedAuthId, authId);
+              expect(storedAccessToken, accessToken);
 
               // cleanup
             },
@@ -51,46 +52,48 @@ void main() {
       );
 
       group(
-        ".getAuthId",
+        ".getAccessToken",
         () {
           test(
-            "given authId is stored in secure storage"
-            "when '.getAuthId()' is called"
-            "then should return expectedAuthId",
+            "given accessToken is stored in secure storage"
+            "when '.getAccessToken()' is called"
+            "then should return expectedAccessToken",
             () async {
               // setup
-              const authId = 1;
+              const accessToken = "accessToken";
               // store manually
 
               // given
               secureStorage.write(
-                key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-                value: authId.toString(),
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
+                value: accessToken,
               );
 
               // when
-              final retrievedAuthId = await secureStorageWrapper.getAuthId();
+              final retrievedAccessToken =
+                  await secureStorageWrapper.getAccessToken();
 
               // then
-              expect(retrievedAuthId, authId);
+              expect(retrievedAccessToken, accessToken);
 
               // cleanup
             },
           );
 
           test(
-            "given authId is not stored in secure storage"
-            "when '.getAuthId()' is called"
+            "given accessToken is not stored in secure storage"
+            "when '.getAccessToken()' is called"
             "then should return null",
             () async {
               // setup
               // given
 
               // when
-              final retrievedAuthId = await secureStorageWrapper.getAuthId();
+              final retrievedAccessToken =
+                  await secureStorageWrapper.getAccessToken();
 
               // then
-              expect(retrievedAuthId, isNull);
+              expect(retrievedAccessToken, isNull);
 
               // cleanup
             },
@@ -99,27 +102,30 @@ void main() {
       );
 
       group(
-        ".storeAccessCookie()",
+        ".clearAccessToken",
         () {
           test(
-            "given accessCookie argument is provided"
-            "when '.storeAccessCookie()' is called"
-            "then should store accessCookie in secure storage",
+            "given accessToken is stored in secure storage"
+            "when '.clearAccessToken()' is called"
+            "then should delete accessToken in secure storage",
             () async {
               // setup
 
               // given
-              const accessCookie = "accessCookie";
-
-              // when
-              await secureStorageWrapper.storeAccessCookie(accessCookie);
-
-              // then
-              final storedAccessCookie = await secureStorage.read(
-                key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+              await secureStorage.write(
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
+                value: "accessToken",
               );
 
-              expect(storedAccessCookie, accessCookie);
+              // when
+              await secureStorageWrapper.clearAccessToken();
+
+              // then
+              final deletedAccessToken = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
+              );
+
+              expect(deletedAccessToken, isNull);
 
               // cleanup
             },
@@ -128,48 +134,81 @@ void main() {
       );
 
       group(
-        ".getAccessCookie()",
+        ".storeRefreshTokenCookie",
         () {
+          // should store refresh token cookie in secure storage
+
           test(
-            "given accessCookie is stored in secure storage"
-            "when '.getAccessCookie()' is called"
-            "then should return expectedAccessCookie",
+            "given refreshTokenCookie argument is provided"
+            "when '.storeRefreshTokenCookie()' is called"
+            "then should store refreshTokenCookie in secure storage",
             () async {
               // setup
-              const accessCookie = "accessCookie";
+
+              // given
+              const refreshTokenCookie = "refreshTokenCookie";
+
+              // when
+              await secureStorageWrapper.storeRefreshTokenCookie(
+                refreshTokenCookie,
+              );
+
+              // then
+              final storedRefreshTokenCookie = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+              );
+
+              expect(storedRefreshTokenCookie, refreshTokenCookie);
+
+              // cleanup
+            },
+          );
+        },
+      );
+
+      group(
+        ".getRefreshTokenCookie",
+        () {
+          test(
+            "given refreshTokenCookie is stored in secure storage"
+            "when '.getRefreshTokenCookie()' is called"
+            "then should return expectedRefreshTokenCookie",
+            () async {
+              // setup
+              const refreshTokenCookie = "refreshTokenCookie";
               // store manually
 
               // given
               secureStorage.write(
-                key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
-                value: accessCookie,
+                key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+                value: refreshTokenCookie,
               );
 
               // when
-              final retrievedAccessCookie =
-                  await secureStorageWrapper.getAccessCookie();
+              final retrievedRefreshTokenCookie =
+                  await secureStorageWrapper.getRefreshTokenCookie();
 
               // then
-              expect(retrievedAccessCookie, accessCookie);
+              expect(retrievedRefreshTokenCookie, refreshTokenCookie);
 
               // cleanup
             },
           );
 
           test(
-            "given accessCookie is not stored in secure storage"
-            "when '.getAccessCookie()' is called"
+            "given refreshTokenCookie is not stored in secure storage"
+            "when '.getRefreshTokenCookie()' is called"
             "then should return null",
             () async {
               // setup
               // given
 
               // when
-              final retrievedAccessCookie =
-                  await secureStorageWrapper.getAccessCookie();
+              final retrievedRefreshTokenCookie =
+                  await secureStorageWrapper.getRefreshTokenCookie();
 
               // then
-              expect(retrievedAccessCookie, isNull);
+              expect(retrievedRefreshTokenCookie, isNull);
 
               // cleanup
             },
@@ -177,37 +216,263 @@ void main() {
         },
       );
 
+      group(".clearRefreshTokenCookie", () {
+        test(
+          "given refreshTokenCookie is stored in secure storage"
+          "when '.clearRefreshTokenCookie()' is called"
+          "then should delete refreshTokenCookie in secure storage",
+          () async {
+            // setup
+
+            // given
+            await secureStorage.write(
+              key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+              value: "refreshTokenCookie",
+            );
+
+            // when
+            await secureStorageWrapper.clearRefreshTokenCookie();
+
+            // then
+            final deletedRefreshTokenCookie = await secureStorage.read(
+              key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+            );
+
+            expect(deletedRefreshTokenCookie, isNull);
+
+            // cleanup
+          },
+        );
+      });
+
       group(
-        ".deleteAuthData()",
+        ".deleteAll",
         () {
-          test("should delete token and authId from secure storage WHEN called",
-              () async {
-            const accessCookie = "accessCookie";
-            const authId = 1;
+          test(
+            "given existing data in secure storage"
+            "when '.deleteAll()' is called"
+            "then should delete all data in secure storage",
+            () async {
+              // setup
 
-            await secureStorage.write(
-              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-              value: authId.toString(),
-            );
-            await secureStorage.write(
-              key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
-              value: accessCookie,
-            );
+              // given
+              await secureStorage.write(
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
+                value: "accessToken",
+              );
+              await secureStorage.write(
+                key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+                value: "refreshToken",
+              );
 
-            await secureStorageWrapper.clearAuthData();
+              // when
+              await secureStorageWrapper.deleteAll();
 
-            final deletedAccessCookie = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
-            );
-            final deletedAuthIdString = await secureStorage.read(
-              key: SecureStorageAuthKeyConstants.AUTH_ID.value,
-            );
+              // then
+              final deletedAccessToken = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.ACCESS_TOKEN.value,
+              );
+              final deletedRefreshTokenCookie = await secureStorage.read(
+                key: SecureStorageAuthKeyConstants.REFRESH_TOKEN_COOKIE.value,
+              );
 
-            expect(deletedAccessCookie, isNull);
-            expect(deletedAuthIdString, isNull);
-          });
+              expect(deletedAccessToken, isNull);
+              expect(deletedRefreshTokenCookie, isNull);
+
+              // cleanup
+            },
+          );
         },
       );
+
+      // group(
+      //   ".storeAuthId",
+      //   () {
+      //     test(
+      //       "given authId argument is provided"
+      //       "when '.storeAuthId()' is called"
+      //       "then should store authId in secure storage",
+      //       () async {
+      //         // setup
+
+      //         // given
+      //         const authId = 1;
+
+      //         // when
+      //         await secureStorageWrapper.storeAuthId(authId);
+
+      //         // then
+      //         final storedAuthIdString = await secureStorage.read(
+      //           key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      //         );
+      //         final storedAuthId = int.tryParse(storedAuthIdString ?? "");
+
+      //         expect(storedAuthId, authId);
+
+      //         // cleanup
+      //       },
+      //     );
+      //   },
+      // );
+
+      // group(
+      //   ".getAuthId",
+      //   () {
+      //     test(
+      //       "given authId is stored in secure storage"
+      //       "when '.getAuthId()' is called"
+      //       "then should return expectedAuthId",
+      //       () async {
+      //         // setup
+      //         const authId = 1;
+      //         // store manually
+
+      //         // given
+      //         secureStorage.write(
+      //           key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      //           value: authId.toString(),
+      //         );
+
+      //         // when
+      //         final retrievedAuthId = await secureStorageWrapper.getAuthId();
+
+      //         // then
+      //         expect(retrievedAuthId, authId);
+
+      //         // cleanup
+      //       },
+      //     );
+
+      //     test(
+      //       "given authId is not stored in secure storage"
+      //       "when '.getAuthId()' is called"
+      //       "then should return null",
+      //       () async {
+      //         // setup
+      //         // given
+
+      //         // when
+      //         final retrievedAuthId = await secureStorageWrapper.getAuthId();
+
+      //         // then
+      //         expect(retrievedAuthId, isNull);
+
+      //         // cleanup
+      //       },
+      //     );
+      //   },
+      // );
+
+      // group(
+      //   ".storeAccessCookie()",
+      //   () {
+      //     test(
+      //       "given accessCookie argument is provided"
+      //       "when '.storeAccessCookie()' is called"
+      //       "then should store accessCookie in secure storage",
+      //       () async {
+      //         // setup
+
+      //         // given
+      //         const accessCookie = "accessCookie";
+
+      //         // when
+      //         await secureStorageWrapper.storeAccessCookie(accessCookie);
+
+      //         // then
+      //         final storedAccessCookie = await secureStorage.read(
+      //           key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      //         );
+
+      //         expect(storedAccessCookie, accessCookie);
+
+      //         // cleanup
+      //       },
+      //     );
+      //   },
+      // );
+
+      // group(
+      //   ".getAccessCookie()",
+      //   () {
+      //     test(
+      //       "given accessCookie is stored in secure storage"
+      //       "when '.getAccessCookie()' is called"
+      //       "then should return expectedAccessCookie",
+      //       () async {
+      //         // setup
+      //         const accessCookie = "accessCookie";
+      //         // store manually
+
+      //         // given
+      //         secureStorage.write(
+      //           key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      //           value: accessCookie,
+      //         );
+
+      //         // when
+      //         final retrievedAccessCookie =
+      //             await secureStorageWrapper.getAccessCookie();
+
+      //         // then
+      //         expect(retrievedAccessCookie, accessCookie);
+
+      //         // cleanup
+      //       },
+      //     );
+
+      //     test(
+      //       "given accessCookie is not stored in secure storage"
+      //       "when '.getAccessCookie()' is called"
+      //       "then should return null",
+      //       () async {
+      //         // setup
+      //         // given
+
+      //         // when
+      //         final retrievedAccessCookie =
+      //             await secureStorageWrapper.getAccessCookie();
+
+      //         // then
+      //         expect(retrievedAccessCookie, isNull);
+
+      //         // cleanup
+      //       },
+      //     );
+      //   },
+      // );
+// TODO not needed
+      // group(
+      //   ".deleteAuthData()",
+      //   () {
+      //     test("should delete token and authId from secure storage WHEN called",
+      //         () async {
+      //       const accessCookie = "accessCookie";
+      //       const authId = 1;
+
+      //       await secureStorage.write(
+      //         key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      //         value: authId.toString(),
+      //       );
+      //       await secureStorage.write(
+      //         key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      //         value: accessCookie,
+      //       );
+
+      //       await secureStorageWrapper.clearAuthData();
+
+      //       final deletedAccessCookie = await secureStorage.read(
+      //         key: SecureStorageAuthKeyConstants.ACCESS_COOKIE.value,
+      //       );
+      //       final deletedAuthIdString = await secureStorage.read(
+      //         key: SecureStorageAuthKeyConstants.AUTH_ID.value,
+      //       );
+
+      //       expect(deletedAccessCookie, isNull);
+      //       expect(deletedAuthIdString, isNull);
+      //     });
+      //   },
+      // );
     },
   );
 }

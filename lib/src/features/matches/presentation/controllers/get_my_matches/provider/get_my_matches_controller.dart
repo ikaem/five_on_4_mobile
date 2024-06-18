@@ -10,6 +10,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_up
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,15 +20,21 @@ part "matches_type.dart";
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
-  late final LoadMyMatchesUseCase loadMyMatchesUseCase =
-      ref.read(loadMyMatchesUseCaseProvider);
+  // late final LoadMyMatchesUseCase loadMyMatchesUseCase =
+  //     ref.read(loadMyMatchesUseCaseProvider);
 
-  late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
-      ref.read(getMyTodayMatchesUseCaseProvider);
-  late final GetMyPastMatchesUseCase getMyPastMatchesUseCase =
-      ref.read(getMyPastMatchesUseCaseProvider);
-  late final GetMyUpcomingMatchesUseCase getMyUpcomingMatchesUseCase =
-      ref.read(getMyUpcomingMatchesUseCaseProvider);
+  // late final GetMyTodayMatchesUseCase getMyTodayMatchesUseCase =
+  //     ref.read(getMyTodayMatchesUseCaseProvider);
+  // late final GetMyPastMatchesUseCase getMyPastMatchesUseCase =
+  //     ref.read(getMyPastMatchesUseCaseProvider);
+  // late final GetMyUpcomingMatchesUseCase getMyUpcomingMatchesUseCase =
+  //     ref.read(getMyUpcomingMatchesUseCaseProvider);
+
+  final loadMyMatchesUseCase = GetItWrapper.get<LoadMyMatchesUseCase>();
+  final getMyTodayMatchesUseCase = GetItWrapper.get<GetMyTodayMatchesUseCase>();
+  final getMyPastMatchesUseCase = GetItWrapper.get<GetMyPastMatchesUseCase>();
+  final getMyUpcomingMatchesUseCase =
+      GetItWrapper.get<GetMyUpcomingMatchesUseCase>();
 
   Future<void> handleDispose() async {
     ref.onDispose(() {

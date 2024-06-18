@@ -15,7 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^9.0.0
-  go_router: ^13.0.1
+  go_router: ^14.2.0
   isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   mocktail: ^1.0.2
@@ -27,7 +27,7 @@ dependencies:
   # TODO these might be dev dep actually
   path: ^1.8.3
   mocktail_image_network: ^1.0.0
-  dio: ^5.4.0
+  dio: ^5.4.3+1
   equatable: ^2.0.5
   intl: ^0.18.1
   google_sign_in: ^6.2.1
@@ -36,6 +36,7 @@ dependencies:
   collection: ^1.18.0
   drift: ^2.15.0
   sqlite3_flutter_libs: ^0.5.22
+  get_it: ^7.6.7
 
 dev_dependencies:
   flutter_test:

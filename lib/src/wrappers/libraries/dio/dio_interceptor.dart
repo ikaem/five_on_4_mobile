@@ -1,30 +1,19 @@
 // TODO sourcing intercepotor solution form here
 // https://dhruvnakum.xyz/networking-in-flutter-interceptors
 
-import 'package:cookie_jar/cookie_jar.dart';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
-import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
+import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
-import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
-import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
-
-// TODO cookies as per https://stackoverflow.com/a/77069921
-
-// TODO as per https://medium.com/readytowork-org/dio-interceptors-in-flutter-e813f08c2017
-
-// TODO could possibly create interceptor logic that would redirect requests to local server
 
 class DioInterceptor extends Interceptor {
   const DioInterceptor({
-    required EnvVarsWrapper envVarsWrapper,
-    required CookiesHandlerWrapper cookiesHandlerWrapper,
     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
-  })  : _envVarsWrapper = envVarsWrapper,
-        _cookiesHandlerWrapper = cookiesHandlerWrapper,
-        _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+  }) : _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
 
-  final EnvVarsWrapper _envVarsWrapper;
-  final CookiesHandlerWrapper _cookiesHandlerWrapper;
   final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
 
   @override
@@ -32,124 +21,254 @@ class DioInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final requestOptionsWithUpdatedCookies =
-        await _cookiesHandlerWrapper.getRequestOptionsWithCookieInHeaders(
-      requestOptions: options,
-      getCookie: () => _flutterSecureStorageWrapper.getAccessCookie(),
-    );
-
-    final optionsWithRedirectedApi = _getApiRedirectedOptions(
-      options: requestOptionsWithUpdatedCookies,
-      shouldUseLocalServer: _envVarsWrapper.shouldUseLocalServer,
-    );
-
-    final previousCookie = optionsWithRedirectedApi.headers["cookie"];
-
-    // TODO test only
-    // optionsWithRedirectedApi.headers["cookie"] =
-    //     "jwt_token=someValue; HttpOnly; Secure";
-
-    return handler.next(optionsWithRedirectedApi);
+    return handler.next(options);
+    // TODO this is also legit , it would be the same
+    // super.onRequest(requestOptionsWithUpatedAuthHeader, handler);
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    final isAccessTokenStored =
-        await _cookiesHandlerWrapper.handleStoreResponseCookie(
-      response: response,
-      // TODO store it somewhere as constant
-      cookieName: "jwt_token",
-      storeCookie: _flutterSecureStorageWrapper.storeAccessCookie,
-    );
+  Future<void> onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    final requestUriPath = response.requestOptions.uri.path;
 
-    if (!isAccessTokenStored) {
-      // TODO log this
+    final isLogoutRequest =
+        requestUriPath == HttpAuthConstants.BACKEND_ENDPOINT_PATH_LOGOUT.value;
+    if (isLogoutRequest) {
+      return await _handleLogoutResponse(handler, response);
     }
-    // final headers = response.headers.value("set-cookie");
 
-    // const cookie = Cookie
+    final accessToken = response.headers
+        .value(AuthResponseConstants.ACCESS_JWT_HEADER_KEY.value);
+    if (accessToken != null) {
+      await _handleStoreAccessTokenFromResponse(accessToken);
+    }
 
-    // TODO extract to function
-    // TODO make sure that if no cookies are included, this still passes
-
-//     Map<String, Cookie> cookies = {};
-
-//     final rawCookiesString = response.headers.value("set-cookie") ?? "";
-//     // TODO make sure to use that regex
-//     final regex = RegExp('(?:[^,]|, )+');
-
-//     Iterable<Match> rawCookies = regex.allMatches(rawCookiesString).toList();
-//     final firstRawCookie = rawCookies.first;
-//     // this will be entire match - the actual cookie string
-//     final matchedGroup = firstRawCookie.group(0)!;
-
-// // TODO this could throw if invalid cookie or something - handle it in try
-//     final cookie = Cookie.fromSetCookieValue(matchedGroup);
-
-//     final cookieName = cookie.name;
-//     final cookieValue = cookie.value;
-
-//     // TODO this should be added to secure storage
-//     final cookieString = cookie.toString();
-
-//     cookies[cookieName] = cookie;
-
-    // test
-    // TODO: implement onResponse
-    // super.onResponse(response, handler);
-    // TODO this if this is last in chain
-
-    // final cookies = response.headers.value("set-cookie");
-    // final what = response.headers.map;
-
-    // final cookies = response.headers["set-cookie"];
-
-    // for (final key in what.keys) {
-    //   print("key: $key, value: ${what[key]}");
-    // }
-
-    // const cookiesHandlerWrapper = CookiesHandlerWrapper();
-    // final cookies =
-    //     cookiesHandlerWrapper.getCookiesFromResponse(response: response);
+    // TODO for now we know we will get only one cookie
+    // TODO do research how to split the string of cookins coming from backend to be able to handle multiple cookies
+    final cookiesString = response.headers.value(HttpHeaders.setCookieHeader);
+    if (cookiesString != null) {
+      await _handleStoreRefreshTokenCookieFromResponse(cookiesString);
+    }
 
     return handler.resolve(response);
-    // handler.next(response);
+    // TODO this is ok too - it works
+    // super.onResponse(response, handler);
+
+    // return handler.resolve(response);
+    // TODO this is also legit , it would be the same
+    // super.onResponse(response, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    // TODO we can reuse this to send for refresh token in future if we get 401, and then possibly retry the request
-    // TODO: implement onError
-    // super.onError(err, handler);
-    handler.next(err);
+    // TODO test all of these
+    // handler.resolve(err.response!);
+    // handler.next(err);
+
+    // TODO this is also legit , it would be the same
+    super.onError(err, handler);
   }
 
-  RequestOptions _getApiRedirectedOptions({
-    required RequestOptions options,
-    required bool shouldUseLocalServer,
-  }) {
-    final requestApiAuthority = options.uri.authority;
-    final shouldRedirectToLocalApi =
-        requestApiAuthority == HttpConstants.BACKEND_BASE_URL.value &&
-            shouldUseLocalServer;
+  Future<void> _handleLogoutResponse(
+    ResponseInterceptorHandler handler,
+    Response<dynamic> response,
+  ) async {
+    await _flutterSecureStorageWrapper.clearAccessToken();
+    await _flutterSecureStorageWrapper.clearRefreshTokenCookie();
 
-    if (!shouldRedirectToLocalApi) {
-      return options;
+    return handler.resolve(response);
+  }
+
+  Future<void> _handleStoreRefreshTokenCookieFromResponse(
+    String cookiesString,
+  ) async {
+    try {
+      // TODO this parses the cookie string into a cookie object - only the cookie that is from set-cookie header
+      // it means it will have all values
+      // TODO delegate this to cookies handler
+      final cookie = Cookie.fromSetCookieValue(cookiesString);
+      if (cookie.name != "refreshToken") return;
+
+      final cookieString = cookie.toString();
+      await _flutterSecureStorageWrapper.storeRefreshTokenCookie(cookieString);
+    } catch (e) {
+      // TODO log this
+      log("Error parsing cookie string: $e");
     }
-
-    final localApiOptions = _getRedirectToLocalApiOptions(options: options);
-    return localApiOptions;
   }
 
-  RequestOptions _getRedirectToLocalApiOptions({
-    required RequestOptions options,
-  }) {
-    const localApiPath = "http://10.0.2.2:4000";
-
-    final localApiOptions = options.copyWith(
-      path: localApiPath + options.uri.path,
-    );
-
-    return localApiOptions;
+  Future<void> _handleStoreAccessTokenFromResponse(String accessToken) async {
+    await _flutterSecureStorageWrapper.storeAccessToken(accessToken);
   }
 }
+
+
+
+
+
+
+
+
+
+// OLD TODO come back to this
+
+
+// // TODO sourcing intercepotor solution form here
+// // https://dhruvnakum.xyz/networking-in-flutter-interceptors
+
+// import 'dart:developer';
+// import 'dart:io';
+
+// import 'package:dio/dio.dart';
+// import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
+// import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
+// import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+// import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
+// import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
+
+// // TODO cookies as per https://stackoverflow.com/a/77069921
+
+// // TODO as per https://medium.com/readytowork-org/dio-interceptors-in-flutter-e813f08c2017
+
+// // TODO could possibly create interceptor logic that would redirect requests to local server
+
+// class DioInterceptor extends Interceptor {
+//   const DioInterceptor({
+//     required EnvVarsWrapper envVarsWrapper,
+//     required CookiesHandlerWrapper cookiesHandlerWrapper,
+//     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
+//   })  : _envVarsWrapper = envVarsWrapper,
+//         _cookiesHandlerWrapper = cookiesHandlerWrapper,
+//         _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+
+//   final EnvVarsWrapper _envVarsWrapper;
+//   final CookiesHandlerWrapper _cookiesHandlerWrapper;
+//   final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
+
+//   @override
+//   Future<void> onRequest(
+//       RequestOptions options, RequestInterceptorHandler handler) async {
+//     final accessToken = await _flutterSecureStorageWrapper.getAccessToken();
+
+//     final requestOptionsWithUpatedAuthHeader =
+//         _getRequestOptionsWithUpdatedAuthHeader(options, accessToken);
+
+//     return handler.next(requestOptionsWithUpatedAuthHeader);
+//     // TODO this is also legit , it would be the same
+//     // super.onRequest(requestOptionsWithUpatedAuthHeader, handler);
+//   }
+
+//   RequestOptions _getRequestOptionsWithUpdatedAuthHeader(
+//     RequestOptions options,
+//     String? accessToken,
+//   ) {
+//     final requestOptionsWithUpatedAuthHeader =
+//         options.copyWith(headers: <String, dynamic>{
+//       ...options.headers,
+//       if (accessToken != null)
+//         HttpHeaders.authorizationHeader: "Bearer $accessToken",
+//     });
+//     return requestOptionsWithUpatedAuthHeader;
+//   }
+
+//   @override
+//   Future<void> onResponse(
+//       Response response, ResponseInterceptorHandler handler) async {
+//     final requestUriPath = response.requestOptions.uri.path;
+
+//     final isLogoutRequest =
+//         requestUriPath == HttpAuthConstants.BACKEND_ENDPOINT_PATH_LOGOUT.value;
+//     if (isLogoutRequest) {
+//       return await _handleLogoutResponse(handler, response);
+//     }
+
+//     final accessToken = response.headers
+//         .value(AuthResponseConstants.ACCESS_JWT_HEADER_KEY.value);
+//     if (accessToken != null) {
+//       await _handleStoreAccessTokenFromResponse(accessToken);
+//     }
+
+//     // TODO for now we know we will get only one cookie
+//     // TODO do research how to split the string of cookins coming from backend to be able to handle multiple cookies
+//     final cookiesString = response.headers.value(HttpHeaders.setCookieHeader);
+//     if (cookiesString != null) {
+//       await _handleStoreRefreshTokenCookieFromResponse(cookiesString);
+//     }
+
+//     return handler.resolve(response);
+//     // TODO this is ok too - it works
+//     // super.onResponse(response, handler);
+//   }
+
+//   Future<void> _handleStoreRefreshTokenCookieFromResponse(
+//       String cookiesString) async {
+//     try {
+//       // TODO this parses the cookie string into a cookie object - only the cookie that is from set-cookie header
+//       // it means it will have all values
+//       // TODO delegate this to cookies handler
+//       final cookie = Cookie.fromSetCookieValue(cookiesString);
+//       if (cookie.name != "refreshToken") return;
+
+//       final cookieString = cookie.toString();
+//       await _flutterSecureStorageWrapper.storeRefreshTokenCookie(cookieString);
+//     } catch (e) {
+//       // TODO log this
+//       log("Error parsing cookie string: $e");
+//     }
+//   }
+
+//   Future<void> _handleStoreAccessTokenFromResponse(String accessToken) async {
+//     await _flutterSecureStorageWrapper.storeAccessToken(accessToken);
+//   }
+
+//   Future<void> _handleLogoutResponse(
+//     ResponseInterceptorHandler handler,
+//     Response<dynamic> response,
+//   ) async {
+//     await _flutterSecureStorageWrapper.clearAccessToken();
+//     await _flutterSecureStorageWrapper.clearRefreshTokenCookie();
+
+//     return handler.resolve(response);
+//   }
+
+//   @override
+//   void onError(DioException err, ErrorInterceptorHandler handler) {
+//     // TODO: implement onError
+//     // TODO maybe for now just log things
+//     super.onError(err, handler);
+//   }
+
+//   // --------------------------------------- //
+
+// // TODO dont delete this yet!!! THERE IS STUF FOR REDERECTION HERE BASED ON DEV ENV OR SUCH
+//   // RequestOptions _getApiRedirectedOptions({
+//   //   required RequestOptions options,
+//   //   required bool shouldUseLocalServer,
+//   // }) {
+//   //   final requestApiAuthority = options.uri.authority;
+//   //   final shouldRedirectToLocalApi =
+//   //       requestApiAuthority == HttpConstants.BACKEND_BASE_URL.value &&
+//   //           shouldUseLocalServer;
+
+//   //   if (!shouldRedirectToLocalApi) {
+//   //     return options;
+//   //   }
+
+//   //   final localApiOptions = _getRedirectToLocalApiOptions(options: options);
+//   //   return localApiOptions;
+//   // }
+
+//   // RequestOptions _getRedirectToLocalApiOptions({
+//   //   required RequestOptions options,
+//   // }) {
+//   //   const localApiPath = "http://10.0.2.2:4000";
+
+//   //   final localApiOptions = options.copyWith(
+//   //     path: localApiPath + options.uri.path,
+//   //   );
+
+//   //   return localApiOptions;
+//   // }
+// }

@@ -23,7 +23,7 @@
       "  \"given <pre-condition to the test>\"",
       "  \"when <behavior we are specifying>\"",
       "  \"then should <state we expect to happen>\",",
-      "  () {",
+      "  () async {",
       "    // setup",
       "",
       "    // given",
@@ -32,8 +32,8 @@
       "",
       "    // then",
       "",
-      "    // cleanup"
-
+      "    // cleanup",
+      "",
       "  },",
       ");"
     ],
@@ -55,8 +55,8 @@
       "",
       "    // then",
       "",
-      "    // cleanup"
-
+      "    // cleanup",
+      "",
       "  },",
       ");"
     ],

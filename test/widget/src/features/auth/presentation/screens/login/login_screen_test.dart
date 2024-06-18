@@ -5,9 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 // TODO here how to test proper image shown
 // https://stackoverflow.com/questions/65812452/how-to-test-image-widgets-source-path-in-flutter
+
+// TODO this needs adjustments - just test that it shows login with password and email widget
 void main() {
   group(
-    "LoginScreen",
+    "$LoginScreen",
     () {
       testWidgets(
         "given navigate to Login screen"

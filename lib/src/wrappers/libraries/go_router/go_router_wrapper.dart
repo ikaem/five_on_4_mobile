@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/error_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
@@ -39,6 +40,7 @@ class GoRouterWrapper {
       //   error: (error, stackTrace) => null,
       // ),
       refreshListenable: authStatusController,
+      // refreshListenable: GoRouterRefreshStream
 
       navigatorKey: _rootNavigatorKey,
       routes: [
@@ -135,7 +137,8 @@ class GoRouterWrapper {
           path: RoutePathsConstants.ERROR.value,
           // parentNavigatorKey: _rootNavigatorKey,
           builder: (context, state) {
-            return const Text("This is error");
+            // return const Text("This is error");
+            return const ErrorScreen();
           },
         ),
       ],
@@ -144,19 +147,42 @@ class GoRouterWrapper {
         final isError = authStatusController.isError;
         final isLoading = authStatusController.isLoading;
 
-        if (isLoading) {
-          return RoutePathsConstants.LOADING.value;
-        }
-
+        // TODO abstract this
         if (isError) {
-          return RoutePathsConstants.ERROR.value;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "There was an error with getting the authentication status. Please login or try again later,"),
+            ),
+          );
         }
 
         if (!isLoggedIn) {
           return RoutePathsConstants.LOGIN.value;
+          // context.replace(RoutePathsConstants.LOGIN.value);
+          // return null;
         }
 
-        return state.uri.path;
+        // TODO this redirection needs more work
+        // return null;
+        return "/";
+
+        // return null;
+
+        // if (isLoading) {
+        //   return RoutePathsConstants.LOADING.value;
+        // }
+
+        // // TODO test only
+        // // if (isError) {
+        // //   return RoutePathsConstants.ERROR.value;
+        // // }
+
+        // if (!isLoggedIn) {
+        //   return RoutePathsConstants.LOGIN.value;
+        // }
+
+        // return state.uri.path;
       },
     );
   }

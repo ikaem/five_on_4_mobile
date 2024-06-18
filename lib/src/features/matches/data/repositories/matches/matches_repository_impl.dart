@@ -11,14 +11,14 @@ class MatchesRepositoryImpl implements MatchesRepository {
   const MatchesRepositoryImpl({
     required MatchesLocalDataSource matchesLocalDataSource,
     required MatchesRemoteDataSource matchesRemoteDataSource,
-    required AuthStatusDataSource authStatusDataSource,
+    // required AuthStatusDataSource authStatusDataSource,
   })  : _matchesLocalDataSource = matchesLocalDataSource,
-        _matchesRemoteDataSource = matchesRemoteDataSource,
-        _authStatusDataSource = authStatusDataSource;
+        _matchesRemoteDataSource = matchesRemoteDataSource;
+  // _authStatusDataSource = authStatusDataSource;
 
   final MatchesLocalDataSource _matchesLocalDataSource;
   final MatchesRemoteDataSource _matchesRemoteDataSource;
-  final AuthStatusDataSource _authStatusDataSource;
+  // final AuthStatusDataSource _authStatusDataSource;
 
   @override
   Future<void> loadMyMatches() async {
@@ -34,88 +34,94 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
   @override
   Future<List<MatchModel>> getMyTodayMatches() async {
+    throw UnimplementedError();
     // TODO useCases could also possibly get playerId and then ping some generic fucntions inside the repository
-    final playerId = _authStatusDataSource.playerId;
-    if (playerId == null) {
-      // TODO responsible controller here should have access to logoutusecase, and use it to logout
-      throw const AuthNotLoggedInException();
-    }
+    // final playerId = _authStatusDataSource.playerId;
+    // if (playerId == null) {
+    //   // TODO responsible controller here should have access to logoutusecase, and use it to logout
+    //   throw const AuthNotLoggedInException();
+    // }
 
-    final matchesLocal = await _matchesLocalDataSource.getTodayMatchesForPlayer(
-        playerId: playerId);
+    // final matchesLocal = await _matchesLocalDataSource.getTodayMatchesForPlayer(
+    //     playerId: playerId);
 
-    final modelMatches =
-        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+    // final modelMatches =
+    //     MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
 
-    return modelMatches;
+    // return modelMatches;
   }
 
   @override
   Future<List<MatchModel>> getMyPastMatches() async {
-    final playerId = _authStatusDataSource.playerId;
-    if (playerId == null) {
-      // TODO responsible controller here should have access to logoutusecase, and use it to logout
-      throw const AuthNotLoggedInException();
-    }
+    throw UnimplementedError();
+    // final playerId = _authStatusDataSource.playerId;
+    // if (playerId == null) {
+    //   // TODO responsible controller here should have access to logoutusecase, and use it to logout
+    //   throw const AuthNotLoggedInException();
+    // }
 
-    final matchesLocal = await _matchesLocalDataSource.getPastMatchesForPlayer(
-        playerId: playerId);
+    // final matchesLocal = await _matchesLocalDataSource.getPastMatchesForPlayer(
+    //     playerId: playerId);
 
-    final modelMatches =
-        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+    // final modelMatches =
+    //     MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
 
-    return modelMatches;
+    // return modelMatches;
   }
 
   @override
   Future<List<MatchModel>> getMyUpcomingMatches() async {
-    final playerId = _authStatusDataSource.playerId;
-    if (playerId == null) {
-      // TODO responsible controller here should have access to logoutusecase, and use it to logout
-      throw const AuthNotLoggedInException();
-    }
+    throw UnimplementedError();
+    // final playerId = _authStatusDataSource.playerId;
+    // if (playerId == null) {
+    //   // TODO responsible controller here should have access to logoutusecase, and use it to logout
+    //   throw const AuthNotLoggedInException();
+    // }
 
-    final matchesLocal = await _matchesLocalDataSource
-        .getUpcomingMatchesForPlayer(playerId: playerId);
+    // final matchesLocal = await _matchesLocalDataSource
+    //     .getUpcomingMatchesForPlayer(playerId: playerId);
 
-    final modelMatches =
-        MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
+    // final modelMatches =
+    //     MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
 
-    return modelMatches;
+    // return modelMatches;
   }
 
   @override
   Future<int> loadMatch({
     required int matchId,
   }) async {
-    final matchRemote =
-        await _matchesRemoteDataSource.getMatch(matchId: matchId);
+    throw UnimplementedError();
+    // final matchRemote =
+    //     await _matchesRemoteDataSource.getMatch(matchId: matchId);
 
-    final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
-      matchRemote: matchRemote,
-    );
+    // final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
+    //   matchRemote: matchRemote,
+    // );
 
-    final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
+    // final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
 
-    return id;
+    // return id;
   }
 
   @override
   Future<MatchModel> getMatch({required int matchId}) async {
-    final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
+    throw UnimplementedError();
+    // final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
 
-    final modelMatch =
-        MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
+    // final modelMatch =
+    //     MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
 
-    return modelMatch;
+    // return modelMatch;
   }
 
   @override
   Future<int> createMatch({
     required MatchCreateDataValue matchData,
   }) async {
-    final id = await _matchesRemoteDataSource.createMatch(matchData: matchData);
+    throw UnimplementedError();
+    //   final id = await _matchesRemoteDataSource.createMatch(matchData: matchData);
 
-    return id;
+    //   return id;
   }
 }

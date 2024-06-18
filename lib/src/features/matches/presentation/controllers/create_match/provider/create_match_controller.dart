@@ -8,6 +8,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_ma
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/match_create_converter.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -18,16 +19,19 @@ part "create_match_controller_state.dart";
 
 @riverpod
 class CreateMatchController extends _$CreateMatchController {
-  late final CreateMatchUseCase createMatchUseCase = ref.read(
-    createMatchUseCaseProvider,
-  );
-  late final GetAuthDataStatusUseCase getAuthDataStatusUseCase = ref.read(
-    getAuthDataStatusUseCaseProvider,
-  );
+  // late final CreateMatchUseCase createMatchUseCase = ref.read(
+  //   createMatchUseCaseProvider,
+  // );
+  // late final GetAuthDataStatusUseCase getAuthDataStatusUseCase = ref.read(
+  //   getAuthDataStatusUseCaseProvider,
+  // );
   // TODO uncomment when logout is implemented
   // late final LogoutUseCase logoutUseCase = ref.read(
   //   logoutUseCaseProvider,
   // );
+
+  final createMatchUseCase = GetItWrapper.get<CreateMatchUseCase>();
+  final getAuthDataStatusUseCase = GetItWrapper.get<GetAuthDataStatusUseCase>();
 
   @override
   AsyncValue<CreateMatchControllerState?> build() {

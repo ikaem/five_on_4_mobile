@@ -2,155 +2,171 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:isar/isar.dart';
 
 class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   const MatchesLocalDataSourceImpl({
-    required IsarWrapper isarWrapper,
-  }) : _isarWrapper = isarWrapper;
+    // required IsarWrapper isarWrapper,
+    required DatabaseWrapper databaseWrapper,
+  }) : _databaseWrapper = databaseWrapper;
+  // }) : _isarWrapper = isarWrapper;
 
-  final IsarWrapper _isarWrapper;
+  // final IsarWrapper _isarWrapper;
+  final DatabaseWrapper _databaseWrapper;
 
   @override
   Future<List<int>> saveMatches({
     required List<MatchLocalEntity> matches,
   }) async {
-    final result = await _isarWrapper.db.writeTxn(() async {
-      final ids = await _isarWrapper.db.matchLocalEntitys.putAll(matches);
-      return ids;
-    });
+    throw UnimplementedError();
+    // final result = await _isarWrapper.db.writeTxn(() async {
+    //   final ids = await _isarWrapper.db.matchLocalEntitys.putAll(matches);
+    //   return ids;
+    // });
 
-    return result;
+    // return result;
   }
 
   @override
   Future<List<MatchLocalEntity>> getPastMatchesForPlayer({
     required int playerId,
   }) async {
-    final today = DateTime.now();
-    final firstMomentOfToday = DateTime(
-      today.year,
-      today.month,
-      today.day,
-      0,
-      0,
-      0,
-      0,
-      0,
-    ).millisecondsSinceEpoch;
+    throw UnimplementedError();
 
-    final matches = await _isarWrapper.db.matchLocalEntitys
-        .where()
-        .dateLessThan(firstMomentOfToday)
-        .filter()
-        .arrivingPlayersElement(
-      (q) {
-        return q.playerIdEqualTo(playerId);
-      },
-    ).findAll();
+    // TODO old
+    // final today = DateTime.now();
+    // final firstMomentOfToday = DateTime(
+    //   today.year,
+    //   today.month,
+    //   today.day,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    // ).millisecondsSinceEpoch;
 
-    return matches;
+    // final matches = await _isarWrapper.db.matchLocalEntitys
+    //     .where()
+    //     .dateLessThan(firstMomentOfToday)
+    //     .filter()
+    //     .arrivingPlayersElement(
+    //   (q) {
+    //     return q.playerIdEqualTo(playerId);
+    //   },
+    // ).findAll();
+
+    // return matches;
   }
 
   @override
   Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
     required int playerId,
   }) async {
-    // TODO abstrac this somehow
-    final yesterday = DateTime.now().subtract(const Duration(days: 1));
-    final lastMomentOfYesterday = DateTime(
-      yesterday.year,
-      yesterday.month,
-      yesterday.day,
-      23,
-      59,
-      59,
-      999,
-      999,
-    ).millisecondsSinceEpoch;
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
-    final firstMomentOfTomorrow = DateTime(
-      tomorrow.year,
-      tomorrow.month,
-      tomorrow.day,
-      0,
-      0,
-      0,
-      0,
-      0,
-    ).millisecondsSinceEpoch;
+    throw UnimplementedError();
 
-    final matches = await _isarWrapper.db.matchLocalEntitys
-        .where()
-        .dateBetween(lastMomentOfYesterday, firstMomentOfTomorrow)
-        .filter()
-        .arrivingPlayersElement(
-      (q) {
-        return q.playerIdEqualTo(playerId);
-      },
-    ).findAll();
+    // TODO old
+    // // TODO abstrac this somehow
+    // final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    // final lastMomentOfYesterday = DateTime(
+    //   yesterday.year,
+    //   yesterday.month,
+    //   yesterday.day,
+    //   23,
+    //   59,
+    //   59,
+    //   999,
+    //   999,
+    // ).millisecondsSinceEpoch;
+    // final tomorrow = DateTime.now().add(const Duration(days: 1));
+    // final firstMomentOfTomorrow = DateTime(
+    //   tomorrow.year,
+    //   tomorrow.month,
+    //   tomorrow.day,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    //   0,
+    // ).millisecondsSinceEpoch;
 
-    return matches;
+    // final matches = await _isarWrapper.db.matchLocalEntitys
+    //     .where()
+    //     .dateBetween(lastMomentOfYesterday, firstMomentOfTomorrow)
+    //     .filter()
+    //     .arrivingPlayersElement(
+    //   (q) {
+    //     return q.playerIdEqualTo(playerId);
+    //   },
+    // ).findAll();
+
+    // return matches;
   }
 
   @override
   Future<List<MatchLocalEntity>> getUpcomingMatchesForPlayer({
     required int playerId,
   }) async {
-    final now = DateTime.now();
-    final lastMomentOfToday = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      23,
-      59,
-      59,
-      999,
-      999,
-    ).millisecondsSinceEpoch;
+    throw UnimplementedError();
 
-    // querying nested objects from https://isar.dev/queries.html#embedded-objects
-    final matches = await _isarWrapper.db.matchLocalEntitys
-        .where()
-        .dateGreaterThan(lastMomentOfToday)
-        .filter()
-        .arrivingPlayersElement(
-      (q) {
-        // return q.idEqualTo(playerId);
-        return q.playerIdEqualTo(playerId);
-      },
-    ).findAll();
+    // TODO old
+    // final now = DateTime.now();
+    // final lastMomentOfToday = DateTime(
+    //   now.year,
+    //   now.month,
+    //   now.day,
+    //   23,
+    //   59,
+    //   59,
+    //   999,
+    //   999,
+    // ).millisecondsSinceEpoch;
 
-    return matches;
+    // // querying nested objects from https://isar.dev/queries.html#embedded-objects
+    // final matches = await _isarWrapper.db.matchLocalEntitys
+    //     .where()
+    //     .dateGreaterThan(lastMomentOfToday)
+    //     .filter()
+    //     .arrivingPlayersElement(
+    //   (q) {
+    //     // return q.idEqualTo(playerId);
+    //     return q.playerIdEqualTo(playerId);
+    //   },
+    // ).findAll();
+
+    // return matches;
   }
 
   @override
   Future<int> saveMatch({
     required MatchLocalEntity match,
   }) async {
-    final response = await _isarWrapper.db.writeTxn(() async {
-      final id = await _isarWrapper.db.matchLocalEntitys.put(match);
-      return id;
-    });
+    throw UnimplementedError();
+    // final response = await _isarWrapper.db.writeTxn(() async {
+    //   final id = await _isarWrapper.db.matchLocalEntitys.put(match);
+    //   return id;
+    // });
 
-    return response;
+    // return response;
   }
 
   @override
   Future<MatchLocalEntity> getMatch({
     required int matchId,
   }) async {
-    final match = await _isarWrapper.db.matchLocalEntitys
-        .where()
-        .idEqualTo(matchId)
-        .findFirst();
+    throw UnimplementedError();
+    // final match = await _isarWrapper.db.matchLocalEntitys
+    //     .where()
+    //     .idEqualTo(matchId)
+    //     .findFirst();
 
-    if (match == null) {
-      throw MatchNotFoundException(
-        message: "Match with id: $matchId not found",
-      );
-    }
+    // if (match == null) {
+    //   throw MatchNotFoundException(
+    //     message: "Match with id: $matchId not found",
+    //   );
+    // }
 
-    return match;
+    // return match;
   }
 }
