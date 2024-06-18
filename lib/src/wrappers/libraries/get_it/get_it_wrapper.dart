@@ -13,7 +13,9 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
@@ -130,6 +132,12 @@ abstract class GetItWrapper {
     final signOutUseCase = SignOutUseCase(
       authRepository: authRepository,
     );
+    final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
+      matchesRepository: matchesRepository,
+    );
+    final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
+      matchesRepository: matchesRepository,
+    );
 
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
@@ -147,6 +155,9 @@ abstract class GetItWrapper {
     getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
         authenticateWithGoogleUseCase);
     getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
+    getIt.registerSingleton<GetMyPastMatchesUseCase>(getMyPasMatchesUseCase);
+    getIt.registerSingleton<GetMyUpcomingMatchesUseCase>(
+        getMyUpcomingMatchesUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);

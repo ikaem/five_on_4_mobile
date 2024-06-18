@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_local/auth_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote/auth_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
@@ -75,11 +77,20 @@ class AuthRepositoryImpl implements AuthRepository {
     // TODO: implement signOut
     // throw UnimplementedError();
 
-    // logout from remote
-    await _authRemoteDataSource.signOut();
+    // TODO test that these dont actually throw
 
-    // logout from local
-    await _authLocalDataSource.deleteAuthenticatedPlayerEntities();
+    // TODO maybe this is not a good approach
+
+    // logout from remote
+    try {
+      await _authRemoteDataSource.signOut();
+    } catch (e) {
+      log("There was an error when signing out -> error: $e");
+
+      rethrow;
+    } finally {
+      await _authLocalDataSource.deleteAuthenticatedPlayerEntities();
+    }
   }
 
   @override
