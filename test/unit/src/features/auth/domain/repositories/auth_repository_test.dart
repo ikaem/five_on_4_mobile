@@ -45,6 +45,68 @@ void main() {
   group(
     "$AuthRepository",
     () {
+      group(".signOut()", () {
+        // should call sign out on remote data source
+        test(
+          "given nothing in particular"
+          "when .signOut() is called"
+          "then should call AuthRemoteDataSource.signOut()",
+          () async {
+            // setup
+            when(() => authRemoteDataSource.signOut()).thenAnswer(
+              (_) async {
+                return;
+              },
+            );
+
+            // given
+
+            // when
+            await authRepository.signOut();
+
+            // then
+            verify(() => authRemoteDataSource.signOut()).called(1);
+
+            // cleanup
+          },
+        );
+
+        // should call sign out on local data source
+        test(
+          "given nothing in particular"
+          "when .signOut() is called"
+          "then should call AuthLocalDataSource.signOut()",
+          () async {
+            // setup
+            when(() => authLocalDataSource.deleteAuthenticatedPlayerEntities())
+                .thenAnswer(
+              (_) async {
+                return;
+              },
+            );
+            when(() => authRemoteDataSource.signOut()).thenAnswer(
+              (_) async {
+                return;
+              },
+            );
+
+            // given
+
+            // when
+            await authRepository.signOut();
+
+            // then
+            verify(() =>
+                    authLocalDataSource.deleteAuthenticatedPlayerEntities())
+                .called(1);
+
+            // cleanup
+          },
+        );
+
+        // TODO possibly, not sure, should expect some errors to be thrown
+      });
+
       group(
         ".authenticateWithGoogle()",
         () {

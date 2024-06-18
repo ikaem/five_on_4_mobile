@@ -18,6 +18,8 @@ abstract interface class AuthRepository {
   Future<void> loadAuthenticatedPlayerFromRemote();
 
   Future<void> authenticateWithGoogle();
+
+  Future<void> signOut();
 }
 
 /* 

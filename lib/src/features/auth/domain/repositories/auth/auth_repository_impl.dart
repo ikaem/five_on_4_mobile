@@ -71,6 +71,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> signOut() async {
+    // TODO: implement signOut
+    // throw UnimplementedError();
+
+    // logout from remote
+    await _authRemoteDataSource.signOut();
+
+    // logout from local
+    await _authLocalDataSource.deleteAuthenticatedPlayerEntities();
+  }
+
+  @override
   Future<void> loginWithGoogle() async {
     // TODO: implement loginWithGoogle
     throw UnimplementedError();
