@@ -11,6 +11,8 @@ abstract interface class MatchesRemoteDataSource {
   Future<MatchRemoteEntity> getMatch({
     required int matchId,
   });
+
+  // TODO deprecate this
   // TODO eventually change this to pass playerId Parameter as well
   Future<List<MatchRemoteEntity>> getPlayerInitialMatches(
       // TODO also we should make this called something like - getInitialPlayerMatches

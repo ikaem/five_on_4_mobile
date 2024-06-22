@@ -9,6 +9,7 @@ abstract interface class MatchesLocalDataSource {
     required List<MatchLocalEntity> matches,
   });
 
+  // TODO deprecated this
   // TODO these could all probably be abstracted into one function with a parameter for the type of match
   Future<List<MatchLocalEntity>> getUpcomingMatchesForPlayer({
     required int playerId,

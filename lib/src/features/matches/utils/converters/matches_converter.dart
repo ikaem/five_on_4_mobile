@@ -21,14 +21,15 @@ abstract class MatchesConverter {
   static MatchLocalEntity fromRemoteEntityToLocalEntity({
     required MatchRemoteEntity matchRemote,
   }) {
-    final arrivingPlayers = matchRemote.arrivingPlayers.map((player) {
-      return MatchLocalPlayerEntity(
-        playerId: player.id,
-        name: player.name,
-        nickname: player.nickname,
-        avatarUrl: player.avatarUri.toString(),
-      );
-    }).toList();
+    // TODO come back to this
+    // final arrivingPlayers = matchRemote.arrivingPlayers.map((player) {
+    //   return MatchLocalPlayerEntity(
+    //     playerId: player.id,
+    //     name: player.name,
+    //     nickname: player.nickname,
+    //     avatarUrl: player.avatarUri.toString(),
+    //   );
+    // }).toList();
 
     final matchLocal = MatchLocalEntity(
       id: matchRemote.id,

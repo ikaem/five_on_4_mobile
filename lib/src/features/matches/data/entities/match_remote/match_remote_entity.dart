@@ -6,12 +6,14 @@ import 'package:five_on_4_mobile/src/features/players/data/entities/player_remot
 class MatchRemoteEntity extends Equatable {
   const MatchRemoteEntity({
     required this.id,
-    required this.date,
-    required this.name,
+    required this.title,
+    required this.dateAndTime,
     required this.location,
-    required this.organizer,
     required this.description,
-    required this.arrivingPlayers,
+    // TODO bring this back
+    // required this.organizer,
+    // TODO add this later
+    // required this.arrivingPlayers,
   });
 
   // TODO if we go with Freezed, which we will, fromJson will be here anyway
@@ -19,46 +21,47 @@ class MatchRemoteEntity extends Equatable {
     required Map<String, dynamic> json,
   }) {
     final id = json["id"] as int;
-    final date = json["date"] as int;
-    final name = json["name"] as String;
+    final title = json["title"] as String;
+    final dateAndTime = json["dateAndTime"] as int;
     final location = json["location"] as String;
-    final organizer = json["organizer"] as String;
     final description = json["description"] as String;
+    // final organizer = json["organizer"] as String;
 
-    final arrivingPlayers = (json["arrivingPlayers"] as List<dynamic>)
-        .cast<Map<String, dynamic>>()
-        .map((e) => PlayerRemoteEntity.fromJson(json: e))
-        .toList();
+    // TODO add this later
+    // final arrivingPlayers = (json["arrivingPlayers"] as List<dynamic>)
+    //     .cast<Map<String, dynamic>>()
+    //     .map((e) => PlayerRemoteEntity.fromJson(json: e))
+    //     .toList();
 
     return MatchRemoteEntity(
       id: id,
-      date: date,
-      name: name,
+      title: title,
+      dateAndTime: dateAndTime,
       location: location,
-      organizer: organizer,
       description: description,
-      arrivingPlayers: arrivingPlayers,
+      // organizer: organizer,
+      // arrivingPlayers: arrivingPlayers,
     );
   }
 
   final int id;
-  final int date;
-  final String name;
+  final String title;
+  final int dateAndTime;
   final String location;
-  final String organizer;
   final String description;
-  final List<PlayerRemoteEntity> arrivingPlayers;
+  // final String organizer;
+  // final List<PlayerRemoteEntity> arrivingPlayers;
 
   Map<String, dynamic> toJson() {
-    final jsonArrivingPlayers = arrivingPlayers.map((e) => e.toJson()).toList();
+    // final jsonArrivingPlayers = arrivingPlayers.map((e) => e.toJson()).toList();
     return {
       "id": id,
-      "date": date,
-      "name": name,
+      "title": title,
+      "dateAndTime": dateAndTime,
       "location": location,
-      "organizer": organizer,
       "description": description,
-      "arrivingPlayers": jsonArrivingPlayers,
+      // "organizer": organizer,
+      // "arrivingPlayers": jsonArrivingPlayers,
     };
   }
 
@@ -66,11 +69,11 @@ class MatchRemoteEntity extends Equatable {
   // TODO: implement props
   List<Object?> get props => [
         id,
-        date,
-        name,
+        title,
+        dateAndTime,
         location,
-        organizer,
         description,
-        arrivingPlayers,
+        // organizer,
+        // arrivingPlayers,
       ];
 }

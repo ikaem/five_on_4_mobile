@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_local/authenticated_player_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/migrations/migration_wrapper.dart';
 
 part "app_database.g.dart";
@@ -7,6 +8,7 @@ part "app_database.g.dart";
 @DriftDatabase(
   tables: [
     AuthenticatedPlayerLocalEntity,
+    MatchLocalEntity,
   ],
   queries: {
     "current_timestamp": "SELECT CURRENT_TIMESTAMP;",
@@ -26,7 +28,7 @@ class AppDatabase extends _$AppDatabase {
   // }
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => _migrationWrapper.migration;
