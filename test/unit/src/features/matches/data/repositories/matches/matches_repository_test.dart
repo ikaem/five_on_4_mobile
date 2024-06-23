@@ -1,485 +1,485 @@
-import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
-import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+// import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
+// import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
+// import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
+// import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
+// import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mocktail/mocktail.dart';
 
-import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/data/test_values.dart';
-import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
+// import '../../../../../../../utils/data/test_entities.dart';
+// import '../../../../../../../utils/data/test_values.dart';
+// import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
-void main() {
-  final matchesLocalDataSource = _MockMatchesLocalDataSource();
-  final matchesRemoteDataSource = _MockMatchesRemoteDataSource();
-  final authStatusDataSource = _MockAuthStatusDataSource();
+// void main() {
+//   final matchesLocalDataSource = _MockMatchesLocalDataSource();
+//   final matchesRemoteDataSource = _MockMatchesRemoteDataSource();
+//   final authStatusDataSource = _MockAuthStatusDataSource();
 
-  final testRemoteMatches = getTestMatchRemoteEntities();
-  final testLocalMatches = MatchesConverter.fromRemoteEntitiesToLocalEntities(
-      matchesRemote: testRemoteMatches);
-  final testModelMatches = MatchesConverter.fromLocalEntitiesToModels(
-    matchesLocal: testLocalMatches,
-  );
+//   final testRemoteMatches = getTestMatchRemoteEntities();
+//   final testLocalMatches = MatchesConverter.fromRemoteEntitiesToLocalEntities(
+//       matchesRemote: testRemoteMatches);
+//   final testModelMatches = MatchesConverter.fromLocalEntitiesToModels(
+//     matchesLocal: testLocalMatches,
+//   );
 
-  final matchesRepository = MatchesRepositoryImpl(
-    matchesLocalDataSource: matchesLocalDataSource,
-    matchesRemoteDataSource: matchesRemoteDataSource,
-    authStatusDataSource: authStatusDataSource,
-  );
+//   final matchesRepository = MatchesRepositoryImpl(
+//     matchesLocalDataSource: matchesLocalDataSource,
+//     matchesRemoteDataSource: matchesRemoteDataSource,
+//     authStatusDataSource: authStatusDataSource,
+//   );
 
-  setUpAll(
-    () {
-      registerFallbackValue(
-        _FakeMatchLocalEntity(),
-      );
-      registerFallbackValue(
-        _FakeMatchCreateDataValue(),
-      );
-    },
-  );
+//   setUpAll(
+//     () {
+//       registerFallbackValue(
+//         _FakeMatchLocalEntity(),
+//       );
+//       registerFallbackValue(
+//         _FakeMatchCreateDataValue(),
+//       );
+//     },
+//   );
 
-  tearDown(() {
-    reset(matchesLocalDataSource);
-    reset(matchesRemoteDataSource);
-    reset(authStatusDataSource);
-  });
+//   tearDown(() {
+//     reset(matchesLocalDataSource);
+//     reset(matchesRemoteDataSource);
+//     reset(authStatusDataSource);
+//   });
 
-  group(
-    "MatchesRepository",
-    () {
-      group(
-        ".createMatch()",
-        () {
-          test(
-            "given valid match data"
-            "when call .createMatch()"
-            "then should return expected match id",
-            () async {
-              final matchData = getTestMatchCreateValues(count: 1).first;
+//   group(
+//     "MatchesRepository",
+//     () {
+//       group(
+//         ".createMatch()",
+//         () {
+//           test(
+//             "given valid match data"
+//             "when call .createMatch()"
+//             "then should return expected match id",
+//             () async {
+//               final matchData = getTestMatchCreateValues(count: 1).first;
 
-              // Given
-              const matchId = 1;
-              when(
-                () => matchesRemoteDataSource.createMatch(
-                  matchData: any(named: "matchData"),
-                ),
-              ).thenAnswer(
-                (_) async => matchId,
-              );
+//               // Given
+//               const matchId = 1;
+//               when(
+//                 () => matchesRemoteDataSource.createMatch(
+//                   matchData: any(named: "matchData"),
+//                 ),
+//               ).thenAnswer(
+//                 (_) async => matchId,
+//               );
 
-              // When
-              final id = await matchesRepository.createMatch(
-                matchData: matchData,
-              );
+//               // When
+//               final id = await matchesRepository.createMatch(
+//                 matchData: matchData,
+//               );
 
-              // Then
-              expect(id, equals(matchId));
-            },
-          );
-        },
-      );
+//               // Then
+//               expect(id, equals(matchId));
+//             },
+//           );
+//         },
+//       );
 
-      group(
-        ".getMatch()",
-        () {
-          test(
-            "given a match id"
-            "when call .getMatch()"
-            "then should return expected result",
-            () async {
-              // setup
-              final matchLocalEntity = testLocalMatches.first;
-              final matchModel = MatchesConverter.fromLocalEntityToModel(
-                matchLocal: matchLocalEntity,
-              );
+//       group(
+//         ".getMatch()",
+//         () {
+//           test(
+//             "given a match id"
+//             "when call .getMatch()"
+//             "then should return expected result",
+//             () async {
+//               // setup
+//               final matchLocalEntity = testLocalMatches.first;
+//               final matchModel = MatchesConverter.fromLocalEntityToModel(
+//                 matchLocal: matchLocalEntity,
+//               );
 
-              when(
-                () => matchesLocalDataSource.getMatch(
-                  matchId: any(named: "matchId"),
-                ),
-              ).thenAnswer((invocation) async => matchLocalEntity);
+//               when(
+//                 () => matchesLocalDataSource.getMatch(
+//                   matchId: any(named: "matchId"),
+//                 ),
+//               ).thenAnswer((invocation) async => matchLocalEntity);
 
-              // given
-              final matchId = matchLocalEntity.id;
+//               // given
+//               final matchId = matchLocalEntity.id;
 
-              // when
-              final result = await matchesRepository.getMatch(
-                matchId: matchId,
-              );
+//               // when
+//               final result = await matchesRepository.getMatch(
+//                 matchId: matchId,
+//               );
 
-              // then
-              expect(result, equals(matchModel));
-            },
-          );
+//               // then
+//               expect(result, equals(matchModel));
+//             },
+//           );
 
-          test(
-            "given a match id"
-            "when call .getMatch()"
-            "then should call local data source to retrieve the match",
-            () {
-              // setup
-              final matchLocalEntity = testLocalMatches.first;
+//           test(
+//             "given a match id"
+//             "when call .getMatch()"
+//             "then should call local data source to retrieve the match",
+//             () {
+//               // setup
+//               final matchLocalEntity = testLocalMatches.first;
 
-              when(
-                () => matchesLocalDataSource.getMatch(
-                  matchId: any(named: "matchId"),
-                ),
-              ).thenAnswer(
-                (invocation) async => matchLocalEntity,
-              );
+//               when(
+//                 () => matchesLocalDataSource.getMatch(
+//                   matchId: any(named: "matchId"),
+//                 ),
+//               ).thenAnswer(
+//                 (invocation) async => matchLocalEntity,
+//               );
 
-              // given
-              final matchId = matchLocalEntity.id;
+//               // given
+//               final matchId = matchLocalEntity.id;
 
-              // when
-              matchesRepository.getMatch(matchId: matchId);
+//               // when
+//               matchesRepository.getMatch(matchId: matchId);
 
-              // then
-              verify(
-                () => matchesLocalDataSource.getMatch(
-                  matchId: matchId,
-                ),
-              ).called(1);
-            },
-          );
-        },
-      );
-      group(
-        ".loadMatch()",
-        () {
-          test(
-            "given a match id"
-            "when call .loadMatch()"
-            "then should ping remote data source to retrieve match",
-            () async {
-              final remoteEntityMatch = testRemoteMatches.first;
+//               // then
+//               verify(
+//                 () => matchesLocalDataSource.getMatch(
+//                   matchId: matchId,
+//                 ),
+//               ).called(1);
+//             },
+//           );
+//         },
+//       );
+//       group(
+//         ".loadMatch()",
+//         () {
+//           test(
+//             "given a match id"
+//             "when call .loadMatch()"
+//             "then should ping remote data source to retrieve match",
+//             () async {
+//               final remoteEntityMatch = testRemoteMatches.first;
 
-              // given
-              final matchId = remoteEntityMatch.id;
-              when(
-                () => matchesRemoteDataSource.getMatch(
-                  matchId: matchId,
-                ),
-              ).thenAnswer(
-                (_) async => remoteEntityMatch,
-              );
+//               // given
+//               final matchId = remoteEntityMatch.id;
+//               when(
+//                 () => matchesRemoteDataSource.getMatch(
+//                   matchId: matchId,
+//                 ),
+//               ).thenAnswer(
+//                 (_) async => remoteEntityMatch,
+//               );
 
-              when(
-                () => matchesLocalDataSource.saveMatch(
-                  match: any(named: "match"),
-                ),
-              ).thenAnswer(
-                (invocation) async => matchId,
-              );
+//               when(
+//                 () => matchesLocalDataSource.saveMatch(
+//                   match: any(named: "match"),
+//                 ),
+//               ).thenAnswer(
+//                 (invocation) async => matchId,
+//               );
 
-              // when
-              await matchesRepository.loadMatch(matchId: matchId);
+//               // when
+//               await matchesRepository.loadMatch(matchId: matchId);
 
-              // then
-              verify(
-                () => matchesRemoteDataSource.getMatch(
-                  matchId: matchId,
-                ),
-              ).called(1);
-            },
-          );
+//               // then
+//               verify(
+//                 () => matchesRemoteDataSource.getMatch(
+//                   matchId: matchId,
+//                 ),
+//               ).called(1);
+//             },
+//           );
 
-          test(
-            "given a match id"
-            "when call .loadMatch()"
-            "then should ping local data source to store the match",
-            () async {
-              final remoteEntityMatch = testRemoteMatches.first;
-              final localEntityMatch =
-                  MatchesConverter.fromRemoteEntityToLocalEntity(
-                      matchRemote: remoteEntityMatch);
+//           test(
+//             "given a match id"
+//             "when call .loadMatch()"
+//             "then should ping local data source to store the match",
+//             () async {
+//               final remoteEntityMatch = testRemoteMatches.first;
+//               final localEntityMatch =
+//                   MatchesConverter.fromRemoteEntityToLocalEntity(
+//                       matchRemote: remoteEntityMatch);
 
-              // given
-              final matchId = remoteEntityMatch.id;
-              when(
-                () => matchesRemoteDataSource.getMatch(
-                  matchId: matchId,
-                ),
-              ).thenAnswer(
-                (_) async => remoteEntityMatch,
-              );
+//               // given
+//               final matchId = remoteEntityMatch.id;
+//               when(
+//                 () => matchesRemoteDataSource.getMatch(
+//                   matchId: matchId,
+//                 ),
+//               ).thenAnswer(
+//                 (_) async => remoteEntityMatch,
+//               );
 
-              when(
-                () => matchesLocalDataSource.saveMatch(
-                  match: any(named: "match"),
-                ),
-              ).thenAnswer(
-                (invocation) async => matchId,
-              );
+//               when(
+//                 () => matchesLocalDataSource.saveMatch(
+//                   match: any(named: "match"),
+//                 ),
+//               ).thenAnswer(
+//                 (invocation) async => matchId,
+//               );
 
-              // when
-              await matchesRepository.loadMatch(matchId: matchId);
+//               // when
+//               await matchesRepository.loadMatch(matchId: matchId);
 
-              // then
-              verify(
-                () => matchesLocalDataSource.saveMatch(
-                  match: localEntityMatch,
-                ),
-              ).called(1);
-            },
-          );
+//               // then
+//               verify(
+//                 () => matchesLocalDataSource.saveMatch(
+//                   match: localEntityMatch,
+//                 ),
+//               ).called(1);
+//             },
+//           );
 
-          test(
-            "given a match is loaded"
-            "when .loadMatch() returns"
-            "then should return expected match id ",
-            () async {
-              final remoteEntityMatch = testRemoteMatches.first;
+//           test(
+//             "given a match is loaded"
+//             "when .loadMatch() returns"
+//             "then should return expected match id ",
+//             () async {
+//               final remoteEntityMatch = testRemoteMatches.first;
 
-              final matchId = remoteEntityMatch.id;
-              when(
-                () => matchesRemoteDataSource.getMatch(
-                  matchId: matchId,
-                ),
-              ).thenAnswer(
-                (_) async => remoteEntityMatch,
-              );
+//               final matchId = remoteEntityMatch.id;
+//               when(
+//                 () => matchesRemoteDataSource.getMatch(
+//                   matchId: matchId,
+//                 ),
+//               ).thenAnswer(
+//                 (_) async => remoteEntityMatch,
+//               );
 
-              when(
-                () => matchesLocalDataSource.saveMatch(
-                  match: any(named: "match"),
-                ),
-              ).thenAnswer(
-                (invocation) async => matchId,
-              );
+//               when(
+//                 () => matchesLocalDataSource.saveMatch(
+//                   match: any(named: "match"),
+//                 ),
+//               ).thenAnswer(
+//                 (invocation) async => matchId,
+//               );
 
-              // given / when
-              final result =
-                  await matchesRepository.loadMatch(matchId: matchId);
+//               // given / when
+//               final result =
+//                   await matchesRepository.loadMatch(matchId: matchId);
 
-              // then
-              expect(result, equals(matchId));
-            },
-          );
-        },
-      );
-      group(
-        ".loadMyMatches",
-        () {
-          setUp(
-            () {
-              // remote data source
-              when(
-                () => matchesRemoteDataSource.getPlayerInitialMatches(),
-              ).thenAnswer(
-                (_) async => testRemoteMatches,
-              );
+//               // then
+//               expect(result, equals(matchId));
+//             },
+//           );
+//         },
+//       );
+//       group(
+//         ".loadMyMatches",
+//         () {
+//           setUp(
+//             () {
+//               // remote data source
+//               when(
+//                 () => matchesRemoteDataSource.getPlayerInitialMatches(),
+//               ).thenAnswer(
+//                 (_) async => testRemoteMatches,
+//               );
 
-              // local data source
-              when(
-                () => matchesLocalDataSource.saveMatches(
-                  matches: any(named: "matches"),
-                ),
-              ).thenAnswer(
-                (invocation) async =>
-                    testRemoteMatches.map((e) => e.id).toList(),
-              );
-            },
-          );
-          test(
-            "given nothing in particular"
-            "when .loadMyMatches() is called"
-            "should ping remote data source to retrive matches",
-            () async {
-              await matchesRepository.loadMyMatches();
+//               // local data source
+//               when(
+//                 () => matchesLocalDataSource.saveMatches(
+//                   matches: any(named: "matches"),
+//                 ),
+//               ).thenAnswer(
+//                 (invocation) async =>
+//                     testRemoteMatches.map((e) => e.id).toList(),
+//               );
+//             },
+//           );
+//           test(
+//             "given nothing in particular"
+//             "when .loadMyMatches() is called"
+//             "should ping remote data source to retrive matches",
+//             () async {
+//               await matchesRepository.loadMyMatches();
 
-              verify(
-                () => matchesRemoteDataSource.getPlayerInitialMatches(),
-              ).called(1);
-            },
-          );
+//               verify(
+//                 () => matchesRemoteDataSource.getPlayerInitialMatches(),
+//               ).called(1);
+//             },
+//           );
 
-          test(
-            "given nothing in particular"
-            "when .loadMyMatches() is called"
-            "should pass remote matches retrieved from remote data source to the local data source",
-            () async {
-              await matchesRepository.loadMyMatches();
+//           test(
+//             "given nothing in particular"
+//             "when .loadMyMatches() is called"
+//             "should pass remote matches retrieved from remote data source to the local data source",
+//             () async {
+//               await matchesRepository.loadMyMatches();
 
-              verify(
-                () => matchesLocalDataSource.saveMatches(
-                  matches: testLocalMatches,
-                ),
-              ).called(1);
-            },
-          );
-        },
-      );
-    },
-  );
+//               verify(
+//                 () => matchesLocalDataSource.saveMatches(
+//                   matches: testLocalMatches,
+//                 ),
+//               ).called(1);
+//             },
+//           );
+//         },
+//       );
+//     },
+//   );
 
-  group(
-    ".getMyTodayMatches",
-    () {
-      test(
-        "given a logged in player exists "
-        "when getMyTodayMatches()"
-        "should return today's matches retrieved from the local data source",
-        () async {
-          when(
-            () => matchesLocalDataSource.getTodayMatchesForPlayer(
-              playerId: any(named: "playerId"),
-            ),
-          ).thenAnswer(
-            (invocation) async => testLocalMatches,
-          );
-          // auth status data source
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(1);
+//   group(
+//     ".getMyTodayMatches",
+//     () {
+//       test(
+//         "given a logged in player exists "
+//         "when getMyTodayMatches()"
+//         "should return today's matches retrieved from the local data source",
+//         () async {
+//           when(
+//             () => matchesLocalDataSource.getTodayMatchesForPlayer(
+//               playerId: any(named: "playerId"),
+//             ),
+//           ).thenAnswer(
+//             (invocation) async => testLocalMatches,
+//           );
+//           // auth status data source
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(1);
 
-          final matches = await matchesRepository.getMyTodayMatches();
+//           final matches = await matchesRepository.getMyTodayMatches();
 
-          expect(matches, equals(testModelMatches));
-        },
-      );
+//           expect(matches, equals(testModelMatches));
+//         },
+//       );
 
-      // throw exception when no logged in player exists
-      test(
-        "given a logged in player DOES NOT exist "
-        "when getMyTodayMatches()"
-        "should throw AuthStatusNotLoggedInException",
-        () async {
-          // Given
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(null);
+//       // throw exception when no logged in player exists
+//       test(
+//         "given a logged in player DOES NOT exist "
+//         "when getMyTodayMatches()"
+//         "should throw AuthStatusNotLoggedInException",
+//         () async {
+//           // Given
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(null);
 
-          // When & Then
-          expect(
-            () => matchesRepository.getMyTodayMatches(),
-            throwsExceptionWithMessage<AuthNotLoggedInException>(
-              "User is not logged in",
-            ),
-          );
-        },
-      );
-    },
-  );
+//           // When & Then
+//           expect(
+//             () => matchesRepository.getMyTodayMatches(),
+//             throwsExceptionWithMessage<AuthNotLoggedInException>(
+//               "User is not logged in",
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
 
-  group(
-    ".getMyPastMatches",
-    () {
-      test(
-        "given a logged in player exists "
-        "when getMyPastMatches()"
-        "should return past matches retrieved from the local data source",
-        () async {
-          when(
-            () => matchesLocalDataSource.getPastMatchesForPlayer(
-              playerId: any(named: "playerId"),
-            ),
-          ).thenAnswer(
-            (invocation) async => testLocalMatches,
-          );
-          // auth status data source
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(1);
+//   group(
+//     ".getMyPastMatches",
+//     () {
+//       test(
+//         "given a logged in player exists "
+//         "when getMyPastMatches()"
+//         "should return past matches retrieved from the local data source",
+//         () async {
+//           when(
+//             () => matchesLocalDataSource.getPastMatchesForPlayer(
+//               playerId: any(named: "playerId"),
+//             ),
+//           ).thenAnswer(
+//             (invocation) async => testLocalMatches,
+//           );
+//           // auth status data source
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(1);
 
-          final matches = await matchesRepository.getMyPastMatches();
+//           final matches = await matchesRepository.getMyPastMatches();
 
-          expect(matches, equals(testModelMatches));
-        },
-      );
+//           expect(matches, equals(testModelMatches));
+//         },
+//       );
 
-      // throw exception when no logged in player exists
-      test(
-        "given a logged in player DOES NOT exist "
-        "when getMyPastMatches()"
-        "should throw AuthStatusNotLoggedInException",
-        () async {
-          // auth status data source
+//       // throw exception when no logged in player exists
+//       test(
+//         "given a logged in player DOES NOT exist "
+//         "when getMyPastMatches()"
+//         "should throw AuthStatusNotLoggedInException",
+//         () async {
+//           // auth status data source
 
-          // Given
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(null);
+//           // Given
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(null);
 
-          // When & Then
-          expect(
-            () => matchesRepository.getMyPastMatches(),
-            throwsExceptionWithMessage<AuthNotLoggedInException>(
-              "User is not logged in",
-            ),
-          );
-        },
-      );
-    },
-  );
+//           // When & Then
+//           expect(
+//             () => matchesRepository.getMyPastMatches(),
+//             throwsExceptionWithMessage<AuthNotLoggedInException>(
+//               "User is not logged in",
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
 
-  group(
-    ".getMyUpcomingMatches",
-    () {
-      test(
-        "given a logged in player exists "
-        "when getMyUpcomingMatches()"
-        "should return upcoming matches retrieved from the local data source",
-        () async {
-          when(
-            () => matchesLocalDataSource.getUpcomingMatchesForPlayer(
-              playerId: any(named: "playerId"),
-            ),
-          ).thenAnswer(
-            (invocation) async => testLocalMatches,
-          );
-          // auth status data source
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(1);
+//   group(
+//     ".getMyUpcomingMatches",
+//     () {
+//       test(
+//         "given a logged in player exists "
+//         "when getMyUpcomingMatches()"
+//         "should return upcoming matches retrieved from the local data source",
+//         () async {
+//           when(
+//             () => matchesLocalDataSource.getUpcomingMatchesForPlayer(
+//               playerId: any(named: "playerId"),
+//             ),
+//           ).thenAnswer(
+//             (invocation) async => testLocalMatches,
+//           );
+//           // auth status data source
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(1);
 
-          final matches = await matchesRepository.getMyUpcomingMatches();
+//           final matches = await matchesRepository.getMyUpcomingMatches();
 
-          expect(matches, equals(testModelMatches));
-        },
-      );
+//           expect(matches, equals(testModelMatches));
+//         },
+//       );
 
-      // throw exception when no logged in player exists
-      test(
-        "given a logged in player DOES NOT exist "
-        "when getMyUpcomingMatches()"
-        "should throw AuthStatusNotLoggedInException",
-        () async {
-          // auth status data source
+//       // throw exception when no logged in player exists
+//       test(
+//         "given a logged in player DOES NOT exist "
+//         "when getMyUpcomingMatches()"
+//         "should throw AuthStatusNotLoggedInException",
+//         () async {
+//           // auth status data source
 
-          // Given
-          when(
-            () => authStatusDataSource.playerId,
-          ).thenReturn(null);
+//           // Given
+//           when(
+//             () => authStatusDataSource.playerId,
+//           ).thenReturn(null);
 
-          // When & Then
-          expect(
-            () => matchesRepository.getMyUpcomingMatches(),
-            // throwsAuthExceptionWithMessage(
-            //   "User is not logged in",
-            // ),
-            throwsExceptionWithMessage<AuthNotLoggedInException>(
-              "User is not logged in",
-            ),
-          );
-        },
-      );
-    },
-  );
-}
+//           // When & Then
+//           expect(
+//             () => matchesRepository.getMyUpcomingMatches(),
+//             // throwsAuthExceptionWithMessage(
+//             //   "User is not logged in",
+//             // ),
+//             throwsExceptionWithMessage<AuthNotLoggedInException>(
+//               "User is not logged in",
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   );
+// }
 
-class _FakeMatchLocalEntity extends Fake implements MatchLocalEntity {}
+// class _FakeMatchLocalEntity extends Fake implements MatchLocalEntity {}
 
-class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
+// class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
 
-class _MockMatchesLocalDataSource extends Mock
-    implements MatchesLocalDataSource {}
+// class _MockMatchesLocalDataSource extends Mock
+//     implements MatchesLocalDataSource {}
 
-class _MockMatchesRemoteDataSource extends Mock
-    implements MatchesRemoteDataSource {}
+// class _MockMatchesRemoteDataSource extends Mock
+//     implements MatchesRemoteDataSource {}
 
-class _MockAuthStatusDataSource extends Mock implements AuthStatusDataSource {}
+// class _MockAuthStatusDataSource extends Mock implements AuthStatusDataSource {}

@@ -1,6 +1,9 @@
+import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:isar/isar.dart';
@@ -139,10 +142,29 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
-  Future<int> saveMatch({
-    required MatchLocalEntity match,
+  Future<int> storeMatch({
+    // required MatchLocalEntity match,
+    required MatchLocalEntityValue matchValue,
   }) async {
-    throw UnimplementedError();
+    // TODO this upserts the match
+    final companion = MatchLocalEntityCompanion.insert(
+      id: Value(matchValue.id),
+      title: matchValue.title,
+      dateAndTime: matchValue.dateAndTime,
+      description: matchValue.description,
+      location: matchValue.location,
+    );
+
+    final id = await _databaseWrapper.db.transaction(() {
+      // final insertId = _databaseWrapper.matchLocalRepo.insertOne(companion);
+      final storeId =
+          _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
+      return storeId;
+    });
+
+    return id;
+
+    // throw UnimplementedError();
     // final response = await _isarWrapper.db.writeTxn(() async {
     //   final id = await _isarWrapper.db.matchLocalEntitys.put(match);
     //   return id;
@@ -152,10 +174,21 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
-  Future<MatchLocalEntity> getMatch({
+  Future<MatchLocalEntityData> getMatch({
     required int matchId,
   }) async {
-    throw UnimplementedError();
+    final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatch = select..where((tbl) => tbl.id.equals(matchId));
+    final matchData = await findMatch.getSingleOrNull();
+
+    if (matchData == null) {
+      throw MatchNotFoundException(
+        message: "Match with id: $matchId not found",
+      );
+    }
+
+    return matchData;
+    // throw UnimplementedError();
     // final match = await _isarWrapper.db.matchLocalEntitys
     //     .where()
     //     .idEqualTo(matchId)
@@ -168,5 +201,35 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     // }
 
     // return match;
+  }
+
+  @override
+  Future<void> storeMatches({
+    required List<MatchLocalEntityValue> matchValues,
+  }) async {
+    // throw UnimplementedError();
+
+    final matchCompanions = matchValues
+        .map((e) => MatchLocalEntityCompanion.insert(
+              id: Value(e.id),
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+
+    // TODO test batch upsert
+    // await _databaseWrapper.db.batch((batch) {
+    //   batch.insertAllOnConflictUpdate(
+    //       _databaseWrapper.matchLocalRepo, matchCompanions);
+    // });
+
+    await _databaseWrapper.runInBatch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _databaseWrapper.matchLocalRepo,
+        matchCompanions,
+      );
+    });
   }
 }

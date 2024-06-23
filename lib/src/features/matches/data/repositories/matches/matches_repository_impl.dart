@@ -22,14 +22,16 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
   @override
   Future<void> loadMyMatches() async {
-    final matchesRemote =
-        await _matchesRemoteDataSource.getPlayerInitialMatches();
+    // TODO use new function here
+    throw UnimplementedError();
+    // final matchesRemote =
+    //     await _matchesRemoteDataSource.getPlayerInitialMatches();
 
-    final matchesLocal = MatchesConverter.fromRemoteEntitiesToLocalEntities(
-      matchesRemote: matchesRemote,
-    );
+    // final matchesLocal = MatchesConverter.fromRemoteEntitiesToLocalEntities(
+    //   matchesRemote: matchesRemote,
+    // );
 
-    await _matchesLocalDataSource.saveMatches(matches: matchesLocal);
+    // await _matchesLocalDataSource.saveMatches(matches: matchesLocal);
   }
 
   @override

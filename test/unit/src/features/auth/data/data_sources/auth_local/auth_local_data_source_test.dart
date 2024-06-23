@@ -64,7 +64,7 @@ void main() async {
             // setup
 
             // given
-            testDatabaseWrapper.databaseWrapper.transaction(() async {
+            testDatabaseWrapper.databaseWrapper.runInTransaction(() async {
               for (int i = 0; i < 3; i++) {
                 await testDatabaseWrapper
                     .databaseWrapper.authenticatedPlayerRepo
@@ -772,4 +772,4 @@ void main() async {
 class _MockFlutterSecureStorageWrapper extends Mock
     implements FlutterSecureStorageWrapper {}
 
-class _MockIsarWrapper extends Mock implements IsarWrapper {}
+// class _MockIsarWrapper extends Mock implements IsarWrapper {}

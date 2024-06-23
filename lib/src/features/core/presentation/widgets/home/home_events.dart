@@ -26,14 +26,19 @@ class HomeEvents extends StatelessWidget {
             context.go(path);
           },
           child: MatchBriefExtended(
-            date: match.date.toString(),
+            // TODO format this properly
+            date: match.dateAndTime.toIso8601String(),
             // TODO make extension to format these properly
             dayName: "WEDNESDAY",
+            // TODO take time from dateTime
             time: "19:00",
-            title: match.name,
+            title: match.title,
             location: match.location,
-            organizer: match.organizer,
-            arrivingPlayersNumber: match.arrivingPlayers.length,
+            // TODO will need to migrate this to add organizer once backend provides
+            // organizer: match.organizer,
+            organizer: "Organizer",
+            // TODO will need to migrate this to add organizer once backend provides
+            arrivingPlayersNumber: 100,
           ),
         );
       },
