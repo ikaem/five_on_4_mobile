@@ -3,7 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_except
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 
@@ -20,6 +20,19 @@ class MatchesRepositoryImpl implements MatchesRepository {
   final MatchesRemoteDataSource _matchesRemoteDataSource;
   // final AuthStatusDataSource _authStatusDataSource;
 
+  @override
+  Future<void> loadPlayerMatchesOverview({required int playerId}) async {
+    final remoteEntities = await _matchesRemoteDataSource
+        .getPlayerMatchesOverview(playerId: playerId);
+
+    final localEntityValues =
+        MatchesConverter.fromRemoteEntitiesToLocalEntityValues(
+            matchesRemote: remoteEntities);
+
+    await _matchesLocalDataSource.storeMatches(matchValues: localEntityValues);
+  }
+
+  // TODO probably deprecated
   @override
   Future<void> loadMyMatches() async {
     // TODO use new function here

@@ -1,7 +1,9 @@
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -76,6 +78,71 @@ void main() {
         );
 
         // call dio with expected arguments
+        test(
+          "given .getPlayerMatchesOverview() is called"
+          "when examine request to the server"
+          "then should call DioWrapper.makeRequest() with expected arguments",
+          () async {
+            // setup
+            final expectedUriParts = HttpRequestUriPartsValue(
+              // TODO use https when we have real server eventually
+              apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+              // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+              apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+              apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+              apiEndpointPath: HttpMatchesConstants
+                  .BACKEND_ENDPOINT_PATH_MATCHES_PLAYER_MATCHES_OVERVIEW.value,
+              queryParameters: null,
+            );
+            const expectedMethod = HttpMethodConstants.GET;
+            when(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"),
+                bodyData: any(named: "bodyData"),
+              ),
+            ).thenAnswer(
+              (_) async {
+                return HttpResponseValue(payload: {
+                  "ok": true,
+                  "message": "Player matches overview retrieved successfully.",
+                  "data": {"matches": <Map<String, Object>>[]}
+                });
+              },
+            );
+
+            // given
+            await dataSource.getPlayerMatchesOverview(
+              playerId: 1,
+            );
+
+            // when
+            final captured = verify(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: captureAny(named: "uriParts"),
+                method: captureAny(named: "method"),
+                bodyData: captureAny(named: "bodyData"),
+              ),
+            ).captured;
+
+            // then
+            final actualUriParts = captured[0] as HttpRequestUriPartsValue;
+            final actualMethod = captured[1] as HttpMethodConstants;
+            final actualBodyData = captured[2];
+
+            print("what");
+
+            expect(actualUriParts, equals(expectedUriParts));
+            expect(actualMethod, equals(expectedMethod));
+            expect(
+                actualBodyData,
+                equals({
+                  "player_id": 1,
+                }));
+
+            // cleanup
+          },
+        );
 
         // TODO on non-ok response, throw exception - not sure how to test this or what the bahavior should be - lets wait
       });

@@ -63,7 +63,12 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     );
 
     final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
-        uriParts: uriParts, method: HttpMethodConstants.GET);
+        uriParts: uriParts,
+        method: HttpMethodConstants.GET,
+        bodyData: {
+          // TODO make constant for this
+          "player_id": playerId,
+        });
 
     if (!response.isOk) {
       // TODO come back to this - this is to be tested later

@@ -12,6 +12,11 @@ abstract interface class MatchesRepository {
     required int matchId,
   });
 
+  Future<void> loadPlayerMatchesOverview({
+    required int playerId,
+  });
+
+  // TODO deprecated - change with loadPlayerMatchesOverview
   Future<void> loadMyMatches(
       // TODO this should maybe accept id so that use case will retrieve user id from some auth repository
       // then we would have less functions in repositories

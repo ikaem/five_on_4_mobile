@@ -1,4 +1,6 @@
-class MatchLocalEntityValue {
+import 'package:equatable/equatable.dart';
+
+class MatchLocalEntityValue extends Equatable {
   const MatchLocalEntityValue({
     required this.id,
     required this.dateAndTime,
@@ -12,4 +14,7 @@ class MatchLocalEntityValue {
   final String title;
   final String location;
   final String description;
+
+  @override
+  List<Object?> get props => [id, dateAndTime, title, location, description];
 }

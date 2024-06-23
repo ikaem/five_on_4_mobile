@@ -1,3 +1,135 @@
+import 'package:drift/drift.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../../../../utils/data/test_entities.dart';
+
+void main() {
+  final matchesLocalDataSource = _MockMatchesLocalDataSource();
+  final matchesRemoteDataSource = _MockMatchesRemoteDataSource();
+
+  // tested class
+  final matchesRepository = MatchesRepositoryImpl(
+    matchesLocalDataSource: matchesLocalDataSource,
+    matchesRemoteDataSource: matchesRemoteDataSource,
+  );
+
+  tearDown(() {
+    reset(matchesLocalDataSource);
+    reset(matchesRemoteDataSource);
+  });
+
+  group("$MatchesRepository", () {
+    group(".loadPlayerMatchesOverview", () {
+      // should call data remote source with expected arguments
+      test(
+        "given playerId is provided"
+        "when .loadPlayerMatchesOverview() is called"
+        "then should call MatchesRemoteDataSource.getPlayerMatchesOverview() with expected arguments",
+        () async {
+          // setup
+          final testMatchesRemoteEntities =
+              generateTestMatchRemoteEntities(count: 3);
+
+          when(
+            () => matchesRemoteDataSource.getPlayerMatchesOverview(
+              playerId: any(named: "playerId"),
+            ),
+          ).thenAnswer(
+            (_) async => testMatchesRemoteEntities,
+          );
+          when(
+            () => matchesLocalDataSource.storeMatches(
+              matchValues: any(named: "matchValues"),
+            ),
+          ).thenAnswer((invocation) async {});
+
+          // given
+          const playerId = 1;
+
+          // when
+          await matchesRepository.loadPlayerMatchesOverview(
+            playerId: playerId,
+          );
+
+          // then
+          verify(() => matchesRemoteDataSource.getPlayerMatchesOverview(
+              playerId: playerId)).called(1);
+
+          // cleanup
+        },
+      );
+
+      // should call data local source with expected arguments
+      test(
+        "given remote match entities are successfully retrieved"
+        "when .loadPlayerMatchesOverview() is called"
+        "then should call MatchesLocalDataSource.storeMatches() with expected arguments",
+        () async {
+          // setup
+          final testMatchesRemoteEntities =
+              generateTestMatchRemoteEntities(count: 3);
+
+          when(
+            () => matchesRemoteDataSource.getPlayerMatchesOverview(
+              playerId: any(named: "playerId"),
+            ),
+          ).thenAnswer(
+            (_) async => testMatchesRemoteEntities,
+          );
+          when(
+            () => matchesLocalDataSource.storeMatches(
+              matchValues: any(named: "matchValues"),
+            ),
+          ).thenAnswer((invocation) async {});
+
+          // given
+          const playerId = 1;
+
+          // when
+          await matchesRepository.loadPlayerMatchesOverview(
+            playerId: playerId,
+          );
+
+          // then
+          final expectedMatchLocalEntityValues = testMatchesRemoteEntities
+              .map((e) => MatchLocalEntityValue(
+                    id: e.id,
+                    dateAndTime: e.dateAndTime,
+                    title: e.title,
+                    location: e.location,
+                    description: e.description,
+                  ))
+              .toList();
+
+          verify(
+            () => matchesLocalDataSource.storeMatches(
+              matchValues: expectedMatchLocalEntityValues,
+            ),
+          ).called(1);
+
+          // cleanup
+        },
+      );
+
+// should
+    });
+  });
+}
+
+class _MockMatchesLocalDataSource extends Mock
+    implements MatchesLocalDataSource {}
+
+class _MockMatchesRemoteDataSource extends Mock
+    implements MatchesRemoteDataSource {}
+// --------- TODO: OLD -------------
+
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
 // import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
 // import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
