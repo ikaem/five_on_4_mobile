@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,6 +46,180 @@ void main() {
   group(
     "$MatchesLocalDataSource",
     () {
+      group("getPlayerMatchesOverview", () {
+        // given player has multiple today matches, when called, should return max 5 matches in expected order
+        test(
+          "given player has multiple today matches"
+          "when '.getPlayerMatchesOverview() is called"
+          "then should return value with with max 5 today matches in expected order",
+          () async {
+            // setup
+            // TODO abstract this
+            final testMatchLocalEntityCompanions = List.generate(10, (index) {
+              final companion = MatchLocalEntityCompanion.insert(
+                id: Value(index + 1),
+                title: "title${index + 1}",
+                dateAndTime: DateTime.now()
+                    .add(Duration(minutes: index + 1))
+                    .millisecondsSinceEpoch,
+                description: "description${index + 1} ",
+                location: "location${index + 1}",
+              );
+
+              return companion;
+            });
+
+            // given
+            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+                .insertAll(testMatchLocalEntityCompanions);
+
+            // when
+            final value = await dataSource.getPlayerMatchesOverview(
+              playerId: 1,
+            );
+
+            // then
+            final expectedValue = PlayerMatchLocalEntitiesOverviewValue(
+              todayMatches: testMatchLocalEntityCompanions
+                  // enforcing order check - only first 5 closest to now
+                  .sublist(0, 5)
+                  .map(
+                    (companion) => MatchLocalEntityValue(
+                      id: companion.id.value,
+                      title: companion.title.value,
+                      dateAndTime: companion.dateAndTime.value,
+                      description: companion.description.value,
+                      location: companion.location.value,
+                    ),
+                  )
+                  .toList(),
+              upcomingMatches: const [],
+              pastMatches: const [],
+            );
+
+            expect(value, equals(expectedValue));
+
+            // cleanup
+          },
+        );
+
+        // given player has multiple upcoming matches, when called, should return max 5 matches in expected order
+        test(
+          "given player has multiple upcoming matches"
+          "when '.getPlayerMatchesOverview() is called"
+          "then should return value with max 5 upcoming matches in expected order",
+          () async {
+            // setup
+            // TODO abstract this
+            final testMatchLocalEntityCompanions = List.generate(10, (index) {
+              final companion = MatchLocalEntityCompanion.insert(
+                id: Value(index + 1),
+                title: "title${index + 1}",
+                dateAndTime: DateTime.now()
+                    .add(Duration(days: index + 1))
+                    .add(Duration(minutes: index + 1))
+                    .millisecondsSinceEpoch,
+                description: "description${index + 1} ",
+                location: "location${index + 1}",
+              );
+
+              return companion;
+            });
+
+            // given
+            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+                .insertAll(testMatchLocalEntityCompanions);
+
+            // when
+            final value = await dataSource.getPlayerMatchesOverview(
+              playerId: 1,
+            );
+
+            // then
+            final expectedValue = PlayerMatchLocalEntitiesOverviewValue(
+              todayMatches: const [],
+              upcomingMatches: testMatchLocalEntityCompanions
+                  // enforcing order check - only first 5 closest to now
+                  .sublist(0, 5)
+                  .map(
+                    (companion) => MatchLocalEntityValue(
+                      id: companion.id.value,
+                      title: companion.title.value,
+                      dateAndTime: companion.dateAndTime.value,
+                      description: companion.description.value,
+                      location: companion.location.value,
+                    ),
+                  )
+                  .toList(),
+              pastMatches: const [],
+            );
+
+            expect(value, equals(expectedValue));
+
+            // cleanup
+          },
+        );
+
+        // given player has multiple past matches, when called, should return max 5 matches in expected order
+        test(
+          "given player has multiple past matches"
+          "when '.getPlayerMatchesOverview() is called"
+          "then should return value with max 5 past matches in expected order",
+          () async {
+            // setup
+            // TODO abstract this
+            final testMatchLocalEntityCompanions = List.generate(10, (index) {
+              final companion = MatchLocalEntityCompanion.insert(
+                id: Value(index + 1),
+                title: "title${index + 1}",
+                dateAndTime: DateTime.now()
+                    .subtract(Duration(days: index + 1))
+                    .add(Duration(minutes: index + 1))
+                    .millisecondsSinceEpoch,
+                description: "description${index + 1} ",
+                location: "location${index + 1}",
+              );
+
+              return companion;
+            });
+
+            // given
+            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+                .insertAll(testMatchLocalEntityCompanions);
+
+            // when
+            final value = await dataSource.getPlayerMatchesOverview(
+              playerId: 1,
+            );
+
+            // then
+            final expectedValue = PlayerMatchLocalEntitiesOverviewValue(
+              todayMatches: const [],
+              upcomingMatches: const [],
+              pastMatches: testMatchLocalEntityCompanions
+                  // enforcing order check - only first 5 closest to now
+                  .sublist(0, 5)
+                  .map(
+                    (companion) => MatchLocalEntityValue(
+                      id: companion.id.value,
+                      title: companion.title.value,
+                      dateAndTime: companion.dateAndTime.value,
+                      description: companion.description.value,
+                      location: companion.location.value,
+                    ),
+                  )
+                  .toList(),
+            );
+
+            expect(value, equals(expectedValue));
+
+            // cleanup
+          },
+        );
+
+        // TODO come back to it - given player has multiple today, upcoming and past matches, when called, should return max 5 of each matches types in expected order
+      });
+
       group(".getMatch()", () {
         test(
           "given a match id with no match in the database"

@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
@@ -63,6 +64,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     // return matches;
   }
 
+// TODO these can stay - will be reused on load more i guess?
   @override
   Future<List<MatchLocalEntity>> getTodayMatchesForPlayer({
     required int playerId,
@@ -173,6 +175,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     // return response;
   }
 
+// TODO change this to return value, not match data
   @override
   Future<MatchLocalEntityData> getMatch({
     required int matchId,
@@ -231,5 +234,125 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
         matchCompanions,
       );
     });
+  }
+
+  @override
+  Future<PlayerMatchLocalEntitiesOverviewValue> getPlayerMatchesOverview({
+    required int playerId,
+  }) async {
+    // TODO extract to separate method that will be reused in load more
+    // TODO await all of this at the same time
+    final todayMatches =
+        await _getPlayerTodayMatchesOverview(playerId: playerId);
+    final upcomingMatches =
+        await _getPlayerUpcomingMatchesOverview(playerId: playerId);
+
+    final value = PlayerMatchLocalEntitiesOverviewValue(
+      upcomingMatches: upcomingMatches,
+      todayMatches: todayMatches,
+      pastMatches: const [],
+    );
+    return value;
+  }
+
+  Future<List<MatchLocalEntityValue>> _getPlayerTodayMatchesOverview({
+    required int playerId,
+  }) async {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    // TODO create extension on datetime for this
+    final lastMomentOfYesterday = DateTime(
+      yesterday.year,
+      yesterday.month,
+      yesterday.day,
+      23,
+      59,
+      59,
+      999,
+      999,
+      // TODO this might need to be normalized to seconds or something - we will see
+    );
+
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    final firstMomentOfTomorrow = DateTime(
+      tomorrow.year,
+      tomorrow.month,
+      tomorrow.day,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
+
+    final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isBetweenValues(
+          lastMomentOfYesterday.millisecondsSinceEpoch,
+          firstMomentOfTomorrow.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    final matches = await (findMatches..limit(5)).get();
+
+    // TODO create to value constructor or extension or something
+    final matchValues = matches
+        .map((e) => MatchLocalEntityValue(
+              id: e.id,
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+    return matchValues;
+  }
+
+  Future<List<MatchLocalEntityValue>> _getPlayerUpcomingMatchesOverview({
+    required int playerId,
+  }) async {
+    final now = DateTime.now();
+    final lastMomentOfToday = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      23,
+      59,
+      59,
+      999,
+      999,
+    );
+
+    final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isBiggerThanValue(
+          lastMomentOfToday.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    final matches = await (findMatches..limit(5)).get();
+
+    // TODO create to value constructor or extension or something
+    final matchValues = matches
+        .map((e) => MatchLocalEntityValue(
+              id: e.id,
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+    return matchValues;
   }
 }
