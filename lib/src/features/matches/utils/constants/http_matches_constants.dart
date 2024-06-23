@@ -1,9 +1,11 @@
 enum HttpMatchesConstants {
-  BACKEND_ENDPOINT_PATH_MATCHES('matches'),
-  BACKEND_ENDPOINT_PATH_MATCH('matches/:id'),
-  BACKEND_ENDPOINT_PATH_MATCH_CREATE('matches');
+  BACKEND_ENDPOINT_PATH_MATCHES._('matches'),
+  BACKEND_ENDPOINT_PATH_MATCH._('matches/:id'),
+  BACKEND_ENDPOINT_PATH_MATCH_CREATE._('matches'),
+  BACKEND_ENDPOINT_PATH_MATCHES_PLAYER_MATCHES_OVERVIEW._(
+      'matches/player-matches-overview');
 
-  const HttpMatchesConstants(this.value);
+  const HttpMatchesConstants._(this.value);
   final String value;
 }
 

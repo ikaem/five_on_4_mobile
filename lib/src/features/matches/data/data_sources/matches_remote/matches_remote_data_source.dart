@@ -12,16 +12,20 @@ abstract interface class MatchesRemoteDataSource {
     required int matchId,
   });
 
+  Future<List<MatchRemoteEntity>> getPlayerMatchesOverview({
+    required int playerId,
+  });
+
   // TODO deprecate this
   // TODO eventually change this to pass playerId Parameter as well
-  Future<List<MatchRemoteEntity>> getPlayerInitialMatches(
-      // TODO also we should make this called something like - getInitialPlayerMatches
-      // TODO this function should get 5 matches for today, and 5 for past, and 5 for upcogming
-      // TODO we should make this generic
-      /* 
-      pass info:
-      - playerId
-      - page
-       */
-      );
+  // Future<List<MatchRemoteEntity>> getPlayerInitialMatches(
+  //     // TODO also we should make this called something like - getInitialPlayerMatches
+  //     // TODO this function should get 5 matches for today, and 5 for past, and 5 for upcogming
+  //     // TODO we should make this generic
+  //     /*
+  //     pass info:
+  //     - playerId
+  //     - page
+  //      */
+  //     );
 }

@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
@@ -46,7 +47,47 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     // return matchId;
   }
 
+  @override
+  Future<List<MatchRemoteEntity>> getPlayerMatchesOverview({
+    required int playerId,
+  }) async {
+    final uriParts = HttpRequestUriPartsValue(
+      // TODO use https when we have real server eventually
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpMatchesConstants
+          .BACKEND_ENDPOINT_PATH_MATCHES_PLAYER_MATCHES_OVERVIEW.value,
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+        uriParts: uriParts, method: HttpMethodConstants.GET);
+
+    if (!response.isOk) {
+      // TODO come back to this - this is to be tested later
+      throw Exception(
+          "Something went wrong with getting player matches overview");
+    }
+
+    // TODO maybe map string dynamic is better
+    // TODO this looks flaky - but maybe it is fine
+    final responseJsonMapMatches =
+        response.payload["data"]["matches"] as List<Map<String, Object>>;
+
+    final matchesOverview = responseJsonMapMatches
+        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .toList();
+
+    return matchesOverview;
+
+    // TODO: implement getPlayerMatchesOverview
+    // throw UnimplementedError();
+  }
+
   // TODO this might not even be needed - we might have some endpoint like getInitialData, which would get all today, following matches, and stuff like that, maybe the whole home thing
+  // TODO remove this
   @override
   Future<List<MatchRemoteEntity>> getPlayerInitialMatches() async {
     throw UnimplementedError();

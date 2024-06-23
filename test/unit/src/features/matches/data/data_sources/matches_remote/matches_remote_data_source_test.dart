@@ -1,3 +1,99 @@
+import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../../../../utils/data/test_entities.dart';
+
+void main() {
+  final dioWrapper = _MockDioWrapper();
+
+  // tested class
+  final dataSource = MatchesRemoteDataSourceImpl(dioWrapper: dioWrapper);
+
+  setUpAll(() {
+    registerFallbackValue(_FakeHttpRequestUriPartsValue());
+    registerFallbackValue(HttpMethodConstants.GET);
+  });
+
+  tearDown(() {
+    reset(dioWrapper);
+  });
+
+  group(
+    "$MatchesRemoteDataSource",
+    () {
+      group(".getPlayerMatchesOverview", () {
+        // on ok response, return expected response
+        test(
+          "given ok response from dio"
+          "when .getPlayerMatchesOverview() is called"
+          "then should return expected response",
+          () async {
+            // setup
+            final matchEntities = generateTestMatchRemoteEntities(count: 3);
+
+            // given
+            when(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"),
+                bodyData: any(named: "bodyData"),
+              ),
+            ).thenAnswer(
+              (_) async {
+                return HttpResponseValue(payload: {
+                  "ok": true,
+                  "message": "Player matches overview retrieved successfully.",
+                  "data": {
+                    "matches": matchEntities
+                        .map((e) => {
+                              "id": e.id,
+                              "title": e.title,
+                              "dateAndTime": e.dateAndTime,
+                              "location": e.location,
+                              "description": e.description,
+                            })
+                        .toList(),
+                  }
+                });
+              },
+            );
+
+            // when
+            final matches = await dataSource.getPlayerMatchesOverview(
+              playerId: 1,
+            );
+
+            // then
+            expect(matches, equals(matchEntities));
+
+            // cleanup
+          },
+        );
+
+        // call dio with expected arguments
+
+        // TODO on non-ok response, throw exception - not sure how to test this or what the bahavior should be - lets wait
+      });
+    },
+  );
+}
+
+class _MockDioWrapper extends Mock implements DioWrapper {}
+
+class _FakeHttpRequestUriPartsValue extends Fake
+    implements HttpRequestUriPartsValue {}
+
+
+
+
+
+
+//  ------------ OLD -------------
 // TODO come back to this
 
 // import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';

@@ -28,6 +28,26 @@ List<MatchLocalEntityCompanion> generateTestMatchLocalEntityCompanions({
   return matchLocalEntities;
 }
 
+List<MatchRemoteEntity> generateTestMatchRemoteEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final matchRemoteEntities = List<MatchRemoteEntity>.generate(
+    count,
+    (index) {
+      return MatchRemoteEntity(
+        id: index + 1,
+        title: "${namesPrefix}title${index + 1}",
+        dateAndTime: DateTime.now().millisecondsSinceEpoch,
+        description: "${namesPrefix}description${index + 1} ",
+        location: "${namesPrefix}location${index + 1}",
+      );
+    },
+  );
+
+  return matchRemoteEntities;
+}
+
 // TODO old and some of it outdated (for isar) - remove and possibly adjust naming of those that work still
 
 final testAuthDataEntity = AuthDataEntity(

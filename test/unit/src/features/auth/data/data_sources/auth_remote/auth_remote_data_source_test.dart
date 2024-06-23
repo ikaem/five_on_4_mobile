@@ -342,6 +342,7 @@ void main() {
         );
       });
 
+      // TODO this is outdated
       group(
         ".getAuth",
         () {
@@ -364,15 +365,17 @@ void main() {
                   uriParts: any(named: "uriParts"),
                   method: any(named: "method"),
                 ),
-              ).thenAnswer((invocation) async => HttpResponseValue(payload: {
-                    "ok": true,
-                    "message": "User authentication retrieved successfully",
-                    "data": {
-                      "id": expectedEntity.playerId,
-                      "name": expectedEntity.playerName,
-                      "nickname": expectedEntity.playerNickname,
+              ).thenAnswer((invocation) async => HttpResponseValue(
+                    payload: {
+                      "ok": true,
+                      "message": "User authentication retrieved successfully",
+                      "data": {
+                        "id": expectedEntity.playerId,
+                        "name": expectedEntity.playerName,
+                        "nickname": expectedEntity.playerNickname,
+                      },
                     },
-                  }));
+                  ));
 
               // when
               final result = await dataSource.getAuth();

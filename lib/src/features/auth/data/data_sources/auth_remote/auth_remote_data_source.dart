@@ -8,6 +8,7 @@ abstract interface class AuthRemoteDataSource {
   );
   // TODO outdated
   Future<String> verifyGoogleSignIn();
+  // TODO rename this to getAuthenticatedPlayer
   Future<AuthenticatedPlayerRemoteEntity?> getAuth();
   Future<void> signOut();
 }
