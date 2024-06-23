@@ -298,6 +298,8 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
 
         return isDateToday;
       });
+    // TODO sorting should be enforced here on db - same thing on backend side
+    // because right now it returns in order of insertion - but we want it to be sorted by date
     final matches = await (findMatches..limit(5)).get();
 
     // TODO create to value constructor or extension or something
