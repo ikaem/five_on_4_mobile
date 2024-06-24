@@ -16,8 +16,10 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_player_matches_overview/get_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
@@ -114,10 +116,10 @@ abstract class GetItWrapper {
         LoadMatchUseCase(matchesRepository: matchesRepository);
     final createMatchUseCase =
         CreateMatchUseCase(matchesRepository: matchesRepository);
-    final loadMyMatchesUseCase =
-        LoadMyMatchesUseCase(matchesRepository: matchesRepository);
-    final getMyTodayMatchesUseCase =
-        GetMyTodayMatchesUseCase(matchesRepository: matchesRepository);
+    // final loadMyMatchesUseCase =
+    //     LoadMyMatchesUseCase(matchesRepository: matchesRepository);
+    // final getMyTodayMatchesUseCase =
+    //     GetMyTodayMatchesUseCase(matchesRepository: matchesRepository);
     final getAuthenticatedPlayerModelStreamUseCase =
         GetAuthenticatedPlayerModelStreamUseCase(
       authRepository: authRepository,
@@ -132,12 +134,25 @@ abstract class GetItWrapper {
     final signOutUseCase = SignOutUseCase(
       authRepository: authRepository,
     );
-    final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
+
+    // matches
+    final LoadPlayerMatchesOverviewUseCase loadPlayerMatchesOverviewUseCase =
+        LoadPlayerMatchesOverviewUseCase(
       matchesRepository: matchesRepository,
     );
-    final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
+    final GetPlayerMatchesOverviewUseCase getPlayerMatchesOverviewUseCase =
+        GetPlayerMatchesOverviewUseCase(
       matchesRepository: matchesRepository,
     );
+
+    // final
+    // TODO FOR NOW NOT NEEDED
+    // final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
+    //   matchesRepository: matchesRepository,
+    // );
+    // final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
+    //   matchesRepository: matchesRepository,
+    // );
 
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
@@ -146,8 +161,18 @@ abstract class GetItWrapper {
     getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
     getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
-    getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
-    getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
+
+    // matches
+    getIt.registerSingleton<LoadPlayerMatchesOverviewUseCase>(
+        loadPlayerMatchesOverviewUseCase);
+    getIt.registerSingleton<GetPlayerMatchesOverviewUseCase>(
+        getPlayerMatchesOverviewUseCase);
+
+    // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
+    // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
+    // getIt.registerSingleton<GetMyPastMatchesUseCase>(getMyPasMatchesUseCase);
+    // getIt.registerSingleton<GetMyUpcomingMatchesUseCase>(
+    //     getMyUpcomingMatchesUseCase);
     getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
         getAuthenticatedPlayerModelStreamUseCase);
     getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
@@ -155,9 +180,6 @@ abstract class GetItWrapper {
     getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
         authenticateWithGoogleUseCase);
     getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
-    getIt.registerSingleton<GetMyPastMatchesUseCase>(getMyPasMatchesUseCase);
-    getIt.registerSingleton<GetMyUpcomingMatchesUseCase>(
-        getMyUpcomingMatchesUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);

@@ -95,12 +95,12 @@ void main() async {
     );
 
     group(
-      ".getAuthenticatedPlayerLocalEntityData()",
+      ".getAuthenticatedPlayerLocalEntity()",
       () {
         // should return null if no elements in db
         test(
           "given no elements in the db"
-          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "when '.getAuthenticatedPlayerLocalEntity()' is called"
           "then should return expected result",
           () async {
             // setup
@@ -108,8 +108,8 @@ void main() async {
             // given
 
             // when
-            final result = await authLocalDataSource
-                .getAuthenticatedPlayerLocalEntityData();
+            final result =
+                await authLocalDataSource.getAuthenticatedPlayerLocalEntity();
 
             // then
             expect(result, isNull);
@@ -121,7 +121,7 @@ void main() async {
         // should return expected entity if element in db
         test(
           "given an element in the db"
-          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "when '.getAuthenticatedPlayerLocalEntity()' is called"
           "then should return expected element",
           () async {
             // setup
@@ -136,11 +136,16 @@ void main() async {
                 .insertOne(entityData);
 
             // when
-            final result = await authLocalDataSource
-                .getAuthenticatedPlayerLocalEntityData();
+            final result =
+                await authLocalDataSource.getAuthenticatedPlayerLocalEntity();
 
             // then
-            expect(result, equals(entityData));
+            final expectedValue = AuthenticatedPlayerLocalEntityValue(
+              playerId: entityData.playerId,
+              playerName: entityData.playerName,
+              playerNickname: entityData.playerNickname,
+            );
+            expect(result, equals(expectedValue));
 
             // cleanup
           },
@@ -149,7 +154,7 @@ void main() async {
         // should throw if multiple elements in db
         test(
           "given multiple elements in the db"
-          "when '.getAuthenticatedPlayerLocalEntityData()' is called"
+          "when '.getAuthenticatedPlayerLocalEntity()' is called"
           "then should throw expected exception",
           () async {
             // setup
@@ -172,7 +177,7 @@ void main() async {
 
             // when /then
             expect(() async {
-              await authLocalDataSource.getAuthenticatedPlayerLocalEntityData();
+              await authLocalDataSource.getAuthenticatedPlayerLocalEntity();
             },
                 throwsExceptionWithMessage<
                         AuthMultipleLocalAuthenticatedPlayersException>(

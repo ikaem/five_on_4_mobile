@@ -5,7 +5,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/hom
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_overview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -58,7 +58,7 @@ class HomeScreenView extends ConsumerWidget {
     final matchesUIState = _getMatchesUIState(matchesControllerState);
     final togglerOptions = _getTogglerOptions(
       matchesUIState: matchesUIState,
-      onRetry: matchesController.onLoadMatches,
+      onRetry: matchesController.onLoadMatchesOverview,
     );
 
     return Scaffold(
@@ -91,15 +91,15 @@ class HomeScreenView extends ConsumerWidget {
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchesUIState matchesUIState,
     required Future<void> Function({
-      required MatchesType matchesType,
+      required MatchTimeType matchesType,
     }) onRetry,
   }) {
     onRetryToday() => onRetry(
-          matchesType: MatchesType.today,
+          matchesType: MatchTimeType.today,
         );
 
     onRetryUpcoming() => onRetry(
-          matchesType: MatchesType.upcoming,
+          matchesType: MatchTimeType.upcoming,
         );
 
     return [
@@ -130,7 +130,7 @@ class HomeScreenView extends ConsumerWidget {
 
   // TODO this is a convertor of some kind - maybe move it to converter eventually
   MatchesUIState _getMatchesUIState(
-    AsyncValue<MatchesControllerState> matchesControllerState,
+    AsyncValue<PlayerMatchesOverviewControllerState> matchesControllerState,
   ) {
     final isLoading = matchesControllerState.maybeWhen(
       loading: () => true,

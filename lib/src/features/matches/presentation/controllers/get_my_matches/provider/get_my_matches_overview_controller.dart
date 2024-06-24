@@ -8,23 +8,30 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_to
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_player_matches_overview/get_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part "get_my_matches_controller.g.dart";
-part "matches_controller_state.dart";
-part "matches_type.dart";
+part "get_my_matches_overview_controller.g.dart";
+part 'player_matches_overview_controller_state.dart';
+part 'match_time_type.dart';
 
 @riverpod
 class GetMyMatchesController extends _$GetMyMatchesController {
-  final loadMyMatchesUseCase = GetItWrapper.get<LoadMyMatchesUseCase>();
-  final getMyTodayMatchesUseCase = GetItWrapper.get<GetMyTodayMatchesUseCase>();
-  final getMyPastMatchesUseCase = GetItWrapper.get<GetMyPastMatchesUseCase>();
-  final getMyUpcomingMatchesUseCase =
-      GetItWrapper.get<GetMyUpcomingMatchesUseCase>();
+  // final loadMyMatchesUseCase = GetItWrapper.get<LoadMyMatchesUseCase>();
+  // final getMyTodayMatchesUseCase = GetItWrapper.get<GetMyTodayMatchesUseCase>();
+  // final getMyPastMatchesUseCase = GetItWrapper.get<GetMyPastMatchesUseCase>();
+  // final getMyUpcomingMatchesUseCase =
+  //     GetItWrapper.get<GetMyUpcomingMatchesUseCase>();
+
+  final LoadPlayerMatchesOverviewUseCase _loadPlayerMatchesOverviewUseCase =
+      GetItWrapper.get<LoadPlayerMatchesOverviewUseCase>();
+  final GetPlayerMatchesOverviewUseCase _getPlayerMatchesOverviewUseCase =
+      GetItWrapper.get<GetPlayerMatchesOverviewUseCase>();
 
   Future<void> handleDispose() async {
     ref.onDispose(() {
@@ -33,52 +40,55 @@ class GetMyMatchesController extends _$GetMyMatchesController {
   }
 
   @override
-  Future<MatchesControllerState> build() async {
+  Future<PlayerMatchesOverviewControllerState> build() async {
     handleDispose();
     // If this method throws or returns a future that fails, the error will be caught and an [AsyncError] will be emitted. -> official docs
 
     // build should automatically emit loading state when await starts
-    final initialData = await _getDataFromDb(
-      isRemoteFetchDone: false,
-    );
-    _handleLoadUpdatedData();
+    // final initialData = await _getDataFromDb(
+    //   isRemoteFetchDone: false,
+    // );
+    // _handleLoadUpdatedData();
 
     return initialData;
   }
 
   // TODO will need functions to manually retrieve more matches of each type - getNextBatch
-  Future<void> onLoadMatches({
-    required MatchesType matchesType,
-  }) async {
-    switch (matchesType) {
-      case MatchesType.today:
-        {
-          // TODO load today maches from server into db
-          await Future.delayed(const Duration(milliseconds: 100));
-          // TODO retrieve from db
-          await Future.delayed(const Duration(milliseconds: 10));
-        }
-      // TODO: Handle this case.
-      case MatchesType.upcoming:
-        {
-          // TODO load upcoming maches from server into db
-          await Future.delayed(const Duration(milliseconds: 100));
-          // TODO retrieve from db
-          await Future.delayed(const Duration(milliseconds: 10));
-        }
-      // TODO: Handle this case.
-      case MatchesType.past:
-        {
-          // TODO load past maches from server into db
-          await Future.delayed(const Duration(milliseconds: 100));
-          // TODO retrieve from db
-          await Future.delayed(const Duration(milliseconds: 10));
-        }
-    }
-  }
+  // TODO
+  // Future<void> onLoadMatchesOverview({
+  //   required MatchTimeType matchesType,
+  // }) async {
+  //   switch (matchesType) {
+  //     case MatchTimeType.today:
+  //       {
+  //         // TODO load today maches from server into db
+  //         await Future.delayed(const Duration(milliseconds: 100));
+  //         // TODO retrieve from db
+  //         await Future.delayed(const Duration(milliseconds: 10));
+  //       }
+  //     // TODO: Handle this case.
+  //     case MatchTimeType.upcoming:
+  //       {
+  //         // TODO load upcoming maches from server into db
+  //         await Future.delayed(const Duration(milliseconds: 100));
+  //         // TODO retrieve from db
+  //         await Future.delayed(const Duration(milliseconds: 10));
+  //       }
+  //     // TODO: Handle this case.
+  //     case MatchTimeType.past:
+  //       {
+  //         // TODO load past maches from server into db
+  //         await Future.delayed(const Duration(milliseconds: 100));
+  //         // TODO retrieve from db
+  //         await Future.delayed(const Duration(milliseconds: 10));
+  //       }
+  //   }
+  // }
+
+  // TODO create new function to load matches for each match time type
 
   // Getting data from db
-  Future<MatchesControllerState> _getDataFromDb({
+  Future<PlayerMatchesOverviewControllerState> _getDataFromDb({
     required bool isRemoteFetchDone,
   }) async {
     // TODO dont forget to make it so that we only fetch max 5 matches at time for each type
@@ -96,7 +106,7 @@ class GetMyMatchesController extends _$GetMyMatchesController {
     final pastMatches = matchesData[1];
     final upcomingMatches = matchesData[2];
 
-    final stateValue = MatchesControllerState(
+    final stateValue = PlayerMatchesOverviewControllerState(
       isRemoteFetchDone: isRemoteFetchDone,
       todayMatches: todayMatches,
       pastMatches: pastMatches,

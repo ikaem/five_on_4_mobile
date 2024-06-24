@@ -1,7 +1,8 @@
-part of "get_my_matches_controller.dart";
+part of 'get_my_matches_overview_controller.dart';
 
-class MatchesControllerState extends Equatable {
-  const MatchesControllerState({
+// TODO THIS SHOULD live elsewhare as well - it will be reused for other players - move elesehwere when needed
+class PlayerMatchesOverviewControllerState extends Equatable {
+  const PlayerMatchesOverviewControllerState({
     required this.isRemoteFetchDone,
     required this.todayMatches,
     required this.upcomingMatches,

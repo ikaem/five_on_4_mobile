@@ -115,6 +115,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<AuthenticatedPlayerModel?> getAuthenticatedPlayerModel() async {
+    // TODO: implement getAuthenticatedPlayerModel
+    throw UnimplementedError();
+  }
+
+  // TODO outdated - remove
+  @override
   Future<void> checkAuthenticatedPlayer() async {
     // TODO: implement checkAuthenticatedPlayer
     throw UnimplementedError();

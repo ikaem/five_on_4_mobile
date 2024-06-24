@@ -109,8 +109,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   // TODO this should get value, not directly data
   @override
-  Future<AuthenticatedPlayerLocalEntityData?>
-      getAuthenticatedPlayerLocalEntityData() async {
+  Future<AuthenticatedPlayerLocalEntityValue?>
+      getAuthenticatedPlayerLocalEntity() async {
     final authenticatedPlayerLocalEntityData =
         await _databaseWrapper.authenticatedPlayerRepo.select().get();
 
@@ -124,6 +124,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     }
 
     // return null;
-    return authenticatedPlayerLocalEntityData.first;
+    final value = AuthenticatedPlayerLocalEntityValue(
+      playerId: authenticatedPlayerLocalEntityData.first.playerId,
+      playerName: authenticatedPlayerLocalEntityData.first.playerName,
+      playerNickname: authenticatedPlayerLocalEntityData.first.playerNickname,
+    );
+    return value;
   }
 }

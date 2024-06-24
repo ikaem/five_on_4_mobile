@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'get_my_matches_controller.dart';
+part of 'get_my_matches_overview_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$getMyMatchesControllerHash() =>
-    r'08917460b2964fe0c07a2936553901624f37e182';
+    r'c6870ab8d4c7bd9b525ea0f7967e55c2c8b1686b';
 
 /// See also [GetMyMatchesController].
 @ProviderFor(GetMyMatchesController)
 final getMyMatchesControllerProvider = AutoDisposeAsyncNotifierProvider<
-    GetMyMatchesController, MatchesControllerState>.internal(
+    GetMyMatchesController, PlayerMatchesOverviewControllerState>.internal(
   GetMyMatchesController.new,
   name: r'getMyMatchesControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final getMyMatchesControllerProvider = AutoDisposeAsyncNotifierProvider<
 );
 
 typedef _$GetMyMatchesController
-    = AutoDisposeAsyncNotifier<MatchesControllerState>;
+    = AutoDisposeAsyncNotifier<PlayerMatchesOverviewControllerState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
