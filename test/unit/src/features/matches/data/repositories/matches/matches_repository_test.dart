@@ -2,9 +2,12 @@ import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -31,16 +34,100 @@ void main() {
 
       test(
         "given MatchesLocalDataSource.getPlayerMatchesOverview returns expected values"
-        "when <behavior we are specifying>"
-        "then should <state we expect to happen>",
+        "when .getPlayerMatchesOverview() is called"
+        "then should return expected value",
         () async {
           // setup
+          final localEntitiesValue = PlayerMatchLocalEntitiesOverviewValue(
+            upcomingMatches: generateTestMatchLocalEntityCompanions(count: 3)
+                .map(
+                  (e) => MatchLocalEntityValue(
+                    id: e.id.value,
+                    dateAndTime: e.dateAndTime.value,
+                    title: e.title.value,
+                    location: e.location.value,
+                    description: e.description.value,
+                  ),
+                )
+                .toList(),
+            todayMatches: generateTestMatchLocalEntityCompanions(count: 3)
+                .map(
+                  (e) => MatchLocalEntityValue(
+                    id: e.id.value,
+                    dateAndTime: e.dateAndTime.value,
+                    title: e.title.value,
+                    location: e.location.value,
+                    description: e.description.value,
+                  ),
+                )
+                .toList(),
+            pastMatches: generateTestMatchLocalEntityCompanions(count: 3)
+                .map(
+                  (e) => MatchLocalEntityValue(
+                    id: e.id.value,
+                    dateAndTime: e.dateAndTime.value,
+                    title: e.title.value,
+                    location: e.location.value,
+                    description: e.description.value,
+                  ),
+                )
+                .toList(),
+          );
 
           // given
+          when(() => matchesLocalDataSource.getPlayerMatchesOverview(
+                playerId: any(named: "playerId"),
+              )).thenAnswer((invocation) async => localEntitiesValue);
 
           // when
+          final result = await matchesRepository.getPlayerMatchesOverview(
+            playerId: 1,
+          );
 
           // then
+          final expectedResult = PlayerMatchModelsOverviewValue(
+            upcomingMatches: localEntitiesValue.upcomingMatches
+                .map(
+                  (e) => MatchModel(
+                    id: e.id,
+                    dateAndTime: DateTime.fromMillisecondsSinceEpoch(
+                      e.dateAndTime,
+                    ),
+                    title: e.title,
+                    location: e.location,
+                    description: e.description,
+                  ),
+                )
+                .toList(),
+            todayMatches: localEntitiesValue.todayMatches
+                .map(
+                  (e) => MatchModel(
+                    id: e.id,
+                    dateAndTime: DateTime.fromMillisecondsSinceEpoch(
+                      e.dateAndTime,
+                    ),
+                    title: e.title,
+                    location: e.location,
+                    description: e.description,
+                  ),
+                )
+                .toList(),
+            pastMatches: localEntitiesValue.pastMatches
+                .map(
+                  (e) => MatchModel(
+                    id: e.id,
+                    dateAndTime: DateTime.fromMillisecondsSinceEpoch(
+                      e.dateAndTime,
+                    ),
+                    title: e.title,
+                    location: e.location,
+                    description: e.description,
+                  ),
+                )
+                .toList(),
+          );
+
+          expect(result, equals(expectedResult));
 
           // cleanup
         },

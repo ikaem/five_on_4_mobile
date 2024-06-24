@@ -36,9 +36,48 @@ class MatchesRepositoryImpl implements MatchesRepository {
   @override
   Future<PlayerMatchModelsOverviewValue> getPlayerMatchesOverview({
     required int playerId,
-  }) {
-    // TODO: implement getPlayerMatchesOverview
-    throw UnimplementedError();
+  }) async {
+    final localEntitiesValue = await _matchesLocalDataSource
+        .getPlayerMatchesOverview(playerId: playerId);
+
+    // TODO create converter for this
+    final modelValue = PlayerMatchModelsOverviewValue(
+      todayMatches: localEntitiesValue.todayMatches
+          .map(
+            (e) => MatchModel(
+              id: e.id,
+              dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+              location: e.location,
+              description: e.description,
+              title: e.title,
+            ),
+          )
+          .toList(),
+      upcomingMatches: localEntitiesValue.upcomingMatches
+          .map(
+            (e) => MatchModel(
+              id: e.id,
+              dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+              location: e.location,
+              description: e.description,
+              title: e.title,
+            ),
+          )
+          .toList(),
+      pastMatches: localEntitiesValue.pastMatches
+          .map(
+            (e) => MatchModel(
+              id: e.id,
+              dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+              location: e.location,
+              description: e.description,
+              title: e.title,
+            ),
+          )
+          .toList(),
+    );
+
+    return modelValue;
   }
 
   // TODO probably deprecated
