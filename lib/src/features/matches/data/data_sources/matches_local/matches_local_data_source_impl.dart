@@ -240,17 +240,19 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   Future<PlayerMatchLocalEntitiesOverviewValue> getPlayerMatchesOverview({
     required int playerId,
   }) async {
+    // TODO could there be a more effective query here - to havve one query only
     // TODO extract to separate method that will be reused in load more
     // TODO await all of this at the same time
     final todayMatches =
         await _getPlayerTodayMatchesOverview(playerId: playerId);
     final upcomingMatches =
         await _getPlayerUpcomingMatchesOverview(playerId: playerId);
+    final pastMatches = await _getPlayerPastMatchesOverview(playerId: playerId);
 
     final value = PlayerMatchLocalEntitiesOverviewValue(
       upcomingMatches: upcomingMatches,
       todayMatches: todayMatches,
-      pastMatches: const [],
+      pastMatches: pastMatches,
     );
     return value;
   }
@@ -339,6 +341,49 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
         // TODO we can check here if match is player's
         final isDateToday = tbl.dateAndTime.isBiggerThanValue(
           lastMomentOfToday.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    final matches = await (findMatches..limit(5)).get();
+
+    // TODO create to value constructor or extension or something
+    final matchValues = matches
+        .map((e) => MatchLocalEntityValue(
+              id: e.id,
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+    return matchValues;
+  }
+
+  Future<List<MatchLocalEntityValue>> _getPlayerPastMatchesOverview({
+    required int playerId,
+  }) async {
+    final today = DateTime.now();
+    final firstMomentOfToday = DateTime(
+      today.year,
+      today.month,
+      today.day,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
+
+    final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isSmallerThanValue(
+          firstMomentOfToday.millisecondsSinceEpoch,
         );
 
         return isDateToday;

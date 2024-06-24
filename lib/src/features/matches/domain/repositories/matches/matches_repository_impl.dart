@@ -5,6 +5,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 
 class MatchesRepositoryImpl implements MatchesRepository {
@@ -30,6 +31,14 @@ class MatchesRepositoryImpl implements MatchesRepository {
             matchesRemote: remoteEntities);
 
     await _matchesLocalDataSource.storeMatches(matchValues: localEntityValues);
+  }
+
+  @override
+  Future<PlayerMatchModelsOverviewValue> getPlayerMatchesOverview({
+    required int playerId,
+  }) {
+    // TODO: implement getPlayerMatchesOverview
+    throw UnimplementedError();
   }
 
   // TODO probably deprecated

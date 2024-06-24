@@ -26,6 +26,26 @@ void main() {
   });
 
   group("$MatchesRepository", () {
+    group(".getPlayerMatchesOverview", () {
+      // should return expected result
+
+      test(
+        "given MatchesLocalDataSource.getPlayerMatchesOverview returns expected values"
+        "when <behavior we are specifying>"
+        "then should <state we expect to happen>",
+        () async {
+          // setup
+
+          // given
+
+          // when
+
+          // then
+
+          // cleanup
+        },
+      );
+    });
     group(".loadPlayerMatchesOverview", () {
       // should call data remote source with expected arguments
       test(
