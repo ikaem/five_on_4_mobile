@@ -116,8 +116,16 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthenticatedPlayerModel?> getAuthenticatedPlayerModel() async {
-    // TODO: implement getAuthenticatedPlayerModel
-    throw UnimplementedError();
+    final localEntityValue =
+        await _authLocalDataSource.getAuthenticatedPlayerLocalEntity();
+    if (localEntityValue == null) return null;
+
+    final model = AuthenticatedPlayerModel(
+      playerId: localEntityValue.playerId,
+      playerName: localEntityValue.playerName,
+      playerNickname: localEntityValue.playerNickname,
+    );
+    return model;
   }
 
   // TODO outdated - remove
