@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/authenticate_with_google/authenticate_with_google_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model/get_authenticated_player_model_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model_stream/get_authenticated_player_model_stream_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/load_authenticated_player_from_remote/load_authenticated_player_from_remote_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
@@ -131,9 +132,6 @@ abstract class GetItWrapper {
     final authenticateWithGoogleUseCase = AuthenticateWithGoogleUseCase(
       authRepository: authRepository,
     );
-    final signOutUseCase = SignOutUseCase(
-      authRepository: authRepository,
-    );
 
     // matches
     final LoadPlayerMatchesOverviewUseCase loadPlayerMatchesOverviewUseCase =
@@ -143,6 +141,15 @@ abstract class GetItWrapper {
     final GetPlayerMatchesOverviewUseCase getPlayerMatchesOverviewUseCase =
         GetPlayerMatchesOverviewUseCase(
       matchesRepository: matchesRepository,
+    );
+    final SignOutUseCase signOutUseCase = SignOutUseCase(
+      authRepository: authRepository,
+    );
+
+    // auth
+    final GetAuthenticatedPlayerModelUseCase
+        getAuthenticatedPlayerModelUseCase = GetAuthenticatedPlayerModelUseCase(
+      authRepository: authRepository,
     );
 
     // final
@@ -162,6 +169,17 @@ abstract class GetItWrapper {
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
     getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
 
+    // auth
+    getIt.registerSingleton<GetAuthenticatedPlayerModelUseCase>(
+        getAuthenticatedPlayerModelUseCase);
+    getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
+        getAuthenticatedPlayerModelStreamUseCase);
+    getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
+        loadAuthenticatedPlayerFromRemoteUseCase);
+    getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
+        authenticateWithGoogleUseCase);
+    getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
+
     // matches
     getIt.registerSingleton<LoadPlayerMatchesOverviewUseCase>(
         loadPlayerMatchesOverviewUseCase);
@@ -173,13 +191,6 @@ abstract class GetItWrapper {
     // getIt.registerSingleton<GetMyPastMatchesUseCase>(getMyPasMatchesUseCase);
     // getIt.registerSingleton<GetMyUpcomingMatchesUseCase>(
     //     getMyUpcomingMatchesUseCase);
-    getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
-        getAuthenticatedPlayerModelStreamUseCase);
-    getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
-        loadAuthenticatedPlayerFromRemoteUseCase);
-    getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
-        authenticateWithGoogleUseCase);
-    getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);

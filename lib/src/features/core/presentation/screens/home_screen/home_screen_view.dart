@@ -52,13 +52,18 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final matchesController = ref.read(getMyMatchesControllerProvider.notifier);
+    // TODO not sure if this is ok to be here?
+    final matchesController =
+        ref.read(getMyMatchesOverviewControllerProvider.notifier);
 
-    final matchesControllerState = ref.watch(getMyMatchesControllerProvider);
+    final matchesControllerState =
+        ref.watch(getMyMatchesOverviewControllerProvider);
     final matchesUIState = _getMatchesUIState(matchesControllerState);
     final togglerOptions = _getTogglerOptions(
       matchesUIState: matchesUIState,
-      onRetry: matchesController.onLoadMatchesOverview,
+      // onRetry: matchesController.onLoadMatchesOverview,
+      // TODO revert this
+      onRetry: ({required MatchTimeType matchesType}) async {},
     );
 
     return Scaffold(

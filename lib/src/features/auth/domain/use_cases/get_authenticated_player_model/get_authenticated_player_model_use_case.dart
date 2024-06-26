@@ -9,6 +9,28 @@ class GetAuthenticatedPlayerModelUseCase {
   final AuthRepository _authRepository;
 
   Future<AuthenticatedPlayerModel?> call() async {
-    return _authRepository.getAuthenticatedPlayerModel();
+    final authPlayerModel = _authRepository.getAuthenticatedPlayerModel();
+    return authPlayerModel;
   }
 }
+
+
+/* 
+
+
+
+
+
+TestFailure (Matching call #2 not found. All calls: _MockListener<AsyncValue<PlayerMatchesOverviewControllerState>>.call(null, AsyncLoading<PlayerMatchesOverviewControllerState>()), _MockListener<AsyncValue<PlayerMatchesOverviewControllerState>>.call(
+    AsyncLoading<PlayerMatchesOverviewControllerState>(),
+    AsyncError<PlayerMatchesOverviewControllerState>(error: AuthException -> No logged in player, stackTrace: #0   
+
+
+
+
+
+
+
+
+
+ */
