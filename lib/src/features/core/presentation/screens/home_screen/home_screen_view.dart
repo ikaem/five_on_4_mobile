@@ -52,7 +52,7 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    // TODO not sure if this is ok to be here?
+    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget?
     final matchesController =
         ref.read(getMyMatchesOverviewControllerProvider.notifier);
 

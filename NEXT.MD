@@ -1,9 +1,4 @@
-1. repository to get player matches overview
-2. use case to get player matches overview
-3. fix get my matches overview controller
-4. need get current signed in player
-   1. in auth data source local need to get get authetnicated player - we have that
-   2. need repo for that 
-   3. need use case for that - to be used in the controller
-      1. if no auth player, logout 
-         1. so need logout use case as well
+1. there is issue on backend retrieving data 
+   1. connect with backend locally and see what is going on
+   2. will need to create logic in interceptor for dio to redirect to local server
+   3. will also need to create a new debug config to set env for lcoal server use - if that is true, make request to local backend
