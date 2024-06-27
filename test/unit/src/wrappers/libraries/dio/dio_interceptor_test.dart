@@ -4,11 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 void main() {
   final flutterSecureStorageWrapper = _MockFlutterSecureStorageWrapper();
+  final envVarsWrapper = _MockEnvVarsWrapper();
 
   // handlers
   final requestHandler = _MockRequestInterceptorHandler();
@@ -17,6 +19,7 @@ void main() {
   // tested class
   final dioInterceptor = DioInterceptor(
     flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+    envVarsWrapper: envVarsWrapper,
   );
 
   setUpAll(() {
@@ -25,6 +28,7 @@ void main() {
 
   tearDown(() {
     reset(flutterSecureStorageWrapper);
+    reset(envVarsWrapper);
     reset(responseHandler);
     reset(requestHandler);
   });
@@ -418,6 +422,8 @@ class _MockResponseInterceptorHandler extends Mock
 
 class _MockRequestInterceptorHandler extends Mock
     implements RequestInterceptorHandler {}
+
+class _MockEnvVarsWrapper extends Mock implements EnvVarsWrapper {}
 
 class _FakeRequestOptions extends Fake implements RequestOptions {}
 

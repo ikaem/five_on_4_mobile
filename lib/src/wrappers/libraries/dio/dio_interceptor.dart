@@ -8,13 +8,19 @@ import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
+// TODO maybe it would be good to have multiple interceptors - for auth, for refresh token and so on...
+// TODO this can be future work
 class DioInterceptor extends Interceptor {
   const DioInterceptor({
     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
-  }) : _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+    required EnvVarsWrapper envVarsWrapper,
+  })  : _flutterSecureStorageWrapper = flutterSecureStorageWrapper,
+        _envVarsWrapper = envVarsWrapper;
 
   final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
+  final EnvVarsWrapper _envVarsWrapper;
 
   @override
   Future<void> onRequest(
@@ -23,8 +29,17 @@ class DioInterceptor extends Interceptor {
   ) async {
     final accessToken = await _flutterSecureStorageWrapper.getAccessToken();
 
+    print("accessToken: $accessToken");
+
+    const tempOutdatedAccessToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsInBsYXllcklkIjoxLCJpYXQiOjE3MTk1MDIyMTksImV4cCI6MTcxOTUwMzExOX0.ZjY8n3jUB4rbZhG7d2s462PCa8bNgSl7YgGhtB8CPk0";
+
     final requestOptionsWithUpdatedAuthHeader =
-        _getRequestOptionsWithUpdatedAuthHeader(options, accessToken);
+        _getRequestOptionsWithUpdatedAuthHeader(
+      options,
+      // accessToken,
+      tempOutdatedAccessToken,
+    );
 
     return handler.next(requestOptionsWithUpdatedAuthHeader);
 
@@ -69,6 +84,7 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // TOOO i guess any error will propagate here
     // i guess here we would construct new request
     // but how to we send it
 

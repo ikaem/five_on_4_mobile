@@ -61,6 +61,7 @@ abstract class GetItWrapper {
 
     final dioWrapper = DioWrapper.createDefault(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+      envVarsWrapper: envVarsWrapper,
     );
     // final goRouterWrapper = GoRouterWrapper(
     //   authStatusController: authStatusController,

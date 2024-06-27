@@ -33,6 +33,7 @@
 
 // TODO test this somehow
 class EnvVarsWrapper {
+  // TODO create constants for this
   // auth
   String get googleAuthServerId =>
       const String.fromEnvironment('GOOGLE_AUTH_SERVER_ID');
