@@ -84,6 +84,8 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // TODO should probably logout as well - but controller can do the logout possibly - if there is 401 that reaches it - so
+
     // TOOO i guess any error will propagate here
     // i guess here we would construct new request
     // but how to we send it
@@ -142,16 +144,7 @@ class DioInterceptor extends Interceptor {
   }
 }
 
-
-
-
-
-
-
-
-
 // OLD TODO come back to this
-
 
 // // TODO sourcing intercepotor solution form here
 // // https://dhruvnakum.xyz/networking-in-flutter-interceptors
