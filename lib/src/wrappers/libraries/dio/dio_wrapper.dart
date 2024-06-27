@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/core/domain/exceptions/http_except
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/provider/refresh_token_dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
@@ -12,10 +13,18 @@ import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
 class DioWrapper {
   DioWrapper({
-    required Interceptor interceptor,
+    // refresh token interceptor
+    required RefreshTokenDioInterceptor refreshTokenDioInterceptor,
+    // TODO general purpose interceptor
+    required DioInterceptor dioInterceptor,
     required Dio dio,
   }) {
-    dio.interceptors.add(interceptor);
+    // TODO test only for now
+    // order matters - we want expired access token to hit refresh token interceptor first
+    // 1. refresh token interceptor
+    dio.interceptors.add(refreshTokenDioInterceptor);
+    // 2. general purpose interceptor
+    dio.interceptors.add(dioInterceptor);
 
     _dio = dio;
   }
@@ -26,13 +35,18 @@ class DioWrapper {
   }) {
     // TODO maybe even add some base options here
     final dio = Dio();
-    final interceptor = DioInterceptor(
+    final RefreshTokenDioInterceptor refreshTokenDioInterceptor =
+        RefreshTokenDioInterceptor(
+      dio: dio,
+    );
+    final dioInterceptor = DioInterceptor(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
       envVarsWrapper: envVarsWrapper,
     );
 
     return DioWrapper(
-      interceptor: interceptor,
+      refreshTokenDioInterceptor: refreshTokenDioInterceptor,
+      dioInterceptor: dioInterceptor,
       dio: dio,
     );
   }
