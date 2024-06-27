@@ -79,7 +79,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     // TODO maybe map string dynamic is better
     // TODO this looks flaky - but maybe it is fine
     final responseJsonMapMatches =
-        response.payload["data"]["matches"] as List<Map<String, Object>>;
+        response.payload["data"]["matches"] as List<dynamic>;
 
     final matchesOverview = responseJsonMapMatches
         .map((e) => MatchRemoteEntity.fromJson(json: e))
