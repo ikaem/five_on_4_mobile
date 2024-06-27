@@ -21,7 +21,13 @@ class DioInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    return handler.next(options);
+    final accessToken = await _flutterSecureStorageWrapper.getAccessToken();
+
+    final requestOptionsWithUpdatedAuthHeader =
+        _getRequestOptionsWithUpdatedAuthHeader(options, accessToken);
+
+    return handler.next(requestOptionsWithUpdatedAuthHeader);
+
     // TODO this is also legit , it would be the same
     // super.onRequest(requestOptionsWithUpatedAuthHeader, handler);
   }
@@ -63,12 +69,28 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // i guess here we would construct new request
+    // but how to we send it
+
     // TODO test all of these
     // handler.resolve(err.response!);
     // handler.next(err);
 
     // TODO this is also legit , it would be the same
     super.onError(err, handler);
+  }
+
+  RequestOptions _getRequestOptionsWithUpdatedAuthHeader(
+    RequestOptions options,
+    String? accessToken,
+  ) {
+    final requestOptionsWithUpatedAuthHeader =
+        options.copyWith(headers: <String, dynamic>{
+      ...options.headers,
+      if (accessToken != null)
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+    });
+    return requestOptionsWithUpatedAuthHeader;
   }
 
   Future<void> _handleLogoutResponse(

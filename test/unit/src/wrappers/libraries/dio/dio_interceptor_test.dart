@@ -10,6 +10,8 @@ import 'package:mocktail/mocktail.dart';
 void main() {
   final flutterSecureStorageWrapper = _MockFlutterSecureStorageWrapper();
 
+  // handlers
+  final requestHandler = _MockRequestInterceptorHandler();
   final responseHandler = _MockResponseInterceptorHandler();
 
   // tested class
@@ -17,9 +19,14 @@ void main() {
     flutterSecureStorageWrapper: flutterSecureStorageWrapper,
   );
 
+  setUpAll(() {
+    registerFallbackValue(_FakeRequestOptions());
+  });
+
   tearDown(() {
     reset(flutterSecureStorageWrapper);
     reset(responseHandler);
+    reset(requestHandler);
   });
 
   group(
@@ -36,7 +43,82 @@ void main() {
       //   },
       // );
 
+      group(".onRequest()", () {
+        // should include access token in in auth header when access token stored in secure storage
+        test(
+          "given accessToken is stored in secure storage"
+          "when .onRequest() is called"
+          "then should include accessToken in RequestOptions' authorization header passed to RequestInterceptorHandler",
+          () async {
+            // setup
+            const accessToken = "accessToken";
+            final requestOptions = RequestOptions(
+              path: "https://www.example.com/",
+            );
+
+            // given
+            when(() => flutterSecureStorageWrapper.getAccessToken())
+                .thenAnswer((_) async => accessToken);
+
+            // when
+            await dioInterceptor.onRequest(
+              requestOptions,
+              requestHandler,
+            );
+
+            // then
+            final captured =
+                verify(() => requestHandler.next(captureAny())).captured;
+            final actualRequestOptions = captured[0] as RequestOptions;
+            final actualAuthorizationHeader =
+                actualRequestOptions.headers[HttpHeaders.authorizationHeader];
+
+            expect(actualAuthorizationHeader, equals("Bearer $accessToken"));
+
+            // cleanup
+          },
+        );
+        // should not include access token in auth header when access token not stored in secure storage
+
+        test(
+          "given accessToken is not stored in secure storage"
+          "when .onRequest() is called"
+          "then should not include accessToken in RequestOptions' authorization header passed to RequestInterceptorHandler",
+          () async {
+            // setup
+            final requestOptions = RequestOptions(
+              path: "https://www.example.com/",
+            );
+
+            // given
+            when(() => flutterSecureStorageWrapper.getAccessToken())
+                .thenAnswer((_) async => null);
+
+            // when
+            await dioInterceptor.onRequest(
+              requestOptions,
+              requestHandler,
+            );
+
+            // then
+            final captured =
+                verify(() => requestHandler.next(captureAny())).captured;
+            final actualRequestOptions = captured[0] as RequestOptions;
+            final actualAuthorizationHeader =
+                actualRequestOptions.headers[HttpHeaders.authorizationHeader];
+
+            expect(actualAuthorizationHeader, isNull);
+
+            // cleanup
+          },
+        );
+      });
+
+      // TODO retry could be done in on error maybe?
+
       group(".onResponse()", () {
+        // TODO should retry request after obraining a new access token if access token has expipred - 401 and expired i guess
+
         // should store access token in secure storage when response from server contains access token
         test(
           "given Response coming from server contains access token"
@@ -333,6 +415,11 @@ class _MockFlutterSecureStorageWrapper extends Mock
 
 class _MockResponseInterceptorHandler extends Mock
     implements ResponseInterceptorHandler {}
+
+class _MockRequestInterceptorHandler extends Mock
+    implements RequestInterceptorHandler {}
+
+class _FakeRequestOptions extends Fake implements RequestOptions {}
 
 
 
