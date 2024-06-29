@@ -26,6 +26,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/f
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/google_sign_in/google_sign_in_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/path_provider/path_provider_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -54,14 +55,15 @@ abstract class GetItWrapper {
     // TODO extract to specialized functions
 
     // wrappers
-
     final envVarsWrapper = EnvVarsWrapper();
     final flutterSecureStorageWrapper =
         FlutterSecureStorageWrapper.createDefault();
+    const CookiesHandlerWrapper cookiesHandlerWrapper = CookiesHandlerWrapper();
 
     final dioWrapper = DioWrapper.createDefault(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
       envVarsWrapper: envVarsWrapper,
+      cookiesHandlerWrapper: cookiesHandlerWrapper,
     );
     // final goRouterWrapper = GoRouterWrapper(
     //   authStatusController: authStatusController,

@@ -69,6 +69,7 @@ class DioInterceptor extends Interceptor {
     // TODO for now we know we will get only one cookie
     // TODO do research how to split the string of cookins coming from backend to be able to handle multiple cookies
     final cookiesString = response.headers.value(HttpHeaders.setCookieHeader);
+    print("here is cookiesString: $cookiesString");
     if (cookiesString != null) {
       await _handleStoreRefreshTokenCookieFromResponse(cookiesString);
     }
@@ -132,6 +133,7 @@ class DioInterceptor extends Interceptor {
       if (cookie.name != "refreshToken") return;
 
       final cookieString = cookie.toString();
+      print("cookieString: $cookieString");
       await _flutterSecureStorageWrapper.storeRefreshTokenCookie(cookieString);
     } catch (e) {
       // TODO log this

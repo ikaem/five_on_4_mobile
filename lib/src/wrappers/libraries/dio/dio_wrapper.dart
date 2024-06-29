@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/provider/refresh_token_dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
 // errors throwing solution
@@ -32,12 +33,15 @@ class DioWrapper {
   factory DioWrapper.createDefault({
     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
     required EnvVarsWrapper envVarsWrapper,
+    required CookiesHandlerWrapper cookiesHandlerWrapper,
   }) {
     // TODO maybe even add some base options here
     final dio = Dio();
     final RefreshTokenDioInterceptor refreshTokenDioInterceptor =
         RefreshTokenDioInterceptor(
       dio: dio,
+      secureStorageWrapper: flutterSecureStorageWrapper,
+      cookiesHandlerWrapper: cookiesHandlerWrapper,
     );
     final dioInterceptor = DioInterceptor(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
