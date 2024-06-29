@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/check_auth_data_status/check_auth_data_status_use_case.dart';
@@ -62,6 +63,7 @@ class AuthStatusController extends ChangeNotifier {
     try {
       await _loadAuthenticatedPlayerFromRemoteUseCase();
     } catch (e) {
+      log("This is the error from AuthStatusController: $e");
       _handleError(e);
     }
 

@@ -183,7 +183,7 @@ class DioWrapper {
 
       return data;
     } catch (e) {
-      log("Error making request: $e");
+      log("Request Exception in DioWrapper._makeRequest(): $e");
 
       rethrow;
     }
