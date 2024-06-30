@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/screens/register/register_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/error_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/home_screen/home_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_screen.dart';
@@ -12,6 +15,8 @@ import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_scre
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// config based on this: https://stackoverflow.com/a/78020076/9661910
 
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -118,10 +123,18 @@ class GoRouterWrapper {
 
         // non authenticated routes
         GoRoute(
-          // parentNavigatorKey: _rootNavigatorKey,
+          parentNavigatorKey: _rootNavigatorKey,
           path: RoutePathsConstants.LOGIN.value,
           builder: (context, state) {
             return const LoginScreen();
+          },
+        ),
+
+        GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
+          path: RoutePathsConstants.REGISTER.value,
+          builder: (context, state) {
+            return const RegisterScreen();
           },
         ),
 
@@ -143,9 +156,29 @@ class GoRouterWrapper {
         ),
       ],
       redirect: (context, state) {
+        // TODO also, maybe we should disable redirection in certain cases
+        // for instance, when are not in checking authentication flow - this about this - it would make it easier
+
+        // TODO abstract this
         final isLoggedIn = authStatusController.isLoggedIn;
         final isError = authStatusController.isError;
         final isLoading = authStatusController.isLoading;
+
+        final fullPath = state.fullPath;
+
+        log(
+          "----------- PRINTING VALUES WHEN REDIRECT: ----------------\n"
+          "isLoggedIn: $isLoggedIn\n"
+          "isError: $isError\n"
+          "isLoading: $isLoading\n"
+          "fullPath: $fullPath\n"
+          "----------------------------------------------------------\n",
+        );
+
+        final nonLoggedInRoutes = [
+          RoutePathsConstants.LOGIN.value,
+          RoutePathsConstants.REGISTER.value,
+        ];
 
         // TODO abstract this
         if (isError) {
@@ -158,13 +191,24 @@ class GoRouterWrapper {
         }
 
         if (!isLoggedIn) {
-          return RoutePathsConstants.LOGIN.value;
+          final redirectPath = _getRedirectPathWhenNotLoggedIn(state);
+          return redirectPath;
+          // return RoutePathsConstants.LOGIN.value;
           // context.replace(RoutePathsConstants.LOGIN.value);
           // return null;
         }
 
+        // now we are logged in
+
         // TODO this redirection needs more work
         // return null;
+        // TODO this will prevent navigation
+        // return "/";
+        // return null;
+
+        final redirectPath = _getRedirectPathWhenLoggedIn(state);
+        print("redirect path when logged in: $redirectPath");
+
         return "/";
 
         // return null;
@@ -186,7 +230,42 @@ class GoRouterWrapper {
       },
     );
   }
+
+  String _getRedirectPathWhenNotLoggedIn(GoRouterState state) {
+    if (state.fullPath == "/") {
+      return RoutePathsConstants.LOGIN.value;
+    }
+
+    if (state.fullPath == RoutePathsConstants.LOGIN.value) {
+      return RoutePathsConstants.LOGIN.value;
+    }
+
+    // now there is register
+    if (state.fullPath == RoutePathsConstants.REGISTER.value) {
+      return RoutePathsConstants.REGISTER.value;
+    }
+
+    return RoutePathsConstants.LOGIN.value;
+  }
 }
+
+String? _getRedirectPathWhenLoggedIn(GoRouterState state) {
+  if (state.fullPath == "/") {
+    return RoutePathsConstants.ROOT.value;
+  }
+
+  final fullPath = state.fullPath;
+  // TODO not sure if this is relevant
+  // if (fullPath == RoutePathsConstants.LOGIN.value) {
+  //   return RoutePathsConstants.ROOT.value;
+  // }
+
+  if (fullPath == null) return null;
+
+  return fullPath;
+}
+
+
 
 // class _GoRouterRoutesCreator {
 //   _GoRouterRoutesCreator();

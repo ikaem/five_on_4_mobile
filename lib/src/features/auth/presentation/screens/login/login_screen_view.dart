@@ -4,8 +4,10 @@ import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/lo
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_google_container.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_screens_key_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/local_assets_path_constants.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // TODO this also needs to be tested
@@ -68,7 +70,10 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
             height: 10,
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              // TODO navigate to register screen
+              context.go(RoutePathsConstants.REGISTER.value);
+            },
             child: const Text("Create account"),
           ),
           const Divider(),

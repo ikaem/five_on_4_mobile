@@ -72,3 +72,24 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 }
+
+
+/* 
+- logic 
+1. if there is error, show error message
+2. if we are not logged in, check path
+- if path is login, show login screen
+- if path is register, show register screen
+
+
+
+ */
+
+// so lets say
+/* 
+
+- if we are not logged in, redirect to login screen
+- if we are not logged in, and path is some auth path, redirect to that path
+
+
+ */
