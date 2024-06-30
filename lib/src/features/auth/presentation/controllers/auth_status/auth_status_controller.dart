@@ -75,6 +75,8 @@ class AuthStatusController extends ChangeNotifier {
         _isLoading = false;
         _isError = false;
         notifyListeners();
+
+        // TODO maybe this should actually make a request to backedn to logout there? or maybe not - right not use case does that
       },
       onError: _handleError,
     );

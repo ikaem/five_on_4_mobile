@@ -31,14 +31,14 @@ class DioInterceptor extends Interceptor {
 
     print("accessToken: $accessToken");
 
-    const tempOutdatedAccessToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsInBsYXllcklkIjoxLCJpYXQiOjE3MTk1MDIyMTksImV4cCI6MTcxOTUwMzExOX0.ZjY8n3jUB4rbZhG7d2s462PCa8bNgSl7YgGhtB8CPk0";
+    // const tempOutdatedAccessToken =
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsInBsYXllcklkIjoxLCJpYXQiOjE3MTk1MDIyMTksImV4cCI6MTcxOTUwMzExOX0.ZjY8n3jUB4rbZhG7d2s462PCa8bNgSl7YgGhtB8CPk0";
 
     final requestOptionsWithUpdatedAuthHeader =
         _getRequestOptionsWithUpdatedAuthHeader(
       options,
-      // accessToken,
-      tempOutdatedAccessToken,
+      accessToken,
+      // tempOutdatedAccessToken,
     );
 
     return handler.next(requestOptionsWithUpdatedAuthHeader);
@@ -130,7 +130,7 @@ class DioInterceptor extends Interceptor {
       // it means it will have all values
       // TODO delegate this to cookies handler
       final cookie = Cookie.fromSetCookieValue(cookiesString);
-      if (cookie.name != "refreshToken") return;
+      if (cookie.name != "refresh_token") return;
 
       final cookieString = cookie.toString();
       print("cookieString: $cookieString");
