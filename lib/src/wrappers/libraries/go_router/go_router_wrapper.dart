@@ -131,6 +131,8 @@ class GoRouterWrapper {
             // return "/login";
           },
           routes: [
+            // lets see if this would work
+
             // maybe make one route for all auth routes
             // also maybe have some screen to come back to?
             // aut
@@ -146,7 +148,17 @@ class GoRouterWrapper {
                   builder: (context, state) {
                     return const HomeScreen();
                   },
-                  routes: const [
+                  routes: [
+                    GoRoute(
+                      // parentNavigatorKey: _rootNavigatorKey,
+                      // path: RoutePathsConstants.MATCH_CREATE.value,
+                      // parentNavigatorKey: _shellNavigatorKey,
+                      // parentNavigatorKey: _rootNavigatorKey,
+                      path: "match-create",
+                      builder: (context, state) {
+                        return const MatchCreateScreen();
+                      },
+                    ),
                     // TODO screw it, all will be nested inside "/"
                     // GoRoute(
                     //   // parentNavigatorKey: _rootNavigatorKey,

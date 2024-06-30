@@ -34,7 +34,8 @@ class _MainScreenState extends State<MainScreen> {
       body: widget.child,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go("/${RoutePathsConstants.MATCH_CREATE.value}");
+          // context.go("/${RoutePathsConstants.MATCH_CREATE.value}");
+          context.go("/match-create");
         },
         child: const Icon(Icons.add),
       ),
