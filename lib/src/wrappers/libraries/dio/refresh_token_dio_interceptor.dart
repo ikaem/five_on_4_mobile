@@ -22,6 +22,8 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.da
 import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:isar/isar.dart';
 
+// TODO this needs testing
+
 // TODO maybe dont need extension
 extension DioExceptionExtension on DioException {
   void then({

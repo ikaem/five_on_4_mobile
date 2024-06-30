@@ -4,7 +4,7 @@ import 'package:five_on_4_mobile/src/features/core/domain/exceptions/http_except
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
-import 'package:five_on_4_mobile/src/wrappers/libraries/dio/provider/refresh_token_dio_interceptor.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/refresh_token_dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
