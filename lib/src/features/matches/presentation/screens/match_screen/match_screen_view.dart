@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_match/provider/get_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
+import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -65,7 +66,8 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     required Future<void> Function() onRetry,
   }) {
     final match = matchUIState.match;
-    final participants = match?.arrivingPlayers ?? [];
+    // TODO this will need to be updated once backend provides arriving players
+    final participants = <PlayerModel>[];
     final isLoading = matchUIState.isLoading;
     final isError = matchUIState.isError;
     final isSyncing = matchUIState.isSyncing;

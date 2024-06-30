@@ -226,11 +226,304 @@ class AuthenticatedPlayerLocalEntityCompanion
   }
 }
 
+class $MatchLocalEntityTable extends MatchLocalEntity
+    with TableInfo<$MatchLocalEntityTable, MatchLocalEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MatchLocalEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _dateAndTimeMeta =
+      const VerificationMeta('dateAndTime');
+  @override
+  late final GeneratedColumn<int> dateAndTime = GeneratedColumn<int>(
+      'date_and_time', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _locationMeta =
+      const VerificationMeta('location');
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+      'location', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, title, dateAndTime, location, description];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'match_local_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<MatchLocalEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('date_and_time')) {
+      context.handle(
+          _dateAndTimeMeta,
+          dateAndTime.isAcceptableOrUnknown(
+              data['date_and_time']!, _dateAndTimeMeta));
+    } else if (isInserting) {
+      context.missing(_dateAndTimeMeta);
+    }
+    if (data.containsKey('location')) {
+      context.handle(_locationMeta,
+          location.isAcceptableOrUnknown(data['location']!, _locationMeta));
+    } else if (isInserting) {
+      context.missing(_locationMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MatchLocalEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MatchLocalEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      dateAndTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}date_and_time'])!,
+      location: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}location'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+    );
+  }
+
+  @override
+  $MatchLocalEntityTable createAlias(String alias) {
+    return $MatchLocalEntityTable(attachedDatabase, alias);
+  }
+}
+
+class MatchLocalEntityData extends DataClass
+    implements Insertable<MatchLocalEntityData> {
+  final int id;
+  final String title;
+  final int dateAndTime;
+  final String location;
+  final String description;
+  const MatchLocalEntityData(
+      {required this.id,
+      required this.title,
+      required this.dateAndTime,
+      required this.location,
+      required this.description});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    map['date_and_time'] = Variable<int>(dateAndTime);
+    map['location'] = Variable<String>(location);
+    map['description'] = Variable<String>(description);
+    return map;
+  }
+
+  MatchLocalEntityCompanion toCompanion(bool nullToAbsent) {
+    return MatchLocalEntityCompanion(
+      id: Value(id),
+      title: Value(title),
+      dateAndTime: Value(dateAndTime),
+      location: Value(location),
+      description: Value(description),
+    );
+  }
+
+  factory MatchLocalEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MatchLocalEntityData(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      dateAndTime: serializer.fromJson<int>(json['dateAndTime']),
+      location: serializer.fromJson<String>(json['location']),
+      description: serializer.fromJson<String>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'dateAndTime': serializer.toJson<int>(dateAndTime),
+      'location': serializer.toJson<String>(location),
+      'description': serializer.toJson<String>(description),
+    };
+  }
+
+  MatchLocalEntityData copyWith(
+          {int? id,
+          String? title,
+          int? dateAndTime,
+          String? location,
+          String? description}) =>
+      MatchLocalEntityData(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        dateAndTime: dateAndTime ?? this.dateAndTime,
+        location: location ?? this.location,
+        description: description ?? this.description,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('MatchLocalEntityData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('dateAndTime: $dateAndTime, ')
+          ..write('location: $location, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, title, dateAndTime, location, description);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MatchLocalEntityData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.dateAndTime == this.dateAndTime &&
+          other.location == this.location &&
+          other.description == this.description);
+}
+
+class MatchLocalEntityCompanion extends UpdateCompanion<MatchLocalEntityData> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<int> dateAndTime;
+  final Value<String> location;
+  final Value<String> description;
+  const MatchLocalEntityCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.dateAndTime = const Value.absent(),
+    this.location = const Value.absent(),
+    this.description = const Value.absent(),
+  });
+  MatchLocalEntityCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    required int dateAndTime,
+    required String location,
+    required String description,
+  })  : title = Value(title),
+        dateAndTime = Value(dateAndTime),
+        location = Value(location),
+        description = Value(description);
+  static Insertable<MatchLocalEntityData> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<int>? dateAndTime,
+    Expression<String>? location,
+    Expression<String>? description,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (dateAndTime != null) 'date_and_time': dateAndTime,
+      if (location != null) 'location': location,
+      if (description != null) 'description': description,
+    });
+  }
+
+  MatchLocalEntityCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? title,
+      Value<int>? dateAndTime,
+      Value<String>? location,
+      Value<String>? description}) {
+    return MatchLocalEntityCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      dateAndTime: dateAndTime ?? this.dateAndTime,
+      location: location ?? this.location,
+      description: description ?? this.description,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (dateAndTime.present) {
+      map['date_and_time'] = Variable<int>(dateAndTime.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MatchLocalEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('dateAndTime: $dateAndTime, ')
+          ..write('location: $location, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $AuthenticatedPlayerLocalEntityTable
       authenticatedPlayerLocalEntity =
       $AuthenticatedPlayerLocalEntityTable(this);
+  late final $MatchLocalEntityTable matchLocalEntity =
+      $MatchLocalEntityTable(this);
   Selectable<String> current_timestamp() {
     return customSelect('SELECT CURRENT_TIMESTAMP AS _c0',
         variables: [],
@@ -242,5 +535,5 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [authenticatedPlayerLocalEntity];
+      [authenticatedPlayerLocalEntity, matchLocalEntity];
 }

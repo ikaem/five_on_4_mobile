@@ -11,6 +11,8 @@ abstract interface class AuthRepository {
 
   Stream<AuthenticatedPlayerModel?> getAuthenticatedPlayerModelStream();
 
+  Future<AuthenticatedPlayerModel?> getAuthenticatedPlayerModel();
+
   // this will check auth
   // TODO maybe not needed
   Future<void> checkAuthenticatedPlayer();

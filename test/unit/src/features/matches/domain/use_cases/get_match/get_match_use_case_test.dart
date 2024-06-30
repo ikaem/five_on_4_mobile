@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

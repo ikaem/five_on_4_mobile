@@ -50,14 +50,15 @@ class MatchInfoContainer extends StatelessWidget {
           child: MatchInfo(
             // TODO pass entire match here eventually
             // TODO eventually, this needs only date in string
-            date: thisMatch.date.toString(),
+            date: thisMatch.dateAndTime.toString(),
             // TODO this also needs valida data
             dayName: "dayName",
             time: "time",
-            title: thisMatch.name,
+            title: thisMatch.title,
             location: thisMatch.location,
-            organizer: thisMatch.organizer,
-            arrivingPlayersNumber: thisMatch.arrivingPlayers.length,
+            // TODO will need to migrate this to add organizer once backend provides
+            organizer: "thisMatch.organizer",
+            arrivingPlayersNumber: 100,
           ),
         ),
         if (isSyncing)

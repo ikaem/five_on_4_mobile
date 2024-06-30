@@ -7,6 +7,7 @@ class AuthenticatedPlayerLocalEntity extends Table {
   TextColumn get playerName => text()();
   TextColumn get playerNickname => text()();
 
+  // specify primary key because player id is retrieved from backend
   @override
   Set<Column<Object>>? get primaryKey => {playerId};
 }

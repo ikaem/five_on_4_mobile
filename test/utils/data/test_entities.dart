@@ -8,6 +8,48 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
+List<MatchLocalEntityCompanion> generateTestMatchLocalEntityCompanions({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final matchLocalEntities = List<MatchLocalEntityCompanion>.generate(
+    count,
+    (index) {
+      return MatchLocalEntityCompanion.insert(
+        id: Value(index + 1),
+        title: "${namesPrefix}title${index + 1}",
+        dateAndTime: DateTime.now().millisecondsSinceEpoch,
+        description: "${namesPrefix}description${index + 1} ",
+        location: "${namesPrefix}location${index + 1}",
+      );
+    },
+  );
+
+  return matchLocalEntities;
+}
+
+List<MatchRemoteEntity> generateTestMatchRemoteEntities({
+  int count = 10,
+  String namesPrefix = "test_",
+}) {
+  final matchRemoteEntities = List<MatchRemoteEntity>.generate(
+    count,
+    (index) {
+      return MatchRemoteEntity(
+        id: index + 1,
+        title: "${namesPrefix}title${index + 1}",
+        dateAndTime: DateTime.now().millisecondsSinceEpoch,
+        description: "${namesPrefix}description${index + 1} ",
+        location: "${namesPrefix}location${index + 1}",
+      );
+    },
+  );
+
+  return matchRemoteEntities;
+}
+
+// TODO old and some of it outdated (for isar) - remove and possibly adjust naming of those that work still
+
 final testAuthDataEntity = AuthDataEntity(
   playerInfo: const AuthDataPlayerInfoEntity(
     id: 1,
@@ -109,110 +151,112 @@ List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
   return players;
 }
 
-List<MatchRemoteEntity> getTestMatchRemoteEntities({
-  int count = 10,
-  String namesPrefix = "test_",
-}) {
-  final matches = List<MatchRemoteEntity>.generate(
-    count,
-    (index) {
-      return MatchRemoteEntity(
-        id: index,
-        date: DateTime.now().millisecondsSinceEpoch,
-        name: "${namesPrefix}name$index",
-        location: "${namesPrefix}location$index",
-        organizer: "${namesPrefix}organizer$index",
-        description: "${namesPrefix}description$index",
-        arrivingPlayers: getTestPlayerRemoteEntities(),
-      );
-    },
-  );
+// TODO come back to this
 
-  return matches;
-}
+// List<MatchRemoteEntity> getTestMatchRemoteEntities({
+//   int count = 10,
+//   String namesPrefix = "test_",
+// }) {
+//   final matches = List<MatchRemoteEntity>.generate(
+//     count,
+//     (index) {
+//       return MatchRemoteEntity(
+//         id: index,
+//         date: DateTime.now().millisecondsSinceEpoch,
+//         name: "${namesPrefix}name$index",
+//         location: "${namesPrefix}location$index",
+//         organizer: "${namesPrefix}organizer$index",
+//         description: "${namesPrefix}description$index",
+//         arrivingPlayers: getTestPlayerRemoteEntities(),
+//       );
+//     },
+//   );
 
-/// [arrivingPlayers] defaults to generic call to [getTestMatchLocalPlayerEntities]
-/// [firstMatchDate] defaults to [DateTime.now()]
-MatchLocalEntity getTestMatchLocalEntity({
-  int id = 1,
-  stringFieldsPrefix = "test_",
-  List<MatchLocalPlayerEntity>? arrivingPlayers,
-  DateTime? firstMatchDate,
-}) {
-  final matchDate = firstMatchDate ?? DateTime.now();
-  final players = arrivingPlayers ?? getTestMatchLocalPlayerEntities();
+//   return matches;
+// }
 
-  return MatchLocalEntity(
-    id: id,
-    date: matchDate.millisecondsSinceEpoch,
-    name: "${stringFieldsPrefix}name",
-    location: "${stringFieldsPrefix}location",
-    organizer: "${stringFieldsPrefix}organizer",
-    description: "${stringFieldsPrefix}description",
-    arrivingPlayers: players,
-  );
-}
+// /// [arrivingPlayers] defaults to generic call to [getTestMatchLocalPlayerEntities]
+// /// [firstMatchDate] defaults to [DateTime.now()]
+// MatchLocalEntity getTestMatchLocalEntity({
+//   int id = 1,
+//   stringFieldsPrefix = "test_",
+//   List<MatchLocalPlayerEntity>? arrivingPlayers,
+//   DateTime? firstMatchDate,
+// }) {
+//   final matchDate = firstMatchDate ?? DateTime.now();
+//   final players = arrivingPlayers ?? getTestMatchLocalPlayerEntities();
 
-// TODO this is ultimately not needed - remove it and use multip0le matches with count specified
-List<MatchLocalEntity> getTestMatchLocalEntities({
-  int count = 10,
-  String namesPrefix = "test_",
+//   return MatchLocalEntity(
+//     id: id,
+//     date: matchDate.millisecondsSinceEpoch,
+//     name: "${stringFieldsPrefix}name",
+//     location: "${stringFieldsPrefix}location",
+//     organizer: "${stringFieldsPrefix}organizer",
+//     description: "${stringFieldsPrefix}description",
+//     arrivingPlayers: players,
+//   );
+// }
 
-  /// Default is DateTime.now() - every next match will be 1 minute later
-  DateTime? firstMatchDate,
-}) {
-  final initialMatchDate = firstMatchDate ?? DateTime.now();
+// // TODO this is ultimately not needed - remove it and use multip0le matches with count specified
+// List<MatchLocalEntity> getTestMatchLocalEntities({
+//   int count = 10,
+//   String namesPrefix = "test_",
 
-  final matches = List<MatchLocalEntity>.generate(
-    count,
-    (index) {
-      final matchDate = initialMatchDate.add(Duration(minutes: index));
+//   /// Default is DateTime.now() - every next match will be 1 minute later
+//   DateTime? firstMatchDate,
+// }) {
+//   final initialMatchDate = firstMatchDate ?? DateTime.now();
 
-      return MatchLocalEntity(
-        id: index,
-        date: matchDate.millisecondsSinceEpoch,
-        name: "${namesPrefix}name$index",
-        location: "${namesPrefix}location$index",
-        organizer: "${namesPrefix}organizer$index",
-        description: "${namesPrefix}description$index",
-        arrivingPlayers: getTestMatchLocalPlayerEntities(),
-      );
-    },
-  );
+//   final matches = List<MatchLocalEntity>.generate(
+//     count,
+//     (index) {
+//       final matchDate = initialMatchDate.add(Duration(minutes: index));
 
-  return matches;
-}
+//       return MatchLocalEntity(
+//         id: index,
+//         date: matchDate.millisecondsSinceEpoch,
+//         name: "${namesPrefix}name$index",
+//         location: "${namesPrefix}location$index",
+//         organizer: "${namesPrefix}organizer$index",
+//         description: "${namesPrefix}description$index",
+//         arrivingPlayers: getTestMatchLocalPlayerEntities(),
+//       );
+//     },
+//   );
 
-MatchLocalPlayerEntity getTestMatchLocalPlayerEntity({
-  int id = 1,
-  String stringFieldsPrefix = "test_",
-}) {
-  return MatchLocalPlayerEntity(
-    playerId: id,
-    name: "${stringFieldsPrefix}name",
-    nickname: "${stringFieldsPrefix}nickname",
-    avatarUrl: "https://test.com/avatar.png",
-  );
-}
+//   return matches;
+// }
 
-List<MatchLocalPlayerEntity> getTestMatchLocalPlayerEntities({
-  int count = 10,
-  String stringFieldsPrefix = "test_",
-}) {
-  final players = List<MatchLocalPlayerEntity>.generate(
-    count,
-    (index) {
-      return MatchLocalPlayerEntity(
-        playerId: index,
-        name: "${stringFieldsPrefix}name$index",
-        nickname: "${stringFieldsPrefix}nickname$index",
-        avatarUrl: "https://test.com/avatar.png",
-      );
-    },
-  );
+// MatchLocalPlayerEntity getTestMatchLocalPlayerEntity({
+//   int id = 1,
+//   String stringFieldsPrefix = "test_",
+// }) {
+//   return MatchLocalPlayerEntity(
+//     playerId: id,
+//     name: "${stringFieldsPrefix}name",
+//     nickname: "${stringFieldsPrefix}nickname",
+//     avatarUrl: "https://test.com/avatar.png",
+//   );
+// }
 
-  return players;
-}
+// List<MatchLocalPlayerEntity> getTestMatchLocalPlayerEntities({
+//   int count = 10,
+//   String stringFieldsPrefix = "test_",
+// }) {
+//   final players = List<MatchLocalPlayerEntity>.generate(
+//     count,
+//     (index) {
+//       return MatchLocalPlayerEntity(
+//         playerId: index,
+//         name: "${stringFieldsPrefix}name$index",
+//         nickname: "${stringFieldsPrefix}nickname$index",
+//         avatarUrl: "https://test.com/avatar.png",
+//       );
+//     },
+//   );
+
+//   return players;
+// }
 
 List<AuthRemoteEntity> getTestAuthRemoteEntities({
   int count = 10,

@@ -42,44 +42,44 @@ List<PlayerModel> getTestPlayersModels({
 
 MatchModel getTestMatchModel({
   int id = 1,
-  String name = "testName",
+  String title = "testTitle",
   String organizer = "testOrganizer",
   String location = "testLocation",
   String description = "testDescription",
-  DateTime? date,
+  DateTime? dateAndTime,
   List<PlayerModel> arrivingPlayers = const [],
 }) {
   return MatchModel(
     id: id,
-    name: name,
-    organizer: organizer,
+    title: title,
+    dateAndTime: dateAndTime ?? DateTime.now(),
     location: location,
-    date: date ?? DateTime.now(),
-    arrivingPlayers: arrivingPlayers,
     description: description,
+    // organizer: organizer,
+    // arrivingPlayers: arrivingPlayers,
   );
 }
 
 List<MatchModel> getTestMatchesModels({
   int count = 10,
-  String namesPrefix = "test_",
-  String organizer = "test_organizer",
+  String titlesPrefix = "test_",
+  DateTime? dateAndTime,
   String location = "test_location",
   String description = "test_description",
-  DateTime? date,
-  List<PlayerModel> arrivingPlayers = const [],
+  // String organizer = "test_organizer",
+  // List<PlayerModel> arrivingPlayers = const [],
 }) {
   final matches = List<MatchModel>.generate(
     count,
     (index) {
       return MatchModel(
         id: index,
-        name: "${namesPrefix}name$index",
-        organizer: organizer,
+        title: "${titlesPrefix}name$index",
+        dateAndTime: dateAndTime ?? DateTime.now(),
         location: location,
         description: description,
-        date: date ?? DateTime.now(),
-        arrivingPlayers: arrivingPlayers,
+        // organizer: organizer,
+        // arrivingPlayers: arrivingPlayers,
       );
     },
   );

@@ -10,6 +10,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // TODO test only
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+    // if (kReleaseMode) {
+    //   exit(1);
+    // }
+  };
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());

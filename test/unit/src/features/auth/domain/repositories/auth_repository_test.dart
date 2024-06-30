@@ -5,6 +5,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote
 import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_remote/authenticated_player_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/values/anthenticated_player_local_entity_value.dart';
@@ -382,6 +383,77 @@ void main() {
           );
         },
       );
+
+      // TODO more tests will need to be added for this
+      group(".getAuthenticatedPlayerModel()", () {
+        // given a player is authenticated
+        test(
+          "given an authenticated player exists locally"
+          "when .getAuthenticatedPlayerModel() is called"
+          "then should return expected value",
+          () async {
+            // setup
+            final authenticatedPlayerLocalEntityValue =
+                generateTestAuthenticatedPlayerLocalEntityCompanions(count: 1)
+                    .map((entity) {
+              return AuthenticatedPlayerLocalEntityValue(
+                playerId: entity.playerId.value,
+                playerName: entity.playerName.value,
+                playerNickname: entity.playerNickname.value,
+              );
+            }).first;
+
+            // given
+            when(() => authLocalDataSource.getAuthenticatedPlayerLocalEntity())
+                .thenAnswer(
+              (_) async {
+                return authenticatedPlayerLocalEntityValue;
+              },
+            );
+
+            // when
+            final result = await authRepository.getAuthenticatedPlayerModel();
+
+            // then
+            final expectedModel = AuthenticatedPlayerModel(
+              playerId: authenticatedPlayerLocalEntityValue.playerId,
+              playerName: authenticatedPlayerLocalEntityValue.playerName,
+              playerNickname:
+                  authenticatedPlayerLocalEntityValue.playerNickname,
+            );
+
+            expect(result, equals(expectedModel));
+
+            // cleanup
+          },
+        );
+
+        // given player is not authenticated
+        test(
+          "given no authenticated player exists locally"
+          "when .getAuthenticatedPlayerModel() is called"
+          "then should return null",
+          () async {
+            // setup
+            when(() => authLocalDataSource.getAuthenticatedPlayerLocalEntity())
+                .thenAnswer(
+              (_) async {
+                return null;
+              },
+            );
+
+            // given
+
+            // when
+            final result = await authRepository.getAuthenticatedPlayerModel();
+
+            // then
+            expect(result, isNull);
+
+            // cleanup
+          },
+        );
+      });
 
       group(".getAuthenticatedPlayerModelStream()", () {
         test(

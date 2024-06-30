@@ -4,32 +4,53 @@ import 'package:five_on_4_mobile/src/features/core/domain/exceptions/http_except
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_interceptor.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/dio/provider/refresh_token_dio_interceptor.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
 // errors throwing solution
 // https://github.com/cfug/dio/issues/2056
 
 class DioWrapper {
   DioWrapper({
-    required Interceptor interceptor,
+    // refresh token interceptor
+    required RefreshTokenDioInterceptor refreshTokenDioInterceptor,
+    // TODO general purpose interceptor
+    required DioInterceptor dioInterceptor,
     required Dio dio,
   }) {
-    dio.interceptors.add(interceptor);
+    // TODO test only for now
+    // order matters - we want expired access token to hit refresh token interceptor first
+    // 1. refresh token interceptor
+    dio.interceptors.add(refreshTokenDioInterceptor);
+    // 2. general purpose interceptor
+    dio.interceptors.add(dioInterceptor);
 
     _dio = dio;
   }
 
   factory DioWrapper.createDefault({
     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
+    required EnvVarsWrapper envVarsWrapper,
+    required CookiesHandlerWrapper cookiesHandlerWrapper,
   }) {
     // TODO maybe even add some base options here
     final dio = Dio();
-    final interceptor = DioInterceptor(
+    final RefreshTokenDioInterceptor refreshTokenDioInterceptor =
+        RefreshTokenDioInterceptor(
+      dio: dio,
+      secureStorageWrapper: flutterSecureStorageWrapper,
+      cookiesHandlerWrapper: cookiesHandlerWrapper,
+    );
+    final dioInterceptor = DioInterceptor(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+      envVarsWrapper: envVarsWrapper,
     );
 
     return DioWrapper(
-      interceptor: interceptor,
+      refreshTokenDioInterceptor: refreshTokenDioInterceptor,
+      dioInterceptor: dioInterceptor,
       dio: dio,
     );
   }
@@ -162,7 +183,7 @@ class DioWrapper {
 
       return data;
     } catch (e) {
-      log("Error making request: $e");
+      log("Request Exception in DioWrapper._makeRequest(): $e");
 
       rethrow;
     }

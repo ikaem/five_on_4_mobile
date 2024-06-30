@@ -32,6 +32,8 @@ class SignOutController extends _$SignOutController {
       // TODO handle error
       log("There was an error when signing out -> error: $e, stack: $s");
 
+      // TODO this can be actually listened to in the UI and inform the user
+
       // state = AsyncValue.error(e, s);
       // TODO empty because i dont know how to get exact stack trace in tests - but maybe tests can be written differently
       state = AsyncValue.error(e, StackTrace.empty);

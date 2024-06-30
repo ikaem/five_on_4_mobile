@@ -43,6 +43,15 @@ class AuthExceptionFailedToAuthenticateWithGoogle extends AuthException {
         );
 }
 
+class AuthExceptionNotLoggedIn extends AuthException {
+  const AuthExceptionNotLoggedIn()
+      : super(
+          message: "No logged in player",
+        );
+}
+
+// TODO deprecate this - use AuthExceptionNotLoggedIn
+
 class AuthNotLoggedInException extends AuthException {
   const AuthNotLoggedInException()
       : super(

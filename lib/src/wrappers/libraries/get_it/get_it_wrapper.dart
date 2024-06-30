@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_remote
 import 'package:five_on_4_mobile/src/features/auth/domain/repositories/auth/auth_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/authenticate_with_google/authenticate_with_google_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model/get_authenticated_player_model_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model_stream/get_authenticated_player_model_stream_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/load_authenticated_player_from_remote/load_authenticated_player_from_remote_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
@@ -10,17 +11,22 @@ import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/repositories/matches/matches_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_player_matches_overview/get_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/google_sign_in/google_sign_in_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/path_provider/path_provider_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/cookies_handler/cookies_handler_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -49,13 +55,15 @@ abstract class GetItWrapper {
     // TODO extract to specialized functions
 
     // wrappers
-
     final envVarsWrapper = EnvVarsWrapper();
     final flutterSecureStorageWrapper =
         FlutterSecureStorageWrapper.createDefault();
+    const CookiesHandlerWrapper cookiesHandlerWrapper = CookiesHandlerWrapper();
 
     final dioWrapper = DioWrapper.createDefault(
       flutterSecureStorageWrapper: flutterSecureStorageWrapper,
+      envVarsWrapper: envVarsWrapper,
+      cookiesHandlerWrapper: cookiesHandlerWrapper,
     );
     // final goRouterWrapper = GoRouterWrapper(
     //   authStatusController: authStatusController,
@@ -112,10 +120,10 @@ abstract class GetItWrapper {
         LoadMatchUseCase(matchesRepository: matchesRepository);
     final createMatchUseCase =
         CreateMatchUseCase(matchesRepository: matchesRepository);
-    final loadMyMatchesUseCase =
-        LoadMyMatchesUseCase(matchesRepository: matchesRepository);
-    final getMyTodayMatchesUseCase =
-        GetMyTodayMatchesUseCase(matchesRepository: matchesRepository);
+    // final loadMyMatchesUseCase =
+    //     LoadMyMatchesUseCase(matchesRepository: matchesRepository);
+    // final getMyTodayMatchesUseCase =
+    //     GetMyTodayMatchesUseCase(matchesRepository: matchesRepository);
     final getAuthenticatedPlayerModelStreamUseCase =
         GetAuthenticatedPlayerModelStreamUseCase(
       authRepository: authRepository,
@@ -127,9 +135,34 @@ abstract class GetItWrapper {
     final authenticateWithGoogleUseCase = AuthenticateWithGoogleUseCase(
       authRepository: authRepository,
     );
-    final signOutUseCase = SignOutUseCase(
+
+    // matches
+    final LoadPlayerMatchesOverviewUseCase loadPlayerMatchesOverviewUseCase =
+        LoadPlayerMatchesOverviewUseCase(
+      matchesRepository: matchesRepository,
+    );
+    final GetPlayerMatchesOverviewUseCase getPlayerMatchesOverviewUseCase =
+        GetPlayerMatchesOverviewUseCase(
+      matchesRepository: matchesRepository,
+    );
+    final SignOutUseCase signOutUseCase = SignOutUseCase(
       authRepository: authRepository,
     );
+
+    // auth
+    final GetAuthenticatedPlayerModelUseCase
+        getAuthenticatedPlayerModelUseCase = GetAuthenticatedPlayerModelUseCase(
+      authRepository: authRepository,
+    );
+
+    // final
+    // TODO FOR NOW NOT NEEDED
+    // final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
+    //   matchesRepository: matchesRepository,
+    // );
+    // final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
+    //   matchesRepository: matchesRepository,
+    // );
 
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
@@ -138,8 +171,10 @@ abstract class GetItWrapper {
     getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
     getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
-    getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
-    getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
+
+    // auth
+    getIt.registerSingleton<GetAuthenticatedPlayerModelUseCase>(
+        getAuthenticatedPlayerModelUseCase);
     getIt.registerSingleton<GetAuthenticatedPlayerModelStreamUseCase>(
         getAuthenticatedPlayerModelStreamUseCase);
     getIt.registerSingleton<LoadAuthenticatedPlayerFromRemoteUseCase>(
@@ -147,6 +182,18 @@ abstract class GetItWrapper {
     getIt.registerSingleton<AuthenticateWithGoogleUseCase>(
         authenticateWithGoogleUseCase);
     getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
+
+    // matches
+    getIt.registerSingleton<LoadPlayerMatchesOverviewUseCase>(
+        loadPlayerMatchesOverviewUseCase);
+    getIt.registerSingleton<GetPlayerMatchesOverviewUseCase>(
+        getPlayerMatchesOverviewUseCase);
+
+    // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
+    // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
+    // getIt.registerSingleton<GetMyPastMatchesUseCase>(getMyPasMatchesUseCase);
+    // getIt.registerSingleton<GetMyUpcomingMatchesUseCase>(
+    //     getMyUpcomingMatchesUseCase);
 
     // register wrappers
     getIt.registerSingleton<DatabaseWrapper>(databaseWrapper);

@@ -31,6 +31,7 @@ class DatabaseWrapper {
   // db repositories (tables) will be here
   $AuthenticatedPlayerLocalEntityTable get authenticatedPlayerRepo =>
       db.authenticatedPlayerLocalEntity;
+  $MatchLocalEntityTable get matchLocalRepo => db.matchLocalEntity;
 
   Future<void> initialize() async {
     try {
@@ -50,11 +51,17 @@ class DatabaseWrapper {
   // TODO dont forget that drfit is supported by dev tools
   // https://drift.simonbinder.eu/docs/community_tools/#drift_db_viewer
 
-  Future<T> transaction<T>(
+  Future<T> runInTransaction<T>(
     Future<T> Function() action, {
     bool requireNew = false,
   }) async {
     return db.transaction(action, requireNew: requireNew);
+  }
+
+  Future runInBatch(
+    void Function(Batch batch) action,
+  ) async {
+    await db.batch(action);
   }
 
   Future<void> close() async {

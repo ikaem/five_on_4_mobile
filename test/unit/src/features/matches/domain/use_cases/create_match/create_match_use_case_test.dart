@@ -1,9 +1,10 @@
-import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+// TODO this file does not test use case - iut tests repository
 void main() {
   final matchesRepository = _MockMatchesRepository();
 

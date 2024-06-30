@@ -107,9 +107,10 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     return singleValueStream;
   }
 
+  // TODO this should get value, not directly data
   @override
-  Future<AuthenticatedPlayerLocalEntityData?>
-      getAuthenticatedPlayerLocalEntityData() async {
+  Future<AuthenticatedPlayerLocalEntityValue?>
+      getAuthenticatedPlayerLocalEntity() async {
     final authenticatedPlayerLocalEntityData =
         await _databaseWrapper.authenticatedPlayerRepo.select().get();
 
@@ -117,10 +118,17 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       throw const AuthMultipleLocalAuthenticatedPlayersException();
     }
 
-    if (authenticatedPlayerLocalEntityData.isNotEmpty) {
-      return authenticatedPlayerLocalEntityData.first;
+    if (authenticatedPlayerLocalEntityData.isEmpty) {
+      // return authenticatedPlayerLocalEntityData.first;
+      return null;
     }
 
-    return null;
+    // return null;
+    final value = AuthenticatedPlayerLocalEntityValue(
+      playerId: authenticatedPlayerLocalEntityData.first.playerId,
+      playerName: authenticatedPlayerLocalEntityData.first.playerName,
+      playerNickname: authenticatedPlayerLocalEntityData.first.playerNickname,
+    );
+    return value;
   }
 }

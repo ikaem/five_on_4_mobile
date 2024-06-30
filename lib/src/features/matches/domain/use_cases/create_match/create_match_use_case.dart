@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/domain/repository_interfaces/matches_repository.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 
 class CreateMatchUseCase {

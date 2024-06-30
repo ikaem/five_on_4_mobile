@@ -1,15 +1,19 @@
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
+
+// TODO move to values
 
 abstract class MatchesConverter {
-  static List<MatchLocalEntity> fromRemoteEntitiesToLocalEntities({
+  static List<MatchLocalEntityValue> fromRemoteEntitiesToLocalEntityValues({
     required List<MatchRemoteEntity> matchesRemote,
   }) {
     final matchesLocal = matchesRemote
         .map(
-          (m) => MatchesConverter.fromRemoteEntityToLocalEntity(
+          (m) => MatchesConverter.fromRemoteEntityToMatchLocalEntityValue(
             matchRemote: m,
           ),
         )
@@ -18,37 +22,46 @@ abstract class MatchesConverter {
     return matchesLocal;
   }
 
-  static MatchLocalEntity fromRemoteEntityToLocalEntity({
+  static MatchLocalEntityValue fromRemoteEntityToMatchLocalEntityValue({
     required MatchRemoteEntity matchRemote,
   }) {
-    final arrivingPlayers = matchRemote.arrivingPlayers.map((player) {
-      return MatchLocalPlayerEntity(
-        playerId: player.id,
-        name: player.name,
-        nickname: player.nickname,
-        avatarUrl: player.avatarUri.toString(),
-      );
-    }).toList();
+    // TODO come back to this
+    // final arrivingPlayers = matchRemote.arrivingPlayers.map((player) {
+    //   return MatchLocalPlayerEntity(
+    //     playerId: player.id,
+    //     name: player.name,
+    //     nickname: player.nickname,
+    //     avatarUrl: player.avatarUri.toString(),
+    //   );
+    // }).toList();
 
-    final matchLocal = MatchLocalEntity(
+    // final matchLocal = MatchLocalEntity(
+    //   id: matchRemote.id,
+    //   date: matchRemote.date,
+    //   name: matchRemote.name,
+    //   location: matchRemote.location,
+    //   organizer: matchRemote.organizer,
+    //   description: matchRemote.description,
+    //   arrivingPlayers: arrivingPlayers,
+    // );
+
+    final entityValue = MatchLocalEntityValue(
       id: matchRemote.id,
-      date: matchRemote.date,
-      name: matchRemote.name,
+      dateAndTime: matchRemote.dateAndTime,
+      title: matchRemote.title,
       location: matchRemote.location,
-      organizer: matchRemote.organizer,
       description: matchRemote.description,
-      arrivingPlayers: arrivingPlayers,
     );
 
-    return matchLocal;
+    return entityValue;
   }
 
   static List<MatchModel> fromLocalEntitiesToModels({
-    required List<MatchLocalEntity> matchesLocal,
+    required List<MatchLocalEntityData> matchesLocal,
   }) {
     final matchesModel = matchesLocal
         .map(
-          (m) => MatchesConverter.fromLocalEntityToModel(
+          (m) => MatchesConverter.fromLocalEntityDataToModel(
             matchLocal: m,
           ),
         )
@@ -57,29 +70,31 @@ abstract class MatchesConverter {
     return matchesModel;
   }
 
-  static MatchModel fromLocalEntityToModel({
-    required MatchLocalEntity matchLocal,
+  static MatchModel fromLocalEntityDataToModel({
+    required MatchLocalEntityData matchLocal,
   }) {
-    final arrivingPlayers = matchLocal.arrivingPlayers.map((player) {
-      // TODO handle nulls somehow
-      return PlayerModel(
-        id: player.playerId!,
-        name: player.name!,
-        nickname: player.nickname!,
-        avatarUri: Uri.parse(player.avatarUrl!),
-      );
-    }).toList();
+    // TODO come back to this
+    // final arrivingPlayers = matchLocal.arrivingPlayers.map((player) {
+    //   // TODO handle nulls somehow
+    //   return PlayerModel(
+    //     id: player.playerId!,
+    //     name: player.name!,
+    //     nickname: player.nickname!,
+    //     avatarUri: Uri.parse(player.avatarUrl!),
+    //   );
+    // }).toList();
 
-    final matchDate = DateTime.fromMillisecondsSinceEpoch(matchLocal.date);
+    final dateAndTime =
+        DateTime.fromMillisecondsSinceEpoch(matchLocal.dateAndTime);
 
     final matchModel = MatchModel(
       id: matchLocal.id,
-      date: matchDate,
-      name: matchLocal.name,
+      title: matchLocal.title,
+      dateAndTime: dateAndTime,
       location: matchLocal.location,
-      organizer: matchLocal.organizer,
-      arrivingPlayers: arrivingPlayers,
       description: matchLocal.description,
+      // organizer: matchLocal.organizer,
+      // arrivingPlayers: arrivingPlayers,
     );
 
     return matchModel;

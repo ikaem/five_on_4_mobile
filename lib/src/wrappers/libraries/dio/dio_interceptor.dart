@@ -8,20 +8,41 @@ import 'package:dio/dio.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_response_constants.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/http_auth_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/local/env_vars_wrapper.dart';
 
+// TODO maybe it would be good to have multiple interceptors - for auth, for refresh token and so on...
+// TODO this can be future work
 class DioInterceptor extends Interceptor {
   const DioInterceptor({
     required FlutterSecureStorageWrapper flutterSecureStorageWrapper,
-  }) : _flutterSecureStorageWrapper = flutterSecureStorageWrapper;
+    required EnvVarsWrapper envVarsWrapper,
+  })  : _flutterSecureStorageWrapper = flutterSecureStorageWrapper,
+        _envVarsWrapper = envVarsWrapper;
 
   final FlutterSecureStorageWrapper _flutterSecureStorageWrapper;
+  final EnvVarsWrapper _envVarsWrapper;
 
   @override
   Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    return handler.next(options);
+    final accessToken = await _flutterSecureStorageWrapper.getAccessToken();
+
+    print("accessToken: $accessToken");
+
+    // const tempOutdatedAccessToken =
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoSWQiOjEsInBsYXllcklkIjoxLCJpYXQiOjE3MTk1MDIyMTksImV4cCI6MTcxOTUwMzExOX0.ZjY8n3jUB4rbZhG7d2s462PCa8bNgSl7YgGhtB8CPk0";
+
+    final requestOptionsWithUpdatedAuthHeader =
+        _getRequestOptionsWithUpdatedAuthHeader(
+      options,
+      accessToken,
+      // tempOutdatedAccessToken,
+    );
+
+    return handler.next(requestOptionsWithUpdatedAuthHeader);
+
     // TODO this is also legit , it would be the same
     // super.onRequest(requestOptionsWithUpatedAuthHeader, handler);
   }
@@ -48,6 +69,7 @@ class DioInterceptor extends Interceptor {
     // TODO for now we know we will get only one cookie
     // TODO do research how to split the string of cookins coming from backend to be able to handle multiple cookies
     final cookiesString = response.headers.value(HttpHeaders.setCookieHeader);
+    print("here is cookiesString: $cookiesString");
     if (cookiesString != null) {
       await _handleStoreRefreshTokenCookieFromResponse(cookiesString);
     }
@@ -63,12 +85,31 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    // TODO should probably logout as well - but controller can do the logout possibly - if there is 401 that reaches it - so
+
+    // TOOO i guess any error will propagate here
+    // i guess here we would construct new request
+    // but how to we send it
+
     // TODO test all of these
     // handler.resolve(err.response!);
     // handler.next(err);
 
     // TODO this is also legit , it would be the same
     super.onError(err, handler);
+  }
+
+  RequestOptions _getRequestOptionsWithUpdatedAuthHeader(
+    RequestOptions options,
+    String? accessToken,
+  ) {
+    final requestOptionsWithUpatedAuthHeader =
+        options.copyWith(headers: <String, dynamic>{
+      ...options.headers,
+      if (accessToken != null)
+        HttpHeaders.authorizationHeader: "Bearer $accessToken",
+    });
+    return requestOptionsWithUpatedAuthHeader;
   }
 
   Future<void> _handleLogoutResponse(
@@ -89,9 +130,10 @@ class DioInterceptor extends Interceptor {
       // it means it will have all values
       // TODO delegate this to cookies handler
       final cookie = Cookie.fromSetCookieValue(cookiesString);
-      if (cookie.name != "refreshToken") return;
+      if (cookie.name != "refresh_token") return;
 
       final cookieString = cookie.toString();
+      print("cookieString: $cookieString");
       await _flutterSecureStorageWrapper.storeRefreshTokenCookie(cookieString);
     } catch (e) {
       // TODO log this
@@ -104,16 +146,7 @@ class DioInterceptor extends Interceptor {
   }
 }
 
-
-
-
-
-
-
-
-
 // OLD TODO come back to this
-
 
 // // TODO sourcing intercepotor solution form here
 // // https://dhruvnakum.xyz/networking-in-flutter-interceptors

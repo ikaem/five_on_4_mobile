@@ -1,13 +1,28 @@
 import 'dart:developer';
 
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/sign_out/sign_out_controller.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_controller.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_overview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// TODO let this sit here for a bit
+//     final GoogleSignIn googleSignIn = GoogleSignIn(
+//       serverClientId: serverId,
+//       // TODO no need for client id to get id token it seems
+//       // // TODO for ios this is maybe not needed
+//       // clientId:
+//       //     "164480400700-glgi0u7co675c5ubj8qdcbb834rqjqvd.apps.googleusercontent.com",
+//       scopes: <String>[
+//         // 'email',
+//         // "profile",
+//         // "openid",
+//       ],
+//     );
 
 class MatchesUIState {
   const MatchesUIState({
@@ -37,13 +52,18 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    final matchesController = ref.read(getMyMatchesControllerProvider.notifier);
+    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget?
+    final matchesController =
+        ref.read(getMyMatchesOverviewControllerProvider.notifier);
 
-    final matchesControllerState = ref.watch(getMyMatchesControllerProvider);
+    final matchesControllerState =
+        ref.watch(getMyMatchesOverviewControllerProvider);
     final matchesUIState = _getMatchesUIState(matchesControllerState);
     final togglerOptions = _getTogglerOptions(
       matchesUIState: matchesUIState,
-      onRetry: matchesController.onLoadMatches,
+      // onRetry: matchesController.onLoadMatchesOverview,
+      // TODO revert this
+      onRetry: ({required MatchTimeType matchesType}) async {},
     );
 
     return Scaffold(
@@ -55,60 +75,12 @@ class HomeScreenView extends ConsumerWidget {
             avatarUrl: Uri.parse(
                 "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
           ),
-          TextButton(
-            onPressed: () async {
-              const serverId = String.fromEnvironment('GOOGLE_AUTH_SERVER_ID');
-              final GoogleSignIn googleSignIn = GoogleSignIn(
-                serverClientId: serverId,
-                // TODO no need for client id to get id token it seems
-                // // TODO for ios this is maybe not needed
-                // clientId:
-                //     "164480400700-glgi0u7co675c5ubj8qdcbb834rqjqvd.apps.googleusercontent.com",
-                scopes: <String>[
-                  // 'email',
-                  // "profile",
-                  // "openid",
-                ],
-              );
-
-              try {
-                // Get the user after successful sign in
-                var account = await googleSignIn.signIn();
-
-                if (account == null) {
-                  throw Exception('Google Sign In failed');
-                }
-
-                final auth = await account.authentication;
-
-                final idToken = auth.idToken;
-
-                print(auth.idToken);
-                log(auth.idToken!);
-              } catch (e) {
-                print(e);
-              }
-
-              // Get the user after successful sign in
-            },
-            child: const Text("Login"),
-          ),
           const SizedBox(
             height: 20,
           ),
           TextButton(
-            onPressed: () {
-              final GoogleSignIn googleSignIn = GoogleSignIn(
-                scopes: <String>[
-                  'email',
-                ],
-              );
-              try {
-                googleSignIn.signOut();
-              } catch (e) {
-                print(e);
-              }
-            },
+            onPressed: () async =>
+                await ref.read(signOutControllerProvider.notifier).onSignOut(),
             child: const Text("Logout"),
           ),
           Expanded(
@@ -124,15 +96,15 @@ class HomeScreenView extends ConsumerWidget {
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchesUIState matchesUIState,
     required Future<void> Function({
-      required MatchesType matchesType,
+      required MatchTimeType matchesType,
     }) onRetry,
   }) {
     onRetryToday() => onRetry(
-          matchesType: MatchesType.today,
+          matchesType: MatchTimeType.today,
         );
 
     onRetryUpcoming() => onRetry(
-          matchesType: MatchesType.upcoming,
+          matchesType: MatchTimeType.upcoming,
         );
 
     return [
@@ -163,7 +135,7 @@ class HomeScreenView extends ConsumerWidget {
 
   // TODO this is a convertor of some kind - maybe move it to converter eventually
   MatchesUIState _getMatchesUIState(
-    AsyncValue<MatchesControllerState> matchesControllerState,
+    AsyncValue<PlayerMatchesOverviewControllerState> matchesControllerState,
   ) {
     final isLoading = matchesControllerState.maybeWhen(
       loading: () => true,
