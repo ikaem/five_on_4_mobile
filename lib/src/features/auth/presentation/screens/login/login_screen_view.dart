@@ -72,7 +72,10 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
           TextButton(
             onPressed: () {
               // TODO navigate to register screen
-              context.go(RoutePathsConstants.REGISTER.value);
+              context.go("/non-auth/register");
+              // context.go("/login/register");
+              // .go(RoutePathsConstants.REGISTER.value.withRouteSlashPrefix);
+              // .go(RoutePathsConstants.REGISTER.value);
             },
             child: const Text("Create account"),
           ),
