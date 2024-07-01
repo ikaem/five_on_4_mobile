@@ -519,6 +519,7 @@ class MatchLocalEntityCompanion extends UpdateCompanion<MatchLocalEntityData> {
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
+  _$AppDatabaseManager get managers => _$AppDatabaseManager(this);
   late final $AuthenticatedPlayerLocalEntityTable
       authenticatedPlayerLocalEntity =
       $AuthenticatedPlayerLocalEntityTable(this);
@@ -536,4 +537,266 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [authenticatedPlayerLocalEntity, matchLocalEntity];
+}
+
+typedef $$AuthenticatedPlayerLocalEntityTableInsertCompanionBuilder
+    = AuthenticatedPlayerLocalEntityCompanion Function({
+  Value<int> playerId,
+  required String playerName,
+  required String playerNickname,
+});
+typedef $$AuthenticatedPlayerLocalEntityTableUpdateCompanionBuilder
+    = AuthenticatedPlayerLocalEntityCompanion Function({
+  Value<int> playerId,
+  Value<String> playerName,
+  Value<String> playerNickname,
+});
+
+class $$AuthenticatedPlayerLocalEntityTableTableManager
+    extends RootTableManager<
+        _$AppDatabase,
+        $AuthenticatedPlayerLocalEntityTable,
+        AuthenticatedPlayerLocalEntityData,
+        $$AuthenticatedPlayerLocalEntityTableFilterComposer,
+        $$AuthenticatedPlayerLocalEntityTableOrderingComposer,
+        $$AuthenticatedPlayerLocalEntityTableProcessedTableManager,
+        $$AuthenticatedPlayerLocalEntityTableInsertCompanionBuilder,
+        $$AuthenticatedPlayerLocalEntityTableUpdateCompanionBuilder> {
+  $$AuthenticatedPlayerLocalEntityTableTableManager(
+      _$AppDatabase db, $AuthenticatedPlayerLocalEntityTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$AuthenticatedPlayerLocalEntityTableFilterComposer(
+                  ComposerState(db, table)),
+          orderingComposer:
+              $$AuthenticatedPlayerLocalEntityTableOrderingComposer(
+                  ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$AuthenticatedPlayerLocalEntityTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> playerId = const Value.absent(),
+            Value<String> playerName = const Value.absent(),
+            Value<String> playerNickname = const Value.absent(),
+          }) =>
+              AuthenticatedPlayerLocalEntityCompanion(
+            playerId: playerId,
+            playerName: playerName,
+            playerNickname: playerNickname,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> playerId = const Value.absent(),
+            required String playerName,
+            required String playerNickname,
+          }) =>
+              AuthenticatedPlayerLocalEntityCompanion.insert(
+            playerId: playerId,
+            playerName: playerName,
+            playerNickname: playerNickname,
+          ),
+        ));
+}
+
+class $$AuthenticatedPlayerLocalEntityTableProcessedTableManager
+    extends ProcessedTableManager<
+        _$AppDatabase,
+        $AuthenticatedPlayerLocalEntityTable,
+        AuthenticatedPlayerLocalEntityData,
+        $$AuthenticatedPlayerLocalEntityTableFilterComposer,
+        $$AuthenticatedPlayerLocalEntityTableOrderingComposer,
+        $$AuthenticatedPlayerLocalEntityTableProcessedTableManager,
+        $$AuthenticatedPlayerLocalEntityTableInsertCompanionBuilder,
+        $$AuthenticatedPlayerLocalEntityTableUpdateCompanionBuilder> {
+  $$AuthenticatedPlayerLocalEntityTableProcessedTableManager(super.$state);
+}
+
+class $$AuthenticatedPlayerLocalEntityTableFilterComposer
+    extends FilterComposer<_$AppDatabase,
+        $AuthenticatedPlayerLocalEntityTable> {
+  $$AuthenticatedPlayerLocalEntityTableFilterComposer(super.$state);
+  ColumnFilters<int> get playerId => $state.composableBuilder(
+      column: $state.table.playerId,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get playerName => $state.composableBuilder(
+      column: $state.table.playerName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get playerNickname => $state.composableBuilder(
+      column: $state.table.playerNickname,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$AuthenticatedPlayerLocalEntityTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase,
+        $AuthenticatedPlayerLocalEntityTable> {
+  $$AuthenticatedPlayerLocalEntityTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get playerId => $state.composableBuilder(
+      column: $state.table.playerId,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get playerName => $state.composableBuilder(
+      column: $state.table.playerName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get playerNickname => $state.composableBuilder(
+      column: $state.table.playerNickname,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$MatchLocalEntityTableInsertCompanionBuilder
+    = MatchLocalEntityCompanion Function({
+  Value<int> id,
+  required String title,
+  required int dateAndTime,
+  required String location,
+  required String description,
+});
+typedef $$MatchLocalEntityTableUpdateCompanionBuilder
+    = MatchLocalEntityCompanion Function({
+  Value<int> id,
+  Value<String> title,
+  Value<int> dateAndTime,
+  Value<String> location,
+  Value<String> description,
+});
+
+class $$MatchLocalEntityTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $MatchLocalEntityTable,
+    MatchLocalEntityData,
+    $$MatchLocalEntityTableFilterComposer,
+    $$MatchLocalEntityTableOrderingComposer,
+    $$MatchLocalEntityTableProcessedTableManager,
+    $$MatchLocalEntityTableInsertCompanionBuilder,
+    $$MatchLocalEntityTableUpdateCompanionBuilder> {
+  $$MatchLocalEntityTableTableManager(
+      _$AppDatabase db, $MatchLocalEntityTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$MatchLocalEntityTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$MatchLocalEntityTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$MatchLocalEntityTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String> title = const Value.absent(),
+            Value<int> dateAndTime = const Value.absent(),
+            Value<String> location = const Value.absent(),
+            Value<String> description = const Value.absent(),
+          }) =>
+              MatchLocalEntityCompanion(
+            id: id,
+            title: title,
+            dateAndTime: dateAndTime,
+            location: location,
+            description: description,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            required String title,
+            required int dateAndTime,
+            required String location,
+            required String description,
+          }) =>
+              MatchLocalEntityCompanion.insert(
+            id: id,
+            title: title,
+            dateAndTime: dateAndTime,
+            location: location,
+            description: description,
+          ),
+        ));
+}
+
+class $$MatchLocalEntityTableProcessedTableManager
+    extends ProcessedTableManager<
+        _$AppDatabase,
+        $MatchLocalEntityTable,
+        MatchLocalEntityData,
+        $$MatchLocalEntityTableFilterComposer,
+        $$MatchLocalEntityTableOrderingComposer,
+        $$MatchLocalEntityTableProcessedTableManager,
+        $$MatchLocalEntityTableInsertCompanionBuilder,
+        $$MatchLocalEntityTableUpdateCompanionBuilder> {
+  $$MatchLocalEntityTableProcessedTableManager(super.$state);
+}
+
+class $$MatchLocalEntityTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $MatchLocalEntityTable> {
+  $$MatchLocalEntityTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get dateAndTime => $state.composableBuilder(
+      column: $state.table.dateAndTime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get location => $state.composableBuilder(
+      column: $state.table.location,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$MatchLocalEntityTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $MatchLocalEntityTable> {
+  $$MatchLocalEntityTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get title => $state.composableBuilder(
+      column: $state.table.title,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get dateAndTime => $state.composableBuilder(
+      column: $state.table.dateAndTime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get location => $state.composableBuilder(
+      column: $state.table.location,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class _$AppDatabaseManager {
+  final _$AppDatabase _db;
+  _$AppDatabaseManager(this._db);
+  $$AuthenticatedPlayerLocalEntityTableTableManager
+      get authenticatedPlayerLocalEntity =>
+          $$AuthenticatedPlayerLocalEntityTableTableManager(
+              _db, _db.authenticatedPlayerLocalEntity);
+  $$MatchLocalEntityTableTableManager get matchLocalEntity =>
+      $$MatchLocalEntityTableTableManager(_db, _db.matchLocalEntity);
 }

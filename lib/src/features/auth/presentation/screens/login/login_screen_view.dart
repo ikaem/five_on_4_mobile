@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/authenticate_with_google/authenticate_with_google_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/sign_out/sign_out_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_email_and_password_container.dart';
@@ -5,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/lo
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_screens_key_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/local_assets_path_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -72,10 +74,12 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
           TextButton(
             onPressed: () {
               // TODO navigate to register screen
-              context.go("/non-auth/register");
+              // context.go("/non-auth/register");
+              // context.navigateNamedTo(path)
               // context.go("/login/register");
               // .go(RoutePathsConstants.REGISTER.value.withRouteSlashPrefix);
               // .go(RoutePathsConstants.REGISTER.value);
+              context.navigateTo(const RegisterRoute());
             },
             child: const Text("Create account"),
           ),
