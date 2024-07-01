@@ -100,6 +100,7 @@ class GoRouterWrapper {
             // }
 
             if (!isLoggedIn) {
+              // abstract getting path into a function
               if (fullPath == "/non-auth/register") {
                 return "/non-auth/register";
               }
@@ -107,74 +108,108 @@ class GoRouterWrapper {
               return "/non-auth";
             }
 
-            return null;
+            // now we are logged in
+            // NOT SURE WHEN THIS WOULD HAPPEN?
+            if (fullPath == null) {
+              return null;
+            }
+            // we cannot return non-auth - but full path will be /non-auth after we login
+            // abstract getting path into a function
+            if (fullPath == "/") {
+              return "/home";
+            }
+
+            // TODO will need to account for deep linking
+
+            if (fullPath.contains("/non-auth")) {
+              return "/home";
+            }
+
+            return fullPath;
+
+            // return null;
             // return "/login";
           },
           routes: [
+            // lets see if this would work
+
             // maybe make one route for all auth routes
             // also maybe have some screen to come back to?
             // aut
-            // ShellRoute(
-            //   navigatorKey: _shellNavigatorKey,
-            //   builder: (context, state, child) => MainScreen(
-            //     child: child,
-            //   ),
-            //   routes: [
-            //     GoRoute(
-            //       path: RoutePathsConstants.HOME.value,
-            //       parentNavigatorKey: _shellNavigatorKey,
-            //       builder: (context, state) {
-            //         return const HomeScreen();
-            //       },
-            //       routes: [
-            //         // TODO screw it, all will be nested inside "/"
-            //         GoRoute(
-            //           // parentNavigatorKey: _rootNavigatorKey,
-            //           path: RoutePathsConstants.MATCH_CREATE.value,
-            //           builder: (context, state) {
-            //             return const MatchCreateScreen();
-            //           },
-            //         ),
-            //         GoRoute(
-            //           path: "${RoutePathsConstants.MATCH.value}/:id",
-            //           // has to be _rootNavigatorKey to make sure navigatorBar is not visible
-            //           parentNavigatorKey: _rootNavigatorKey,
-            //           builder: (context, state) {
-            //             final matchId =
-            //                 int.tryParse(state.pathParameters['id'] ?? "");
+            ShellRoute(
+              navigatorKey: _shellNavigatorKey,
+              builder: (context, state, child) => MainScreen(
+                child: child,
+              ),
+              routes: [
+                GoRoute(
+                  // TODO add constants everywhere
+                  path: "search",
+                  parentNavigatorKey: _shellNavigatorKey,
+                  builder: (context, state) {
+                    return const SearchScreen();
+                  },
+                ),
+                GoRoute(
+                  path: RoutePathsConstants.HOME.value,
+                  // only for routest that are supposed to have persoisnt bnbottom bnavigation bar
+                  parentNavigatorKey: _shellNavigatorKey,
+                  builder: (context, state) {
+                    return const HomeScreen();
+                  },
+                  routes: [
+                    GoRoute(
+                      // parentNavigatorKey: _rootNavigatorKey,
+                      // path: RoutePathsConstants.MATCH_CREATE.value,
+                      // parentNavigatorKey: _shellNavigatorKey,
+                      // parentNavigatorKey: _rootNavigatorKey,
+                      path: "match-create",
+                      builder: (context, state) {
+                        return const MatchCreateScreen();
+                      },
+                    ),
+                    // TODO screw it, all will be nested inside "/"
+                    // GoRoute(
+                    //   // parentNavigatorKey: _rootNavigatorKey,
+                    //   path: RoutePathsConstants.MATCH_CREATE.value,
+                    //   builder: (context, state) {
+                    //     return const MatchCreateScreen();
+                    //   },
+                    // ),
+                    // GoRoute(
+                    //   path: "${RoutePathsConstants.MATCH.value}/:id",
+                    //   // has to be _rootNavigatorKey to make sure navigatorBar is not visible
+                    //   parentNavigatorKey: _rootNavigatorKey,
+                    //   builder: (context, state) {
+                    //     final matchId =
+                    //         int.tryParse(state.pathParameters['id'] ?? "");
 
-            //             if (matchId == null) {
-            //               // TODO this should redirect to ErrorPage later
-            //               return Scaffold(
-            //                 appBar: AppBar(),
-            //                 body: const Center(
-            //                   child: Text("Match id is null"),
-            //                 ),
-            //               );
-            //             }
-            //             return MatchScreen(
-            //               matchId: matchId,
-            //             );
-            //           },
-            //         ),
-            //       ],
-            //     ),
-            //     GoRoute(
-            //       path: RoutePathsConstants.SEARCH.value,
-            //       parentNavigatorKey: _shellNavigatorKey,
-            //       builder: (context, state) {
-            //         return const SearchScreen();
-            //       },
-            //     ),
-            //     GoRoute(
-            //       path: RoutePathsConstants.SETTINGS.value,
-            //       parentNavigatorKey: _shellNavigatorKey,
-            //       builder: (context, state) {
-            //         return const SettingsScreen();
-            //       },
-            //     ),
-            //   ],
-            // ),
+                    //     if (matchId == null) {
+                    //       // TODO this should redirect to ErrorPage later
+                    //       return Scaffold(
+                    //         appBar: AppBar(),
+                    //         body: const Center(
+                    //           child: Text("Match id is null"),
+                    //         ),
+                    //       );
+                    //     }
+                    //     return MatchScreen(
+                    //       matchId: matchId,
+                    //     );
+                    //   },
+                    // ),
+                  ],
+                ),
+                // GoRoute(
+                //   path: "settings",
+                //   // path: RoutePathsConstants.SETTINGS.value,
+                //   parentNavigatorKey: _shellNavigatorKey,
+                //   builder: (context, state) {
+                //     return const SettingsScreen();
+                //   },
+                // ),
+              ],
+            ),
             // non authenticated routes
             GoRoute(
               // TODO not sure this is needed

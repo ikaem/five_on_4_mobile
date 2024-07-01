@@ -35,7 +35,8 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // context.go("/${RoutePathsConstants.MATCH_CREATE.value}");
-          context.go("/match-create");
+          // TODO i dont like that this is home - this is only because it is nested in home
+          context.go("/home/match-create");
         },
         child: const Icon(Icons.add),
       ),
@@ -55,13 +56,16 @@ class _MainScreenState extends State<MainScreen> {
   void _onChangeTab(int index) {
     switch (index) {
       case 0:
-        context.go(RoutePathsConstants.ROOT.value);
+        // context.go(RoutePathsConstants.ROOT.value);
+        context.go("/home");
         break;
       case 1:
-        context.go(RoutePathsConstants.SEARCH.value);
+        // context.go(RoutePathsConstants.SEARCH.value);
+        context.go("/search");
         break;
       case 2:
-        context.go(RoutePathsConstants.SETTINGS.value);
+        // context.go(RoutePathsConstants.SETTINGS.value);
+        context.go("/settings");
         break;
       default:
         // TODO navigate to home screen

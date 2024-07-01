@@ -143,7 +143,16 @@ class GoRouterWrapper {
               ),
               routes: [
                 GoRoute(
+                  // TODO add constants everywhere
+                  path: "search",
+                  parentNavigatorKey: _shellNavigatorKey,
+                  builder: (context, state) {
+                    return const SearchScreen();
+                  },
+                ),
+                GoRoute(
                   path: RoutePathsConstants.HOME.value,
+                  // only for routest that are supposed to have persoisnt bnbottom bnavigation bar
                   parentNavigatorKey: _shellNavigatorKey,
                   builder: (context, state) {
                     return const HomeScreen();
@@ -192,14 +201,8 @@ class GoRouterWrapper {
                   ],
                 ),
                 // GoRoute(
-                //   path: RoutePathsConstants.SEARCH.value,
-                //   parentNavigatorKey: _shellNavigatorKey,
-                //   builder: (context, state) {
-                //     return const SearchScreen();
-                //   },
-                // ),
-                // GoRoute(
-                //   path: RoutePathsConstants.SETTINGS.value,
+                //   path: "settings",
+                //   // path: RoutePathsConstants.SETTINGS.value,
                 //   parentNavigatorKey: _shellNavigatorKey,
                 //   builder: (context, state) {
                 //     return const SettingsScreen();
