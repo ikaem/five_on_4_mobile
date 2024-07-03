@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:five_on_4_mobile/src/features/core/domain/values/http_request_value.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constants.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
@@ -18,7 +21,48 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   Future<int> createMatch({
     required MatchCreateDataValue matchData,
   }) async {
-    throw UnimplementedError();
+    final HttpRequestUriPartsValue uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath:
+          HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
+      queryParameters: null,
+    );
+
+    final bodyData = {
+      // TODO create constants for these
+      "title": matchData.name,
+      "location": matchData.location,
+      // TODO not needed yet
+      // "organizer": matchData.organizer,
+      "description": matchData.description,
+      // TODO not needed yet
+      // "invitedPlayers": matchData.invitedPlayers,
+      "dateTime": matchData.dateTime,
+    };
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.POST,
+      // bodyData: matchData.toJson(),
+      bodyData: bodyData,
+    );
+
+    if (!response.isOk) {
+      // throw Exception("Something went wrong with creating match");
+      // TODO maybe more info should be passed here so that log works? I am not sure?
+      // TODO do better logging here
+      log("Something went wrong with creating match: ${response.message}");
+      throw const MatchesExceptionMatchFailedToCreate();
+    }
+
+    // TODO need to do this better somehow - maybe pass key of stuff in data, and have a function to get it from there? - it would also cast it to the type - or throw error if invalid?
+    final matchId = response.payload["data"]["matchId"] as int;
+
+    return matchId;
+
+    // throw UnimplementedError();
     // TODO come back to this
     // TODO constants are temp only
     // final uriParts = HttpRequestUriPartsValue(
