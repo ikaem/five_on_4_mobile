@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/authenticate_with_google/authenticate_with_google_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/sign_out/sign_out_controller.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_email_and_password_container.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_google_container.dart';
 import 'package:five_on_4_mobile/src/features/auth/utils/constants/auth_screens_key_constants.dart';
@@ -15,7 +16,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 // TODO this also needs to be tested
 
 class LoginScreenView extends ConsumerStatefulWidget {
-  const LoginScreenView({super.key});
+  const LoginScreenView({
+    super.key,
+    required OnLogin? onLogin,
+  }) : _onLogin = onLogin;
+
+  final OnLogin? _onLogin;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -64,9 +70,19 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
           const LoginWithEmailAndPasswordContainer(),
           const Divider(),
           LoginWithGoogleContainer(
-            onAuthenticate: ref
-                .read(authenticateWithGoogleControllerProvider.notifier)
-                .onAuthenticate,
+            // onAuthenticate: ref
+            //     .read(authenticateWithGoogleControllerProvider.notifier)
+            //     .onAuthenticate,
+
+            onAuthenticate: () async {
+              // make sure this returns true or false to indicate success
+              // then pass the value to on login
+              await ref
+                  .read(authenticateWithGoogleControllerProvider.notifier)
+                  .onAuthenticate();
+
+              widget._onLogin?.call(true);
+            },
           ),
           const SizedBox(
             height: 10,

@@ -138,9 +138,9 @@ class GoRouterWrapper {
             // aut
             ShellRoute(
               navigatorKey: _shellNavigatorKey,
-              builder: (context, state, child) => MainScreen(
-                child: child,
-              ),
+              builder: (context, state, child) => const MainScreen(
+                  // child: child,
+                  ),
               routes: [
                 GoRoute(
                   // TODO add constants everywhere
@@ -211,41 +211,41 @@ class GoRouterWrapper {
               ],
             ),
             // non authenticated routes
-            GoRoute(
-              // TODO not sure this is needed
-              parentNavigatorKey: _rootNavigatorKey,
-              path: "non-auth",
-              // path: RoutePathsConstants.LOGIN.value,
-              builder: (context, state) => const LoginScreen(),
-              routes: [
-                GoRoute(
-                  // parentNavigatorKey: _rootNavigatorKey,
-                  // path: RoutePathsConstants.LOGIN.value,
-                  // path: "non-auth/login",
-                  // TODO not sure this is needed
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: "login",
-                  builder: (context, state) => const LoginScreen(),
-                ),
-                GoRoute(
-                  // TODO not sure this is needed
-                  parentNavigatorKey: _rootNavigatorKey,
-                  // parentNavigatorKey: _rootNavigatorKey,
-                  // path: RoutePathsConstants.REGISTER.value,
-                  path:
-                      // "non-auth/register", // TODO maybe this should be "/register
-                      "register", // TODO maybe this should be "/register
-                  builder: (context, state) => const RegisterScreen(),
-                ),
-              ],
-              // TODO LETS SEE WITHOUT IT
-              // redirect: (context, state) {
-              //   // TODO this might not be needed at all
-              //   print("NOT EVEN IN HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-              //   // return "/login";
-              //   return null;
-              // },
-            ),
+            // GoRoute(
+            //   // TODO not sure this is needed
+            //   parentNavigatorKey: _rootNavigatorKey,
+            //   path: "non-auth",
+            //   // path: RoutePathsConstants.LOGIN.value,
+            //   builder: (context, state) => const LoginScreen(),
+            //   routes: [
+            //     GoRoute(
+            //       // parentNavigatorKey: _rootNavigatorKey,
+            //       // path: RoutePathsConstants.LOGIN.value,
+            //       // path: "non-auth/login",
+            //       // TODO not sure this is needed
+            //       parentNavigatorKey: _rootNavigatorKey,
+            //       path: "login",
+            //       builder: (context, state) => const LoginScreen(),
+            //     ),
+            //     GoRoute(
+            //       // TODO not sure this is needed
+            //       parentNavigatorKey: _rootNavigatorKey,
+            //       // parentNavigatorKey: _rootNavigatorKey,
+            //       // path: RoutePathsConstants.REGISTER.value,
+            //       path:
+            //           // "non-auth/register", // TODO maybe this should be "/register
+            //           "register", // TODO maybe this should be "/register
+            //       builder: (context, state) => const RegisterScreen(),
+            //     ),
+            //   ],
+            //   // TODO LETS SEE WITHOUT IT
+            //   // redirect: (context, state) {
+            //   //   // TODO this might not be needed at all
+            //   //   print("NOT EVEN IN HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //   //   // return "/login";
+            //   //   return null;
+            //   // },
+            // ),
 
             // or, maybe nest all non-auth routes into login route - and have a screen to come back to?
             // GoRoute(

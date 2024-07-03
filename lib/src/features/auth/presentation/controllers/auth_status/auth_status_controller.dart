@@ -59,7 +59,7 @@ class AuthStatusController extends ChangeNotifier {
     // _isLoggedIn = true;
     // _isError = false;
     // _isLoading = true;
-    // notifyListeners();
+    notifyListeners();
     try {
       await _loadAuthenticatedPlayerFromRemoteUseCase();
     } catch (e) {

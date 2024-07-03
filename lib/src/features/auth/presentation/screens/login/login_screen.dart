@@ -7,16 +7,25 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/local_assets_
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+typedef OnLogin = void Function(bool isLoggedIn);
+
 @RoutePage()
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+    OnLogin? onLogin,
+  }) : _onLogin = onLogin;
+
+  final OnLogin? _onLogin;
 
   @override
   Widget build(BuildContext context) {
     // TODO create SafeAreaScaffold and user all over the app
     return SafeArea(
       key: AuthScreensKeyConstants.LOGIN_SCREEN.value,
-      child: const LoginScreenView(),
+      child: LoginScreenView(
+        onLogin: _onLogin,
+      ),
     );
   }
 }

@@ -35,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
                   // context.go("/non-auth/login");
                   // TODO this should work too?
                   // context.go("/non-auth");
-                  context.navigateTo(const LoginRoute());
+                  context.navigateTo(LoginRoute());
                 },
                 child: const Text("Login"),
               ),

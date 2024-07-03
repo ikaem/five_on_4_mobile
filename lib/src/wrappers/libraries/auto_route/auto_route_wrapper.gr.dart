@@ -15,16 +15,45 @@ abstract class _$AutoRouteWrapper extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ErrorRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ErrorScreen(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HomeScreen(),
       );
     },
-    LoginRoute.name: (routeData) {
+    LoadingRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const LoginScreen(),
+        child: const LoadingScreen(),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>(
+          orElse: () => const LoginRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LoginScreen(
+          key: args.key,
+          onLogin: args.onLogin,
+        ),
+      );
+    },
+    MainRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MainScreen(),
+      );
+    },
+    MatchCreateRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const MatchCreateScreen(),
       );
     },
     MatchRoute.name: (routeData) {
@@ -59,6 +88,20 @@ abstract class _$AutoRouteWrapper extends RootStackRouter {
 }
 
 /// generated route for
+/// [ErrorScreen]
+class ErrorRoute extends PageRouteInfo<void> {
+  const ErrorRoute({List<PageRouteInfo>? children})
+      : super(
+          ErrorRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ErrorRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
@@ -73,15 +116,80 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [LoginScreen]
-class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute({List<PageRouteInfo>? children})
+/// [LoadingScreen]
+class LoadingRoute extends PageRouteInfo<void> {
+  const LoadingRoute({List<PageRouteInfo>? children})
       : super(
+          LoadingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoadingRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoginScreen]
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({
+    Key? key,
+    void Function(bool)? onLogin,
+    List<PageRouteInfo>? children,
+  }) : super(
           LoginRoute.name,
+          args: LoginRouteArgs(
+            key: key,
+            onLogin: onLogin,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'LoginRoute';
+
+  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({
+    this.key,
+    this.onLogin,
+  });
+
+  final Key? key;
+
+  final void Function(bool)? onLogin;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key, onLogin: $onLogin}';
+  }
+}
+
+/// generated route for
+/// [MainScreen]
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
+      : super(
+          MainRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MainRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MatchCreateScreen]
+class MatchCreateRoute extends PageRouteInfo<void> {
+  const MatchCreateRoute({List<PageRouteInfo>? children})
+      : super(
+          MatchCreateRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MatchCreateRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
