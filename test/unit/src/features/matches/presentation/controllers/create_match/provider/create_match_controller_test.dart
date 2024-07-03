@@ -1,3 +1,49 @@
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model/get_authenticated_player_model_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
+import 'package:mocktail/mocktail.dart';
+
+void main() {}
+
+// TODO maybe backend can do this - but lets save this for some other time
+class _MockGetAuthenticatedPlayerModelUseCase extends Mock
+    implements GetAuthenticatedPlayerModelUseCase {}
+
+class _MockCreateMatchUseCase extends Mock implements CreateMatchUseCase {}
+
+
+
+
+
+
+
+
+
+
+// should emite events in expected order if user is not logged in
+
+// should logout user if user is not logged in - call use case
+
+// should emit error state if there is an error during match creation
+
+// if 401, again logout user
+
+// should emit data state if match is created successfully
+
+// should call create match case with expected arguments
+
+
+
+
+
+
+
+
+
+
+
+// TODO - old --------------------
+
+
 // import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
 // import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/provider/get_auth_data_status_use_case_provider.dart';
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';

@@ -17,6 +17,8 @@ part "create_match_controller_state.dart";
 
 // TODO not sure if this should be here? it probably should...
 
+// TODO THIS SHOULD all be tested properly
+
 @riverpod
 class CreateMatchController extends _$CreateMatchController {
   // late final CreateMatchUseCase createMatchUseCase = ref.read(
