@@ -33,7 +33,7 @@ void main() {
   });
 
   group(
-    "$AuthenticateWithGoogleUseCase",
+    "$AuthenticateWithGoogleController",
     () {
       group(
         ".initial state",
@@ -59,6 +59,7 @@ void main() {
               // when
 
               // then
+              // TODO maybe this should do listen stream in order
               verify(() => listener(null, const AsyncValue.data(false)));
               verifyNoMoreInteractions(listener);
 

@@ -238,7 +238,8 @@ void main() {
             // when / then
             expect(
                 () => dataSource.getMatch(matchId: id),
-                throwsExceptionWithMessage<MatchNotFoundException>(
+                throwsExceptionWithMessage<
+                    MatchesExceptionMatchNotFoundException>(
                   "Match with id: $id not found",
                 ));
 

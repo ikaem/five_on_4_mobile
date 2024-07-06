@@ -1,6 +1,8 @@
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/auth_status_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/auth_status/provider/auth_status_controller_provider.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/provider/go_router_wrapper_provider.dart';
 import 'package:flutter/material.dart';
@@ -39,13 +41,48 @@ class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
   // final router = GoRouterWrapper().getRouter();
 
 // TODO maaaybe this can go up outside the app
-  late final _router = GoRouterWrapper(
-          authStatusController:
-              ref.read<AuthStatusController>(authStatusControllerProvider))
-      .getRouter();
+  // late final _router = GoRouterWrapper(
+  //         authStatusController:
+  //             ref.read<AuthStatusController>(authStatusControllerProvider))
+  //     .getRouter();
+
+  // late final _authStatusController = ref.read(authStatusControllerProvider);
+  // late final _autoRouteRouter =
+  //     // AutoRouteWrapper(authStatusController: _authStatusController);
+  //     AutoRouteWrapper();
+
+  final _autoRouteRouter = GetItWrapper.get<AutoRouteWrapper>();
 
   @override
   Widget build(BuildContext context) {
+    // TODO
+    // final authStatusController = ref.watch(authStatusControllerProvider);
+    // TODO possibly navigate from here
+    // TODO convert this to Notifier if we dont need to listen to state in router
+    ref.listen(authStatusControllerProvider, (previous, next) {
+      print("hello");
+
+      if (!next.isLoggedIn) {
+        _autoRouteRouter.navigate(LoginRoute());
+      }
+
+      if (next.isLoggedIn) {
+        _autoRouteRouter.navigate(const MainRoute());
+      }
+
+      // if (next.isLoading) {
+      //   _autoRouteRouter.navigate(const LoadingRoute());
+      // }
+
+      // if (next.isLoggedIn) {
+      //   // TODO WILL NEED TO HANDLE here dynamic routes - urls
+      //   _autoRouteRouter.navigate(const RegisterRoute());
+      // }
+
+      // if (!next.isLoggedIn) {
+      //   _autoRouteRouter.navigate(LoginRoute());
+      // }
+    });
     // ref.listen(authStatusControllerProvider, (previous, next) {
     //   print("hello");
     // });
@@ -81,9 +118,12 @@ class _FiveOn4AppState extends ConsumerState<FiveOn4App> {
       listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp.router(
+          routerConfig: _autoRouteRouter.config(
+              // reevaluateListenable: _authStatusController,
+              ),
           // routerConfig: _goRouterWrapper.getRouter(isLoggedIn),
           // routerConfig: widget.goRouter,
-          routerConfig: _router,
+          // routerConfig: _router,
           // builder: (context, child) {
           //   // TODO this will insert widgets above the navigator or Router when .router is used
           //   // so some toast wrapper

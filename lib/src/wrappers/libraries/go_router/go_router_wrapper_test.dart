@@ -218,15 +218,15 @@ class GoRouterWrapper {
             //   // path: RoutePathsConstants.LOGIN.value,
             //   builder: (context, state) => const LoginScreen(),
             //   routes: [
-            //     // GoRoute(
-            //     //   // parentNavigatorKey: _rootNavigatorKey,
-            //     //   // path: RoutePathsConstants.LOGIN.value,
-            //     //   // path: "non-auth/login",
-            //     //   // TODO not sure this is needed
-            //     //   parentNavigatorKey: _rootNavigatorKey,
-            //     //   path: "login",
-            //     //   builder: (context, state) => const LoginScreen(),
-            //     // ),
+            //     GoRoute(
+            //       // parentNavigatorKey: _rootNavigatorKey,
+            //       // path: RoutePathsConstants.LOGIN.value,
+            //       // path: "non-auth/login",
+            //       // TODO not sure this is needed
+            //       parentNavigatorKey: _rootNavigatorKey,
+            //       path: "login",
+            //       builder: (context, state) => const LoginScreen(),
+            //     ),
             //     GoRoute(
             //       // TODO not sure this is needed
             //       parentNavigatorKey: _rootNavigatorKey,

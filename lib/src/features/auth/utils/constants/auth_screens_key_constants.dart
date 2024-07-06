@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 enum AuthScreensKeyConstants {
-  LOGIN_SCREEN(Key('login_screen'));
+  LOGIN_SCREEN._(Key('login_screen')),
+  REGISTER_SCREEN._(Key('register_screen'));
 
-  const AuthScreensKeyConstants(this.value);
+  const AuthScreensKeyConstants._(this.value);
   final Key value;
 }

@@ -22,6 +22,18 @@ class MatchesRepositoryImpl implements MatchesRepository {
   // final AuthStatusDataSource _authStatusDataSource;
 
   @override
+  Future<int> createMatch({
+    required MatchCreateDataValue matchData,
+  }) async {
+    // throw UnimplementedError();
+    final id = await _matchesRemoteDataSource.createMatch(matchData: matchData);
+
+    return id;
+
+    //   return id;
+  }
+
+  @override
   Future<void> loadPlayerMatchesOverview({required int playerId}) async {
     final remoteEntities = await _matchesRemoteDataSource
         .getPlayerMatchesOverview(playerId: playerId);
@@ -176,15 +188,5 @@ class MatchesRepositoryImpl implements MatchesRepository {
     //     MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
 
     // return modelMatch;
-  }
-
-  @override
-  Future<int> createMatch({
-    required MatchCreateDataValue matchData,
-  }) async {
-    throw UnimplementedError();
-    //   final id = await _matchesRemoteDataSource.createMatch(matchData: matchData);
-
-    //   return id;
   }
 }

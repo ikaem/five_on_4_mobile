@@ -5,6 +5,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
@@ -23,12 +24,95 @@ void main() {
     matchesRemoteDataSource: matchesRemoteDataSource,
   );
 
+  setUpAll(
+    () {
+      registerFallbackValue(
+        _FakeMatchCreateDataValue(),
+      );
+    },
+  );
+
   tearDown(() {
     reset(matchesLocalDataSource);
     reset(matchesRemoteDataSource);
   });
 
   group("$MatchesRepository", () {
+    group(
+      "createMatch()",
+      () {
+        const MatchCreateDataValue matchData = MatchCreateDataValue(
+          name: "name",
+          location: "location",
+          organizer: "organizer",
+          description: "description",
+          invitedPlayers: [],
+          dateTime: 1,
+        );
+// should return expected value
+        test(
+          "given match is created successfully"
+          "when .createMatch() is called"
+          "then should expected match id",
+          () async {
+            // setup
+            const matchId = 1;
+
+            // given
+            when(
+              () => matchesRemoteDataSource.createMatch(
+                matchData: any(named: "matchData"),
+              ),
+            ).thenAnswer(
+              (_) async => matchId,
+            );
+
+            // when
+            final result = await matchesRepository.createMatch(
+              matchData: matchData,
+            );
+
+            // then
+            expect(result, equals(matchId));
+
+            // cleanup
+          },
+        );
+
+// should call remote data source with expected arguments
+        test(
+          "given match data is provided"
+          "when .createMatch() is called"
+          "then should call MatchesRemoteDataSource.createMatch() with expected arguments",
+          () async {
+            // setup
+            when(
+              () => matchesRemoteDataSource.createMatch(
+                matchData: any(named: "matchData"),
+              ),
+            ).thenAnswer(
+              (_) async => 1,
+            );
+            // given
+
+            // when
+            await matchesRepository.createMatch(
+              matchData: matchData,
+            );
+
+            // then
+            verify(
+              () => matchesRemoteDataSource.createMatch(
+                matchData: matchData,
+              ),
+            ).called(1);
+
+            // cleanup
+          },
+        );
+      },
+    );
+
     group(".getPlayerMatchesOverview", () {
       // should return expected result
 
@@ -235,6 +319,8 @@ class _MockMatchesLocalDataSource extends Mock
 
 class _MockMatchesRemoteDataSource extends Mock
     implements MatchesRemoteDataSource {}
+
+class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
 // --------- TODO: OLD -------------
 
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
