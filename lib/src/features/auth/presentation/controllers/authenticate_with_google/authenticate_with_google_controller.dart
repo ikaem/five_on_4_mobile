@@ -26,8 +26,8 @@ class AuthenticateWithGoogleController
   }
 
   Future<void> onAuthenticate() async {
+    state = const AsyncValue.loading();
     try {
-      state = const AsyncValue.loading();
       await authenticateWithGoogleUseCase();
       state = const AsyncValue.data(true);
     } catch (e, s) {

@@ -185,7 +185,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     final matchData = await findMatch.getSingleOrNull();
 
     if (matchData == null) {
-      throw MatchNotFoundException(
+      throw MatchesExceptionMatchNotFoundException(
         message: "Match with id: $matchId not found",
       );
     }

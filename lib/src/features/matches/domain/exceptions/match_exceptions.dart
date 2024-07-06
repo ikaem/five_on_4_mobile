@@ -1,7 +1,8 @@
 import 'package:five_on_4_mobile/src/features/core/domain/exceptions/exception_with_message.dart';
 
-sealed class MatchException implements ExceptionWithMessage {
-  const MatchException({
+// TODO this should be renamed to MatchesException
+sealed class MatchesException implements ExceptionWithMessage {
+  const MatchesException({
     required this.message,
   });
 
@@ -14,8 +15,18 @@ sealed class MatchException implements ExceptionWithMessage {
   }
 }
 
-class MatchNotFoundException extends MatchException {
-  const MatchNotFoundException({
+class MatchesExceptionMatchFailedToCreate extends MatchesException {
+  const MatchesExceptionMatchFailedToCreate()
+      : super(
+          // TODO maybe it will be ok to pass some custom message - we will see
+          message: "Failed to create match",
+        );
+}
+
+/* TODO rename all exceptions */
+
+class MatchesExceptionMatchNotFoundException extends MatchesException {
+  const MatchesExceptionMatchNotFoundException({
     required String message,
   }) : super(
           message: message,

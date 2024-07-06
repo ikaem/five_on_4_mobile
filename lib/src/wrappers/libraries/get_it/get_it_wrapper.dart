@@ -21,6 +21,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_playe
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/go_router/go_router_wrapper.dart';
@@ -52,7 +53,9 @@ abstract class GetItWrapper {
 
   static void registerDependencies() {
     // not all of these are needed maybe - but for now lets do all of them
-    // TODO extract to specialized functions
+
+    // router
+    final autoRouteWrapper = AutoRouteWrapper();
 
     // wrappers
     final envVarsWrapper = EnvVarsWrapper();
@@ -163,6 +166,9 @@ abstract class GetItWrapper {
     // final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
     //   matchesRepository: matchesRepository,
     // );
+
+    // router
+    getIt.registerSingleton<AutoRouteWrapper>(autoRouteWrapper);
 
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless

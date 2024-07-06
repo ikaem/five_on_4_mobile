@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen_view.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class MatchScreen extends StatelessWidget {
   const MatchScreen({
     super.key,

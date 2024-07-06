@@ -3,12 +3,15 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constant
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
+import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   final dioWrapper = _MockDioWrapper();
@@ -28,7 +31,146 @@ void main() {
   group(
     "$MatchesRemoteDataSource",
     () {
-      group(".getPlayerMatchesOverview", () {
+      group(".createMatch()", () {
+        final okResponseMap = {
+          "ok": true,
+          "mssage": "Match created successfully.",
+          "data": {
+            "matchId": 1,
+          }
+        };
+
+        final nonOkResponseMap = {
+          "ok": false,
+          "message": "Match failed to create.",
+        };
+
+        const MatchCreateDataValue testMatchCreateValue = MatchCreateDataValue(
+          name: "name",
+          location: "location",
+          organizer: "organizer",
+          description: "description",
+          invitedPlayers: [],
+          dateTime: 1,
+        );
+
+        // should return response when ok
+        test(
+          "given ok response from backend"
+          "when .createMatch() is called"
+          "then should return expected response",
+          () async {
+            // setup
+
+            // given
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
+                )).thenAnswer((_) async {
+              return HttpResponseValue(payload: okResponseMap);
+            });
+
+            // when
+            final matchId = await dataSource.createMatch(
+              matchData: testMatchCreateValue,
+            );
+
+            // then
+            expect(matchId, equals(1));
+
+            // cleanup
+          },
+        );
+
+        // should call dio requzest with expected arguments
+        test(
+          "given .createMatch() is called"
+          "when examine request to the server"
+          "then should call DioWrapper.makeRequest() with expected arguments",
+          () async {
+            // setup
+            final uriParts = HttpRequestUriPartsValue(
+              apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+              apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+              apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+              apiEndpointPath:
+                  HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH_CREATE.value,
+              queryParameters: null,
+            );
+            const method = HttpMethodConstants.POST;
+            final bodyData = {
+              "title": testMatchCreateValue.name,
+              "location": testMatchCreateValue.location,
+              "description": testMatchCreateValue.description,
+              "dateAndTime": testMatchCreateValue.dateTime,
+            };
+
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: uriParts,
+                  method: method,
+                  bodyData: any(named: "bodyData"),
+                )).thenAnswer((_) async {
+              return HttpResponseValue(payload: okResponseMap);
+            });
+
+            // given
+            await dataSource.createMatch(
+              matchData: testMatchCreateValue,
+            );
+
+            // when
+            verify(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: uriParts,
+                  method: method,
+                  bodyData: bodyData,
+                )).called(1);
+
+            // then
+
+            // cleanup
+          },
+        );
+
+        // TODO also handle errors somehow - error is created and it exists
+        test(
+          "given a non-ok response from backend"
+          "when .createMatch() is called"
+          "then should throw expected exception",
+          () async {
+            // setup
+            // TODO note that this will not happe because how backend is set up and how dio is set up - dio will throw exception if not ok becasue non-ok responses have error status codes
+
+            // given
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
+                )).thenAnswer((_) async {
+              return HttpResponseValue(payload: nonOkResponseMap);
+            });
+
+            // when / then
+            expect(
+              () async {
+                await dataSource.createMatch(
+                  matchData: testMatchCreateValue,
+                );
+              },
+              // throwsA(isA<Exception>()),
+              throwsExceptionWithMessage<MatchesExceptionMatchFailedToCreate>(
+                "Failed to create match",
+              ),
+            );
+
+            // then
+
+            // cleanup
+          },
+        );
+      });
+
+      group(".getPlayerMatchesOverview()", () {
         // on ok response, return expected response
         test(
           "given ok response from dio"
@@ -84,6 +226,7 @@ void main() {
           "then should call DioWrapper.makeRequest() with expected arguments",
           () async {
             // setup
+            // TODO maybe not needed to do this and to capture then? maybe can just do when with expected arguments
             final expectedUriParts = HttpRequestUriPartsValue(
               // TODO use https when we have real server eventually
               apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
