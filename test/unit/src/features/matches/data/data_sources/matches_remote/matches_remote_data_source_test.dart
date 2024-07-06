@@ -103,7 +103,7 @@ void main() {
               "title": testMatchCreateValue.name,
               "location": testMatchCreateValue.location,
               "description": testMatchCreateValue.description,
-              "dateTime": testMatchCreateValue.dateTime,
+              "dateAndTime": testMatchCreateValue.dateTime,
             };
 
             when(() => dioWrapper.makeRequest<Map<String, dynamic>>(

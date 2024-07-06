@@ -39,7 +39,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
       "description": matchData.description,
       // TODO not needed yet
       // "invitedPlayers": matchData.invitedPlayers,
-      "dateTime": matchData.dateTime,
+      "dateAndTime": matchData.dateTime,
     };
 
     final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
