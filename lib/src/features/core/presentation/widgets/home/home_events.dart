@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_brief/match_brief_extended.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,8 +24,10 @@ class HomeEvents extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // context.go(location)
+            // TODO no longer needed
             final path = "/${RoutePathsConstants.MATCH.value}" "/${match.id}";
-            context.go(path);
+            // context.go(path);
+            context.navigateTo(MatchRoute(matchId: match.id));
           },
           child: MatchBriefExtended(
             // TODO format this properly
