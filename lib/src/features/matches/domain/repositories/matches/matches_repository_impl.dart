@@ -5,6 +5,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
 
@@ -31,6 +32,35 @@ class MatchesRepositoryImpl implements MatchesRepository {
     return id;
 
     //   return id;
+  }
+
+  @override
+  Future<void> loadMatch({
+    required int matchId,
+  }) async {
+    final remoteEntity =
+        await _matchesRemoteDataSource.getMatch(matchId: matchId);
+
+    final localEntityValue = MatchLocalEntityValue(
+      id: remoteEntity.id,
+      dateAndTime: remoteEntity.dateAndTime,
+      title: remoteEntity.title,
+      location: remoteEntity.location,
+      description: remoteEntity.description,
+    );
+
+    await _matchesLocalDataSource.storeMatch(matchValue: localEntityValue);
+
+    // final matchRemote =
+    //     await _matchesRemoteDataSource.getMatch(matchId: matchId);
+
+    // final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
+    //   matchRemote: matchRemote,
+    // );
+
+    // final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
+
+    // return id;
   }
 
   @override
@@ -160,23 +190,6 @@ class MatchesRepositoryImpl implements MatchesRepository {
     //     MatchesConverter.fromLocalEntitiesToModels(matchesLocal: matchesLocal);
 
     // return modelMatches;
-  }
-
-  @override
-  Future<int> loadMatch({
-    required int matchId,
-  }) async {
-    throw UnimplementedError();
-    // final matchRemote =
-    //     await _matchesRemoteDataSource.getMatch(matchId: matchId);
-
-    // final matchLocal = MatchesConverter.fromRemoteEntityToLocalEntity(
-    //   matchRemote: matchRemote,
-    // );
-
-    // final id = await _matchesLocalDataSource.saveMatch(match: matchLocal);
-
-    // return id;
   }
 
   @override

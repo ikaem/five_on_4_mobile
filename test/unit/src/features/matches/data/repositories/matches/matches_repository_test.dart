@@ -26,9 +26,8 @@ void main() {
 
   setUpAll(
     () {
-      registerFallbackValue(
-        _FakeMatchCreateDataValue(),
-      );
+      registerFallbackValue(_FakeMatchCreateDataValue());
+      registerFallbackValue(_FakeMatchLocalEntityValue());
     },
   );
 
@@ -217,6 +216,92 @@ void main() {
         },
       );
     });
+
+    group(
+      ".loadMatch()",
+      () {
+        // call remote source with expected arguments
+        test(
+          "given matchId is provided"
+          "when .loadMatch() is called"
+          "then should call MatchesRemoteDataSource.getMatch() with expected arguments",
+          () async {
+            // setup
+            final testMatchRemoteEntity =
+                generateTestMatchRemoteEntities(count: 1).first;
+
+            when(() => matchesRemoteDataSource.getMatch(
+                    matchId: any(named: "matchId")))
+                .thenAnswer((_) async => testMatchRemoteEntity);
+            when(() => matchesLocalDataSource.storeMatch(
+                  matchValue: any(named: "matchValue"),
+                )).thenAnswer((invocation) async => testMatchRemoteEntity.id);
+
+            // given
+            const matchId = 1;
+
+            // when
+            await matchesRepository.loadMatch(
+              matchId: matchId,
+            );
+
+            // then
+            verify(
+              () => matchesRemoteDataSource.getMatch(
+                matchId: matchId,
+              ),
+            ).called(1);
+
+            // cleanup
+          },
+        );
+
+        // call local source with expected arguments
+        test(
+          "given remote match entity is successfully retrieved"
+          "when .loadMatch() is called"
+          "then should call MatchesLocalDataSource.storeMatch() with expected arguments",
+          () async {
+            // setup
+            final testMatchRemoteEntity =
+                generateTestMatchRemoteEntities(count: 1).first;
+
+            when(() => matchesRemoteDataSource.getMatch(
+                    matchId: any(named: "matchId")))
+                .thenAnswer((_) async => testMatchRemoteEntity);
+            when(() => matchesLocalDataSource.storeMatch(
+                  matchValue: any(named: "matchValue"),
+                )).thenAnswer((invocation) async => testMatchRemoteEntity.id);
+
+            // given
+            const matchId = 1;
+
+            // when
+            await matchesRepository.loadMatch(
+              matchId: matchId,
+            );
+
+            // then
+            final expectedMatchLocalEntityValue = MatchLocalEntityValue(
+              id: testMatchRemoteEntity.id,
+              dateAndTime: testMatchRemoteEntity.dateAndTime,
+              title: testMatchRemoteEntity.title,
+              location: testMatchRemoteEntity.location,
+              description: testMatchRemoteEntity.description,
+            );
+
+            verify(
+              () => matchesLocalDataSource.storeMatch(
+                matchValue: expectedMatchLocalEntityValue,
+              ),
+            ).called(1);
+
+            // cleanup
+          },
+        );
+      },
+    );
+
     group(".loadPlayerMatchesOverview", () {
       // should call data remote source with expected arguments
       test(
@@ -321,6 +406,10 @@ class _MockMatchesRemoteDataSource extends Mock
     implements MatchesRemoteDataSource {}
 
 class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
+
+// class _FakeMatchRemoteEntity extends Fake implements MatchRemoteEntity {}
+class _FakeMatchLocalEntityValue extends Fake
+    implements MatchLocalEntityValue {}
 // --------- TODO: OLD -------------
 
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
