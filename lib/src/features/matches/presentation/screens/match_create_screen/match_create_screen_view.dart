@@ -62,7 +62,9 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
               return;
             }
 
-            context.navigateTo(MatchRoute(matchId: matchId));
+            // context.navigateTo(MatchRoute(matchId: matchId));
+            // context.replace(location)
+            context.replaceRoute(MatchRoute(matchId: matchId));
 
             // now - navigate to match screen
             // also - show message in snackbar
