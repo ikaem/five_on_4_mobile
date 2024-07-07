@@ -1,4 +1,6 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_inputs.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +9,14 @@ class SearchMatchesContainer extends StatefulWidget {
     super.key,
     required this.searchInputStream,
     required this.onSearchInputChanged,
+    required this.matches,
   });
 
   final Stream<String> searchInputStream;
-
   final ValueSetter<String> onSearchInputChanged;
+
+  final List<MatchModel> matches;
+
   @override
   State<SearchMatchesContainer> createState() => _SearchMatchesContainerState();
 }
@@ -35,7 +40,14 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           onSearchInputChanged: widget.onSearchInputChanged,
         ),
         const Divider(),
+        // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
         // TODO search results will be displayed here
+        // TODO will have loading and such here
+        Expanded(
+          child: MatchesList(
+            matches: widget.matches,
+          ),
+        ),
       ],
     );
   }
