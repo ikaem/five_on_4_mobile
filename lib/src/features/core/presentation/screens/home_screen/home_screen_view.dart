@@ -99,11 +99,11 @@ class HomeScreenView extends ConsumerWidget {
       required MatchTimeType matchesType,
     }) onRetry,
   }) {
-    onRetryToday() => onRetry(
+    Future<void> onRetryToday() => onRetry(
           matchesType: MatchTimeType.today,
         );
 
-    onRetryUpcoming() => onRetry(
+    Future<void> onRetryUpcoming() => onRetry(
           matchesType: MatchTimeType.upcoming,
         );
 

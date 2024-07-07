@@ -53,6 +53,7 @@ class HomeEventsContainer extends StatelessWidget {
         Expanded(
           child: HomeEvents(matches: matches),
         ),
+        // TODO possibly not needed - because we will not have this sync thing - or will we?
         if (isSyncing)
           const LoadingStatus(
             message: "Synchronizing with remote data...",
