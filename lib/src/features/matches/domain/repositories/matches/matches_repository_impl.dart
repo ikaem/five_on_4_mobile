@@ -194,7 +194,22 @@ class MatchesRepositoryImpl implements MatchesRepository {
 
   @override
   Future<MatchModel> getMatch({required int matchId}) async {
-    throw UnimplementedError();
+    final localEntityValue =
+        await _matchesLocalDataSource.getMatch(matchId: matchId);
+
+    // TODO maybe converter exists already
+    final matchModel = MatchModel(
+      id: localEntityValue.id,
+      dateAndTime:
+          DateTime.fromMillisecondsSinceEpoch(localEntityValue.dateAndTime),
+      location: localEntityValue.location,
+      description: localEntityValue.description,
+      title: localEntityValue.title,
+    );
+
+    return matchModel;
+
+    // throw UnimplementedError();
     // final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
 
     // final modelMatch =

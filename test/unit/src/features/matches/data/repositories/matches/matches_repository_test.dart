@@ -112,7 +112,60 @@ void main() {
       },
     );
 
-    group(".getPlayerMatchesOverview", () {
+    group(
+      ".getMatch()",
+      () {
+// given local source has match, should return expected value
+        test(
+          "given MatchesLocalDataSource.getMatch() returns match"
+          "when .getMatch() is called"
+          "then should return expected value",
+          () async {
+            // setup
+            const localEntityValue = MatchLocalEntityValue(
+              id: 1,
+              dateAndTime: 1,
+              title: "title",
+              location: "location",
+              description: "description",
+            );
+
+            // given
+            when(
+              () => matchesLocalDataSource.getMatch(
+                matchId: any(named: "matchId"),
+              ),
+            ).thenAnswer(
+              (_) async => localEntityValue,
+            );
+
+            // when
+            final result = await matchesRepository.getMatch(
+              matchId: 1,
+            );
+
+            // then
+            final expectedModel = MatchModel(
+              id: localEntityValue.id,
+              dateAndTime: DateTime.fromMillisecondsSinceEpoch(
+                localEntityValue.dateAndTime,
+              ),
+              title: localEntityValue.title,
+              location: localEntityValue.location,
+              description: localEntityValue.description,
+            );
+
+            expect(result, equals(expectedModel));
+
+            // cleanup
+          },
+        );
+
+// should rethrow if there is local data source throws expected expcetpion - TODO come back to this
+      },
+    );
+
+    group(".getPlayerMatchesOverview()", () {
       // should return expected result
 
       test(
