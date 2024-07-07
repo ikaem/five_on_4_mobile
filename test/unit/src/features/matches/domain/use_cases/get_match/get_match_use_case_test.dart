@@ -28,7 +28,7 @@ void main() {
   });
 
   group(
-    "GetMatchUseCase",
+    "$GetMatchUseCase",
     () {
       group(
         ".call()",

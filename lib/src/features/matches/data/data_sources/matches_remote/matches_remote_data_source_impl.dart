@@ -92,6 +92,69 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
   }
 
   @override
+  Future<MatchRemoteEntity> getMatch({
+    required int matchId,
+  }) async {
+    final HttpRequestUriPartsValue uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
+          .getMatchPathWithId(matchId),
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.GET,
+    );
+
+    if (!response.isOk) {
+      // TODO come back to this - this is to be tested later
+      // TODO make better exception for this
+      // TODO log this
+      throw Exception(
+          "Something went wrong with getting match: ${response.message}");
+    }
+
+    final responseJsonMapMatchData = response.payload["data"]["match"];
+
+    final MatchRemoteEntity matchEntity =
+        MatchRemoteEntity.fromJson(json: responseJsonMapMatchData);
+
+    return matchEntity;
+
+    // throw UnimplementedError();
+
+    // // TODO temp only
+    // // await Future.delayed(const Duration(seconds: 1));
+    // final uriParts = HttpRequestUriPartsValue(
+    //   // TODO use https when we have real server eventually
+    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
+    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+    //   apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
+    //       .getMatchPathWithId(matchId),
+    //   queryParameters: null,
+    // );
+
+    // final response = await _dioWrapper.get<Map<String, dynamic>>(
+    //   uriParts: uriParts,
+    // );
+
+    // if (response["ok"] != true) {
+    //   throw Exception("Something went wrong with getting match");
+    // }
+
+    // final matchJson = response["data"] as Map<String, dynamic>;
+
+    // final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
+
+    // return matchEntity;
+  }
+
+  @override
   Future<List<MatchRemoteEntity>> getPlayerMatchesOverview({
     required int playerId,
   }) async {
@@ -122,10 +185,10 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
 
     // TODO maybe map string dynamic is better
     // TODO this looks flaky - but maybe it is fine
-    final responseJsonMapMatches =
+    final responseJsonMapMatchesData =
         response.payload["data"]["matches"] as List<dynamic>;
 
-    final matchesOverview = responseJsonMapMatches
+    final matchesOverview = responseJsonMapMatchesData
         .map((e) => MatchRemoteEntity.fromJson(json: e))
         .toList();
 
@@ -170,40 +233,6 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     //     .toList();
 
     // return matchesEntities;
-  }
-
-  @override
-  Future<MatchRemoteEntity> getMatch({
-    required int matchId,
-  }) async {
-    throw UnimplementedError();
-
-    // // TODO temp only
-    // // await Future.delayed(const Duration(seconds: 1));
-    // final uriParts = HttpRequestUriPartsValue(
-    //   // TODO use https when we have real server eventually
-    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
-    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-    //   apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
-    //       .getMatchPathWithId(matchId),
-    //   queryParameters: null,
-    // );
-
-    // final response = await _dioWrapper.get<Map<String, dynamic>>(
-    //   uriParts: uriParts,
-    // );
-
-    // if (response["ok"] != true) {
-    //   throw Exception("Something went wrong with getting match");
-    // }
-
-    // final matchJson = response["data"] as Map<String, dynamic>;
-
-    // final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
-
-    // return matchEntity;
   }
 
   List<MatchRemoteEntity> _generateTempManipulatedMatches(

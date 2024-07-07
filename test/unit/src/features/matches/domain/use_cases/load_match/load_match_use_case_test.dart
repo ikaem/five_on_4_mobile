@@ -31,26 +31,28 @@ void main() {
       group(
         ".call()",
         () {
-          test(
-            "given a matchId"
-            "when when call() is called"
-            "then should return expected value",
-            () async {
-              final result = await loadMatchUseCase(
-                matchId: matchId,
-              );
+          // TODO not needed most likely
+          // test(
+          //   "given a matchId"
+          //   "when when call() is called"
+          //   // "then should return expected value",
+          //   "then should call MatchesRepository.loadMatch() with expected arguments",
+          //   () async {
+          //     final result = await loadMatchUseCase(
+          //       matchId: matchId,
+          //     );
 
-              expect(
-                result,
-                matchId,
-              );
-            },
-          );
+          //     expect(
+          //       result,
+          //       matchId,
+          //     );
+          //   },
+          // );
 
           test(
             "given a matchId"
             "when call() is called"
-            "should call repository to load match",
+            "then should call MatchesRepository.loadMatch() with expected arguments",
             () async {
               await loadMatchUseCase(
                 matchId: matchId,

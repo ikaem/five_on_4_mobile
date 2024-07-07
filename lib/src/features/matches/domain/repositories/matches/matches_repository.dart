@@ -6,7 +6,7 @@ abstract interface class MatchesRepository {
   Future<int> createMatch({
     required MatchCreateDataValue matchData,
   });
-  Future<int> loadMatch({
+  Future<void> loadMatch({
     required int matchId,
   });
   Future<MatchModel> getMatch({

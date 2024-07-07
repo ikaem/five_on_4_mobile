@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
@@ -8,6 +9,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/c
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/provider/create_match_inputs_controller_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,9 +56,15 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
         next.maybeWhen(
           orElse: () {},
           data: (state) {
-            if (state?.matchId == null) {
+            final matchId = state?.matchId;
+            if (matchId == null) {
+              // TODO something has to be done here
               return;
             }
+
+            // context.navigateTo(MatchRoute(matchId: matchId));
+            // context.replace(location)
+            context.replaceRoute(MatchRoute(matchId: matchId));
 
             // now - navigate to match screen
             // also - show message in snackbar

@@ -1,6 +1,6 @@
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
 // TODO move to values
@@ -53,7 +53,7 @@ abstract interface class MatchesLocalDataSource {
   // });
 
   // TODO all of these should return values, not direct entities
-  Future<MatchLocalEntityData> getMatch({
+  Future<MatchLocalEntityValue> getMatch({
     required int matchId,
   });
 }

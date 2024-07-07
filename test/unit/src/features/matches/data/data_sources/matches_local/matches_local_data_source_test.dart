@@ -4,7 +4,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -265,12 +265,19 @@ void main() {
             final result = await dataSource.getMatch(matchId: id);
 
             // then
-            final expectedResult = MatchLocalEntityData(
+            // final expectedResult = MatchLocalEntityData(
+            //   id: id,
+            //   title: testMatchLocalEntityCompanion.title.value,
+            //   dateAndTime: testMatchLocalEntityCompanion.dateAndTime.value,
+            //   description: testMatchLocalEntityCompanion.description.value,
+            //   location: testMatchLocalEntityCompanion.location.value,
+            // );
+            final expectedResult = MatchLocalEntityValue(
               id: id,
-              title: testMatchLocalEntityCompanion.title.value,
               dateAndTime: testMatchLocalEntityCompanion.dateAndTime.value,
-              description: testMatchLocalEntityCompanion.description.value,
+              title: testMatchLocalEntityCompanion.title.value,
               location: testMatchLocalEntityCompanion.location.value,
+              description: testMatchLocalEntityCompanion.description.value,
             );
 
             expect(result, equals(expectedResult));

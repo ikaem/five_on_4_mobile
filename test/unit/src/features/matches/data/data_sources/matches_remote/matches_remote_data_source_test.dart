@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/http_constant
 import 'package:five_on_4_mobile/src/features/core/utils/constants/http_methods_constants.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
@@ -169,6 +170,128 @@ void main() {
           },
         );
       });
+
+      group(
+        ".getMatch()",
+        () {
+          final matchEntity = generateTestMatchRemoteEntities(count: 1).first;
+          // ok response, return expected response
+          test(
+            "given ok response from dio"
+            "when .getMatch() is called"
+            "then should return expected response",
+            () async {
+              // setup
+
+              // given
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return HttpResponseValue(payload: {
+                    "ok": true,
+                    "message": "Match retrieved successfully.",
+                    "data": {
+                      "match": {
+                        "id": matchEntity.id,
+                        "title": matchEntity.title,
+                        "dateAndTime": matchEntity.dateAndTime,
+                        "location": matchEntity.location,
+                        "description": matchEntity.description,
+                      }
+                    }
+                    // "data": matchEntity.toJson(),
+                  });
+                },
+              );
+
+              // when
+              final MatchRemoteEntity match = await dataSource.getMatch(
+                matchId: matchEntity.id,
+              );
+
+              // then
+              expect(match, equals(matchEntity));
+
+              // cleanup
+            },
+          );
+
+          // call dio with expected arguments
+          test(
+            "given .getMatch() is called"
+            "when examine request to the server"
+            "then should call DioWrapper.makeRequest() with expected arguments",
+            () async {
+              // setup
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return HttpResponseValue(payload: {
+                    "ok": true,
+                    "message": "Match retrieved successfully.",
+                    "data": {
+                      "match": {
+                        "id": matchEntity.id,
+                        "title": matchEntity.title,
+                        "dateAndTime": matchEntity.dateAndTime,
+                        "location": matchEntity.location,
+                        "description": matchEntity.description,
+                      }
+                    }
+                    // "data": matchEntity.toJson(),
+                  });
+                },
+              );
+
+              // given
+              await dataSource.getMatch(
+                matchId: 1,
+              );
+
+              // when
+              final captured = verify(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: captureAny(named: "uriParts"),
+                  method: captureAny(named: "method"),
+                ),
+              ).captured;
+
+              // then
+              final expectedUriParts = HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+                apiEndpointPath: HttpMatchesConstants
+                    .BACKEND_ENDPOINT_PATH_MATCH
+                    .getMatchPathWithId(1),
+                queryParameters: null,
+              );
+              const expectedMethod = HttpMethodConstants.GET;
+
+              final actualUriParts = captured[0] as HttpRequestUriPartsValue;
+              final actualMethod = captured[1] as HttpMethodConstants;
+              // final actualBodyData = captured[2];
+
+              expect(actualUriParts, equals(expectedUriParts));
+              expect(actualMethod, equals(expectedMethod));
+
+              // cleanup
+            },
+          );
+
+          // TODO: DO LATER - not ok response, throw exception
+        },
+      );
 
       group(".getPlayerMatchesOverview()", () {
         // on ok response, return expected response

@@ -1,3 +1,335 @@
+import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_match/provider/get_match_controller.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+void main() {
+  final loadMatchUseCase = _MockLoadMatchUseCase();
+  final getMatchUseCase = _MockGetMatchUseCase();
+  final signOutUseCase = _MockSignOutUseCase();
+
+  final listener = _MockListener<AsyncValue<GetMatchControllerState>>();
+
+  setUpAll(() {
+    registerFallbackValue(AsyncValue.data(_FakeGetMatchControllerState()));
+  });
+
+  setUpAll(() {
+    getIt.registerSingleton<LoadMatchUseCase>(loadMatchUseCase);
+    getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
+    getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
+  });
+
+  setUp(() {
+    reset(loadMatchUseCase);
+    reset(getMatchUseCase);
+    reset(signOutUseCase);
+    reset(listener);
+  });
+
+  group(
+    "$GetMatchController",
+    () {
+      // given there is an error when load match use case is called, should emit states in particular order
+      test(
+        "given there is an error when loading match into db"
+        "when build() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          final ProviderContainer providerContainer = ProviderContainer();
+
+          // given
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenThrow(Exception("Error loading match into db"));
+
+          // when
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // then
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // null
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // error
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          print("what");
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isNull,
+          );
+          expect(
+              firstCallSecondArg, isA<AsyncLoading<GetMatchControllerState>>());
+
+          expect(
+              secondCallFirstArg, isA<AsyncLoading<GetMatchControllerState>>());
+          expect(
+              secondCallSecondArg, isA<AsyncError<GetMatchControllerState>>());
+
+          expect(
+            (secondCallSecondArg as AsyncError<GetMatchControllerState>).error,
+            isA<Exception>(),
+          );
+          expect(
+            secondCallSecondArg.error.toString(),
+            "Exception: Error loading match into db",
+          );
+          // TODO this does not seem that good
+          expect(
+            (secondCallSecondArg).stackTrace.toString(),
+            startsWith("#0      When.thenThrow.<anonymous closure>"),
+          );
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+      // given there is an error when get match use case is called, should emit states in particular order
+      test(
+        "given there is an error when getting match from db"
+        "when .build() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer(
+            (_) async {},
+          );
+          final ProviderContainer providerContainer = ProviderContainer();
+
+          // given
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenThrow(Exception("Error getting match from db"));
+
+          // when
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // then
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // null
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // error
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isNull,
+          );
+          expect(
+              firstCallSecondArg, isA<AsyncLoading<GetMatchControllerState>>());
+
+          expect(
+              secondCallFirstArg, isA<AsyncLoading<GetMatchControllerState>>());
+
+          expect(
+              secondCallSecondArg, isA<AsyncError<GetMatchControllerState>>());
+          expect(
+            (secondCallSecondArg as AsyncError<GetMatchControllerState>).error,
+            isA<Exception>(),
+          );
+
+          expect(
+            (secondCallSecondArg).error.toString(),
+            "Exception: Error getting match from db",
+          );
+          // TODO this does not seem that good
+          expect(
+            (secondCallSecondArg).stackTrace.toString(),
+            startsWith("#0      When.thenThrow.<anonymous closure>"),
+          );
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+      // given that match is loaded and fetched successfully, should emit states in particular order
+      // TODO - also here test that use cases are called with correct arguments
+      test(
+        "given successful loading and fetching of match"
+        "when .build() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          final MatchModel matchModel = MatchModel(
+            dateAndTime: DateTime.now(),
+            id: 1,
+            description: "description",
+            location: "location",
+            title: "title",
+          );
+
+          final ProviderContainer providerContainer = ProviderContainer();
+
+          // given
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer(
+            (_) async {},
+          );
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer(
+            (_) async => matchModel,
+          );
+
+          // when
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // then
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // null
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // data
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isNull,
+          );
+          expect(
+              firstCallSecondArg, isA<AsyncLoading<GetMatchControllerState>>());
+
+          expect(
+              secondCallFirstArg, isA<AsyncLoading<GetMatchControllerState>>());
+          expect(
+              secondCallSecondArg, isA<AsyncData<GetMatchControllerState>>());
+
+          expect(
+            (secondCallSecondArg as AsyncData<GetMatchControllerState>).value,
+            isA<GetMatchControllerState>(),
+          );
+
+          expect(
+            (secondCallSecondArg).value.match,
+            matchModel,
+          );
+          expect(
+            (secondCallSecondArg).value.isRemoteFetchDone,
+            true,
+          );
+
+          print("what");
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+      // TODO there will be a test for sign out needed
+    },
+  );
+}
+
+class _MockLoadMatchUseCase extends Mock implements LoadMatchUseCase {}
+
+class _MockGetMatchUseCase extends Mock implements GetMatchUseCase {}
+
+class _MockSignOutUseCase extends Mock implements SignOutUseCase {}
+
+class _MockListener<T> extends Mock {
+  void call(T? previous, T next);
+}
+
+class _FakeGetMatchControllerState extends Fake
+    implements GetMatchControllerState {}
+
+
+
+
+
+
+
+
+
+
+
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/provider/get_match_use_case_provider.dart';
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';

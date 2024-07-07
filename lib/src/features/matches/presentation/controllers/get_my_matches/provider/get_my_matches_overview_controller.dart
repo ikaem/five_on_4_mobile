@@ -78,7 +78,11 @@ class GetMyMatchesOverviewController extends _$GetMyMatchesOverviewController {
       return controllerState;
     } catch (e, s) {
       // TODO this part is not needed
-      log("Error loading updated data", error: e, stackTrace: s);
+      log(
+        "Error loading updated data",
+        error: e,
+        stackTrace: s,
+      );
 
       rethrow;
     }

@@ -39,8 +39,9 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
   late final getMatchControllerProviderInstance = getMatchControllerProvider(
     matchId: widget.matchId,
   );
-  late final onMatchReload =
-      ref.read(getMatchControllerProviderInstance.notifier).onMatchReload;
+  // TODO come back to this
+  // late final onMatchReload =
+  //     ref.read(getMatchControllerProviderInstance.notifier).onMatchReload;
 
   @override
   Widget build(
@@ -50,7 +51,11 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     final matchUIState = _getMatchUIState(matchControllerState);
     final togglerOptions = _getTogglerOptions(
       matchUIState: matchUIState,
-      onRetry: onMatchReload,
+      // onRetry: onMatchReload,
+      onRetry: () async {
+        // TODO come back to this
+        // await onMatchReload();
+      },
     );
 
     return Scaffold(
