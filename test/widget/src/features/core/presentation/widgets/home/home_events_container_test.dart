@@ -1,5 +1,5 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ void main() {
               );
 
               final homeEventsFinder = find.byWidgetPredicate((widget) {
-                if (widget is! HomeEvents) return false;
+                if (widget is! MatchesList) return false;
                 if (widget.matches != matches) return false;
 
                 return true;

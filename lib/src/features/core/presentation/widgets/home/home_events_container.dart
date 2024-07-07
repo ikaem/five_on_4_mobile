@@ -1,5 +1,5 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +51,7 @@ class HomeEventsContainer extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: HomeEvents(matches: matches),
+          child: MatchesList(matches: matches),
         ),
         // TODO possibly not needed - because we will not have this sync thing - or will we?
         if (isSyncing)

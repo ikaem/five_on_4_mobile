@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // TODO this can be reused in search as well - so rename it to events list or something?
-class HomeEvents extends StatelessWidget {
-  const HomeEvents({
+class MatchesList extends StatelessWidget {
+  const MatchesList({
     super.key,
     required this.matches,
   });
