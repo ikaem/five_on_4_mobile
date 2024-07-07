@@ -14,9 +14,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../../utils/data/test_entities.dart';
 
-class _FakePlayerMatchesOverviewControllerState extends Fake
-    implements PlayerMatchesOverviewControllerState {}
-
 // TODO this should be renamed - get my matches overview controller - and folder name too
 void main() {
   final loadPlayerMatchesOverviewUseCase =
@@ -33,9 +30,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(
-      AsyncValue.data(
-        _FakePlayerMatchesOverviewControllerState(),
-      ),
+      AsyncValue.data(_FakePlayerMatchesOverviewControllerState()),
     );
   });
 
@@ -481,6 +476,9 @@ class _MockSignOutUseCase extends Mock implements SignOutUseCase {}
 class _MockListener<T> extends Mock {
   void call(T? previous, T next);
 }
+
+class _FakePlayerMatchesOverviewControllerState extends Fake
+    implements PlayerMatchesOverviewControllerState {}
 
 // TODO ------------------- old ---------------------
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
