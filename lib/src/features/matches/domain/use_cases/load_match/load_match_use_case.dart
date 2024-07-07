@@ -7,13 +7,13 @@ class LoadMatchUseCase {
 
   final MatchesRepository _matchesRepository;
 
-  Future<int> call({
+  Future<void> call({
     required int matchId,
   }) async {
-    final response = await _matchesRepository.loadMatch(
+    await _matchesRepository.loadMatch(
       matchId: matchId,
     );
 
-    return response;
+    // return response;
   }
 }
