@@ -3,7 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
@@ -177,7 +177,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
 
 // TODO change this to return value, not match data
   @override
-  Future<MatchLocalEntityData> getMatch({
+  Future<MatchLocalEntityValue> getMatch({
     required int matchId,
   }) async {
     final select = _databaseWrapper.matchLocalRepo.select();
@@ -190,7 +190,17 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       );
     }
 
-    return matchData;
+    final MatchLocalEntityValue entityValue = MatchLocalEntityValue(
+      id: matchData.id,
+      title: matchData.title,
+      dateAndTime: matchData.dateAndTime,
+      location: matchData.location,
+      description: matchData.description,
+    );
+
+    return entityValue;
+
+    // return matchData;
     // throw UnimplementedError();
     // final match = await _isarWrapper.db.matchLocalEntitys
     //     .where()

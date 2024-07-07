@@ -7,7 +7,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matche
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value%20copy.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
