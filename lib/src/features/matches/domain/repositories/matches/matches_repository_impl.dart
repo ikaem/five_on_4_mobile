@@ -64,6 +64,19 @@ class MatchesRepositoryImpl implements MatchesRepository {
   }
 
   @override
+  Future<void> loadSearchedMatches(
+      {required SearchMatchesFilterValue filter}) async {
+    final matchRemoteEntities = await _matchesRemoteDataSource
+        .getSearchedMatches(searchMatchesFilter: filter);
+
+    final matchLocalEntityValues =
+        MatchesConverter.fromRemoteEntitiesToLocalEntityValues(
+            matchesRemote: matchRemoteEntities);
+    await _matchesLocalDataSource.storeMatches(
+        matchValues: matchLocalEntityValues);
+  }
+
+  @override
   Future<void> loadPlayerMatchesOverview({required int playerId}) async {
     final remoteEntities = await _matchesRemoteDataSource
         .getPlayerMatchesOverview(playerId: playerId);

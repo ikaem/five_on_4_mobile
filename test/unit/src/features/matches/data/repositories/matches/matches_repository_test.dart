@@ -28,6 +28,7 @@ void main() {
     () {
       registerFallbackValue(_FakeMatchCreateDataValue());
       registerFallbackValue(_FakeMatchLocalEntityValue());
+      registerFallbackValue(_FakeSearchMatchesFilterValue());
     },
   );
 
@@ -270,6 +271,96 @@ void main() {
       );
     });
 
+    group(".loadSearchedMatches", () {
+      test(
+        "given SearchMatchesFilterValue is provided"
+        "when .loadSearchedMatches() is called"
+        "then should call MatchesRemoteDataSource.getSearchedMatches() with expected arguments",
+        () async {
+          // setup
+          final testMatchRemoteEntities =
+              generateTestMatchRemoteEntities(count: 3);
+
+          when(() => matchesRemoteDataSource.getSearchedMatches(
+                searchMatchesFilter: any(named: "searchMatchesFilter"),
+              )).thenAnswer((_) async => testMatchRemoteEntities);
+          when(() => matchesLocalDataSource.storeMatches(
+                matchValues: any(named: "matchValues"),
+              )).thenAnswer((invocation) async {});
+
+          // given
+          const searchMatchesFilter = SearchMatchesFilterValue(
+            matchTitle: "title",
+          );
+
+          // when
+          await matchesRepository.loadSearchedMatches(
+            filter: searchMatchesFilter,
+          );
+
+          // then
+          verify(
+            () => matchesRemoteDataSource.getSearchedMatches(
+              searchMatchesFilter: searchMatchesFilter,
+            ),
+          ).called(1);
+
+          // cleanup
+        },
+      );
+
+      test(
+        "given remote match entities are successfully retrieved"
+        "when .loadSearchedMatches() is called"
+        "then should call MatchesLocalDataSource.storeMatches() with expected arguments",
+        () async {
+          // setup
+          const SearchMatchesFilterValue searchMatchesFilter =
+              SearchMatchesFilterValue(
+            matchTitle: "title",
+          );
+
+          final testMatchRemoteEntities =
+              generateTestMatchRemoteEntities(count: 3);
+
+          when(() => matchesLocalDataSource.storeMatches(
+                matchValues: any(named: "matchValues"),
+              )).thenAnswer((invocation) async {});
+
+          // given
+          when(() => matchesRemoteDataSource.getSearchedMatches(
+                searchMatchesFilter: any(named: "searchMatchesFilter"),
+              )).thenAnswer((_) async => testMatchRemoteEntities);
+
+          // when
+          await matchesRepository.loadSearchedMatches(
+            filter: searchMatchesFilter,
+          );
+
+          // then
+          final expectedMatchLocalEntityValues = testMatchRemoteEntities
+              .map(
+                (e) => MatchLocalEntityValue(
+                  id: e.id,
+                  dateAndTime: e.dateAndTime,
+                  title: e.title,
+                  location: e.location,
+                  description: e.description,
+                ),
+              )
+              .toList();
+
+          verify(
+            () => matchesLocalDataSource.storeMatches(
+              matchValues: expectedMatchLocalEntityValues,
+            ),
+          ).called(1);
+
+          // cleanup
+        },
+      );
+    });
+
     group(
       ".loadMatch()",
       () {
@@ -463,6 +554,9 @@ class _FakeMatchCreateDataValue extends Fake implements MatchCreateDataValue {}
 // class _FakeMatchRemoteEntity extends Fake implements MatchRemoteEntity {}
 class _FakeMatchLocalEntityValue extends Fake
     implements MatchLocalEntityValue {}
+
+class _FakeSearchMatchesFilterValue extends Fake
+    implements SearchMatchesFilterValue {}
 // --------- TODO: OLD -------------
 
 // import 'package:five_on_4_mobile/src/features/auth/data/data_sources/auth_status/auth_status_data_source.dart';
