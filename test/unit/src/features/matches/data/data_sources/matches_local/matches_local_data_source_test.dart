@@ -1,18 +1,13 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source_impl.dart';
-import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
-import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:isar/isar.dart';
-import 'package:mocktail/mocktail.dart';
 
 import '../../../../../../../utils/data/test_entities.dart';
-import '../../../../../../../utils/helpers/db/setup_db.dart';
 import '../../../../../../../utils/helpers/test_database/setup_test_database.dart';
 import '../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
@@ -218,6 +213,10 @@ void main() {
         );
 
         // TODO come back to it - given player has multiple today, upcoming and past matches, when called, should return max 5 of each matches types in expected order
+      });
+
+      group(".getSearchedMatches", () {
+        // TODO missing tets here
       });
 
       group(".getMatch()", () {

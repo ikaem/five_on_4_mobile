@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
@@ -55,5 +56,12 @@ abstract interface class MatchesLocalDataSource {
   // TODO all of these should return values, not direct entities
   Future<MatchLocalEntityValue> getMatch({
     required int matchId,
+  });
+
+  // TODO this should probably:
+  // - return some kind of bigger object that includes some pagination meta data
+  // - take parameters for pagination too - how many items, which start from, which offset, and so on...
+  Future<List<MatchLocalEntityValue>> getSearchedMatches({
+    required SearchMatchesFilterValue filter,
   });
 }
