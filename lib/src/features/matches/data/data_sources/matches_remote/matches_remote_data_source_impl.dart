@@ -123,35 +123,45 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         MatchRemoteEntity.fromJson(json: responseJsonMapMatchData);
 
     return matchEntity;
+  }
 
-    // throw UnimplementedError();
+  @override
+  Future<List<MatchRemoteEntity>> getSearchedMatches(
+      {required SearchMatchesFilterValue searchMatchesFilter}) async {
+    // TODO: implement getSearchedMatches
+    final HttpRequestUriPartsValue uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpMatchesConstants
+          .BACKEND_ENDPOINT_PATH_MATCHES_SEARCH_MATCHES.value,
+      // TODO eventually we will switch to query params, and not to body
+      queryParameters: null,
+    );
 
-    // // TODO temp only
-    // // await Future.delayed(const Duration(seconds: 1));
-    // final uriParts = HttpRequestUriPartsValue(
-    //   // TODO use https when we have real server eventually
-    //   apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
-    //   // port: HttpConstants.BACKEND_PORT_STRING_FAKE.portAsInt,S
-    //   apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
-    //   apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
-    //   apiEndpointPath: HttpMatchesConstants.BACKEND_ENDPOINT_PATH_MATCH
-    //       .getMatchPathWithId(matchId),
-    //   queryParameters: null,
-    // );
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+        uriParts: uriParts,
+        // TODO post is not good for this - use get
+        method: HttpMethodConstants.POST,
+        bodyData: {
+          // TODO create constants for these
+          "match_title": searchMatchesFilter.matchTitle,
+        });
 
-    // final response = await _dioWrapper.get<Map<String, dynamic>>(
-    //   uriParts: uriParts,
-    // );
+    if (!response.isOk) {
+      // TODO come back to this - this is to be tested later
+      // TODO make proper exception for this
+      throw Exception("Something went wrong with getting searched matches");
+    }
 
-    // if (response["ok"] != true) {
-    //   throw Exception("Something went wrong with getting match");
-    // }
+    final responseJsonMapMatchesData =
+        response.payload["data"]["matches"] as List<dynamic>;
 
-    // final matchJson = response["data"] as Map<String, dynamic>;
+    final matchesEntities = responseJsonMapMatchesData
+        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .toList();
 
-    // final matchEntity = MatchRemoteEntity.fromJson(json: matchJson);
-
-    // return matchEntity;
+    return matchesEntities;
   }
 
   @override
