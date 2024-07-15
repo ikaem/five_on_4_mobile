@@ -17,7 +17,7 @@ abstract interface class MatchesRepository {
   Future<void> loadPlayerMatchesOverview({
     required int playerId,
   });
-  Future<void> loadSearchedMatches({
+  Future<List<int>> loadSearchedMatches({
     required SearchMatchesFilterValue filter,
   });
 

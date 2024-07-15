@@ -64,16 +64,19 @@ class MatchesRepositoryImpl implements MatchesRepository {
   }
 
   @override
-  Future<void> loadSearchedMatches(
-      {required SearchMatchesFilterValue filter}) async {
+  Future<List<int>> loadSearchedMatches({
+    required SearchMatchesFilterValue filter,
+  }) async {
     final matchRemoteEntities = await _matchesRemoteDataSource
         .getSearchedMatches(searchMatchesFilter: filter);
 
     final matchLocalEntityValues =
         MatchesConverter.fromRemoteEntitiesToLocalEntityValues(
             matchesRemote: matchRemoteEntities);
-    await _matchesLocalDataSource.storeMatches(
+    final ids = await _matchesLocalDataSource.storeMatches(
         matchValues: matchLocalEntityValues);
+
+    return ids;
   }
 
   @override

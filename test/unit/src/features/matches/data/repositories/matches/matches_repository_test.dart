@@ -286,7 +286,7 @@ void main() {
               )).thenAnswer((_) async => testMatchRemoteEntities);
           when(() => matchesLocalDataSource.storeMatches(
                 matchValues: any(named: "matchValues"),
-              )).thenAnswer((invocation) async {});
+              )).thenAnswer((invocation) async => []);
 
           // given
           const searchMatchesFilter = SearchMatchesFilterValue(
@@ -325,7 +325,7 @@ void main() {
 
           when(() => matchesLocalDataSource.storeMatches(
                 matchValues: any(named: "matchValues"),
-              )).thenAnswer((invocation) async {});
+              )).thenAnswer((invocation) async => []);
 
           // given
           when(() => matchesRemoteDataSource.getSearchedMatches(
@@ -355,6 +355,43 @@ void main() {
               matchValues: expectedMatchLocalEntityValues,
             ),
           ).called(1);
+
+          // cleanup
+        },
+      );
+
+      test(
+        "given local matches are successfully stored"
+        "when .loadSearchedMatches() is called"
+        "then should return expected match ids",
+        () async {
+          // setup
+          const SearchMatchesFilterValue searchMatchesFilter =
+              SearchMatchesFilterValue(
+            matchTitle: "title",
+          );
+
+          final testMatchRemoteEntities =
+              generateTestMatchRemoteEntities(count: 3);
+          final matchesEntitiesIds =
+              testMatchRemoteEntities.map((e) => e.id).toList();
+
+          when(() => matchesRemoteDataSource.getSearchedMatches(
+                searchMatchesFilter: any(named: "searchMatchesFilter"),
+              )).thenAnswer((_) async => testMatchRemoteEntities);
+
+          // given
+          when(() => matchesLocalDataSource.storeMatches(
+                matchValues: any(named: "matchValues"),
+              )).thenAnswer((invocation) async => matchesEntitiesIds);
+
+          // when
+          final ids = await matchesRepository.loadSearchedMatches(
+            filter: searchMatchesFilter,
+          );
+
+          // then
+          expect(ids, equals(matchesEntitiesIds));
 
           // cleanup
         },
@@ -468,7 +505,7 @@ void main() {
             () => matchesLocalDataSource.storeMatches(
               matchValues: any(named: "matchValues"),
             ),
-          ).thenAnswer((invocation) async {});
+          ).thenAnswer((invocation) async => []);
 
           // given
           const playerId = 1;
@@ -507,7 +544,7 @@ void main() {
             () => matchesLocalDataSource.storeMatches(
               matchValues: any(named: "matchValues"),
             ),
-          ).thenAnswer((invocation) async {});
+          ).thenAnswer((invocation) async => []);
 
           // given
           const playerId = 1;
