@@ -166,6 +166,102 @@ void main() {
       },
     );
 
+    group(".getMatches()", () {
+      // given data source returns matches
+      test(
+        "given MatchesLocalDataSource.getMatches() returns matches"
+        "when .getMatches() is called with match ids"
+        "then should return expected matches",
+        () async {
+          // setup
+          final localMatchValues =
+              generateTestMatchLocalEntityCompanions(count: 3)
+                  .map(
+                    (e) => MatchLocalEntityValue(
+                      id: e.id.value,
+                      dateAndTime: e.dateAndTime.value,
+                      title: e.title.value,
+                      location: e.location.value,
+                      description: e.description.value,
+                    ),
+                  )
+                  .toList();
+
+          final matchIds = localMatchValues.map((e) => e.id).toList();
+
+          // given
+          when(
+            () => matchesLocalDataSource.getMatches(
+              matchIds: any(named: "matchIds"),
+            ),
+          ).thenAnswer(
+            (_) async => localMatchValues,
+          );
+
+          // when
+          final result = await matchesRepository.getMatches(
+            matchIds: matchIds,
+          );
+
+          // then
+          final expectedMatchModels = localMatchValues
+              .map(
+                (e) => MatchModel(
+                  id: e.id,
+                  dateAndTime: DateTime.fromMillisecondsSinceEpoch(
+                    e.dateAndTime,
+                  ),
+                  title: e.title,
+                  location: e.location,
+                  description: e.description,
+                ),
+              )
+              .toList();
+
+          expect(result, equals(expectedMatchModels));
+
+          // cleanup
+        },
+      );
+
+      // TODO should call local data source with expected arguments
+      test(
+        "given .getMatches() is called"
+        "when matches are successfully retrieved"
+        "then should have called MatchesLocalDataSource.getMatches() with expected arguments",
+        () async {
+          // setup
+          final matchIds = [1, 2, 3];
+
+          when(
+            () => matchesLocalDataSource.getMatches(
+              matchIds: any(named: "matchIds"),
+            ),
+          ).thenAnswer(
+            (_) async => [],
+          );
+
+          // given
+          await matchesRepository.getMatches(
+            matchIds: matchIds,
+          );
+
+          // when
+
+          // then
+          verify(
+            () => matchesLocalDataSource.getMatches(
+              matchIds: matchIds,
+            ),
+          ).called(1);
+
+          // cleanup
+        },
+      );
+
+      // TODO should not handle expections - orsomething - come back to this
+    });
+
     group(".getPlayerMatchesOverview()", () {
       // should return expected result
 

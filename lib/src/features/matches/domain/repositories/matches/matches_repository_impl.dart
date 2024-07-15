@@ -224,13 +224,24 @@ class MatchesRepositoryImpl implements MatchesRepository {
     );
 
     return matchModel;
+  }
 
-    // throw UnimplementedError();
-    // final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
+  @override
+  Future<List<MatchModel>> getMatches({required List<int> matchIds}) async {
+    final localEntitiesValues =
+        await _matchesLocalDataSource.getMatches(matchIds: matchIds);
 
-    // final modelMatch =
-    //     MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
+    // TODO maybe converter exists already
+    final modelMatches = localEntitiesValues.map((e) {
+      return MatchModel(
+        id: e.id,
+        dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+        location: e.location,
+        description: e.description,
+        title: e.title,
+      );
+    }).toList();
 
-    // return modelMatch;
+    return modelMatches;
   }
 }

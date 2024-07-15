@@ -13,6 +13,9 @@ abstract interface class MatchesRepository {
   Future<MatchModel> getMatch({
     required int matchId,
   });
+  Future<List<MatchModel>> getMatches({
+    required List<int> matchIds,
+  });
 
   Future<void> loadPlayerMatchesOverview({
     required int playerId,
