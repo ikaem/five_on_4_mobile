@@ -5,15 +5,7 @@ import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_except
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model/get_authenticated_player_model_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/provider/get_my_past_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/provider/get_my_today_matches_use_case_provider.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/provider/get_my_upcoming_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_player_matches_overview/get_player_matches_overview_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/provider/load_my_matches_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 

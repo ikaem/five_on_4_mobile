@@ -2,17 +2,13 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/exceptions/auth_exceptions.dart';
-import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/get_auth_data_status_use_case.dart';
-import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_auth_data_status/provider/get_auth_data_status_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/get_authenticated_player_model/get_authenticated_player_model_use_case.dart';
 import 'package:five_on_4_mobile/src/features/auth/domain/use_cases/sign_out/sign_out_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/match_create_converter.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "create_match_controller.g.dart";
@@ -94,6 +90,7 @@ class CreateMatchController extends _$CreateMatchController {
       log("Error creating match -> error: $e, stack: $s");
       state = const AsyncValue.error(
         "There was an issue creating the match",
+        // TODO we dont really want to set state of stack trace - we will load this - so empty is ok
         StackTrace.empty,
 
         // s,
