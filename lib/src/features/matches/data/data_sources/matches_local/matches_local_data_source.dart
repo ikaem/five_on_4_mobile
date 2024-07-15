@@ -21,7 +21,7 @@ abstract interface class MatchesLocalDataSource {
   });
 
   /// This upserts the matches
-  Future<void> storeMatches({
+  Future<List<int>> storeMatches({
     required List<MatchLocalEntityValue> matchValues,
   });
 

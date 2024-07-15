@@ -232,7 +232,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
    */
 
   @override
-  Future<int> storeMatches({
+  Future<List<int>> storeMatches({
     required List<MatchLocalEntityValue> matchValues,
   }) async {
     // throw UnimplementedError();
@@ -247,59 +247,65 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
             ))
         .toList();
 
-    _databaseWrapper.matchLocalRepo.insertAll(matchCompanions);
-
-    // TODO using transaction over batch because we can get ids of upserted elements
-    // TODO there is no need for trasnaction if atomatically insert alrteady with insertall? or is ther
-    final ids = await _databaseWrapper.runInTransaction(() async {
-      // for (final companion in matchCompanions) {
-      // final id = await _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
-      final ids = await _databaseWrapper.matchLocalRepo.insertAll(
+    // TODO not sure if batch is needed, but lets leave it as is
+    await _databaseWrapper.runInBatch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _databaseWrapper.matchLocalRepo,
         matchCompanions,
-        mode: InsertMode.insertOrReplace,
-        // TODO not really sure how to use this
-        // onConflict: DoUpdate.withExcluded(
-        //   (old, excluded) {
-        //     tbl1.id;
-        //     tbl2.id;
-
-        //     return const MatchLocalEntityCompanion();
-        //   },
-        // ),
-        // TODO this works iwth mode
-        // TODO does not seem to be needed for now
-        // TODO this is how they do it in drift from their source code
-        /* 
-        Future<int> insertOnConflictUpdate(Insertable<D> entity) {
-          return insert(entity, onConflict: DoUpdate((_) => entity));
-        }
-         */
-        // onConflict: DoUpdate(
-        //   (tbl) => MatchLocalEntityCompanion(
-        //     id: tbl.id,
-        //     title: tbl.title,
-        //     dateAndTime: tbl.dateAndTime,
-        //     location: tbl.location,
-        //     description: tbl.description,
-        //   ),
-        // ),
       );
-
-      return ids;
     });
 
-// TODO maybe this is not good - maybe we can use batch, or this is ok since we dont get all ids anyway
-    return ids;
+    final matchesIds = matchValues.map((e) => e.id).toList();
+    // TODO come back to test that it actually does return list of ids
+    return matchesIds;
+
+//  ----------- TODO keep this here for now --------------
+//     _databaseWrapper.matchLocalRepo.insertAll(matchCompanions);
+
+//     // TODO using transaction over batch because we can get ids of upserted elements
+//     // TODO there is no need for trasnaction if atomatically insert alrteady with insertall? or is ther
+//     final ids = await _databaseWrapper.runInTransaction(() async {
+//       // for (final companion in matchCompanions) {
+//       // final id = await _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
+//       final ids = await _databaseWrapper.matchLocalRepo.insertAll(
+//         matchCompanions,
+//         mode: InsertMode.insertOrReplace,
+//         // TODO not really sure how to use this
+//         // onConflict: DoUpdate.withExcluded(
+//         //   (old, excluded) {
+//         //     tbl1.id;
+//         //     tbl2.id;
+
+//         //     return const MatchLocalEntityCompanion();
+//         //   },
+//         // ),
+//         // TODO this works iwth mode
+//         // TODO does not seem to be needed for now
+//         // TODO this is how they do it in drift from their source code
+//         /*
+//         Future<int> insertOnConflictUpdate(Insertable<D> entity) {
+//           return insert(entity, onConflict: DoUpdate((_) => entity));
+//         }
+//          */
+//         // onConflict: DoUpdate(
+//         //   (tbl) => MatchLocalEntityCompanion(
+//         //     id: tbl.id,
+//         //     title: tbl.title,
+//         //     dateAndTime: tbl.dateAndTime,
+//         //     location: tbl.location,
+//         //     description: tbl.description,
+//         //   ),
+//         // ),
+//       );
+
+//       return ids;
+//     });
+
+// // TODO maybe this is not good - maybe we can use batch, or this is ok since we dont get all ids anyway
+//     return ids;
 
     // TODO leave batch here for now --------------------- !!!!!!!!!
-    // await _databaseWrapper.runInBatch((batch) {
-    //   batch.insertAllOnConflictUpdate(
-    //     _databaseWrapper.matchLocalRepo,
-    //     matchCompanions,
-    //   );
-    // });
-
-    // final matchesIds = matchValues.map((e) => e.id).toList();
+//  ----------- TODO keep this here for now --------------
   }
 
   @override
