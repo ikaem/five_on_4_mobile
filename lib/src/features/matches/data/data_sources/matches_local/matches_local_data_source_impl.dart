@@ -196,6 +196,60 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }
 
   @override
+  Future<List<MatchLocalEntityValue>> getMatches({
+    required List<int> matchIds,
+  }) async {
+    final select = _databaseWrapper.matchLocalRepo.select();
+
+    final findMatches = select..where((tbl) => tbl.id.isIn(matchIds));
+
+    final matches = await findMatches.get();
+
+    final matchValues = matches
+        .map((e) => MatchLocalEntityValue(
+              id: e.id,
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+
+    return matchValues;
+  }
+
+  /* 
+  
+  
+  
+  
+      final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isBetweenValues(
+          lastMomentOfYesterday.millisecondsSinceEpoch,
+          firstMomentOfTomorrow.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    // TODO sorting should be enforced here on db - same thing on backend side
+    // because right now it returns in order of insertion - but we want it to be sorted by date
+    final matches = await (findMatches..limit(5)).get();
+  
+  
+  
+  
+  
+  
+   */
+
+// TODO this will not be used
+  @override
   Future<List<MatchLocalEntityValue>> getSearchedMatches({
     required SearchMatchesFilterValue filter,
   }) {

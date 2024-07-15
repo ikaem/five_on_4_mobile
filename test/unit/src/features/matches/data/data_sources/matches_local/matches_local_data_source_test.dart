@@ -219,6 +219,114 @@ void main() {
         // TODO missing tets here
       });
 
+      group(
+        ".getMatches()",
+        () {
+// given matches exist, when call get matches with match ids, should return expected matches
+          test(
+            "given database holds all MatchLocalEntity"
+            "when .getMatches() is called with match ids"
+            "then should return expected matches",
+            () async {
+              // setup
+              final matchEntities = generateTestMatchLocalEntityCompanions(
+                count: 3,
+              );
+              final matchIds =
+                  matchEntities.map((entity) => entity.id.value).toList();
+
+              // given
+              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+                  .insertAll(matchEntities);
+
+              // when
+              final result = await dataSource.getMatches(matchIds: matchIds);
+
+              // then
+              final expectedResults = matchEntities
+                  .map(
+                    (entity) => MatchLocalEntityValue(
+                      id: entity.id.value,
+                      title: entity.title.value,
+                      dateAndTime: entity.dateAndTime.value,
+                      description: entity.description.value,
+                      location: entity.location.value,
+                    ),
+                  )
+                  .toList();
+
+              expect(result, equals(expectedResults));
+
+              // cleanup
+            },
+          );
+
+// given no matches exist, when call get matches with match ids, should return expected result
+          test(
+            "given no matches exist in the database"
+            "when .getMatches() is called with match ids"
+            "then should return empty list",
+            () async {
+              // setup
+              final matchEntities = <MatchLocalEntityCompanion>[];
+              final matchIds = [1, 2];
+
+              // given
+              // no matches in db
+
+              // when
+              final result = await dataSource.getMatches(matchIds: matchIds);
+
+              // then
+              expect(result, isEmpty);
+
+              // cleanup
+            },
+          );
+
+// given some matches exist, when call get matches with match ids, should return expected matches
+          test(
+            "given some matches exist in the database"
+            "when .getMatches() is called with match ids"
+            "then should return expected matches",
+            () async {
+              // setup
+              final matchEntities = generateTestMatchLocalEntityCompanions(
+                count: 3,
+              );
+              final matchIds =
+                  matchEntities.map((entity) => entity.id.value).toList()
+                    // search for one more match
+                    ..add(matchEntities.length + 1);
+
+              // given
+              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+                  .insertAll(matchEntities);
+
+              // when
+              final result = await dataSource.getMatches(matchIds: matchIds);
+
+              // then
+              final expectedResults = matchEntities
+                  .map(
+                    (entity) => MatchLocalEntityValue(
+                      id: entity.id.value,
+                      title: entity.title.value,
+                      dateAndTime: entity.dateAndTime.value,
+                      description: entity.description.value,
+                      location: entity.location.value,
+                    ),
+                  )
+                  .toList();
+
+              expect(result, equals(expectedResults));
+
+              // cleanup
+            },
+          );
+        },
+      );
+
       group(".getMatch()", () {
         test(
           "given a match id with no match in the database"

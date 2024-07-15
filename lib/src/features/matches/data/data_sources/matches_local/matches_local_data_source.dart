@@ -58,6 +58,11 @@ abstract interface class MatchesLocalDataSource {
     required int matchId,
   });
 
+  // TODO test
+  Future<List<MatchLocalEntityValue>> getMatches({
+    required List<int> matchIds,
+  });
+
   // TODO this should probably:
   // - return some kind of bigger object that includes some pagination meta data
   // - take parameters for pagination too - how many items, which start from, which offset, and so on...
