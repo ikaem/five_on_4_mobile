@@ -8,11 +8,12 @@ class LoadSearchedMatchesUseCase {
 
   final MatchesRepository _matchesRepository;
 
-  Future<void> call({
+  Future<List<int>> call({
     required SearchMatchesFilterValue filter,
   }) async {
-    await _matchesRepository.loadSearchedMatches(
+    final ids = await _matchesRepository.loadSearchedMatches(
       filter: filter,
     );
+    return ids;
   }
 }
