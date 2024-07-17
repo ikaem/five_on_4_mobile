@@ -70,7 +70,7 @@ class HomeScreenView extends ConsumerWidget {
     // );
 // -------------- just test ---------------
 
-    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget?
+    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget? - better just to access this in callback so it is not recreated on every build
     final matchesController =
         ref.read(getMyMatchesOverviewControllerProvider.notifier);
 
