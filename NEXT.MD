@@ -1,5 +1,5 @@
-1. write tests for search matches controller states
-2. test in ui with hardcoded value
+1. pass data from screen view to tab containers - search matches state, callback to search matches
+2. also will need to pass info on loading and errors, and handle those states in containers, like it is done on home screen  and match screen and create match screen
 3. render received data 
 4. create search matches input controller - same as for create match
 5. search is triggered on button, not on input change - so no need for debounce
