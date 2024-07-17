@@ -52,6 +52,11 @@ class SearchMatchesController extends _$SearchMatchesController {
   Future<void> onSearchMatches({
     required String matchTitle,
   }) async {
+// TODO make this validation everywhere - on backend too - do not allow empty string
+    if (matchTitle.isEmpty) {
+      return;
+    }
+
     try {
       state = const AsyncValue.loading();
 
