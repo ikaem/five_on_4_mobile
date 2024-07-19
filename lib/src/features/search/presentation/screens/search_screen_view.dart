@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -36,6 +38,13 @@ class SearchScreenView extends ConsumerWidget {
         _getSearchMatchesUIState(searchMatchesControllerState);
     final togglerOptions = _getTogglerOptions(
       onLoadMore: () async {},
+      onSearchButtonPressed: (value) async {
+        // TODO probably no need to await it here
+        // could also use cutoff
+        await ref
+            .read(searchMatchesControllerProvider.notifier)
+            .onSearchMatches(matchTitle: value);
+      },
     );
 
     return Scaffold(
@@ -56,6 +65,7 @@ class SearchScreenView extends ConsumerWidget {
     // will need state of found matches
     // TODO might need some load more on scroll or something?
     required Future<void> Function() onLoadMore,
+    required Future<void> Function(String) onSearchButtonPressed,
   }) {
     return [
       TabTogglerOptionValue(
@@ -65,6 +75,7 @@ class SearchScreenView extends ConsumerWidget {
           onSearchInputChanged: (value) {},
           searchInputStream: const Stream.empty(),
           matches: _tempMatches,
+          onSearchButtonPressed: onSearchButtonPressed,
         ),
       ),
       TabTogglerOptionValue(

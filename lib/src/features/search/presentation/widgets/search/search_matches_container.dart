@@ -10,10 +10,12 @@ class SearchMatchesContainer extends StatefulWidget {
     required this.searchInputStream,
     required this.onSearchInputChanged,
     required this.matches,
+    required this.onSearchButtonPressed,
   });
 
   final Stream<String> searchInputStream;
   final ValueSetter<String> onSearchInputChanged;
+  final ValueSetter<String> onSearchButtonPressed;
 
   final List<MatchModel> matches;
 
@@ -33,11 +35,19 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         SearchMatchesInputs(
           searchInputStream: widget.searchInputStream,
           searchInputController: _searchInputController,
           onSearchInputChanged: widget.onSearchInputChanged,
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            // fixedSize:
+            fixedSize: Size(MediaQuery.of(context).size.width, 50),
+          ),
+          onPressed: () => widget.onSearchButtonPressed("Iv"),
+          child: const Text("Search"),
         ),
         const Divider(),
         // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
