@@ -37,6 +37,7 @@ class SearchScreenView extends ConsumerWidget {
     final searchMatchesUIState =
         _getSearchMatchesUIState(searchMatchesControllerState);
     final togglerOptions = _getTogglerOptions(
+      searchMatchesUIState: searchMatchesUIState,
       onLoadMore: () async {},
       onSearchButtonPressed: (value) async {
         // TODO probably no need to await it here
@@ -64,6 +65,7 @@ class SearchScreenView extends ConsumerWidget {
   List<TabTogglerOptionValue> _getTogglerOptions({
     // will need state of found matches
     // TODO might need some load more on scroll or something?
+    required SearchMatchesUIState searchMatchesUIState,
     required Future<void> Function() onLoadMore,
     required Future<void> Function(String) onSearchButtonPressed,
   }) {
@@ -72,9 +74,12 @@ class SearchScreenView extends ConsumerWidget {
         title: "Matches",
         // child: Container(),
         child: SearchMatchesContainer(
+          isLoading: searchMatchesUIState.isLoading,
+          isError: searchMatchesUIState.isError,
           onSearchInputChanged: (value) {},
           searchInputStream: const Stream.empty(),
-          matches: _tempMatches,
+          // matches: _tempMatches,
+          matches: searchMatchesUIState.foundMatches,
           onSearchButtonPressed: onSearchButtonPressed,
         ),
       ),
