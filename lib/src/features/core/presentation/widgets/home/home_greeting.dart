@@ -1,6 +1,8 @@
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/text_size_constants.dart';
 import 'package:flutter/material.dart';
 
-class HomeGreeting extends StatelessWidget {
+class HomeGreeting extends StatefulWidget {
   const HomeGreeting({
     super.key,
     required this.nickName,
@@ -13,20 +15,33 @@ class HomeGreeting extends StatelessWidget {
   final Uri avatarUrl;
 
   @override
+  State<HomeGreeting> createState() => _HomeGreetingState();
+}
+
+class _HomeGreetingState extends State<HomeGreeting> {
+  bool isErrorLoadingAvatar = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
+    return Row(
       children: [
         Expanded(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text.rich(
+                style: TextStyle(
+                  fontSize: TextSizeConstants.EXTRA_EXTRA_LARGE.value,
+                ),
                 TextSpan(
                   children: [
-                    const TextSpan(text: "Welcome, "),
+                    const TextSpan(
+                      text: "Welcome, ",
+                    ),
                     TextSpan(
-                      text: nickName,
+                      text: widget.nickName,
                       style: const TextStyle(
+                        // TODO use theme
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -34,11 +49,14 @@ class HomeGreeting extends StatelessWidget {
                 ),
               ),
               Text.rich(
+                style: TextStyle(
+                  fontSize: TextSizeConstants.LARGE.value,
+                ),
                 TextSpan(
                   children: [
                     const TextSpan(text: "of team "),
                     TextSpan(
-                      text: teamName,
+                      text: widget.teamName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -49,23 +67,20 @@ class HomeGreeting extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          child: Image.network(
-            avatarUrl.toString(),
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-
-            // TODO try to test on error
-            // TODO also, errors are not really handled by this
-            errorBuilder: (context, error, stackTrace) {
-              return const Center(
-                child: Icon(Icons.error),
-              );
-            },
+        CircleAvatar(
+          radius: 30,
+          backgroundImage: NetworkImage(
+            widget.avatarUrl.toString(),
           ),
-        )
+          backgroundColor: ColorConstants.BLUE_DARK.value,
+          onBackgroundImageError: (e, s) {
+            setState(() {
+              isErrorLoadingAvatar = true;
+            });
+          },
+          child: isErrorLoadingAvatar ? const Icon(Icons.error_outline) : null,
+        ),
       ],
-    ));
+    );
   }
 }

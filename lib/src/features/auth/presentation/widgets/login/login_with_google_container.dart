@@ -15,11 +15,6 @@ class LoginWithGoogleContainer extends StatelessWidget {
 // TODO will also need to test login screen
   @override
   Widget build(BuildContext context) {
-    // return ElevatedButton(
-    //   onPressed: onAuthenticate,
-    //   child: const Text("Login with Google"),
-    // );
-
     return CustomElevatedButton(
       buttonColor: ColorConstants.BLUE_DARK,
       textColor: ColorConstants.WHITE,

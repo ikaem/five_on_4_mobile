@@ -30,9 +30,9 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
     return Scaffold(
       // TODO use theme
       backgroundColor: ColorConstants.BLUE_LIGHT.value,
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(SpacingConstants.L.value),
+      body: Padding(
+        padding: EdgeInsets.all(SpacingConstants.L.value),
+        child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,

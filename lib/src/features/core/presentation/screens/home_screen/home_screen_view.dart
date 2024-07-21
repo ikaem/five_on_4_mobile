@@ -1,14 +1,11 @@
-import 'dart:developer';
-
-import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/sign_out/sign_out_controller.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_events_container.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/home_greeting.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_overview_controller.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/search_matches/provider/search_matches_controller.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // TODO let this sit here for a bit
@@ -53,57 +50,43 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-// -------------- just test ---------------
-    // final searchMatchesControllerState =
-    //     ref.watch(searchMatchesControllerProvider);
-
-    // searchMatchesControllerState.when(
-    //   data: (data) {
-    //     log("data: $data");
-    //   },
-    //   error: (error, stackTrace) {
-    //     log("error: $error");
-    //   },
-    //   loading: () {
-    //     log("loading");
-    //   },
-    // );
-// -------------- just test ---------------
-
-    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget? - better just to access this in callback so it is not recreated on every build
-    final matchesController =
-        ref.read(getMyMatchesOverviewControllerProvider.notifier);
-
     final matchesControllerState =
         ref.watch(getMyMatchesOverviewControllerProvider);
     final matchesUIState = _getMatchesUIState(matchesControllerState);
     final togglerOptions = _getTogglerOptions(
       matchesUIState: matchesUIState,
-      // onRetry: matchesController.onLoadMatchesOverview,
-      // TODO revert this
       onRetry: ({required MatchTimeType matchesType}) async {},
     );
 
     return Scaffold(
+      // TODO use theme
+      backgroundColor: ColorConstants.BLUE_LIGHT.value,
       body: Column(
         children: [
-          HomeGreeting(
-            nickName: "nickName",
-            teamName: "teamName",
-            avatarUrl: Uri.parse(
-                "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
+          SizedBox(height: SpacingConstants.XL.value),
+          Padding(
+            // padding: EdgeInsets.all(SpacingConstants.L.value),
+            padding: EdgeInsets.symmetric(
+              horizontal: SpacingConstants.L.value,
+            ),
+            child: HomeGreeting(
+              nickName: "Ronaldo",
+              teamName: "Barcelona",
+              avatarUrl: Uri.parse(
+                  "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
+            ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextButton(
-            onPressed: () async =>
-                await ref.read(signOutControllerProvider.notifier).onSignOut(),
-            child: const Text("Logout"),
-          ),
+          SizedBox(height: SpacingConstants.XL.value),
+          // TODO move this to elsewhere
+          // TextButton(
+          //   onPressed: () async =>
+          //       await ref.read(signOutControllerProvider.notifier).onSignOut(),
+          //   child: const Text("Logout"),
+          // ),
           Expanded(
             child: TabToggler(
               options: togglerOptions,
+              backgroundColor: ColorConstants.WHITE,
             ),
           ),
         ],
@@ -132,7 +115,18 @@ class HomeScreenView extends ConsumerWidget {
           isToday: true,
           isLoading: matchesUIState.isLoading,
           isSyncing: matchesUIState.isSyncing,
-          matches: matchesUIState.todayMatches,
+          // matches: matchesUIState.todayMatches,
+          // TODO temp only while styling is being done
+          matches: List.generate(
+            5,
+            (index) => MatchModel(
+              dateAndTime: DateTime.now(),
+              description: "description",
+              id: index + 1,
+              location: "location",
+              title: "title",
+            ),
+          ),
           isError: matchesUIState.isError,
           onRetry: onRetryToday,
         ),

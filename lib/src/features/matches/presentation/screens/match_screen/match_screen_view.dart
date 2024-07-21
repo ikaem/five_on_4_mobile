@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/g
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -62,6 +63,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
       appBar: AppBar(),
       body: TabToggler(
         options: togglerOptions,
+        backgroundColor: ColorConstants.WHITE,
       ),
     );
   }

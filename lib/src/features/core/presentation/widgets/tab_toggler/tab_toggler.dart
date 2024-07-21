@@ -1,9 +1,11 @@
+import 'package:five_on_4_mobile/src/style/utils/constants/circular_radius_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 // TODO write tests for this
 // TODO use this instead of speciliazed widgets for tabs toggling
 
-// TODO possibly can live elsewhere
+// TODO possibly can live elsewhere - but here might be fine because it belongs to this - maybe just delegate it to part and part of
 class TabTogglerOptionValue {
   const TabTogglerOptionValue({
     required this.title,
@@ -18,9 +20,11 @@ class TabToggler extends StatefulWidget {
   const TabToggler({
     super.key,
     required this.options,
+    required this.backgroundColor,
   });
 
   final List<TabTogglerOptionValue> options;
+  final ColorConstants backgroundColor;
 
   @override
   State<TabToggler> createState() => _TabTogglerState();
@@ -47,28 +51,36 @@ class _TabTogglerState extends State<TabToggler>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.black,
-          labelColor: Colors.black,
-          labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.normal,
-          ),
-          onTap: (value) {
-            setState(() {});
-          },
-          tabs: _generateTabs(),
+    return Container(
+      decoration: BoxDecoration(
+        color: widget.backgroundColor.value,
+        borderRadius: BorderRadius.vertical(
+          top: CircularRadiusConstants.REGULAR.value,
         ),
-        Expanded(
-          child: TabBarView(
+      ),
+      child: Column(
+        children: [
+          TabBar(
             controller: _tabController,
-            children: generateTabChildren(),
+            indicatorColor: Colors.black,
+            labelColor: Colors.black,
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+            ),
+            onTap: (value) {
+              setState(() {});
+            },
+            tabs: _generateTabs(),
           ),
-        ),
-      ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: generateTabChildren(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
