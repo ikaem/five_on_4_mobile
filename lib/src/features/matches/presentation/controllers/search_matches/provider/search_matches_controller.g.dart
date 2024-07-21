@@ -7,7 +7,7 @@ part of 'search_matches_controller.dart';
 // **************************************************************************
 
 String _$searchMatchesControllerHash() =>
-    r'3dde094ab4eafae7269efe2fabd4e54c3b17acc8';
+    r'fbca32627e5bf54144c29bcef271eabf29b52181';
 
 /// See also [SearchMatchesController].
 @ProviderFor(SearchMatchesController)

@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 class SearchMatchesInputs extends StatelessWidget {
   const SearchMatchesInputs({
     super.key,
-    required this.searchInputStream,
-    required this.searchInputController,
-    required this.onSearchInputChanged,
+    // TODO one day, this should be possible to use for search by anything: location, description, organizer...
+    required this.matchTitleInputStream,
+    required this.matchTitleTextFieldController,
+    required this.onMatchTitleInputChanged,
   });
 
-  final Stream<String> searchInputStream;
-  final TextEditingController searchInputController;
-  final ValueSetter<String> onSearchInputChanged;
+  final Stream<String> matchTitleInputStream;
+  final TextEditingController matchTitleTextFieldController;
+  final ValueSetter<String> onMatchTitleInputChanged;
 
   // TODO in future, ideally one input field would be used to search by all match characteristics:
   // - name
@@ -29,10 +30,10 @@ class SearchMatchesInputs extends StatelessWidget {
     return Column(
       children: [
         StreamedTextField(
-          stream: searchInputStream,
-          textController: searchInputController,
-          onChanged: onSearchInputChanged,
-          label: "Search",
+          stream: matchTitleInputStream,
+          textController: matchTitleTextFieldController,
+          onChanged: onMatchTitleInputChanged,
+          label: "Match title",
         ),
         // TODO button for filtering or filtering options will be here
       ],
