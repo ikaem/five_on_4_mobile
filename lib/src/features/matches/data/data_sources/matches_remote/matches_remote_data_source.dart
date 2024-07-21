@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 
@@ -16,6 +17,11 @@ abstract interface class MatchesRemoteDataSource {
     required int playerId,
   });
 
+  // TODO dont forget that all of this stuff will require pagination data eventually
+  Future<List<MatchRemoteEntity>> getSearchedMatches({
+    required SearchMatchesFilterValue searchMatchesFilter,
+  });
+
   // TODO deprecate this
   // TODO eventually change this to pass playerId Parameter as well
   // Future<List<MatchRemoteEntity>> getPlayerInitialMatches(
@@ -28,4 +34,18 @@ abstract interface class MatchesRemoteDataSource {
   //     - page
   //      */
   //     );
+}
+
+// TODO move to values
+class SearchMatchesFilterValue extends Equatable {
+  const SearchMatchesFilterValue({
+    required this.matchTitle,
+  });
+
+  final String matchTitle;
+
+  @override
+  List<Object> get props => [
+        matchTitle,
+      ];
 }

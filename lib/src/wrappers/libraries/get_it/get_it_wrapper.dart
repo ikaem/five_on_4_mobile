@@ -14,6 +14,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/domain/repositories/matches/matches_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/create_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_matches/get_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_past_matches/get_my_past_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_today_matches/get_my_today_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_my_upcoming_matches/get_my_upcoming_matches_use_case.dart';
@@ -21,6 +22,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_playe
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_match/load_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_searched_matches/load_searched_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
@@ -151,6 +153,13 @@ abstract class GetItWrapper {
     final SignOutUseCase signOutUseCase = SignOutUseCase(
       authRepository: authRepository,
     );
+    final LoadSearchedMatchesUseCase loadSearchedMatchesUseCase =
+        LoadSearchedMatchesUseCase(
+      matchesRepository: matchesRepository,
+    );
+    final GetMatchesUseCase getMatchesUseCase = GetMatchesUseCase(
+      matchesRepository: matchesRepository,
+    );
 
     // auth
     final GetAuthenticatedPlayerModelUseCase
@@ -194,6 +203,9 @@ abstract class GetItWrapper {
         loadPlayerMatchesOverviewUseCase);
     getIt.registerSingleton<GetPlayerMatchesOverviewUseCase>(
         getPlayerMatchesOverviewUseCase);
+    getIt.registerSingleton<LoadSearchedMatchesUseCase>(
+        loadSearchedMatchesUseCase);
+    getIt.registerSingleton<GetMatchesUseCase>(getMatchesUseCase);
 
     // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
     // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);

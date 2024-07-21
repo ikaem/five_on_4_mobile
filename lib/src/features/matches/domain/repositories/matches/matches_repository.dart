@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
@@ -12,9 +13,15 @@ abstract interface class MatchesRepository {
   Future<MatchModel> getMatch({
     required int matchId,
   });
+  Future<List<MatchModel>> getMatches({
+    required List<int> matchIds,
+  });
 
   Future<void> loadPlayerMatchesOverview({
     required int playerId,
+  });
+  Future<List<int>> loadSearchedMatches({
+    required SearchMatchesFilterValue filter,
   });
 
   Future<PlayerMatchModelsOverviewValue> getPlayerMatchesOverview({

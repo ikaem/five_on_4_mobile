@@ -8,7 +8,7 @@ class ErrorStatus extends StatelessWidget {
   });
 
   final String message;
-  final Future<void> Function() onRetry;
+  final Future<void> Function()? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,11 @@ class ErrorStatus extends StatelessWidget {
           const Icon(
             Icons.error,
           ),
-          TextButton(
-            onPressed: onRetry,
-            child: const Text("Retry"),
-          )
+          if (onRetry != null)
+            TextButton(
+              onPressed: onRetry,
+              child: const Text("Retry"),
+            )
         ],
       ),
     );

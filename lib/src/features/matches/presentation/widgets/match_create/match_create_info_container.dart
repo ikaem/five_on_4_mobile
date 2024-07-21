@@ -38,6 +38,7 @@ class MatchCreateInfoContainer extends StatefulWidget {
 }
 
 class _MatchCreateInfoContainerState extends State<MatchCreateInfoContainer> {
+  // TODO controllers migh need to be pushed up - to keep state when inivted playes dialog starts up - we will see
   final _nameController = TextEditingController();
   final _dateTimeController = TextEditingController();
   final _descriptionController = TextEditingController();

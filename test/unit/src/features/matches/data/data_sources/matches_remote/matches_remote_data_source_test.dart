@@ -293,6 +293,117 @@ void main() {
         },
       );
 
+      group(".getSearchedMatches", () {
+        test(
+          "given ok response from dio"
+          "when .getSearchedMatches() is called"
+          "then should return expected response",
+          () async {
+            // setup
+            const SearchMatchesFilterValue filter = SearchMatchesFilterValue(
+              matchTitle: "title",
+            );
+            final matchEntities = generateTestMatchRemoteEntities(count: 3);
+
+            // given
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                )).thenAnswer((_) async {
+              return HttpResponseValue(payload: {
+                "ok": true,
+                "message": "Matches searched successfully.",
+                "data": {
+                  "matches": matchEntities
+                      .map((e) => {
+                            "id": e.id,
+                            "title": e.title,
+                            "dateAndTime": e.dateAndTime,
+                            "location": e.location,
+                            "description": e.description,
+                          })
+                      .toList(),
+                }
+              });
+            });
+
+            // when
+            final matches = await dataSource.getSearchedMatches(
+              searchMatchesFilter: filter,
+            );
+
+            // then
+            expect(matches, equals(matchEntities));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given .getSearchedMatches() is called"
+          "when examine request to the server"
+          "then should call DioWrapper.makeRequest() with expected arguments",
+          () async {
+            // setup
+            const SearchMatchesFilterValue filter = SearchMatchesFilterValue(
+              matchTitle: "title",
+            );
+
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
+                )).thenAnswer((_) async {
+              return HttpResponseValue(payload: {
+                "ok": true,
+                "message": "Matches searched successfully.",
+                "data": {"matches": <Map<String, Object>>[]}
+              });
+            });
+
+            // given
+            await dataSource.getSearchedMatches(
+              searchMatchesFilter: filter,
+            );
+
+            // when
+            final captured = verify(
+              () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: captureAny(named: "uriParts"),
+                method: captureAny(named: "method"),
+                bodyData: captureAny(named: "bodyData"),
+              ),
+            ).captured;
+
+            // then
+            final HttpRequestUriPartsValue expectedUriParts =
+                HttpRequestUriPartsValue(
+              apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+              apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+              apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+              apiEndpointPath: HttpMatchesConstants
+                  .BACKEND_ENDPOINT_PATH_MATCHES_SEARCH_MATCHES.value,
+              queryParameters: null,
+            );
+            const HttpMethodConstants expectedMethod = HttpMethodConstants.POST;
+
+            final actualUriParts = captured[0] as HttpRequestUriPartsValue;
+            final actualMethod = captured[1] as HttpMethodConstants;
+            final actualBodyData = captured[2];
+
+            expect(actualUriParts, equals(expectedUriParts));
+            expect(actualMethod, equals(expectedMethod));
+            expect(
+                actualBodyData,
+                equals({
+                  "match_title": filter.matchTitle,
+                }));
+
+            // cleanup
+          },
+        );
+      });
+
       group(".getPlayerMatchesOverview()", () {
         // on ok response, return expected response
         test(

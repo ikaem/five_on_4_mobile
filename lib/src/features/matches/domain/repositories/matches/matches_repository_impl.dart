@@ -64,6 +64,22 @@ class MatchesRepositoryImpl implements MatchesRepository {
   }
 
   @override
+  Future<List<int>> loadSearchedMatches({
+    required SearchMatchesFilterValue filter,
+  }) async {
+    final matchRemoteEntities = await _matchesRemoteDataSource
+        .getSearchedMatches(searchMatchesFilter: filter);
+
+    final matchLocalEntityValues =
+        MatchesConverter.fromRemoteEntitiesToLocalEntityValues(
+            matchesRemote: matchRemoteEntities);
+    final ids = await _matchesLocalDataSource.storeMatches(
+        matchValues: matchLocalEntityValues);
+
+    return ids;
+  }
+
+  @override
   Future<void> loadPlayerMatchesOverview({required int playerId}) async {
     final remoteEntities = await _matchesRemoteDataSource
         .getPlayerMatchesOverview(playerId: playerId);
@@ -208,13 +224,24 @@ class MatchesRepositoryImpl implements MatchesRepository {
     );
 
     return matchModel;
+  }
 
-    // throw UnimplementedError();
-    // final matchLocal = await _matchesLocalDataSource.getMatch(matchId: matchId);
+  @override
+  Future<List<MatchModel>> getMatches({required List<int> matchIds}) async {
+    final localEntitiesValues =
+        await _matchesLocalDataSource.getMatches(matchIds: matchIds);
 
-    // final modelMatch =
-    //     MatchesConverter.fromLocalEntityToModel(matchLocal: matchLocal);
+    // TODO maybe converter exists already
+    final modelMatches = localEntitiesValues.map((e) {
+      return MatchModel(
+        id: e.id,
+        dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+        location: e.location,
+        description: e.description,
+        title: e.title,
+      );
+    }).toList();
 
-    // return modelMatch;
+    return modelMatches;
   }
 }

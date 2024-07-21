@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
+import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
@@ -165,14 +166,6 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     });
 
     return id;
-
-    // throw UnimplementedError();
-    // final response = await _isarWrapper.db.writeTxn(() async {
-    //   final id = await _isarWrapper.db.matchLocalEntitys.put(match);
-    //   return id;
-    // });
-
-    // return response;
   }
 
 // TODO change this to return value, not match data
@@ -200,25 +193,100 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     );
 
     return entityValue;
-
-    // return matchData;
-    // throw UnimplementedError();
-    // final match = await _isarWrapper.db.matchLocalEntitys
-    //     .where()
-    //     .idEqualTo(matchId)
-    //     .findFirst();
-
-    // if (match == null) {
-    //   throw MatchNotFoundException(
-    //     message: "Match with id: $matchId not found",
-    //   );
-    // }
-
-    // return match;
   }
 
   @override
-  Future<void> storeMatches({
+  Future<List<MatchLocalEntityValue>> getMatches({
+    required List<int> matchIds,
+  }) async {
+    final select = _databaseWrapper.matchLocalRepo.select();
+
+    final findMatches = select..where((tbl) => tbl.id.isIn(matchIds));
+
+    final matches = await findMatches.get();
+
+    final matchValues = matches
+        .map((e) => MatchLocalEntityValue(
+              id: e.id,
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+
+    return matchValues;
+  }
+
+  /* 
+  
+  
+  
+  
+      final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isBetweenValues(
+          lastMomentOfYesterday.millisecondsSinceEpoch,
+          firstMomentOfTomorrow.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    // TODO sorting should be enforced here on db - same thing on backend side
+    // because right now it returns in order of insertion - but we want it to be sorted by date
+    final matches = await (findMatches..limit(5)).get();
+  
+  
+  
+  
+  
+  
+   */
+
+// TODO this will not be used
+  @override
+  Future<List<MatchLocalEntityValue>> getSearchedMatches({
+    required SearchMatchesFilterValue filter,
+  }) {
+    // final matchTitle = filter.title;
+
+    final select = _databaseWrapper.matchLocalRepo.select();
+
+    // TODO throw exception for now realy quick
+    throw UnimplementedError();
+  }
+
+  /* 
+  
+  
+      final select = _databaseWrapper.matchLocalRepo.select();
+    final findMatches = select
+      // TODO WILL COME BACK TO THIS
+      // TODO we can have another where, or we can do this check in upper where
+      // ..where((tbl) => tbl.arrivingPlayers.contains(playerId));
+      ..where((tbl) {
+        // TODO we can check here if match is player's
+        final isDateToday = tbl.dateAndTime.isSmallerThanValue(
+          firstMomentOfToday.millisecondsSinceEpoch,
+        );
+
+        return isDateToday;
+      });
+    final matches = await (findMatches..limit(5)).get();
+  
+  
+  
+  
+  
+   */
+
+  @override
+  Future<List<int>> storeMatches({
     required List<MatchLocalEntityValue> matchValues,
   }) async {
     // throw UnimplementedError();
@@ -233,18 +301,65 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
             ))
         .toList();
 
-    // TODO test batch upsert
-    // await _databaseWrapper.db.batch((batch) {
-    //   batch.insertAllOnConflictUpdate(
-    //       _databaseWrapper.matchLocalRepo, matchCompanions);
-    // });
-
+    // TODO not sure if batch is needed, but lets leave it as is
     await _databaseWrapper.runInBatch((batch) {
       batch.insertAllOnConflictUpdate(
         _databaseWrapper.matchLocalRepo,
         matchCompanions,
       );
     });
+
+    final matchesIds = matchValues.map((e) => e.id).toList();
+    // TODO come back to test that it actually does return list of ids
+    return matchesIds;
+
+//  ----------- TODO keep this here for now --------------
+//     _databaseWrapper.matchLocalRepo.insertAll(matchCompanions);
+
+//     // TODO using transaction over batch because we can get ids of upserted elements
+//     // TODO there is no need for trasnaction if atomatically insert alrteady with insertall? or is ther
+//     final ids = await _databaseWrapper.runInTransaction(() async {
+//       // for (final companion in matchCompanions) {
+//       // final id = await _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
+//       final ids = await _databaseWrapper.matchLocalRepo.insertAll(
+//         matchCompanions,
+//         mode: InsertMode.insertOrReplace,
+//         // TODO not really sure how to use this
+//         // onConflict: DoUpdate.withExcluded(
+//         //   (old, excluded) {
+//         //     tbl1.id;
+//         //     tbl2.id;
+
+//         //     return const MatchLocalEntityCompanion();
+//         //   },
+//         // ),
+//         // TODO this works iwth mode
+//         // TODO does not seem to be needed for now
+//         // TODO this is how they do it in drift from their source code
+//         /*
+//         Future<int> insertOnConflictUpdate(Insertable<D> entity) {
+//           return insert(entity, onConflict: DoUpdate((_) => entity));
+//         }
+//          */
+//         // onConflict: DoUpdate(
+//         //   (tbl) => MatchLocalEntityCompanion(
+//         //     id: tbl.id,
+//         //     title: tbl.title,
+//         //     dateAndTime: tbl.dateAndTime,
+//         //     location: tbl.location,
+//         //     description: tbl.description,
+//         //   ),
+//         // ),
+//       );
+
+//       return ids;
+//     });
+
+// // TODO maybe this is not good - maybe we can use batch, or this is ok since we dont get all ids anyway
+//     return ids;
+
+    // TODO leave batch here for now --------------------- !!!!!!!!!
+//  ----------- TODO keep this here for now --------------
   }
 
   @override

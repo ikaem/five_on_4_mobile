@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/home/hom
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_my_matches/provider/get_my_matches_overview_controller.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/search_matches/provider/search_matches_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -52,7 +53,24 @@ class HomeScreenView extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
-    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget?
+// -------------- just test ---------------
+    // final searchMatchesControllerState =
+    //     ref.watch(searchMatchesControllerProvider);
+
+    // searchMatchesControllerState.when(
+    //   data: (data) {
+    //     log("data: $data");
+    //   },
+    //   error: (error, stackTrace) {
+    //     log("error: $error");
+    //   },
+    //   loading: () {
+    //     log("loading");
+    //   },
+    // );
+// -------------- just test ---------------
+
+    // TODO not sure if this is ok to be here? - why not make this a stateful consumer widget? - better just to access this in callback so it is not recreated on every build
     final matchesController =
         ref.read(getMyMatchesOverviewControllerProvider.notifier);
 
@@ -99,11 +117,11 @@ class HomeScreenView extends ConsumerWidget {
       required MatchTimeType matchesType,
     }) onRetry,
   }) {
-    onRetryToday() => onRetry(
+    Future<void> onRetryToday() => onRetry(
           matchesType: MatchTimeType.today,
         );
 
-    onRetryUpcoming() => onRetry(
+    Future<void> onRetryUpcoming() => onRetry(
           matchesType: MatchTimeType.upcoming,
         );
 
