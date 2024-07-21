@@ -2,7 +2,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_st
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/streamed_elevated_button.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_inputs.dart';
 import 'package:flutter/material.dart';

@@ -1,9 +1,8 @@
-import 'dart:ui';
-
-import 'package:five_on_4_mobile/src/style/inputs/no_border_side_input_border.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/custom_elevated_button.dart';
+import 'package:five_on_4_mobile/src/style/inputs/inside_labeled_outline_input_border.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 // TODO this will required bunch of text edit controllers later
 
@@ -48,10 +47,16 @@ class _LoginWithEmailAndPasswordContainerState
             ),
           ],
         ),
-        ElevatedButton(
-          child: const Text("Login"),
+        SizedBox(
+          height: SpacingConstants.M.value,
+        ),
+        // TODO integrate with StreamedElevatedButton
+        CustomElevatedButton(
+          buttonColor: ColorConstants.ORANGE,
+          textColor: ColorConstants.WHITE,
+          labelText: "Login",
           onPressed: () {},
-        )
+        ),
       ],
     );
   }

@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/authenticate_with_google/authenticate_with_google_controller.dart';
-import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/sign_out/sign_out_controller.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_email_and_password_container.dart';
 import 'package:five_on_4_mobile/src/features/auth/presentation/widgets/login/login_with_google_container.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/local_assets_path_constants.dart';
@@ -29,8 +28,7 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
     );
 
     return Scaffold(
-      // TODO use this TODO everywhere where handle with theme is needed
-      // TODO handle with theme
+      // TODO use theme
       backgroundColor: ColorConstants.BLUE_LIGHT.value,
       body: Center(
         child: Padding(
@@ -46,7 +44,11 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
                   height: SpacingConstants.XXXL.value,
                 ),
                 const LoginWithEmailAndPasswordContainer(),
-                const Divider(),
+                SizedBox(
+                  height: SpacingConstants.M.value,
+                ),
+                Divider(color: ColorConstants.BLUE_DARK.value),
+                SizedBox(height: SpacingConstants.M.value),
                 LoginWithGoogleContainer(
                   onAuthenticate: () async {
                     await ref
@@ -54,22 +56,28 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
                         .onAuthenticate();
                   },
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: SpacingConstants.XS.value),
+
                 TextButton(
                   onPressed: () {
                     context.navigateTo(const RegisterRoute());
                   },
-                  child: const Text("Create account"),
+                  child: Text(
+                    "Create account",
+                    style: TextStyle(
+                      color: ColorConstants.BLACK.value,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                const Divider(),
-                ElevatedButton(
-                  onPressed: () async {
-                    ref.read(signOutControllerProvider.notifier).onSignOut();
-                  },
-                  child: const Text("Temp google signout"),
-                ),
+                // TODO for dev only
+                // Divider(color: ColorConstants.BLUE_DARK.value),
+                // ElevatedButton(
+                //   onPressed: () async {
+                //     ref.read(signOutControllerProvider.notifier).onSignOut();
+                //   },
+                //   child: const Text("Temp google signout"),
+                // ),
               ],
             ),
           ),
