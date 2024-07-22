@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/style/utils/constants/circular_radius_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 
 // TODO write tests for this
@@ -32,6 +33,7 @@ class TabToggler extends StatefulWidget {
 
 class _TabTogglerState extends State<TabToggler>
     with SingleTickerProviderStateMixin {
+  // TODO tab controller might not be needed at all
   late final TabController _tabController;
 
   @override
@@ -60,19 +62,22 @@ class _TabTogglerState extends State<TabToggler>
       ),
       child: Column(
         children: [
+          SizedBox(height: SpacingConstants.XS.value),
           TabBar(
             controller: _tabController,
-            indicatorColor: Colors.black,
-            labelColor: Colors.black,
+            dividerHeight: 0,
+            labelColor: ColorConstants.BLACK.value,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.normal,
             ),
-            onTap: (value) {
-              setState(() {});
-            },
-            tabs: _generateTabs(),
+            // TODO seems like no need to this
+            // onTap: (value) {
+            //   setState(() {});
+            // },
+            tabs: _tabs,
           ),
+          SizedBox(height: SpacingConstants.XXXL.value),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -84,23 +89,8 @@ class _TabTogglerState extends State<TabToggler>
     );
   }
 
-  List<Tab> _generateTabs() {
-    const selectorIndicator = " •";
-    final currentTabIndex = _tabController.index;
-
-    final List<Tab> tabs = [];
-
-    for (int i = 0; i < widget.options.length; i++) {
-      final currentOptionTitle = widget.options[i].title;
-      final isSelected = i == currentTabIndex;
-
-      final label = currentOptionTitle + (isSelected ? selectorIndicator : "");
-      final tab = Tab(
-        text: label,
-      );
-
-      tabs.add(tab);
-    }
+  List<Tab> get _tabs {
+    final tabs = widget.options.map((e) => Tab(text: e.title)).toList();
 
     return tabs;
   }
