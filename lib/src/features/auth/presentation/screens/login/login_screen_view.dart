@@ -29,9 +29,9 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
 
     return Scaffold(
       // TODO use theme
-      backgroundColor: ColorConstants.BLUE_LIGHT.value,
+      backgroundColor: ColorConstants.BLUE_LIGHT,
       body: Padding(
-        padding: EdgeInsets.all(SpacingConstants.L.value),
+        padding: const EdgeInsets.all(SpacingConstants.L),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -40,15 +40,15 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
                 SizedBox(
                   child: Image.asset(LocalAssetsPathConstants.LOGO_LARGE.value),
                 ),
-                SizedBox(
-                  height: SpacingConstants.XXXL.value,
+                const SizedBox(
+                  height: SpacingConstants.XXXL,
                 ),
                 const LoginWithEmailAndPasswordContainer(),
-                SizedBox(
-                  height: SpacingConstants.M.value,
+                const SizedBox(
+                  height: SpacingConstants.M,
                 ),
-                Divider(color: ColorConstants.BLUE_DARK.value),
-                SizedBox(height: SpacingConstants.M.value),
+                const Divider(color: ColorConstants.BLUE_DARK),
+                const SizedBox(height: SpacingConstants.M),
                 LoginWithGoogleContainer(
                   onAuthenticate: () async {
                     await ref
@@ -56,16 +56,16 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
                         .onAuthenticate();
                   },
                 ),
-                SizedBox(height: SpacingConstants.XS.value),
+                const SizedBox(height: SpacingConstants.XS),
 
                 TextButton(
                   onPressed: () {
                     context.navigateTo(const RegisterRoute());
                   },
-                  child: Text(
+                  child: const Text(
                     "Create account",
                     style: TextStyle(
-                      color: ColorConstants.BLACK.value,
+                      color: ColorConstants.BLACK,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

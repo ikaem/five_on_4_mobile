@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// TODO this seems to be not used for now - but it should be used - come back to it
+
 class MatchBrief extends StatelessWidget {
   const MatchBrief({
     super.key,

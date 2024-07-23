@@ -30,8 +30,8 @@ class _HomeGreetingState extends State<HomeGreeting> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text.rich(
-                style: TextStyle(
-                  fontSize: TextSizeConstants.EXTRA_EXTRA_LARGE.value,
+                style: const TextStyle(
+                  fontSize: TextSizeConstants.EXTRA_EXTRA_LARGE,
                 ),
                 TextSpan(
                   children: [
@@ -49,8 +49,8 @@ class _HomeGreetingState extends State<HomeGreeting> {
                 ),
               ),
               Text.rich(
-                style: TextStyle(
-                  fontSize: TextSizeConstants.LARGE.value,
+                style: const TextStyle(
+                  fontSize: TextSizeConstants.LARGE,
                 ),
                 TextSpan(
                   children: [
@@ -72,7 +72,7 @@ class _HomeGreetingState extends State<HomeGreeting> {
           backgroundImage: NetworkImage(
             widget.avatarUrl.toString(),
           ),
-          backgroundColor: ColorConstants.BLUE_DARK.value,
+          backgroundColor: ColorConstants.BLUE_DARK,
           onBackgroundImageError: (e, s) {
             setState(() {
               isErrorLoadingAvatar = true;

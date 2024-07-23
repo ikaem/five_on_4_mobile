@@ -25,7 +25,7 @@ class TabToggler extends StatefulWidget {
   });
 
   final List<TabTogglerOptionValue> options;
-  final ColorConstants backgroundColor;
+  final Color backgroundColor;
 
   @override
   State<TabToggler> createState() => _TabTogglerState();
@@ -55,18 +55,18 @@ class _TabTogglerState extends State<TabToggler>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: widget.backgroundColor.value,
+        color: widget.backgroundColor,
         borderRadius: BorderRadius.vertical(
           top: CircularRadiusConstants.REGULAR.value,
         ),
       ),
       child: Column(
         children: [
-          SizedBox(height: SpacingConstants.XS.value),
+          const SizedBox(height: SpacingConstants.XS),
           TabBar(
             controller: _tabController,
             dividerHeight: 0,
-            labelColor: ColorConstants.BLACK.value,
+            labelColor: ColorConstants.BLACK,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: const TextStyle(
               fontWeight: FontWeight.normal,
@@ -77,7 +77,7 @@ class _TabTogglerState extends State<TabToggler>
             // },
             tabs: _tabs,
           ),
-          SizedBox(height: SpacingConstants.XXXL.value),
+          const SizedBox(height: SpacingConstants.XXL),
           Expanded(
             child: TabBarView(
               controller: _tabController,

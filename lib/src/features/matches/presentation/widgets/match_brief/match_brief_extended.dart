@@ -1,128 +1,171 @@
+import 'package:five_on_4_mobile/src/features/core/utils/extensions/date_time_extension.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/text_size_constants.dart';
 import 'package:flutter/material.dart';
 
 class MatchBriefExtended extends StatelessWidget {
   const MatchBriefExtended({
     super.key,
-    required this.date,
-    required this.dayName,
-    required this.time,
-    required this.title,
-    required this.location,
-    required this.organizer,
-    required this.arrivingPlayersNumber,
+    required this.match,
   });
 
-  final String date;
-  final String dayName;
-  final String time;
-  final String title;
-  final String location;
-  final String organizer;
-  final int arrivingPlayersNumber;
+  final MatchModel match;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: _DateElement(
-            date: date,
-            dayName: dayName,
-            time: time,
-          ),
+        _DateElement(
+          dateAndTime: match.dateAndTime,
         ),
         Expanded(
-          child: Column(
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                location,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "Organized by: ",
-                    ),
-                    TextSpan(
-                      text: organizer,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "Arriving players: ",
-                    ),
-                    TextSpan(
-                      text: arrivingPlayersNumber.toString(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: _InfoElement(match: match),
         ),
       ],
-    ));
+    );
+  }
+}
+
+class _InfoElement extends StatelessWidget {
+  const _InfoElement({
+    required this.match,
+  });
+
+  final MatchModel match;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: SpacingConstants.L,
+        right: SpacingConstants.S,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            match.title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: TextSizeConstants.EXTRA_LARGE,
+            ),
+          ),
+          const SizedBox(height: SpacingConstants.XS),
+          Text.rich(
+            style: const TextStyle(
+              fontSize: TextSizeConstants.LARGE,
+            ),
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: "location: ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: match.location,
+                ),
+              ],
+            ),
+          ),
+          const Text.rich(
+            style: TextStyle(
+              fontSize: TextSizeConstants.LARGE,
+            ),
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "organizer: ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: "match.organizer",
+                ),
+              ],
+            ),
+          ),
+          const Text.rich(
+            style: TextStyle(
+              fontSize: TextSizeConstants.LARGE,
+            ),
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "arriving: ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  // ignore: prefer_interpolation_to_compose_strings
+                  text: ("12") + " player(s)",
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class _DateElement extends StatelessWidget {
   const _DateElement({
-    required this.date,
-    required this.dayName,
-    required this.time,
+    required this.dateAndTime,
   });
 
-  final String date;
-  final String dayName;
-  final String time;
+  final DateTime dateAndTime;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
-          color: Colors.blue,
+          padding: const EdgeInsets.all(SpacingConstants.M),
+          decoration: const BoxDecoration(
+            color: ColorConstants.BLUE_DARK,
+            borderRadius: BorderRadius.horizontal(
+              right: Radius.circular(10),
+            ),
+          ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                date,
+                dateAndTime.dateMonthString,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: TextSizeConstants.EXTRA_LARGE,
+                  color: ColorConstants.WHITE,
                 ),
               ),
               Text(
-                dayName,
+                dateAndTime.dayNameString,
                 style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontSize: TextSizeConstants.LARGE,
+                  color: ColorConstants.WHITE,
                 ),
               ),
             ],
           ),
         ),
-        Text(
-          time,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(right: SpacingConstants.M),
+          child: Text(
+            dateAndTime.hourMinuteString,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: TextSizeConstants.EXTRA_LARGE,
+              color: ColorConstants.BLUE_DARK,
+            ),
           ),
         ),
       ],

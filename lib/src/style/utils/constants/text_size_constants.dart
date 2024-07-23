@@ -1,11 +1,10 @@
-enum TextSizeConstants {
-  EXTRA_SMALL._(10),
-  SMALL._(12),
-  REGULAR._(14),
-  LARGE._(16),
-  EXTRA_LARGE._(20),
-  EXTRA_EXTRA_LARGE._(24);
+abstract class TextSizeConstants {
+  const TextSizeConstants();
 
-  const TextSizeConstants._(this.value);
-  final double value;
+  static const double EXTRA_SMALL = 10;
+  static const double SMALL = 12;
+  static const double REGULAR = 14;
+  static const double LARGE = 16;
+  static const double EXTRA_LARGE = 20;
+  static const double EXTRA_EXTRA_LARGE = 24;
 }

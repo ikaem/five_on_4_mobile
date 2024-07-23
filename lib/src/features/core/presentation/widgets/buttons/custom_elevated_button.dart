@@ -11,8 +11,8 @@ class CustomElevatedButton extends StatelessWidget {
     this.isFullWidth = true,
   });
 
-  final ColorConstants buttonColor;
-  final ColorConstants textColor;
+  final Color buttonColor;
+  final Color textColor;
   final String labelText;
   final bool isFullWidth;
 
@@ -29,8 +29,8 @@ class CustomElevatedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         // TODO use theme
-        backgroundColor: buttonColor.value,
-        foregroundColor: textColor.value,
+        backgroundColor: buttonColor,
+        foregroundColor: textColor,
       ),
       child: Text(labelText),
     );

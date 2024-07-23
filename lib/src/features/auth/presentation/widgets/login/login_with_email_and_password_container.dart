@@ -29,7 +29,7 @@ class _LoginWithEmailAndPasswordContainerState
                 filled: true,
                 labelText: "EMAIL ADDRESS",
                 // TODO use theme
-                fillColor: ColorConstants.WHITE.value,
+                fillColor: ColorConstants.WHITE,
               ),
             ),
             const SizedBox(
@@ -41,14 +41,14 @@ class _LoginWithEmailAndPasswordContainerState
                 border: InsideLabeledOutlineInputBorder.bottomRounded(),
                 filled: true,
                 // TODO use theme
-                fillColor: ColorConstants.WHITE.value,
+                fillColor: ColorConstants.WHITE,
                 labelText: "PASSWORD",
               ),
             ),
           ],
         ),
-        SizedBox(
-          height: SpacingConstants.M.value,
+        const SizedBox(
+          height: SpacingConstants.M,
         ),
         // TODO integrate with StreamedElevatedButton
         CustomElevatedButton(

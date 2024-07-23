@@ -60,15 +60,15 @@ class HomeScreenView extends ConsumerWidget {
 
     return Scaffold(
       // TODO use theme
-      backgroundColor: ColorConstants.BLUE_LIGHT.value,
+      backgroundColor: ColorConstants.BLUE_LIGHT,
       body: Column(
         children: [
-          SizedBox(height: SpacingConstants.XL.value),
+          const SizedBox(height: SpacingConstants.XL),
           Padding(
-            // padding: EdgeInsets.all(SpacingConstants.L.value),
-            padding: EdgeInsets.symmetric(
-              horizontal: SpacingConstants.L.value,
+            padding: const EdgeInsets.symmetric(
+              horizontal: SpacingConstants.L,
             ),
+            // TODO make a task to render actual logged user info here
             child: HomeGreeting(
               nickName: "Ronaldo",
               teamName: "Barcelona",
@@ -76,7 +76,7 @@ class HomeScreenView extends ConsumerWidget {
                   "https://images.unsplash.com/photo-1554151228-14d9def656e4"),
             ),
           ),
-          SizedBox(height: SpacingConstants.XL.value),
+          const SizedBox(height: SpacingConstants.XL),
           // TODO move this to elsewhere
           // TextButton(
           //   onPressed: () async =>
@@ -137,7 +137,18 @@ class HomeScreenView extends ConsumerWidget {
           isToday: false,
           isLoading: matchesUIState.isLoading,
           isSyncing: matchesUIState.isSyncing,
-          matches: matchesUIState.upcomingMatches,
+          // matches: matchesUIState.upcomingMatches,
+          // TODO temp only while styling is being done
+          matches: List.generate(
+            5,
+            (index) => MatchModel(
+              dateAndTime: DateTime.now(),
+              description: "description",
+              id: index + 1,
+              location: "location",
+              title: "title",
+            ),
+          ),
           isError: matchesUIState.isError,
           onRetry: onRetryUpcoming,
         ),
