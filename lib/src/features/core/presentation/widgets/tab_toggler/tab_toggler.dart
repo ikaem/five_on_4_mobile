@@ -54,6 +54,7 @@ class _TabTogglerState extends State<TabToggler>
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(SpacingConstants.L),
       decoration: BoxDecoration(
         color: widget.backgroundColor,
         borderRadius: const BorderRadius.vertical(

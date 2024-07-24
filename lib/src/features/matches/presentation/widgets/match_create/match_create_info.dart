@@ -3,8 +3,10 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/s
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/date_time_extension.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/helpers/date_time_input_on_tap_setter.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
+// TODO these inputs should not show error immediately after page opens - only after they are dirty
 class MatchCreateInfo extends StatelessWidget {
   const MatchCreateInfo({
     super.key,
@@ -44,13 +46,14 @@ class MatchCreateInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         StreamedTextField(
           stream: nameStream,
           textController: nameController,
           onChanged: onNameChanged,
-          label: "Match Name",
+          label: "MATCH NAME",
+          fillColor: ColorConstants.GREY,
         ),
         const SizedBox(
           height: 10,
@@ -59,14 +62,15 @@ class MatchCreateInfo extends StatelessWidget {
           stream: locationStream,
           textController: locationController,
           onChanged: onLocationChanged,
-          label: "Location",
+          label: "LOCATION",
+          fillColor: ColorConstants.GREY,
         ),
         const SizedBox(
           height: 10,
         ),
         StreamedDateTimeField(
           stream: dateTimeStream,
-          label: "Match Date & Time",
+          label: "MATCH DATE & TIME",
           onTapSetter: DateTimeInputOnTapSetter(
             initiallySelectedDate: DateTime.now().dayStart,
             fromDate: DateTime.now().dayStart,

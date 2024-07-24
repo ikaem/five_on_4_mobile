@@ -70,6 +70,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
 
     return Scaffold(
       backgroundColor: ColorConstants.BLUE_LIGHT,
+      // TODO make ticket for abnstracting app bar to be reusable
       appBar: AppBar(
         // TODO make ticket to creae app bar same everywhere, or color at least
         // TODO use theme
