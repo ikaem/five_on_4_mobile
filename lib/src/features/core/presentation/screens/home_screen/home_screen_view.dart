@@ -77,12 +77,6 @@ class HomeScreenView extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: SpacingConstants.XL),
-          // TODO move this to elsewhere
-          // TextButton(
-          //   onPressed: () async =>
-          //       await ref.read(signOutControllerProvider.notifier).onSignOut(),
-          //   child: const Text("Logout"),
-          // ),
           Expanded(
             child: TabToggler(
               options: togglerOptions,

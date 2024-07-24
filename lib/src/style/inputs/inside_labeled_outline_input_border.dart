@@ -39,4 +39,16 @@ class InsideLabeledOutlineInputBorder extends OutlineInputBorder {
       ),
     );
   }
+
+  factory InsideLabeledOutlineInputBorder.allRounded({
+    double borderRadiusValue = 10,
+  }) {
+    return InsideLabeledOutlineInputBorder(
+      gapPadding: 0,
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.all(
+        Radius.circular(borderRadiusValue),
+      ),
+    );
+  }
 }
