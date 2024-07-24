@@ -8,8 +8,6 @@ import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// TODO move view and view test to screen folder
-
 class MatchUIState {
   const MatchUIState({
     required this.isLoading,
@@ -40,9 +38,20 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
   late final getMatchControllerProviderInstance = getMatchControllerProvider(
     matchId: widget.matchId,
   );
-  // TODO come back to this
+  // TODO come back to this - make issue out of this - i guess match data should be updated or something - with players maybe? maybe when i invite new players? or basically any time i navigate to the screen or something?
   // late final onMatchReload =
   //     ref.read(getMatchControllerProviderInstance.notifier).onMatchReload;
+  // TODO temp only
+  // TODO this should be handled by some controller that handles join unjoin
+  // TODO make issue out of this
+  // CurrentPlayerToggleMatchParticiptionController
+  bool isParticipating = true;
+  Future<void> onParticipateToggle() async {
+    final value = isParticipating;
+    setState(() {
+      isParticipating = !value;
+    });
+  }
 
   @override
   Widget build(
@@ -60,7 +69,19 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     );
 
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: ColorConstants.BLUE_LIGHT,
+      appBar: AppBar(
+        // TODO make ticket to creae app bar same everywhere, or color at least
+        // TODO use theme
+        backgroundColor: ColorConstants.BLUE_LIGHT,
+        actions: [
+          // TODO this should be handled by some controller that handles join unjoin
+          CurrentPlayerMatchParticipationIndicator(
+            isParticipating: isParticipating,
+            onParticipateToggle: onParticipateToggle,
+          ),
+        ],
+      ),
       body: TabToggler(
         options: togglerOptions,
         backgroundColor: ColorConstants.WHITE,
@@ -74,7 +95,9 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
   }) {
     final match = matchUIState.match;
     // TODO this will need to be updated once backend provides arriving players
-    final participants = <PlayerModel>[];
+    // TODO this will need to be derived from match data - so we will need to provide arriving players on match model - will need to be joining some stuff on backend - and will need to be migrating db here
+    // TODO this seems to be the best - let mobile app database always have ready for render data, so it does not have to do any joins on its own - otherwise, joining implementations might be different, and all goes to shit
+    final participants = _tempMatchParticipants;
     final isLoading = matchUIState.isLoading;
     final isError = matchUIState.isError;
     final isSyncing = matchUIState.isSyncing;
@@ -133,3 +156,47 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     );
   }
 }
+
+class CurrentPlayerMatchParticipationIndicator extends StatelessWidget {
+  const CurrentPlayerMatchParticipationIndicator({
+    super.key,
+    required this.isParticipating,
+    required this.onParticipateToggle,
+  });
+
+  final bool isParticipating;
+  final Future<void> Function() onParticipateToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final String label = isParticipating ? "JOINED" : "JOIN";
+    final Icon icon = isParticipating
+        ? const Icon(
+            Icons.check_circle,
+            color: ColorConstants.BLUE_DARK,
+          )
+        : const Icon(
+            Icons.add_circle,
+            color: ColorConstants.ORANGE,
+          );
+
+    return TextButton.icon(
+      onPressed: onParticipateToggle,
+      label: icon,
+      icon: Text(label),
+    );
+  }
+}
+
+// TODO only temp this until we get arriving players on the match itself
+// TODO not sure if we should have another model for participant where it would have som field on it to indicate match that it is partipaating in - but it would be a n overkjill it seems
+final List<PlayerModel> _tempMatchParticipants = List.generate(
+  12,
+  (index) => PlayerModel(
+    id: index + 1,
+    name: "Player name_$index",
+    avatarUri:
+        Uri.parse("https://images.unsplash.com/photo-1554151228-14d9def656e4"),
+    nickname: "Player nickname_$index",
+  ),
+);

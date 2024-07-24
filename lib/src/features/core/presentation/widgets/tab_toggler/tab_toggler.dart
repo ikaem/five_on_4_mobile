@@ -56,8 +56,8 @@ class _TabTogglerState extends State<TabToggler>
     return Container(
       decoration: BoxDecoration(
         color: widget.backgroundColor,
-        borderRadius: BorderRadius.vertical(
-          top: CircularRadiusConstants.REGULAR.value,
+        borderRadius: const BorderRadius.vertical(
+          top: CircularRadiusConstants.REGULAR,
         ),
       ),
       child: Column(

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-enum CircularRadiusConstants {
-  EXTRA_SMALL._(Radius.circular(4)),
-  SMALL._(Radius.circular(6)),
-  REGULAR._(Radius.circular(10)),
-  LARGE._(Radius.circular(14)),
-  EXTRA_LARGE._(Radius.circular(16)),
-  EXTRA_EXTRA_LARGE._(Radius.circular(20));
+abstract class CircularRadiusConstants {
+  const CircularRadiusConstants();
 
-  const CircularRadiusConstants._(this.value);
-  final Radius value;
+  static const Radius EXTRA_SMALL = Radius.circular(4);
+  static const Radius SMALL = Radius.circular(6);
+  static const Radius REGULAR = Radius.circular(10);
+  static const Radius LARGE = Radius.circular(14);
+  static const Radius EXTRA_LARGE = Radius.circular(16);
+  static const Radius EXTRA_EXTRA_LARGE = Radius.circular(20);
 }
