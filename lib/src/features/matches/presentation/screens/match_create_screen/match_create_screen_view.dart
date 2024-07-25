@@ -62,12 +62,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
               // TODO something has to be done here
               return;
             }
-
-            // context.navigateTo(MatchRoute(matchId: matchId));
-            // context.replace(location)
             context.replaceRoute(MatchRoute(matchId: matchId));
-
-            // now - navigate to match screen
             // also - show message in snackbar
           },
         );
@@ -95,6 +90,8 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
 
     return Scaffold(
       appBar: AppBar(
+        // TODO wrap in will pop, to make sure to prevent user from leaving if they are creating amatch
+        backgroundColor: ColorConstants.BLUE_LIGHT,
         actions: [
           // TODO extract to streamed icon button
           StreamBuilder<bool>(

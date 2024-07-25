@@ -14,6 +14,7 @@ class StreamedTextField extends StatelessWidget {
     required TextEditingController textController,
     required String label,
     required Color fillColor,
+    String? errorText,
     InputBorder? border,
     bool? shouldObscureText,
     void Function(String)? onChanged,
@@ -22,6 +23,7 @@ class StreamedTextField extends StatelessWidget {
         _label = label,
         _fillColor = fillColor,
         _border = border,
+        _errorText = errorText,
         _shouldObscureText = shouldObscureText,
         _onChanged = onChanged;
 
@@ -30,6 +32,7 @@ class StreamedTextField extends StatelessWidget {
   final String _label;
   final Color _fillColor;
   final InputBorder? _border;
+  final String? _errorText;
   final bool? _shouldObscureText;
   final void Function(String)? _onChanged;
 
@@ -49,7 +52,7 @@ class StreamedTextField extends StatelessWidget {
           border: _border,
           shouldObscureText: _shouldObscureText,
           textController: _textController,
-          errorText: hasError ? "This field is required" : null,
+          errorText: hasError ? _errorText : null,
         );
 
         // TODO old, but keep here a bit longer

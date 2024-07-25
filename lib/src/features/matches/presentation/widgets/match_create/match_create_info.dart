@@ -70,13 +70,15 @@ class MatchCreateInfo extends StatelessWidget {
         ),
         StreamedDateTimeField(
           stream: dateTimeStream,
+          fillColor: ColorConstants.GREY,
           label: "MATCH DATE & TIME",
+          errorText: "Match date & time are required",
           onTapSetter: DateTimeInputOnTapSetter(
+            textController: dateTimeController,
             initiallySelectedDate: DateTime.now().dayStart,
             fromDate: DateTime.now().dayStart,
             toDate: DateTime.now().add(const Duration(days: 365)).dayStart,
             onDateTimeChanged: onDateTimeChanged,
-            textController: dateTimeController,
           ),
         ),
         const SizedBox(
