@@ -1,6 +1,5 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/custom_multiline_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/inputs_validation/input_error.dart';
-import 'package:five_on_4_mobile/src/style/inputs/inside_labeled_outline_input_border.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
