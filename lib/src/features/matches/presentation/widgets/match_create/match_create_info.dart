@@ -88,7 +88,7 @@ class MatchCreateInfo extends StatelessWidget {
           stream: descriptionStream,
           textController: descriptionController,
           onChanged: onDescriptionChanged,
-          label: "Match Description",
+          label: "DESCRIPTION",
         ),
       ],
     );
