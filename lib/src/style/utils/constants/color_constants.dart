@@ -6,7 +6,8 @@ abstract class ColorConstants {
   // black
   static const Color BLACK = Color(0xFF4A4C4D);
   // grey
-  static const Color GREY = Color(0xFFF6F6F6);
+  static const Color GREY = Color.fromARGB(255, 246, 246, 246);
+  static const Color GREY_DARK = Color(0xFFC7C7C7);
 
   // blue
   static const Color BLUE_LIGHT = Color(0xFFDCF1FF);

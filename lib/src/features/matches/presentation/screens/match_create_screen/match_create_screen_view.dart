@@ -86,6 +86,8 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     );
 
     return Scaffold(
+      backgroundColor: ColorConstants.BLUE_LIGHT,
+
       appBar: AppBar(
         // TODO wrap in will pop, to make sure to prevent user from leaving if they are creating amatch
         backgroundColor: ColorConstants.BLUE_LIGHT,
@@ -151,7 +153,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     return [
       // TODO stopped here
       TabTogglerOptionValue(
-        title: "Info",
+        title: "INFO",
         child: MatchCreateInfoContainer(
           nameStream: nameStream,
           onNameChanged: onNameChanged,
@@ -167,7 +169,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
         ),
       ),
       TabTogglerOptionValue(
-        title: "Participants",
+        title: "PARTICIPANTS",
         // TODO this should have loading as well, and error and such
         child: MatchCreateParticipantsContainer(
           playersToInvite: const [],

@@ -29,6 +29,7 @@ class AutoRouteWrapper extends _$AutoRouteWrapper {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          // TODO there are times when this keeps spinning - some kind of halt or something?
           page: LoadingRoute.page,
           initial: true,
           // initial: true,
