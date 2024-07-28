@@ -44,7 +44,7 @@ class RightSideRoundedAvatar extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           return const Icon(
             Icons.error,
-            color: ColorConstants.GREY,
+            color: ColorConstants.GREY_LIGHT,
           );
         },
       ),

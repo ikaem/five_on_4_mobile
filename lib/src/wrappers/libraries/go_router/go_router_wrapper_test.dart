@@ -11,7 +11,7 @@ import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_c
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
-import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

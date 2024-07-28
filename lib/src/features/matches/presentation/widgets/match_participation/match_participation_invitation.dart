@@ -50,7 +50,7 @@ class MatchPlayerInvitation extends StatelessWidget {
                 // border: Border
                 border: Border(
               bottom: BorderSide(
-                color: ColorConstants.GREY_DARK,
+                color: ColorConstants.GREY,
                 width: 1,
               ),
             )),

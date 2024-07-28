@@ -53,7 +53,7 @@ class MatchCreateInfo extends StatelessWidget {
           textController: nameController,
           onChanged: onNameChanged,
           label: "MATCH NAME",
-          fillColor: ColorConstants.GREY,
+          fillColor: ColorConstants.GREY_LIGHT,
         ),
         const SizedBox(
           height: 10,
@@ -63,14 +63,14 @@ class MatchCreateInfo extends StatelessWidget {
           textController: locationController,
           onChanged: onLocationChanged,
           label: "LOCATION",
-          fillColor: ColorConstants.GREY,
+          fillColor: ColorConstants.GREY_LIGHT,
         ),
         const SizedBox(
           height: 10,
         ),
         StreamedDateTimeField(
           stream: dateTimeStream,
-          fillColor: ColorConstants.GREY,
+          fillColor: ColorConstants.GREY_LIGHT,
           label: "MATCH DATE & TIME",
           errorText: "Match date & time are required",
           onTapSetter: DateTimeInputOnTapSetter(

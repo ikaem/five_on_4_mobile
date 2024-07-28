@@ -29,7 +29,7 @@ class MatchCreateParticipantsInvite extends StatelessWidget {
       children: [
         CustomTextField(
           labelText: "PLAYER NAME / NICKNAME",
-          fillColor: ColorConstants.GREY,
+          fillColor: ColorConstants.GREY_LIGHT,
         ),
         const SizedBox(height: SpacingConstants.M),
         const Divider(),

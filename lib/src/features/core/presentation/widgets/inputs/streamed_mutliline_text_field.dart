@@ -28,7 +28,7 @@ class StreamedMultilineTextField extends StatelessWidget {
 
         return CustomMultilineTextField(
           label: label,
-          fillColor: ColorConstants.GREY,
+          fillColor: ColorConstants.GREY_LIGHT,
           onChanged: onChanged,
           textController: textController,
         );

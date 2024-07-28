@@ -63,9 +63,18 @@ class _TabTogglerState extends State<TabToggler>
       ),
       child: Column(
         children: [
-          const SizedBox(height: SpacingConstants.XS),
+          // TODO maybe not needed this, we will see
+          // const SizedBox(height: SpacingConstants.XS),
           TabBar(
             controller: _tabController,
+            indicator: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: ColorConstants.BLUE_DARK,
+                  width: 2,
+                ),
+              ),
+            ),
             dividerHeight: 0,
             labelColor: ColorConstants.BLACK,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold),
