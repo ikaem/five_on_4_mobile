@@ -35,8 +35,10 @@ class _SettingsScreenViewState extends ConsumerState<SettingsScreenView> {
     return Scaffold(
       backgroundColor: ColorConstants.BLUE_LIGHT,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Settings"),
         backgroundColor: ColorConstants.BLUE_LIGHT,
+        centerTitle: true,
       ),
       body: TabToggler(
         options: togglerOptions,

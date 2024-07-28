@@ -5,6 +5,8 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_inputs.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_results_presenter.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 
 // TODO all of this needs to be tested
@@ -53,6 +55,7 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           matchTitleTextFieldController: _matchTitleTextFieldController,
           onMatchTitleInputChanged: widget.onMatchTitleInputChanged,
         ),
+        const SizedBox(height: SpacingConstants.M),
         StreamedElevatedButton(
           isEnabledStream: widget.areInputsValidStream,
           onPressed: () {
@@ -60,84 +63,26 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           },
           label: "Search",
         ),
-        // ElevatedButton(
-        //   style: ElevatedButton.styleFrom(
-        //     // fixedSize:
-        //     fixedSize: Size(MediaQuery.of(context).size.width, 50),
-        //   ),
-        //   onPressed: () => widget.onSearchButtonPressed("Iv"),
-        //   child: const Text("Search"),
-        // ),
+        const SizedBox(height: SpacingConstants.S),
         const Divider(),
+        const SizedBox(height: SpacingConstants.S),
         // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
         // TODO search results will be displayed here
         // TODO will have loading and such here
 
         // TODO in tests, expanded might cause an issue here because it wraps sometimes just one element
         Expanded(
-          child: _SearchMatchesContainerResultsPresenter(
+          child: SearchMatchesResultsPresenter(
             isLoading: widget.isLoading,
             isError: widget.isError,
             matches: widget.matches,
           ),
         ),
-
-        // widget.isLoading
-        //     ? const LoadingStatus(message: "Searching matches...")
-        //     : Expanded(
-        //         child: MatchesList(
-        //           matches: widget.matches,
-        //         ),
-        //       ),
       ],
     );
   }
 
   void _onDispose() {
     _matchTitleTextFieldController.dispose();
-  }
-}
-
-// TODO widget that will handle situations:
-// - when loading
-// - when error
-// - when no matches found
-// - when matches found
-class _SearchMatchesContainerResultsPresenter extends StatelessWidget {
-  const _SearchMatchesContainerResultsPresenter({
-    super.key,
-    required this.isLoading,
-    required this.isError,
-    required this.matches,
-  });
-
-  final bool isLoading;
-  final bool isError;
-  final List<MatchModel> matches;
-
-  @override
-  Widget build(BuildContext context) {
-    if (isError) {
-      return const ErrorStatus(
-        message: "There was an issue searching matches",
-        onRetry: null,
-        // onRetry: () async {
-        //   // TODO for now do noting, dont offer it
-        // },
-      );
-    }
-    if (isLoading) {
-      return const LoadingStatus(
-        message: "Searching matches...",
-      );
-    }
-
-    if (matches.isEmpty) {
-      return const Center(
-        child: Text("No matches found"),
-      );
-    }
-
-    return MatchesList(matches: matches);
   }
 }

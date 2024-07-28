@@ -35,7 +35,7 @@ class SearchMatchesInputs extends StatelessWidget {
           textController: matchTitleTextFieldController,
           onChanged: onMatchTitleInputChanged,
           label: "Match title",
-          fillColor: ColorConstants.WHITE,
+          fillColor: ColorConstants.GREY_LIGHT,
         ),
         // TODO button for filtering or filtering options will be here
       ],

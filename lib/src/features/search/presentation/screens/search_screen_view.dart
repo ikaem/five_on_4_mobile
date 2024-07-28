@@ -75,11 +75,13 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
     );
 
     return Scaffold(
+      backgroundColor: ColorConstants.BLUE_LIGHT,
       appBar: AppBar(
         // TODO to remove back button
         automaticallyImplyLeading: false,
         title: const Text("Search"),
         centerTitle: true,
+        backgroundColor: ColorConstants.BLUE_LIGHT,
       ),
       // body: const Column(),
       body: TabToggler(
@@ -106,7 +108,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
   }) {
     return [
       TabTogglerOptionValue(
-        title: "Matches",
+        title: "MATCHES",
         // child: Container(),
         child: SearchMatchesContainer(
           isLoading: searchMatchesUIState.isLoading,
@@ -119,7 +121,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         ),
       ),
       TabTogglerOptionValue(
-        title: "Players",
+        title: "PLAYERS",
         child: Container(),
       ),
     ];
