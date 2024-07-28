@@ -7,6 +7,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/s
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/sarch_matches_inputs/search_matches_inputs_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/search_matches/provider/search_matches_controller.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_container.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -74,15 +75,18 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
     );
 
     return Scaffold(
+      backgroundColor: ColorConstants.BLUE_LIGHT,
       appBar: AppBar(
         // TODO to remove back button
         automaticallyImplyLeading: false,
         title: const Text("Search"),
         centerTitle: true,
+        backgroundColor: ColorConstants.BLUE_LIGHT,
       ),
       // body: const Column(),
       body: TabToggler(
         options: togglerOptions,
+        backgroundColor: ColorConstants.WHITE,
       ),
     );
   }
@@ -104,7 +108,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
   }) {
     return [
       TabTogglerOptionValue(
-        title: "Matches",
+        title: "MATCHES",
         // child: Container(),
         child: SearchMatchesContainer(
           isLoading: searchMatchesUIState.isLoading,
@@ -117,7 +121,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         ),
       ),
       TabTogglerOptionValue(
-        title: "Players",
+        title: "PLAYERS",
         child: Container(),
       ),
     ];

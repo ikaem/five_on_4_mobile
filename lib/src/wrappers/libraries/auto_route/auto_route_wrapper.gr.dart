@@ -34,14 +34,9 @@ abstract class _$AutoRouteWrapper extends RootStackRouter {
       );
     },
     LoginRoute.name: (routeData) {
-      final args = routeData.argsAs<LoginRouteArgs>(
-          orElse: () => const LoginRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LoginScreen(
-          key: args.key,
-          onLogin: args.onLogin,
-        ),
+        child: const LoginScreen(),
       );
     },
     MainRoute.name: (routeData) {
@@ -131,39 +126,16 @@ class LoadingRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [LoginScreen]
-class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
-  LoginRoute({
-    Key? key,
-    void Function(bool)? onLogin,
-    List<PageRouteInfo>? children,
-  }) : super(
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(
           LoginRoute.name,
-          args: LoginRouteArgs(
-            key: key,
-            onLogin: onLogin,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'LoginRoute';
 
-  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
-}
-
-class LoginRouteArgs {
-  const LoginRouteArgs({
-    this.key,
-    this.onLogin,
-  });
-
-  final Key? key;
-
-  final void Function(bool)? onLogin;
-
-  @override
-  String toString() {
-    return 'LoginRouteArgs{key: $key, onLogin: $onLogin}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

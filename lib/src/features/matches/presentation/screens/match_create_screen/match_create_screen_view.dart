@@ -1,14 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/constants/route_paths_constants.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/create_match/provider/create_match_use_case_provider.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_input_args.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match/provider/create_match_controller.dart';
-import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/create_match_inputs_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/create_match_inputs/provider/create_match_inputs_controller_provider.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_create/match_create_participants_container.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,12 +59,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
               // TODO something has to be done here
               return;
             }
-
-            // context.navigateTo(MatchRoute(matchId: matchId));
-            // context.replace(location)
             context.replaceRoute(MatchRoute(matchId: matchId));
-
-            // now - navigate to match screen
             // also - show message in snackbar
           },
         );
@@ -93,7 +86,11 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     );
 
     return Scaffold(
+      backgroundColor: ColorConstants.BLUE_LIGHT,
+
       appBar: AppBar(
+        // TODO wrap in will pop, to make sure to prevent user from leaving if they are creating amatch
+        backgroundColor: ColorConstants.BLUE_LIGHT,
         actions: [
           // TODO extract to streamed icon button
           StreamBuilder<bool>(
@@ -101,25 +98,18 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
               builder: (context, snapshot) {
                 final areInputsValid = snapshot.data ?? false;
 
-                return IconButton(
-                  onPressed: !areInputsValid
-                      ? null
-                      : () async {
-                          // TODO this needs to be tested
-                          await ref
-                              .read(createMatchControllerProvider.notifier)
-                              .onCreateMatch(
-                                createMatchInputsController
-                                    .validatedMatchCreateInputArgs,
-                              );
-                        },
-                  icon: const Icon(Icons.save),
+                return _MatchCreateActionButton(
+                  areInputsValid: areInputsValid,
+                  onCreateMatch: ref
+                      .read(createMatchControllerProvider.notifier)
+                      .onCreateMatch,
                 );
               }),
         ],
       ),
       body: TabToggler(
         options: togglerOptions,
+        backgroundColor: ColorConstants.WHITE,
       ),
       // TODO view should show loading and error instead of passing it to the children
       // TODO it could use when
@@ -163,7 +153,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
     return [
       // TODO stopped here
       TabTogglerOptionValue(
-        title: "Info",
+        title: "INFO",
         child: MatchCreateInfoContainer(
           nameStream: nameStream,
           onNameChanged: onNameChanged,
@@ -179,7 +169,7 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
         ),
       ),
       TabTogglerOptionValue(
-        title: "Participants",
+        title: "PARTICIPANTS",
         // TODO this should have loading as well, and error and such
         child: MatchCreateParticipantsContainer(
           playersToInvite: const [],
@@ -220,4 +210,28 @@ MatchCreateUIState _getMatchCreateUIState(
     isError: isError,
     matchId: matchId,
   );
+}
+
+class _MatchCreateActionButton extends StatelessWidget {
+  const _MatchCreateActionButton({
+    required this.areInputsValid,
+    required this.onCreateMatch,
+  });
+
+  final bool areInputsValid;
+  final Future<void> Function(MatchCreateInputArgs?) onCreateMatch;
+
+  @override
+  Widget build(BuildContext context) {
+    final iconColor = areInputsValid ? ColorConstants.ORANGE : Colors.grey;
+
+    return TextButton.icon(
+      onPressed: areInputsValid ? () async => onCreateMatch(null) : null,
+      icon: const Text("CREATE"),
+      label: Icon(
+        Icons.save,
+        color: iconColor,
+      ),
+    );
+  }
 }

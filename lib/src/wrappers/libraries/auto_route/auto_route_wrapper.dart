@@ -9,13 +9,15 @@ import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_scr
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
-import 'package:five_on_4_mobile/src/settings/presentation/screens/settings_screen.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 part "auto_route_wrapper.gr.dart";
 
 @AutoRouterConfig()
-class AutoRouteWrapper extends _$AutoRouteWrapper implements AutoRouteGuard {
+// TODO this if redirection has to happen - not yet
+// class AutoRouteWrapper extends _$AutoRouteWrapper implements AutoRouteGuard {
+class AutoRouteWrapper extends _$AutoRouteWrapper {
   // AutoRouteWrapper({
   //   required AuthStatusController authStatusController,
   // }) : _authStatusController = authStatusController;
@@ -27,6 +29,7 @@ class AutoRouteWrapper extends _$AutoRouteWrapper implements AutoRouteGuard {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          // TODO there are times when this keeps spinning - some kind of halt or something?
           page: LoadingRoute.page,
           initial: true,
           // initial: true,
@@ -75,68 +78,68 @@ class AutoRouteWrapper extends _$AutoRouteWrapper implements AutoRouteGuard {
         AutoRoute(page: RegisterRoute.page),
       ];
 
-  @override
-  void onNavigation(
-    NavigationResolver resolver,
-    StackRouter router,
-  ) {
-    // TODO maybe not needed either
-    // final isLoggedIn = _authStatusController.isLoggedIn;
-    // final isLoading = _authStatusController.isLoading;
-    // final isError = _authStatusController.isError;
-    // TODO: I am not sure what this onResult is - maybe i dont need to use it
-    // resolver.redirect(const LoginRoute());
-    resolver.next();
-    // return;
+  // @override
+  // void onNavigation(
+  //   NavigationResolver resolver,
+  //   StackRouter router,
+  // ) {
+  //   // TODO maybe not needed either
+  //   // final isLoggedIn = _authStatusController.isLoggedIn;
+  //   // final isLoading = _authStatusController.isLoading;
+  //   // final isError = _authStatusController.isError;
+  //   // TODO: I am not sure what this onResult is - maybe i dont need to use it
+  //   // resolver.redirect(const LoginRoute());
+  //   resolver.next();
+  //   // return;
 
-    // if (isLoggedIn) {
-    //   resolver.next(true);
-    //   return;
-    // }
+  //   // if (isLoggedIn) {
+  //   //   resolver.next(true);
+  //   //   return;
+  //   // }
 
-    // resolver.redirect(LoginRoute(
-    //   onLogin: (isLoggedIn) {
-    //     resolver.next(isLoggedIn);
-    //   },
-    // ));
+  //   // resolver.redirect(LoginRoute(
+  //   //   onLogin: (isLoggedIn) {
+  //   //     resolver.next(isLoggedIn);
+  //   //   },
+  //   // ));
 
-    // if (!isLoading) {
-    //   resolver.next(true);
-    //   return;
-    // }
+  //   // if (!isLoading) {
+  //   //   resolver.next(true);
+  //   //   return;
+  //   // }
 
-    // if (isLoading) {
-    //   // resolver.next();
-    //   resolver.redirect(const LoadingRoute());
-    //   return;
-    // }
+  //   // if (isLoading) {
+  //   //   // resolver.next();
+  //   //   resolver.redirect(const LoadingRoute());
+  //   //   return;
+  //   // }
 
-    // if (isLoggedIn) {
-    //   resolver.redirect(const ErrorRoute());
-    //   return;
-    // }
+  //   // if (isLoggedIn) {
+  //   //   resolver.redirect(const ErrorRoute());
+  //   //   return;
+  //   // }
 
-    // if (isLoggedIn && resolver.route.name == LoadingRoute.name) {
-    //   resolver.next();
-    //   return;
-    // }
+  //   // if (isLoggedIn && resolver.route.name == LoadingRoute.name) {
+  //   //   resolver.next();
+  //   //   return;
+  //   // }
 
-    // if (!isLoggedIn && resolver.route.name == LoginRoute.name) {
-    //   resolver.next();
-    //   return;
-    // }
+  //   // if (!isLoggedIn && resolver.route.name == LoginRoute.name) {
+  //   //   resolver.next();
+  //   //   return;
+  //   // }
 
-    // if (isLoggedIn) {
-    //   // router.navigate(const LoadingRoute());
-    //   resolver.redirect(const LoadingRoute());
+  //   // if (isLoggedIn) {
+  //   //   // router.navigate(const LoadingRoute());
+  //   //   resolver.redirect(const LoadingRoute());
 
-    //   return;
-    // }
+  //   //   return;
+  //   // }
 
-    // if (!isLoggedIn) {
-    //   // router.navigate(const LoginRoute());
-    //   resolver.redirect(const LoginRoute());
-    //   return;
-    // }
-  }
+  //   // if (!isLoggedIn) {
+  //   //   // router.navigate(const LoginRoute());
+  //   //   resolver.redirect(const LoginRoute());
+  //   //   return;
+  //   // }
+  // }
 }

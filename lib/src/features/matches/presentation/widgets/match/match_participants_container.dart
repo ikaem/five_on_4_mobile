@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_list.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +28,6 @@ class MatchParticipantsContainer extends StatelessWidget {
       );
     }
 
-    return MatchParticipants(participants: participants);
+    return MatchParticipantsList(participants: participants);
   }
 }

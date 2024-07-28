@@ -1,5 +1,6 @@
 // TODO move this elsewhere - to a separate file
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 class SearchMatchesInputs extends StatelessWidget {
@@ -34,6 +35,7 @@ class SearchMatchesInputs extends StatelessWidget {
           textController: matchTitleTextFieldController,
           onChanged: onMatchTitleInputChanged,
           label: "Match title",
+          fillColor: ColorConstants.GREY_LIGHT,
         ),
         // TODO button for filtering or filtering options will be here
       ],

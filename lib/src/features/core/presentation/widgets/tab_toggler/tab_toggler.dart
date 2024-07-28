@@ -1,9 +1,12 @@
+import 'package:five_on_4_mobile/src/style/utils/constants/circular_radius_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 
 // TODO write tests for this
 // TODO use this instead of speciliazed widgets for tabs toggling
 
-// TODO possibly can live elsewhere
+// TODO possibly can live elsewhere - but here might be fine because it belongs to this - maybe just delegate it to part and part of
 class TabTogglerOptionValue {
   const TabTogglerOptionValue({
     required this.title,
@@ -18,9 +21,11 @@ class TabToggler extends StatefulWidget {
   const TabToggler({
     super.key,
     required this.options,
+    required this.backgroundColor,
   });
 
   final List<TabTogglerOptionValue> options;
+  final Color backgroundColor;
 
   @override
   State<TabToggler> createState() => _TabTogglerState();
@@ -28,6 +33,7 @@ class TabToggler extends StatefulWidget {
 
 class _TabTogglerState extends State<TabToggler>
     with SingleTickerProviderStateMixin {
+  // TODO tab controller might not be needed at all
   late final TabController _tabController;
 
   @override
@@ -47,48 +53,54 @@ class _TabTogglerState extends State<TabToggler>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.black,
-          labelColor: Colors.black,
-          labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.normal,
-          ),
-          onTap: (value) {
-            setState(() {});
-          },
-          tabs: _generateTabs(),
+    return Container(
+      padding: const EdgeInsets.all(SpacingConstants.L),
+      decoration: BoxDecoration(
+        color: widget.backgroundColor,
+        borderRadius: const BorderRadius.vertical(
+          top: CircularRadiusConstants.REGULAR,
         ),
-        Expanded(
-          child: TabBarView(
+      ),
+      child: Column(
+        children: [
+          // TODO maybe not needed this, we will see
+          // const SizedBox(height: SpacingConstants.XS),
+          TabBar(
             controller: _tabController,
-            children: generateTabChildren(),
+            indicator: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: ColorConstants.BLUE_DARK,
+                  width: 2,
+                ),
+              ),
+            ),
+            dividerHeight: 0,
+            labelColor: ColorConstants.BLACK,
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+            ),
+            // TODO seems like no need to this
+            // onTap: (value) {
+            //   setState(() {});
+            // },
+            tabs: _tabs,
           ),
-        ),
-      ],
+          const SizedBox(height: SpacingConstants.XXL),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: generateTabChildren(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  List<Tab> _generateTabs() {
-    const selectorIndicator = " •";
-    final currentTabIndex = _tabController.index;
-
-    final List<Tab> tabs = [];
-
-    for (int i = 0; i < widget.options.length; i++) {
-      final currentOptionTitle = widget.options[i].title;
-      final isSelected = i == currentTabIndex;
-
-      final label = currentOptionTitle + (isSelected ? selectorIndicator : "");
-      final tab = Tab(
-        text: label,
-      );
-
-      tabs.add(tab);
-    }
+  List<Tab> get _tabs {
+    final tabs = widget.options.map((e) => Tab(text: e.title)).toList();
 
     return tabs;
   }

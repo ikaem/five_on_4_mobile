@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +36,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
@@ -59,7 +63,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
@@ -81,7 +88,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
@@ -105,7 +115,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
@@ -144,7 +157,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
@@ -177,7 +193,10 @@ void main() {
               await widgetTester.pumpWidget(
                 MaterialApp(
                   home: Scaffold(
-                    body: TabToggler(options: options),
+                    body: TabToggler(
+                      options: options,
+                      backgroundColor: ColorConstants.WHITE,
+                    ),
                   ),
                 ),
               );
