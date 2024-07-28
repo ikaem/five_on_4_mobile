@@ -36,3 +36,9 @@ class SettingsProfileContainer extends StatelessWidget {
     );
   }
 }
+
+// TODO add additonal options
+// - upload avatar
+// - change password - if logged in via email/password
+// - edit nickname - or that is not allowed
+// - in future, to edit teams

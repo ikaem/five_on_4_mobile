@@ -9,6 +9,9 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wr
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// TODO make ticket to remove all unneeded dependecies
+// TODO dont forget that the app should change name or have some kind of nickname - četvorka - or the four - to make it simpler to say
+
 class LoginScreenView extends ConsumerStatefulWidget {
   const LoginScreenView({
     super.key,
@@ -37,6 +40,7 @@ class _LoginScreenViewState extends ConsumerState<LoginScreenView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // TODO sized box not needed
                 SizedBox(
                   child: Image.asset(LocalAssetsPathConstants.LOGO_LARGE.value),
                 ),
