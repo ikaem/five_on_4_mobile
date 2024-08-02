@@ -10,6 +10,7 @@ import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dar
 import 'package:flutter/material.dart';
 
 // TODO all of this needs to be tested
+// TODO this can probably be reused - or at least children here of the column can be reused
 class SearchMatchesContainer extends StatefulWidget {
   const SearchMatchesContainer({
     super.key,
@@ -63,21 +64,21 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           },
           label: "Search",
         ),
-        // const SizedBox(height: SpacingConstants.S),
-        // const Divider(),
-        // const SizedBox(height: SpacingConstants.S),
-        // // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
-        // // TODO search results will be displayed here
-        // // TODO will have loading and such here
+        const SizedBox(height: SpacingConstants.S),
+        const Divider(),
+        const SizedBox(height: SpacingConstants.S),
+        // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
+        // TODO search results will be displayed here
+        // TODO will have loading and such here
 
-        // // TODO in tests, expanded might cause an issue here because it wraps sometimes just one element
-        // Expanded(
-        //   child: SearchMatchesResultsPresenter(
-        //     isLoading: widget.isLoading,
-        //     isError: widget.isError,
-        //     matches: widget.matches,
-        //   ),
-        // ),
+        // TODO in tests, expanded might cause an issue here because it wraps sometimes just one element
+        Expanded(
+          child: SearchMatchesResultsPresenter(
+            isLoading: widget.isLoading,
+            isError: widget.isError,
+            matches: widget.matches,
+          ),
+        ),
       ],
     );
   }
