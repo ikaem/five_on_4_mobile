@@ -54,6 +54,9 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
     BuildContext context,
     // WidgetRef ref,
   ) {
+    // TODO this definitely needs to be moved to container of search matches - because this widget does not get killed when toggling tabs
+    // and because of this, and because container does get killed,. and recreated, it is a new subscripber to is inputs valid stream - so we keep getting new subscripbers
+    // ideally, we would like the controller to be recreated when the tab is toggled, but this is not possible with the current setup
     // TODO maybe this should eventually live in the tab for matches search, not in the parent - we will see - leave it here for now
     final searchMatchesControllerState =
         ref.watch(searchMatchesControllerProvider);
@@ -120,6 +123,10 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
           areInputsValidStream: areInputsValidStream,
         ),
       ),
+      // const TabTogglerOptionValue(
+      //   title: "Hi",
+      //   child: Text("Hi"),
+      // ),
       TabTogglerOptionValue(
         title: "PLAYERS",
         child: Container(),

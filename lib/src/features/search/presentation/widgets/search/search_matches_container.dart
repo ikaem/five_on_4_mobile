@@ -55,7 +55,7 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           matchTitleTextFieldController: _matchTitleTextFieldController,
           onMatchTitleInputChanged: widget.onMatchTitleInputChanged,
         ),
-        const SizedBox(height: SpacingConstants.M),
+        // const SizedBox(height: SpacingConstants.M),
         StreamedElevatedButton(
           isEnabledStream: widget.areInputsValidStream,
           onPressed: () {
@@ -63,21 +63,21 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           },
           label: "Search",
         ),
-        const SizedBox(height: SpacingConstants.S),
-        const Divider(),
-        const SizedBox(height: SpacingConstants.S),
-        // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
-        // TODO search results will be displayed here
-        // TODO will have loading and such here
+        // const SizedBox(height: SpacingConstants.S),
+        // const Divider(),
+        // const SizedBox(height: SpacingConstants.S),
+        // // if we use riverpod state from controller here, fields will be cleared on every rebuild? maybe - we will see
+        // // TODO search results will be displayed here
+        // // TODO will have loading and such here
 
-        // TODO in tests, expanded might cause an issue here because it wraps sometimes just one element
-        Expanded(
-          child: SearchMatchesResultsPresenter(
-            isLoading: widget.isLoading,
-            isError: widget.isError,
-            matches: widget.matches,
-          ),
-        ),
+        // // TODO in tests, expanded might cause an issue here because it wraps sometimes just one element
+        // Expanded(
+        //   child: SearchMatchesResultsPresenter(
+        //     isLoading: widget.isLoading,
+        //     isError: widget.isError,
+        //     matches: widget.matches,
+        //   ),
+        // ),
       ],
     );
   }
