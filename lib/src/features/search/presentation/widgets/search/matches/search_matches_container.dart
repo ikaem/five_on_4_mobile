@@ -56,7 +56,7 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
           matchTitleTextFieldController: _matchTitleTextFieldController,
           onMatchTitleInputChanged: widget.onMatchTitleInputChanged,
         ),
-        // const SizedBox(height: SpacingConstants.M),
+        const SizedBox(height: SpacingConstants.S),
         StreamedElevatedButton(
           isEnabledStream: widget.areInputsValidStream,
           onPressed: () {
