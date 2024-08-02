@@ -4,8 +4,8 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_inputs.dart';
-import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_matches_results_presenter.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/matches/search_matches_inputs.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/matches/search_matches_results_presenter.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 
