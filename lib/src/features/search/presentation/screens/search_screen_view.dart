@@ -7,7 +7,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/s
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/sarch_matches_inputs/search_matches_inputs_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/search_matches/provider/search_matches_controller.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/matches/search_matches_container.dart';
-import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/search_players_container.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_container.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
