@@ -1,5 +1,7 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
+import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_inputs.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_results_presenter.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +38,25 @@ class _SearchPlayersContainerState
         const SizedBox(height: SpacingConstants.S),
         const Divider(),
         const SizedBox(height: SpacingConstants.S),
+        Expanded(
+          child: SearchPlayersResultsPresenter(
+            isLoading: false,
+            isError: false,
+            players: _tempPlayers,
+          ),
+        ),
       ],
     );
   }
 }
+
+// TODO temp - remove when controller arrives
+final _tempPlayers = List.generate(
+  10,
+  (i) => PlayerModel(
+    id: i + 1,
+    name: "Player $i",
+    avatarUri: Uri.parse("https://via.placeholder.com/150"),
+    nickname: "Nickname $i",
+  ),
+);

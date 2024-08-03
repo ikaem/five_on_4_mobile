@@ -26,8 +26,9 @@ class MatchParticipantsList extends StatelessWidget {
             // TODO in future, will be navigating to player profile
           },
           child: PlayerBrief(
-            avatarUri: participant.avatarUri,
-            nickname: participant.nickname,
+            // avatarUri: participant.avatarUri,
+            // nickname: participant.nickname,
+            player: participant,
           ),
         );
       },

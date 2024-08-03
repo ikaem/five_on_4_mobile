@@ -5,9 +5,8 @@
 // - when matches found
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/players_briefs_list.dart';
 import 'package:flutter/material.dart';
 
 // TODO this could possibly be resued with matches and layers - we would just pass it generic to know what data it should present
@@ -47,6 +46,6 @@ class SearchPlayersResultsPresenter extends StatelessWidget {
       );
     }
 
-    return MatchesList(matches: matches);
+    return PlayersBriefsList(players: players);
   }
 }
