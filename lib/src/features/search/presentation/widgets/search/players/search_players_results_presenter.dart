@@ -5,21 +5,23 @@
 // - when matches found
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
-import 'package:five_on_4_mobile/src/features/core/presentation/widgets/matches_list.dart';
-import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
+import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/players_briefs_list.dart';
 import 'package:flutter/material.dart';
 
-class SearchMatchesResultsPresenter extends StatelessWidget {
-  const SearchMatchesResultsPresenter({
+// TODO this could possibly be resued with matches and layers - we would just pass it generic to know what data it should present
+
+class SearchPlayersResultsPresenter extends StatelessWidget {
+  const SearchPlayersResultsPresenter({
     super.key,
     required this.isLoading,
     required this.isError,
-    required this.matches,
+    required this.players,
   });
 
   final bool isLoading;
   final bool isError;
-  final List<MatchModel> matches;
+  final List<PlayerModel> players;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +40,12 @@ class SearchMatchesResultsPresenter extends StatelessWidget {
       );
     }
 
-    if (matches.isEmpty) {
+    if (players.isEmpty) {
       return const Center(
         child: Text("No matches found"),
       );
     }
 
-    return MatchesList(matches: matches);
+    return PlayersBriefsList(players: players);
   }
 }

@@ -30,7 +30,8 @@ class SearchMatchesInputsController
           matchTitle: values[0] as String,
         );
         return validatedArgs != null;
-      });
+        // TODO as boradcast stream is a temp fix, until we move the controller into matches search contrainer, so it will get disposed together with cotnainer when tab switches
+      }).asBroadcastStream();
 
   SearchMatchesInputArgsValue? get validatedSearchMatchesInputArgsValue {
     final validatedArgs = getValidatedArgsFromInputs(
