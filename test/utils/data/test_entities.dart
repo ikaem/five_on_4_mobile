@@ -143,7 +143,7 @@ List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
         id: index,
         nickname: "${namesPrefix}nickname$index",
         name: "${namesPrefix}name$index",
-        avatarUri: avatarUrl,
+        avatarUrl: avatarUrl,
       );
     },
   );
