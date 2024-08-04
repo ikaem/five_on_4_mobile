@@ -579,6 +579,8 @@ void main() {
           },
         );
 
+        // TODO test that it should return correct ids too
+
         test(
           "given multiple MatchLocalEntityValue already existing in the database"
           "when .storeMatches() is called with updated values of same matches"

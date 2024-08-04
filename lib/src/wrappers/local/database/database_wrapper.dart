@@ -32,6 +32,7 @@ class DatabaseWrapper {
   $AuthenticatedPlayerLocalEntityTable get authenticatedPlayerRepo =>
       db.authenticatedPlayerLocalEntity;
   $MatchLocalEntityTable get matchLocalRepo => db.matchLocalEntity;
+  $PlayerLocalEntityTable get playerLocalRepo => db.playerLocalEntity;
 
   Future<void> initialize() async {
     try {
