@@ -41,6 +41,7 @@ void main() {
                   firstName: "name $i",
                   lastName: "last name $i",
                   nickname: "nickname $i",
+                  avatarUrl: "https://example.com/$i",
                 );
               });
               final playerIds = playerEntities.map((e) {
@@ -63,6 +64,7 @@ void main() {
                   firstName: e.firstName,
                   lastName: e.lastName,
                   nickname: e.nickname,
+                  avatarUrl: e.avatarUrl,
                 );
               }).toList();
 
@@ -108,6 +110,7 @@ void main() {
                   firstName: "name $i",
                   lastName: "last name $i",
                   nickname: "nickname $i",
+                  avatarUrl: "https://example.com/$i",
                 );
               });
               final playerIds = playerEntities.map((e) {
@@ -131,6 +134,7 @@ void main() {
                   firstName: e.firstName,
                   lastName: e.lastName,
                   nickname: e.nickname,
+                  avatarUrl: e.avatarUrl,
                 );
               }).toList();
               expect(players.length, equals(playerEntities.length));
@@ -159,6 +163,7 @@ void main() {
                   firstName: "name $i",
                   lastName: "last name $i",
                   nickname: "nickname $i",
+                  avatarUrl: "https://example.com/$i",
                 );
               });
 
@@ -174,6 +179,7 @@ void main() {
                   firstName: e.firstName,
                   lastName: e.lastName,
                   nickname: e.nickname,
+                  avatarUrl: e.avatarUrl,
                 );
               }).toList();
 
@@ -201,6 +207,7 @@ void main() {
                   firstName: "name $i",
                   lastName: "last name $i",
                   nickname: "nickname $i",
+                  avatarUrl: "https://example.com/$i",
                 );
               });
 
@@ -232,6 +239,7 @@ void main() {
                   firstName: "name $i",
                   lastName: "last name $i",
                   nickname: "nickname $i",
+                  avatarUrl: "https://example.com/$i",
                 );
               });
 
@@ -247,6 +255,7 @@ void main() {
                   firstName: "${e.firstName} updated",
                   lastName: "${e.lastName} updated",
                   nickname: "${e.nickname} updated",
+                  avatarUrl: "${e.avatarUrl} updated",
                 );
               }).toList();
 
@@ -261,6 +270,7 @@ void main() {
                   firstName: e.firstName,
                   lastName: e.lastName,
                   nickname: e.nickname,
+                  avatarUrl: e.avatarUrl,
                 );
               }).toList();
 

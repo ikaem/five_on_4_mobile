@@ -46,6 +46,7 @@ void main() {
                   firstName: "firstName$i",
                   lastName: "lastName$i",
                   nickname: "nickname$i",
+                  avatarUrl: "http://example.com/$i",
                 );
               });
 
@@ -67,11 +68,43 @@ void main() {
                       id: value.id,
                       name: "${value.firstName} ${value.lastName}",
                       // TODO fix this - we dont have converter from local match to model
-                      avatarUri: Uri.parse(""),
+                      avatarUri: Uri.parse(value.avatarUrl),
                       nickname: value.nickname,
                     ),
                   )
                   .toList();
+
+              expect(result, equals(expectedPlayers));
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given [.getPlayers()] is called"
+            "when examine call to [PlayersLocalDataSource.getPlayers()]"
+            "then should have been called with expected arguments",
+            () async {
+              // setup
+              final playerIds = [1, 2, 3];
+
+              when(() => playersLocalDataSource.getPlayers(
+                      playerIds: any(named: "playerIds")))
+                  .thenAnswer((_) async => []);
+
+              // given
+              await playersRepository.getPlayers(
+                playerIds: playerIds,
+              );
+
+              // when
+              verify(
+                () => playersLocalDataSource.getPlayers(
+                  playerIds: playerIds,
+                ),
+              ).called(1);
+
+              // then
 
               // cleanup
             },
@@ -91,6 +124,10 @@ void main() {
 
               when(() => playersRemoteDataSource.getSearchedPlayers(
                       searchPlayersFilter: any(named: "searchPlayersFilter")))
+                  .thenAnswer((_) async => []);
+
+              when(() => playersLocalDataSource.storePlayers(
+                      matchValues: any(named: "matchValues")))
                   .thenAnswer((_) async => []);
 
               // given
@@ -124,7 +161,7 @@ void main() {
                   id: i + 1,
                   firstName: "firstName$i",
                   lastName: "lastName$i",
-                  avatarUrl: "avatarUrl$i",
+                  avatarUrl: "http://example.com/$i",
                   nickname: "nickname$i",
                 );
               });
@@ -151,6 +188,7 @@ void main() {
                       firstName: entity.firstName,
                       lastName: entity.lastName,
                       nickname: entity.nickname,
+                      avatarUrl: entity.avatarUrl,
                     ),
                   )
                   .toList();

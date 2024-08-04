@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/players/domain/models/player/playe
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_fluter_value.dart';
+import 'package:five_on_4_mobile/src/features/players/utils/converters/players_converter.dart';
 
 class PlayersRepositoryImpl implements PlayersRepository {
   const PlayersRepositoryImpl({
@@ -17,8 +18,15 @@ class PlayersRepositoryImpl implements PlayersRepository {
 
   @override
   Future<List<PlayerModel>> getPlayers({required List<int> playerIds}) async {
-    // TODO: implement getPlayers
-    throw UnimplementedError();
+    final localEntitiesValues = await _playersLocalDataSource.getPlayers(
+      playerIds: playerIds,
+    );
+
+    final models = localEntitiesValues
+        .map((e) => PlayersConverter.toModelFromLocalEntityValue(e))
+        .toList();
+
+    return models;
   }
 
   @override
@@ -37,6 +45,7 @@ class PlayersRepositoryImpl implements PlayersRepository {
             firstName: remoteEntity.firstName,
             lastName: remoteEntity.lastName,
             nickname: remoteEntity.nickname,
+            avatarUrl: remoteEntity.avatarUrl,
           ),
         )
         .toList();

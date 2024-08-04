@@ -21,6 +21,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
         firstName: Value(e.firstName),
         lastName: Value(e.lastName),
         nickname: Value(e.nickname),
+        avatarUrl: Value(e.avatarUrl),
       );
     }).toList();
 
@@ -53,6 +54,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
         firstName: e.firstName,
         lastName: e.lastName,
         nickname: e.nickname,
+        avatarUrl: e.avatarUrl,
       );
     }).toList();
 
