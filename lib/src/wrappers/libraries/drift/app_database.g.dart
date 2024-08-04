@@ -546,8 +546,15 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
   late final GeneratedColumn<String> nickname = GeneratedColumn<String>(
       'nickname', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _avatarUrlMeta =
+      const VerificationMeta('avatarUrl');
   @override
-  List<GeneratedColumn> get $columns => [id, firstName, lastName, nickname];
+  late final GeneratedColumn<String> avatarUrl = GeneratedColumn<String>(
+      'avatar_url', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, firstName, lastName, nickname, avatarUrl];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -580,6 +587,12 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
     } else if (isInserting) {
       context.missing(_nicknameMeta);
     }
+    if (data.containsKey('avatar_url')) {
+      context.handle(_avatarUrlMeta,
+          avatarUrl.isAcceptableOrUnknown(data['avatar_url']!, _avatarUrlMeta));
+    } else if (isInserting) {
+      context.missing(_avatarUrlMeta);
+    }
     return context;
   }
 
@@ -597,6 +610,8 @@ class $PlayerLocalEntityTable extends PlayerLocalEntity
           .read(DriftSqlType.string, data['${effectivePrefix}last_name'])!,
       nickname: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}nickname'])!,
+      avatarUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}avatar_url'])!,
     );
   }
 
@@ -612,11 +627,13 @@ class PlayerLocalEntityData extends DataClass
   final String firstName;
   final String lastName;
   final String nickname;
+  final String avatarUrl;
   const PlayerLocalEntityData(
       {required this.id,
       required this.firstName,
       required this.lastName,
-      required this.nickname});
+      required this.nickname,
+      required this.avatarUrl});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -624,6 +641,7 @@ class PlayerLocalEntityData extends DataClass
     map['first_name'] = Variable<String>(firstName);
     map['last_name'] = Variable<String>(lastName);
     map['nickname'] = Variable<String>(nickname);
+    map['avatar_url'] = Variable<String>(avatarUrl);
     return map;
   }
 
@@ -633,6 +651,7 @@ class PlayerLocalEntityData extends DataClass
       firstName: Value(firstName),
       lastName: Value(lastName),
       nickname: Value(nickname),
+      avatarUrl: Value(avatarUrl),
     );
   }
 
@@ -644,6 +663,7 @@ class PlayerLocalEntityData extends DataClass
       firstName: serializer.fromJson<String>(json['firstName']),
       lastName: serializer.fromJson<String>(json['lastName']),
       nickname: serializer.fromJson<String>(json['nickname']),
+      avatarUrl: serializer.fromJson<String>(json['avatarUrl']),
     );
   }
   @override
@@ -654,16 +674,22 @@ class PlayerLocalEntityData extends DataClass
       'firstName': serializer.toJson<String>(firstName),
       'lastName': serializer.toJson<String>(lastName),
       'nickname': serializer.toJson<String>(nickname),
+      'avatarUrl': serializer.toJson<String>(avatarUrl),
     };
   }
 
   PlayerLocalEntityData copyWith(
-          {int? id, String? firstName, String? lastName, String? nickname}) =>
+          {int? id,
+          String? firstName,
+          String? lastName,
+          String? nickname,
+          String? avatarUrl}) =>
       PlayerLocalEntityData(
         id: id ?? this.id,
         firstName: firstName ?? this.firstName,
         lastName: lastName ?? this.lastName,
         nickname: nickname ?? this.nickname,
+        avatarUrl: avatarUrl ?? this.avatarUrl,
       );
   @override
   String toString() {
@@ -671,13 +697,14 @@ class PlayerLocalEntityData extends DataClass
           ..write('id: $id, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
-          ..write('nickname: $nickname')
+          ..write('nickname: $nickname, ')
+          ..write('avatarUrl: $avatarUrl')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, firstName, lastName, nickname);
+  int get hashCode => Object.hash(id, firstName, lastName, nickname, avatarUrl);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -685,7 +712,8 @@ class PlayerLocalEntityData extends DataClass
           other.id == this.id &&
           other.firstName == this.firstName &&
           other.lastName == this.lastName &&
-          other.nickname == this.nickname);
+          other.nickname == this.nickname &&
+          other.avatarUrl == this.avatarUrl);
 }
 
 class PlayerLocalEntityCompanion
@@ -694,31 +722,37 @@ class PlayerLocalEntityCompanion
   final Value<String> firstName;
   final Value<String> lastName;
   final Value<String> nickname;
+  final Value<String> avatarUrl;
   const PlayerLocalEntityCompanion({
     this.id = const Value.absent(),
     this.firstName = const Value.absent(),
     this.lastName = const Value.absent(),
     this.nickname = const Value.absent(),
+    this.avatarUrl = const Value.absent(),
   });
   PlayerLocalEntityCompanion.insert({
     this.id = const Value.absent(),
     required String firstName,
     required String lastName,
     required String nickname,
+    required String avatarUrl,
   })  : firstName = Value(firstName),
         lastName = Value(lastName),
-        nickname = Value(nickname);
+        nickname = Value(nickname),
+        avatarUrl = Value(avatarUrl);
   static Insertable<PlayerLocalEntityData> custom({
     Expression<int>? id,
     Expression<String>? firstName,
     Expression<String>? lastName,
     Expression<String>? nickname,
+    Expression<String>? avatarUrl,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (firstName != null) 'first_name': firstName,
       if (lastName != null) 'last_name': lastName,
       if (nickname != null) 'nickname': nickname,
+      if (avatarUrl != null) 'avatar_url': avatarUrl,
     });
   }
 
@@ -726,12 +760,14 @@ class PlayerLocalEntityCompanion
       {Value<int>? id,
       Value<String>? firstName,
       Value<String>? lastName,
-      Value<String>? nickname}) {
+      Value<String>? nickname,
+      Value<String>? avatarUrl}) {
     return PlayerLocalEntityCompanion(
       id: id ?? this.id,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       nickname: nickname ?? this.nickname,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
     );
   }
 
@@ -750,6 +786,9 @@ class PlayerLocalEntityCompanion
     if (nickname.present) {
       map['nickname'] = Variable<String>(nickname.value);
     }
+    if (avatarUrl.present) {
+      map['avatar_url'] = Variable<String>(avatarUrl.value);
+    }
     return map;
   }
 
@@ -759,7 +798,8 @@ class PlayerLocalEntityCompanion
           ..write('id: $id, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
-          ..write('nickname: $nickname')
+          ..write('nickname: $nickname, ')
+          ..write('avatarUrl: $avatarUrl')
           ..write(')'))
         .toString();
   }
@@ -1046,6 +1086,7 @@ typedef $$PlayerLocalEntityTableInsertCompanionBuilder
   required String firstName,
   required String lastName,
   required String nickname,
+  required String avatarUrl,
 });
 typedef $$PlayerLocalEntityTableUpdateCompanionBuilder
     = PlayerLocalEntityCompanion Function({
@@ -1053,6 +1094,7 @@ typedef $$PlayerLocalEntityTableUpdateCompanionBuilder
   Value<String> firstName,
   Value<String> lastName,
   Value<String> nickname,
+  Value<String> avatarUrl,
 });
 
 class $$PlayerLocalEntityTableTableManager extends RootTableManager<
@@ -1080,24 +1122,28 @@ class $$PlayerLocalEntityTableTableManager extends RootTableManager<
             Value<String> firstName = const Value.absent(),
             Value<String> lastName = const Value.absent(),
             Value<String> nickname = const Value.absent(),
+            Value<String> avatarUrl = const Value.absent(),
           }) =>
               PlayerLocalEntityCompanion(
             id: id,
             firstName: firstName,
             lastName: lastName,
             nickname: nickname,
+            avatarUrl: avatarUrl,
           ),
           getInsertCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             required String firstName,
             required String lastName,
             required String nickname,
+            required String avatarUrl,
           }) =>
               PlayerLocalEntityCompanion.insert(
             id: id,
             firstName: firstName,
             lastName: lastName,
             nickname: nickname,
+            avatarUrl: avatarUrl,
           ),
         ));
 }
@@ -1137,6 +1183,11 @@ class $$PlayerLocalEntityTableFilterComposer
       column: $state.table.nickname,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get avatarUrl => $state.composableBuilder(
+      column: $state.table.avatarUrl,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$PlayerLocalEntityTableOrderingComposer
@@ -1159,6 +1210,11 @@ class $$PlayerLocalEntityTableOrderingComposer
 
   ColumnOrderings<String> get nickname => $state.composableBuilder(
       column: $state.table.nickname,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get avatarUrl => $state.composableBuilder(
+      column: $state.table.avatarUrl,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }

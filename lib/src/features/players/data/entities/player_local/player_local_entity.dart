@@ -8,6 +8,7 @@ class PlayerLocalEntity extends Table {
   TextColumn get firstName => text()();
   TextColumn get lastName => text()();
   TextColumn get nickname => text()();
+  TextColumn get avatarUrl => text()();
 
   @override
   Set<Column> get primaryKey => {id};
