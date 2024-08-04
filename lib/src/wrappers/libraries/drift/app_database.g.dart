@@ -517,6 +517,254 @@ class MatchLocalEntityCompanion extends UpdateCompanion<MatchLocalEntityData> {
   }
 }
 
+class $PlayerLocalEntityTable extends PlayerLocalEntity
+    with TableInfo<$PlayerLocalEntityTable, PlayerLocalEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PlayerLocalEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _firstNameMeta =
+      const VerificationMeta('firstName');
+  @override
+  late final GeneratedColumn<String> firstName = GeneratedColumn<String>(
+      'first_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _lastNameMeta =
+      const VerificationMeta('lastName');
+  @override
+  late final GeneratedColumn<String> lastName = GeneratedColumn<String>(
+      'last_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _nicknameMeta =
+      const VerificationMeta('nickname');
+  @override
+  late final GeneratedColumn<String> nickname = GeneratedColumn<String>(
+      'nickname', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, firstName, lastName, nickname];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'player_local_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<PlayerLocalEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('first_name')) {
+      context.handle(_firstNameMeta,
+          firstName.isAcceptableOrUnknown(data['first_name']!, _firstNameMeta));
+    } else if (isInserting) {
+      context.missing(_firstNameMeta);
+    }
+    if (data.containsKey('last_name')) {
+      context.handle(_lastNameMeta,
+          lastName.isAcceptableOrUnknown(data['last_name']!, _lastNameMeta));
+    } else if (isInserting) {
+      context.missing(_lastNameMeta);
+    }
+    if (data.containsKey('nickname')) {
+      context.handle(_nicknameMeta,
+          nickname.isAcceptableOrUnknown(data['nickname']!, _nicknameMeta));
+    } else if (isInserting) {
+      context.missing(_nicknameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PlayerLocalEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PlayerLocalEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      firstName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}first_name'])!,
+      lastName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_name'])!,
+      nickname: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}nickname'])!,
+    );
+  }
+
+  @override
+  $PlayerLocalEntityTable createAlias(String alias) {
+    return $PlayerLocalEntityTable(attachedDatabase, alias);
+  }
+}
+
+class PlayerLocalEntityData extends DataClass
+    implements Insertable<PlayerLocalEntityData> {
+  final int id;
+  final String firstName;
+  final String lastName;
+  final String nickname;
+  const PlayerLocalEntityData(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.nickname});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['first_name'] = Variable<String>(firstName);
+    map['last_name'] = Variable<String>(lastName);
+    map['nickname'] = Variable<String>(nickname);
+    return map;
+  }
+
+  PlayerLocalEntityCompanion toCompanion(bool nullToAbsent) {
+    return PlayerLocalEntityCompanion(
+      id: Value(id),
+      firstName: Value(firstName),
+      lastName: Value(lastName),
+      nickname: Value(nickname),
+    );
+  }
+
+  factory PlayerLocalEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PlayerLocalEntityData(
+      id: serializer.fromJson<int>(json['id']),
+      firstName: serializer.fromJson<String>(json['firstName']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+      nickname: serializer.fromJson<String>(json['nickname']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'firstName': serializer.toJson<String>(firstName),
+      'lastName': serializer.toJson<String>(lastName),
+      'nickname': serializer.toJson<String>(nickname),
+    };
+  }
+
+  PlayerLocalEntityData copyWith(
+          {int? id, String? firstName, String? lastName, String? nickname}) =>
+      PlayerLocalEntityData(
+        id: id ?? this.id,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName,
+        nickname: nickname ?? this.nickname,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PlayerLocalEntityData(')
+          ..write('id: $id, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('nickname: $nickname')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, firstName, lastName, nickname);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlayerLocalEntityData &&
+          other.id == this.id &&
+          other.firstName == this.firstName &&
+          other.lastName == this.lastName &&
+          other.nickname == this.nickname);
+}
+
+class PlayerLocalEntityCompanion
+    extends UpdateCompanion<PlayerLocalEntityData> {
+  final Value<int> id;
+  final Value<String> firstName;
+  final Value<String> lastName;
+  final Value<String> nickname;
+  const PlayerLocalEntityCompanion({
+    this.id = const Value.absent(),
+    this.firstName = const Value.absent(),
+    this.lastName = const Value.absent(),
+    this.nickname = const Value.absent(),
+  });
+  PlayerLocalEntityCompanion.insert({
+    this.id = const Value.absent(),
+    required String firstName,
+    required String lastName,
+    required String nickname,
+  })  : firstName = Value(firstName),
+        lastName = Value(lastName),
+        nickname = Value(nickname);
+  static Insertable<PlayerLocalEntityData> custom({
+    Expression<int>? id,
+    Expression<String>? firstName,
+    Expression<String>? lastName,
+    Expression<String>? nickname,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
+      if (nickname != null) 'nickname': nickname,
+    });
+  }
+
+  PlayerLocalEntityCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? firstName,
+      Value<String>? lastName,
+      Value<String>? nickname}) {
+    return PlayerLocalEntityCompanion(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      nickname: nickname ?? this.nickname,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (firstName.present) {
+      map['first_name'] = Variable<String>(firstName.value);
+    }
+    if (lastName.present) {
+      map['last_name'] = Variable<String>(lastName.value);
+    }
+    if (nickname.present) {
+      map['nickname'] = Variable<String>(nickname.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlayerLocalEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('nickname: $nickname')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   _$AppDatabaseManager get managers => _$AppDatabaseManager(this);
@@ -525,6 +773,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $AuthenticatedPlayerLocalEntityTable(this);
   late final $MatchLocalEntityTable matchLocalEntity =
       $MatchLocalEntityTable(this);
+  late final $PlayerLocalEntityTable playerLocalEntity =
+      $PlayerLocalEntityTable(this);
   Selectable<String> current_timestamp() {
     return customSelect('SELECT CURRENT_TIMESTAMP AS _c0',
         variables: [],
@@ -536,7 +786,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [authenticatedPlayerLocalEntity, matchLocalEntity];
+      [authenticatedPlayerLocalEntity, matchLocalEntity, playerLocalEntity];
 }
 
 typedef $$AuthenticatedPlayerLocalEntityTableInsertCompanionBuilder
@@ -790,6 +1040,129 @@ class $$MatchLocalEntityTableOrderingComposer
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
+typedef $$PlayerLocalEntityTableInsertCompanionBuilder
+    = PlayerLocalEntityCompanion Function({
+  Value<int> id,
+  required String firstName,
+  required String lastName,
+  required String nickname,
+});
+typedef $$PlayerLocalEntityTableUpdateCompanionBuilder
+    = PlayerLocalEntityCompanion Function({
+  Value<int> id,
+  Value<String> firstName,
+  Value<String> lastName,
+  Value<String> nickname,
+});
+
+class $$PlayerLocalEntityTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $PlayerLocalEntityTable,
+    PlayerLocalEntityData,
+    $$PlayerLocalEntityTableFilterComposer,
+    $$PlayerLocalEntityTableOrderingComposer,
+    $$PlayerLocalEntityTableProcessedTableManager,
+    $$PlayerLocalEntityTableInsertCompanionBuilder,
+    $$PlayerLocalEntityTableUpdateCompanionBuilder> {
+  $$PlayerLocalEntityTableTableManager(
+      _$AppDatabase db, $PlayerLocalEntityTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$PlayerLocalEntityTableFilterComposer(ComposerState(db, table)),
+          orderingComposer: $$PlayerLocalEntityTableOrderingComposer(
+              ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$PlayerLocalEntityTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            Value<String> firstName = const Value.absent(),
+            Value<String> lastName = const Value.absent(),
+            Value<String> nickname = const Value.absent(),
+          }) =>
+              PlayerLocalEntityCompanion(
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            nickname: nickname,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> id = const Value.absent(),
+            required String firstName,
+            required String lastName,
+            required String nickname,
+          }) =>
+              PlayerLocalEntityCompanion.insert(
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            nickname: nickname,
+          ),
+        ));
+}
+
+class $$PlayerLocalEntityTableProcessedTableManager
+    extends ProcessedTableManager<
+        _$AppDatabase,
+        $PlayerLocalEntityTable,
+        PlayerLocalEntityData,
+        $$PlayerLocalEntityTableFilterComposer,
+        $$PlayerLocalEntityTableOrderingComposer,
+        $$PlayerLocalEntityTableProcessedTableManager,
+        $$PlayerLocalEntityTableInsertCompanionBuilder,
+        $$PlayerLocalEntityTableUpdateCompanionBuilder> {
+  $$PlayerLocalEntityTableProcessedTableManager(super.$state);
+}
+
+class $$PlayerLocalEntityTableFilterComposer
+    extends FilterComposer<_$AppDatabase, $PlayerLocalEntityTable> {
+  $$PlayerLocalEntityTableFilterComposer(super.$state);
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get firstName => $state.composableBuilder(
+      column: $state.table.firstName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get lastName => $state.composableBuilder(
+      column: $state.table.lastName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get nickname => $state.composableBuilder(
+      column: $state.table.nickname,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$PlayerLocalEntityTableOrderingComposer
+    extends OrderingComposer<_$AppDatabase, $PlayerLocalEntityTable> {
+  $$PlayerLocalEntityTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get firstName => $state.composableBuilder(
+      column: $state.table.firstName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get lastName => $state.composableBuilder(
+      column: $state.table.lastName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get nickname => $state.composableBuilder(
+      column: $state.table.nickname,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
 class _$AppDatabaseManager {
   final _$AppDatabase _db;
   _$AppDatabaseManager(this._db);
@@ -799,4 +1172,6 @@ class _$AppDatabaseManager {
               _db, _db.authenticatedPlayerLocalEntity);
   $$MatchLocalEntityTableTableManager get matchLocalEntity =>
       $$MatchLocalEntityTableTableManager(_db, _db.matchLocalEntity);
+  $$PlayerLocalEntityTableTableManager get playerLocalEntity =>
+      $$PlayerLocalEntityTableTableManager(_db, _db.playerLocalEntity);
 }

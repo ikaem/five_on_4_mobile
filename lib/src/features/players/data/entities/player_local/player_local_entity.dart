@@ -1,4 +1,6 @@
-// TODO we are adding a new entity
+// // TODO we are adding a new entity
+// import 'package:drift/drift.dart';
+
 import 'package:drift/drift.dart';
 
 class PlayerLocalEntity extends Table {

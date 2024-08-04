@@ -14,6 +14,9 @@ class MigrationWrapper {
       from1To2: (m, schema) async {
         await m.createTable(schema.matchLocalEntity);
       },
+      from2To3: (m, schema) async {
+        await m.createTable(schema.playerLocalEntity);
+      },
     ),
     beforeOpen: (details) async {
       // some populate things if needed
