@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository_impl.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/player_local_entity_value.dart';
@@ -30,6 +31,54 @@ void main() {
   group(
     "$PlayersRepository",
     () {
+      group(
+        ".getMatches()",
+        () {
+          test(
+            "given [PlayersLocalDataSource.getPlayers()] successfully returns players"
+            "when [.getPlayers()] is called"
+            "then should return expected players",
+            () async {
+              // setup
+              final localMatchValues = List.generate(3, (i) {
+                return PlayerLocalEntityValue(
+                  id: i + 1,
+                  firstName: "firstName$i",
+                  lastName: "lastName$i",
+                  nickname: "nickname$i",
+                );
+              });
+
+              // given
+              when(() => playersLocalDataSource.getPlayers(
+                      playerIds: any(named: "playerIds")))
+                  .thenAnswer((_) async => localMatchValues);
+
+              // when
+              final result = await playersRepository.getPlayers(
+                playerIds: [1, 2, 3],
+              );
+
+              // then
+              // TODO stopped here
+              final expectedPlayers = localMatchValues
+                  .map(
+                    (value) => PlayerModel(
+                      id: value.id,
+                      name: "${value.firstName} ${value.lastName}",
+                      // TODO fix this - we dont have converter from local match to model
+                      avatarUri: Uri.parse(""),
+                      nickname: value.nickname,
+                    ),
+                  )
+                  .toList();
+
+              // cleanup
+            },
+          );
+        },
+      );
+
       group(
         ".loadSearchedPlayers()",
         () {
