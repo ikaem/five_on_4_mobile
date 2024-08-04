@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';

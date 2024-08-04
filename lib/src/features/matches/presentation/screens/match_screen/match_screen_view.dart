@@ -3,7 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_match/provider/get_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

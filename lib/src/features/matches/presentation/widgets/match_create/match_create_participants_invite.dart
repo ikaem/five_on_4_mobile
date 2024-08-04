@@ -1,6 +1,6 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match_participation/match_participation_invitation.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/text_size_constants.dart';
