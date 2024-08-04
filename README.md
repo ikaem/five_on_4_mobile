@@ -43,7 +43,7 @@ apps](https://flutter.dev/docs/development/accessibility-and-localization/intern
 <!-- 2. run make generate --> -> maybe not this
 3. run the following command
 ```
-maake generate_migrations_schema
+make generate_migrations_schema
 ```
 1. run the following command
 ```
