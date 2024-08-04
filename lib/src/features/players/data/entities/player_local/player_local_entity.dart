@@ -1,4 +1,15 @@
 // TODO we are adding a new entity
+import 'package:drift/drift.dart';
+
+class PlayerLocalEntity extends Table {
+  IntColumn get id => integer()();
+  TextColumn get firstName => text()();
+  TextColumn get lastName => text()();
+  TextColumn get nickname => text()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
 
 
 
