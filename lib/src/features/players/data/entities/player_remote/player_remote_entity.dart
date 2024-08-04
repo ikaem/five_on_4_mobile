@@ -3,7 +3,9 @@ import 'package:equatable/equatable.dart';
 class PlayerRemoteEntity extends Equatable {
   const PlayerRemoteEntity({
     required this.id,
-    required this.name,
+    // required this.name,
+    required this.firstName,
+    required this.lastName,
     required this.avatarUrl,
     required this.nickname,
   });
@@ -15,7 +17,9 @@ class PlayerRemoteEntity extends Equatable {
         "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
   }) {
     final id = json["id"] as int;
-    final name = json["name"] as String;
+    // final name = json["name"] as String;
+    final firstName = json["firstName"] as String;
+    final lastName = json["lastName"] as String;
     // final avatarUri = json["avatarUrl"] as String;
     // TODO make ticket so that backend returns avatar url
     final nickname = json["nickname"] as String;
@@ -26,7 +30,10 @@ class PlayerRemoteEntity extends Equatable {
 
     final entity = PlayerRemoteEntity(
       id: id,
-      name: name,
+
+      // name: name,
+      firstName: firstName,
+      lastName: lastName,
       avatarUrl: tempAvatarUrl,
       nickname: nickname,
     );
@@ -35,7 +42,9 @@ class PlayerRemoteEntity extends Equatable {
   }
 
   final int id;
-  final String name;
+  final String firstName;
+  final String lastName;
+  // final String name;
   final String avatarUrl;
   final String nickname;
 
@@ -43,7 +52,9 @@ class PlayerRemoteEntity extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "name": name,
+      // "name": name,
+      "firstName": firstName,
+      "lastName": lastName,
       "avatarUri": avatarUrl,
       "nickname": nickname,
     };
@@ -52,7 +63,9 @@ class PlayerRemoteEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        name,
+        // name,
+        firstName,
+        lastName,
         avatarUrl,
         nickname,
       ];

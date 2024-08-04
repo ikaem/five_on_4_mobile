@@ -48,7 +48,9 @@ void main() {
                   3,
                   (i) => PlayerRemoteEntity(
                         id: i + 1,
-                        name: "John Doe",
+                        // name: "John Doe",
+                        firstName: "John",
+                        lastName: "Doe",
                         avatarUrl:
                             "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
                         nickname: "JD",
@@ -67,7 +69,9 @@ void main() {
                       "players": playerEntities
                           .map((e) => {
                                 "id": e.id,
-                                "name": e.name,
+                                // "name": e.name,
+                                "firstName": e.firstName,
+                                "lastName": e.lastName,
                                 // TODO this will be remove from backend response in future
                                 "authId": e.id,
                                 // TODO this is not available yet - come back to it
