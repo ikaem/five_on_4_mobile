@@ -52,3 +52,15 @@ class LocalApiDioInterceptor extends Interceptor {
     return localApiOptions;
   }
 }
+
+
+/* 
+
+    final newUri = options.uri.replace(path: localApiPath);
+
+    final localApiOptions = options.copyWith(
+      path: newUri.toString(),
+      // TODO path is not good here
+    );
+
+ */

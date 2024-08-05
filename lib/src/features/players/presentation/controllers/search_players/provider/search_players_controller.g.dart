@@ -7,7 +7,7 @@ part of 'search_players_controller.dart';
 // **************************************************************************
 
 String _$searchPlayersControllerHash() =>
-    r'78a6f57be7d907f164ff07bf41cd62d6bfd5cfcc';
+    r'734faf1c644b6ee8877f9ef7f3f0d1da59fcf99f';
 
 /// See also [SearchPlayersController].
 @ProviderFor(SearchPlayersController)

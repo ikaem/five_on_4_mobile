@@ -3,6 +3,8 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_input_args_value.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
+import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players_input/provider/search_players_inputs_controller_provider.dart';
+import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players_input/search_players_input_controller.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen_view.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_inputs.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_results_presenter.dart';
@@ -41,6 +43,9 @@ class _SearchPlayersContainerState
   final TextEditingController playerNameTermTextFieldController =
       TextEditingController();
 
+  late final SearchPlayersInputsController searchPlayersInputsController =
+      ref.read(searchPlayersInputsControllerProvider);
+
   @override
   void dispose() {
     _onDispose();
@@ -59,13 +64,16 @@ class _SearchPlayersContainerState
     return Column(
       children: [
         SearchPlayersInput(
-          playerNameTermInputStream: Stream.value(""),
+          playerNameTermInputStream:
+              searchPlayersInputsController.validatedNameTermStream,
           playerNameTermTextFieldController: playerNameTermTextFieldController,
-          onPlayerNameTermInputChanged: (value) {},
+          onPlayerNameTermInputChanged: (value) {
+            searchPlayersInputsController.onNameTermChanged(value);
+          },
         ),
         const SizedBox(height: SpacingConstants.S),
         StreamedElevatedButton(
-          isEnabledStream: Stream.value(true),
+          isEnabledStream: searchPlayersInputsController.areInputsValidStream,
           onPressed: () => ref
               .read(searchPlayersControllerProvider.notifier)
               .onSearchPlayers(
@@ -74,6 +82,8 @@ class _SearchPlayersContainerState
                 // TODO, but also maybe from the text controller
                 // nameTerm: "Kar",
                 args: const SearchPlayersInputArgsValue(nameTerm: "Kar"),
+                // args: searchPlayersInputsController
+                //     .validatedSearchPlayersInputArgsValue,
               ),
           label: "Search",
         ),
@@ -91,9 +101,10 @@ class _SearchPlayersContainerState
     );
   }
 
-  void _onDispose() {
+  Future<void> _onDispose() async {
     // TODO should dispose also the inputs controller
     playerNameTermTextFieldController.dispose();
+    await searchPlayersInputsController.dispose();
   }
 
   SearchPlayersUIState _getSearchPlayersUIState(

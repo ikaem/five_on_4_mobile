@@ -41,6 +41,8 @@ class SearchScreenView extends ConsumerStatefulWidget {
 class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
 // TODO this should probably be instantiated closer to the inputs widget of search matches - but let it me here for now
 
+// TODO it could be it is an error with boradcast, because we use riverpod there? maybe we dont need to create single instance of it?
+// TODO or maybe we should dispose of it in the actual provider
   late final SearchMatchesInputsController searchMatchesInputsController =
       ref.read(searchMatchesInputsControllerProvider);
 
