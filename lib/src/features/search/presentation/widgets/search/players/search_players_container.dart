@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_input_args_value.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen_view.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_inputs.dart';
@@ -71,7 +72,8 @@ class _SearchPlayersContainerState
                 // TODO temp here
                 // TODO later, we should possibly take value from the inputs controller, not from the text field controller
                 // TODO, but also maybe from the text controller
-                nameTerm: "Kar",
+                // nameTerm: "Kar",
+                args: const SearchPlayersInputArgsValue(nameTerm: "Kar"),
               ),
           label: "Search",
         ),
@@ -90,6 +92,7 @@ class _SearchPlayersContainerState
   }
 
   void _onDispose() {
+    // TODO should dispose also the inputs controller
     playerNameTermTextFieldController.dispose();
   }
 

@@ -74,6 +74,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         // could also use cutoff
         await ref
             .read(searchMatchesControllerProvider.notifier)
+            // TODO this should actually acceptz validated input args, not single value
             .onSearchMatches(matchTitle: value);
       },
     );

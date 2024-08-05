@@ -4,7 +4,9 @@ import 'package:five_on_4_mobile/src/features/players/domain/models/player/playe
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/get_players/get_players_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/load_searched_players/load_searched_players_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_fluter_value.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_input_args_value.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
+import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_inputs.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -111,13 +113,16 @@ void main() {
               ]);
 
               // given
-              const nameTerm = "";
+              // const nameTerm = "";
+              const SearchPlayersInputArgsValue args =
+                  SearchPlayersInputArgsValue(nameTerm: "");
 
               // when
               await container
                   .read(searchPlayersControllerProvider.notifier)
                   .onSearchPlayers(
-                    nameTerm: nameTerm,
+                    // nameTerm: nameTerm,
+                    args: args,
                   );
 
               // then
@@ -169,7 +174,8 @@ void main() {
               await container
                   .read(searchPlayersControllerProvider.notifier)
                   .onSearchPlayers(
-                    nameTerm: "John",
+                    // nameTerm: "John",
+                    args: const SearchPlayersInputArgsValue(nameTerm: "John"),
                   );
 
               // then
@@ -241,7 +247,8 @@ void main() {
               await container
                   .read(searchPlayersControllerProvider.notifier)
                   .onSearchPlayers(
-                    nameTerm: "John",
+                    // nameTerm: "John",
+                    args: const SearchPlayersInputArgsValue(nameTerm: "John"),
                   );
 
               // then
@@ -315,7 +322,8 @@ void main() {
               await container
                   .read(searchPlayersControllerProvider.notifier)
                   .onSearchPlayers(
-                    nameTerm: "John",
+                    // nameTerm: "John",
+                    args: const SearchPlayersInputArgsValue(nameTerm: "John"),
                   );
 
               // then
@@ -399,7 +407,8 @@ void main() {
               await container
                   .read(searchPlayersControllerProvider.notifier)
                   .onSearchPlayers(
-                    nameTerm: "John",
+                    // nameTerm: "John",
+                    args: const SearchPlayersInputArgsValue(nameTerm: "John"),
                   );
 
               // then

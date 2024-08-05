@@ -8,6 +8,7 @@ import 'package:five_on_4_mobile/src/features/players/domain/models/player/playe
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/get_players/get_players_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/load_searched_players/load_searched_players_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_fluter_value.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_input_args_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -39,8 +40,19 @@ class SearchPlayersController extends _$SearchPlayersController {
   }
 
   Future<void> onSearchPlayers({
-    required String nameTerm,
+    // required String nameTerm,
+    required SearchPlayersInputArgsValue? args,
   }) async {
+    // if (nameTerm.isEmpty) {
+    //   return;
+    // }
+
+    if (args == null) {
+      return;
+    }
+
+    // TODO we count on SearchPlayersInputArgsValue to have a nameTerm, and that it is not empty here
+    final String nameTerm = args.nameTerm;
     if (nameTerm.isEmpty) {
       return;
     }

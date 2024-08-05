@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 part "search_players_inputs_validator_mixin.dart";
 
-class SearchPlayersInputController
+class SearchPlayersInputsController
     with
         InputsValidationMixin,
         StreamInputsValidationMixin,
@@ -23,7 +23,11 @@ class SearchPlayersInputController
       _nameTermStream.transform(genericStringValidationTransformer);
 
   // latest values -> used for search button to trigger
-  String get latestNameTerm => _nameTermSubject.valueOrNull ?? "";
+  // TODO in theory, this could be null - why not - we are allowed to pass no value
+  // TODO do the same with search matches inputs contller
+  // TODO maybe this should not be taken directly from unvalidated subject? or maybe it is fine,. because validatedSearchPlayersInputArgsValue will be used for the search button
+  // TODO we dont even need this - we have valiudatedSearchPlayersInputArgsValue
+  // String? get latestNameTermValue => _nameTermSubject.valueOrNull;
 
   // combined stream - will include more in future - used for enable or disable search button
   Stream<bool> get areInputsValidStream => Rx.combineLatest([
