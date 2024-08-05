@@ -22,7 +22,7 @@ class SearchPlayersController extends _$SearchPlayersController {
       GetItWrapper.get<GetPlayersUseCase>();
   final SignOutUseCase _signOutUseCase = GetItWrapper.get<SignOutUseCase>();
 
-  Future<void> handleDispose() async {
+  Future<void> _handleDispose() async {
     ref.onDispose(() {
       // NOTE for now nothing is needed here
     });
@@ -30,7 +30,7 @@ class SearchPlayersController extends _$SearchPlayersController {
 
   @override
   AsyncValue<SearchPlayersControllerState> build() {
-    handleDispose();
+    _handleDispose();
 
     const initialState = SearchPlayersControllerState(
       foundPlayers: [],

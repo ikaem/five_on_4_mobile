@@ -57,6 +57,8 @@ class SearchMatchesInputsController
     _matchTitleSink.add(value);
   }
 
+  // TODO should get latest value from the subject as well, so it can be used with the search button
+
   // streams
   Stream<String?> get _matchTitleStream => _matchTitleSubject.distinct();
 
