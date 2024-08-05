@@ -72,7 +72,7 @@ class SearchMatchesController extends _$SearchMatchesController {
       );
       state = AsyncValue.data(newState);
     } on AuthNotLoggedInException catch (e, s) {
-      log("There was an auth issue when creating match -> error: $e, stack: $s");
+      log("There was an auth issue when searching match -> error: $e, stack: $s");
       state = const AsyncValue.error("User is not logged in", StackTrace.empty);
 
       // TODO need to do this when logout is implemented

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
-import '../../../../../../../utils/data/test_models.dart';
+import '../../../../../../../../utils/data/test_models.dart';
 
 // TODO these tests are in a wrong folder - unit
 

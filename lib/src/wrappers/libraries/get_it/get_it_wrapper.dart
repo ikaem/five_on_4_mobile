@@ -23,6 +23,14 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_matc
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_searched_matches/load_searched_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
+import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/use_cases/get_players/get_players_use_case.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/use_cases/load_searched_players/load_searched_players_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/flutter_secure_storage/flutter_secure_storage_wrapper.dart';
@@ -104,6 +112,15 @@ abstract class GetItWrapper {
       dioWrapper: dioWrapper,
     );
 
+    final PlayersLocalDataSource playersLocalDataSource =
+        PlayersLocalDataSourceImpl(
+      databaseWrapper: databaseWrapper,
+    );
+    final PlayersRemoteDataSource playersRemoteDataSource =
+        PlayersRemoteDataSourceImpl(
+      dioWrapper: dioWrapper,
+    );
+
     // repositories
     final authRepository = AuthRepositoryImpl(
       authLocalDataSource: authLocalDataSource,
@@ -112,6 +129,11 @@ abstract class GetItWrapper {
     final matchesRepository = MatchesRepositoryImpl(
       matchesLocalDataSource: matchesLocalDataSource,
       matchesRemoteDataSource: matchesRemoteDataSource,
+    );
+
+    final PlayersRepository playersRepository = PlayersRepositoryImpl(
+      playersLocalDataSource: playersLocalDataSource,
+      playersRemoteDataSource: playersRemoteDataSource,
     );
 
     // use cases
@@ -167,6 +189,13 @@ abstract class GetItWrapper {
       authRepository: authRepository,
     );
 
+    // players
+    final LoadSearchedPlayersUseCase loadSearchedPlayersUseCase =
+        LoadSearchedPlayersUseCase(playersRepository: playersRepository);
+    final GetPlayersUseCase getPlayersUseCase = GetPlayersUseCase(
+      playersRepository: playersRepository,
+    );
+
     // final
     // TODO FOR NOW NOT NEEDED
     // final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
@@ -206,6 +235,11 @@ abstract class GetItWrapper {
     getIt.registerSingleton<LoadSearchedMatchesUseCase>(
         loadSearchedMatchesUseCase);
     getIt.registerSingleton<GetMatchesUseCase>(getMatchesUseCase);
+
+    // players
+    getIt.registerSingleton<LoadSearchedPlayersUseCase>(
+        loadSearchedPlayersUseCase);
+    getIt.registerSingleton<GetPlayersUseCase>(getPlayersUseCase);
 
     // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
     // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);

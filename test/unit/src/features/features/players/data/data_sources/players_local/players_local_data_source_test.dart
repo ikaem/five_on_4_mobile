@@ -5,7 +5,7 @@ import 'package:five_on_4_mobile/src/features/players/domain/values/player_local
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../../../../../utils/helpers/test_database/setup_test_database.dart';
+import '../../../../../../../../utils/helpers/test_database/setup_test_database.dart';
 
 void main() {
   late TestDatabaseWrapper testDatabaseWrapper;
