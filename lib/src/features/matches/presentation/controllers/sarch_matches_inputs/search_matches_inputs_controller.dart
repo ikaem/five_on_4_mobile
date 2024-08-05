@@ -13,9 +13,7 @@ class SearchMatchesInputsController
   final BehaviorSubject<String> _matchTitleSubject = BehaviorSubject.seeded("");
 
   Future<void> dispose() async {
-    await Future.wait([
-      _matchTitleSubject.close(),
-    ]);
+    await _matchTitleSubject.close();
   }
 
   // validated streams
