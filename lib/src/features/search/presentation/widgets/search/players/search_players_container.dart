@@ -81,9 +81,9 @@ class _SearchPlayersContainerState
                 // TODO later, we should possibly take value from the inputs controller, not from the text field controller
                 // TODO, but also maybe from the text controller
                 // nameTerm: "Kar",
-                args: const SearchPlayersInputArgsValue(nameTerm: "Kar"),
-                // args: searchPlayersInputsController
-                //     .validatedSearchPlayersInputArgsValue,
+                // args: const SearchPlayersInputArgsValue(nameTerm: "Kar"),
+                args: searchPlayersInputsController
+                    .validatedSearchPlayersInputArgsValue,
               ),
           label: "Search",
         ),

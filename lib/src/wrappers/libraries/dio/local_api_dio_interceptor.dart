@@ -42,25 +42,16 @@ class LocalApiDioInterceptor extends Interceptor {
   RequestOptions _getRedirectToLocalApiOptions({
     required RequestOptions options,
   }) {
-    // TODO not sure why i have this here
-    const localApiPath = "http://10.0.2.2:8080";
+    final replacedUri = options.uri.replace(
+      host: "10.0.2.2",
+      scheme: "http",
+      port: 8080,
+    );
 
     final localApiOptions = options.copyWith(
-      path: localApiPath + options.uri.path,
+      path: replacedUri.toString(),
     );
 
     return localApiOptions;
   }
 }
-
-
-/* 
-
-    final newUri = options.uri.replace(path: localApiPath);
-
-    final localApiOptions = options.copyWith(
-      path: newUri.toString(),
-      // TODO path is not good here
-    );
-
- */
