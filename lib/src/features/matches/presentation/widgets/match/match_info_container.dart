@@ -52,6 +52,7 @@ class MatchInfoContainer extends StatelessWidget {
           ),
         ),
         if (isSyncing)
+          // TODO this is probably not needed
           const LoadingStatus(
             message: "Synchronizing with remote data...",
             isLinear: true,
