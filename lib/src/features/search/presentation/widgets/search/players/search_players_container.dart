@@ -48,6 +48,7 @@ class _SearchPlayersContainerState
 
   @override
   void dispose() {
+    // TODO for some reason, this is not triggered when we navigate to some other widget
     _onDispose();
     super.dispose();
   }
