@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -9,6 +10,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/s
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/matches/search_matches_container.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_container.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -89,6 +91,17 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         title: const Text("Search"),
         centerTitle: true,
         backgroundColor: ColorConstants.BLUE_LIGHT,
+        actions: [
+          // TODO temp this only
+          IconButton(
+            onPressed: () {
+              context.navigateTo(PlayerRoute(playerId: 1));
+            },
+            icon: const Icon(
+              Icons.temple_buddhist,
+            ),
+          )
+        ],
       ),
       // body: const Column(),
       body: TabToggler(
