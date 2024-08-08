@@ -1,6 +1,8 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
+import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player/player_info_container.dart';
+import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player/player_matches_container.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +43,12 @@ class PlayerScreenView extends ConsumerWidget {
       ),
       TabTogglerOptionValue(
         title: "MATCHES",
-        child: Container(),
+        // child: Container(),
+        child: PlayerMatchesContainer(
+          isLoading: false,
+          isError: false,
+          matches: _tempPlayerMatches,
+        ),
       ),
     ];
   }
@@ -55,3 +62,13 @@ final _tempPlayer = PlayerModel(
   nickname: "John",
   id: 1,
 );
+
+final _tempPlayerMatches = List.generate(
+    11,
+    (i) => MatchModel(
+          id: i + 1,
+          title: "Match title $i",
+          dateAndTime: DateTime.now(),
+          location: "Location $i",
+          description: "Description $i",
+        ));
