@@ -1,3 +1,4 @@
+import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
 import 'package:flutter/material.dart';
 
 class LoadingStatus extends StatelessWidget {
@@ -22,7 +23,7 @@ class LoadingStatus extends StatelessWidget {
         children: [
           Text(message),
           const SizedBox(
-            height: 4,
+            height: SpacingConstants.M,
           ),
           indicator,
         ],

@@ -36,12 +36,7 @@ class PlayerScreenView extends ConsumerWidget {
         child: PlayerInfoContainer(
           isLoading: false,
           isError: false,
-          player: PlayerModel(
-            avatarUri: Uri.parse("https://www.google.com"),
-            name: "John Doe",
-            nickname: "John",
-            id: 1,
-          ),
+          player: _tempPlayer,
         ),
       ),
       TabTogglerOptionValue(
@@ -51,3 +46,12 @@ class PlayerScreenView extends ConsumerWidget {
     ];
   }
 }
+
+// TODO temp until fetch player is implemented
+final _tempPlayer = PlayerModel(
+  avatarUri:
+      Uri.parse("https://images.unsplash.com/photo-1438761681033-6461ffad8d80"),
+  name: "John Doe",
+  nickname: "John",
+  id: 1,
+);
