@@ -12,6 +12,32 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
   final DatabaseWrapper _databaseWrapper;
 
   @override
+  Future<int> storePlayer({
+    required PlayerLocalEntityValue playerValue,
+  }) async {
+    final PlayerLocalEntityCompanion playerCompanion =
+        PlayerLocalEntityCompanion.insert(
+      id: Value(playerValue.id),
+      firstName: playerValue.firstName,
+      lastName: playerValue.lastName,
+      nickname: playerValue.nickname,
+      avatarUrl: playerValue.avatarUrl,
+    );
+
+    // TODO not really sure transaction is needed here
+    final id = await _databaseWrapper.db.transaction(() async {
+      final storedId =
+          await _databaseWrapper.playerLocalRepo.insertOnConflictUpdate(
+        playerCompanion,
+      );
+
+      return storedId;
+    });
+
+    return id;
+  }
+
+  @override
   Future<List<int>> storePlayers({
     required List<PlayerLocalEntityValue> matchValues,
   }) async {

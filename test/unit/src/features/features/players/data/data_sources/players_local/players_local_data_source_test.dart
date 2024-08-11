@@ -26,6 +26,142 @@ void main() {
   group(
     "$PlayersLocalDataSource",
     () {
+      group(".storePlayer()", () {
+        test(
+          "given [PlayerLocalEntityValue]"
+          "when [.storePlayer()] is called"
+          "then should save the player to the database",
+          () async {
+            // setup
+
+            // given
+            const playerValue = PlayerLocalEntityValue(
+              id: 1,
+              firstName: "John",
+              lastName: "Doe",
+              nickname: "JD",
+              avatarUrl:
+                  "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
+            );
+
+            // when
+            await playersLocalDataSource.storePlayer(playerValue: playerValue);
+
+            // then
+            // TODO abstract this somehow in tests - maybe for test db have this funxtion
+            // TODO when all is done, then create additojnal wrapper around general db, to have functions there that we need - so that we now have full interface ovder db wrapper, and can just repalce db when needed
+            final SimpleSelectStatement<$PlayerLocalEntityTable,
+                    PlayerLocalEntityData> select =
+                testDatabaseWrapper.databaseWrapper.playerLocalRepo.select();
+            final SimpleSelectStatement<$PlayerLocalEntityTable,
+                PlayerLocalEntityData> findMatchSelect = select
+              ..where((tbl) => tbl.id.equals(playerValue.id));
+
+            final PlayerLocalEntityData? playerData =
+                await findMatchSelect.getSingleOrNull();
+
+            final PlayerLocalEntityData expectedPlayerData =
+                PlayerLocalEntityData(
+              id: playerValue.id,
+              firstName: playerValue.firstName,
+              lastName: playerValue.lastName,
+              nickname: playerValue.nickname,
+              avatarUrl: playerValue.avatarUrl,
+            );
+
+            expect(playerData, equals(expectedPlayerData));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given [PlayerLocalEntityValue] already stored in db"
+          "when [.storePlayer()] is called with updated values of the same [PlayerLocalEntityValue]"
+          "then should updated the existing player",
+          () async {
+            // setup
+            const playerValue = PlayerLocalEntityValue(
+              id: 1,
+              firstName: "John",
+              lastName: "Doe",
+              nickname: "JD",
+              avatarUrl:
+                  "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
+            );
+
+            // given
+            await playersLocalDataSource.storePlayer(playerValue: playerValue);
+
+            // when
+            final PlayerLocalEntityValue updatedPlayerValue =
+                PlayerLocalEntityValue(
+              id: playerValue.id,
+              firstName: "${playerValue.firstName} updated",
+              lastName: "${playerValue.lastName} updated",
+              nickname: "${playerValue.nickname} updated",
+              avatarUrl: "${playerValue.avatarUrl} updated",
+            );
+
+            await playersLocalDataSource.storePlayer(
+              playerValue: updatedPlayerValue,
+            );
+
+            // then
+            final SimpleSelectStatement<$PlayerLocalEntityTable,
+                    PlayerLocalEntityData> select =
+                testDatabaseWrapper.databaseWrapper.playerLocalRepo.select();
+            final SimpleSelectStatement<$PlayerLocalEntityTable,
+                PlayerLocalEntityData> findMatchSelect = select
+              ..where((tbl) => tbl.id.equals(playerValue.id));
+
+            final PlayerLocalEntityData? playerData =
+                await findMatchSelect.getSingleOrNull();
+
+            final PlayerLocalEntityData expectedPlayerData =
+                PlayerLocalEntityData(
+              id: updatedPlayerValue.id,
+              firstName: updatedPlayerValue.firstName,
+              lastName: updatedPlayerValue.lastName,
+              nickname: updatedPlayerValue.nickname,
+              avatarUrl: updatedPlayerValue.avatarUrl,
+            );
+
+            expect(playerData, equals(expectedPlayerData));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given [PlayerLocalEntityValue]"
+          "when [.storePlayer()] is called"
+          "then should return expected id",
+          () async {
+            // setup
+
+            // given
+            const playerValue = PlayerLocalEntityValue(
+              id: 1,
+              firstName: "John",
+              lastName: "Doe",
+              nickname: "JD",
+              avatarUrl:
+                  "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
+            );
+
+            // when
+            final id = await playersLocalDataSource.storePlayer(
+                playerValue: playerValue);
+
+            // then
+            expect(id, equals(playerValue.id));
+
+            // cleanup
+          },
+        );
+      });
+
       group(
         ".getPlayers",
         () {
@@ -147,7 +283,7 @@ void main() {
       );
 
       group(
-        ".storeMatches/()",
+        ".storePlayers()",
         () {
           test(
             "given multiple [PlayerLocalEntityValue]s"
