@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/exceptions/players_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
@@ -63,6 +64,32 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
     }).toList();
 
     return playerIds;
+  }
+
+  @override
+  Future<PlayerLocalEntityValue> getPlayer({required int playerId}) async {
+    final SimpleSelectStatement<$PlayerLocalEntityTable, PlayerLocalEntityData>
+        select = _databaseWrapper.playerLocalRepo.select();
+    final SimpleSelectStatement<$PlayerLocalEntityTable, PlayerLocalEntityData>
+        findPlayerSelect = select..where((tbl) => tbl.id.equals(playerId));
+    final PlayerLocalEntityData? player =
+        await findPlayerSelect.getSingleOrNull();
+
+    if (player == null) {
+      throw PlayersExceptionPlayerNotFound(
+        message: "Player with id $playerId not found",
+      );
+    }
+
+    final playerValue = PlayerLocalEntityValue(
+      id: player.id,
+      firstName: player.firstName,
+      lastName: player.lastName,
+      nickname: player.nickname,
+      avatarUrl: player.avatarUrl,
+    );
+
+    return playerValue;
   }
 
   @override

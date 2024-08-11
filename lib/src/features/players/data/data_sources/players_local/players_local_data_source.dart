@@ -9,6 +9,10 @@ abstract interface class PlayersLocalDataSource {
     required List<PlayerLocalEntityValue> matchValues,
   });
 
+  Future<PlayerLocalEntityValue> getPlayer({
+    required int playerId,
+  });
+
   Future<List<PlayerLocalEntityValue>> getPlayers({
     required List<int> playerIds,
   });

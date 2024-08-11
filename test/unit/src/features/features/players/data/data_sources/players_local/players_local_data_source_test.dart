@@ -1,11 +1,13 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/exceptions/players_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/player_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../../../../utils/helpers/test_database/setup_test_database.dart';
+import '../../../../../../../../utils/matchers/throws_exception_with_message.dart';
 
 void main() {
   late TestDatabaseWrapper testDatabaseWrapper;
@@ -162,8 +164,76 @@ void main() {
         );
       });
 
+      group(".getPlayer()", () {
+        test(
+          "given a player id with no matching player stored in db"
+          "when [.getPlayer()] is called"
+          "then should throw expected exception",
+          () async {
+            // setup
+
+            // given
+            const playerId = 999;
+
+            // when & then
+            expect(
+              () async {
+                await playersLocalDataSource.getPlayer(playerId: playerId);
+              },
+              throwsExceptionWithMessage<PlayersExceptionPlayerNotFound>(
+                "Player with id $playerId not found",
+              ),
+            );
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given a player id with matching player stored in db"
+          "when [.getPlayer()] is called"
+          "then should return expected player",
+          () async {
+            // setup
+            const PlayerLocalEntityData playerData = PlayerLocalEntityData(
+              id: 1,
+              firstName: "John",
+              lastName: "Doe",
+              nickname: "JD",
+              avatarUrl:
+                  "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
+            );
+
+            // given
+
+            await testDatabaseWrapper.databaseWrapper.playerLocalRepo
+                .insertOne(playerData);
+
+            final playerId = playerData.id;
+
+            // when
+            final player = await playersLocalDataSource.getPlayer(
+              playerId: playerId,
+            );
+
+            // then
+            final expectedPlayer = PlayerLocalEntityValue(
+              id: playerData.id,
+              firstName: playerData.firstName,
+              lastName: playerData.lastName,
+              nickname: playerData.nickname,
+              avatarUrl: playerData.avatarUrl,
+            );
+
+            expect(player, equals(expectedPlayer));
+
+            // cleanup
+          },
+        );
+      });
+
       group(
-        ".getPlayers",
+        ".getPlayers()",
         () {
           test(
             "given [PlayerLocalEntity]s stored in db"
