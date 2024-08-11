@@ -9,4 +9,8 @@ abstract interface class PlayersRepository {
   Future<List<int>> loadSearchedPlayers({
     required SearchPlayersFilterValue filter,
   });
+
+  Future<void> loadPlayer({
+    required int playerId,
+  });
 }

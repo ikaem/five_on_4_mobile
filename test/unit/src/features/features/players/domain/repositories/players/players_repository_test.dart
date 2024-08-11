@@ -21,6 +21,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(_FakeSearchPlayersFilterValue());
+    registerFallbackValue(_FakePlayerLocalEntityValue());
   });
 
   tearDown(() {
@@ -31,6 +32,90 @@ void main() {
   group(
     "$PlayersRepository",
     () {
+      group(".loadPlayer", () {
+        test(
+          "given [playerId] is provided"
+          "when [.loadPlayer()] is called"
+          "then should [PlayersRemoteDataSource.getPlayer()] with expected arguments",
+          () async {
+            // setup
+            const PlayerRemoteEntity remoteEntity = PlayerRemoteEntity(
+              id: 1,
+              firstName: "firstName",
+              lastName: "lastName",
+              nickname: "nickname",
+              avatarUrl: "http://example.com",
+            );
+
+            when(() => playersRemoteDataSource.getPlayer(id: any(named: "id")))
+                .thenAnswer((_) async => remoteEntity);
+
+            // given
+            final playerId = remoteEntity.id;
+
+            // when
+            await playersRepository.loadPlayer(
+              playerId: playerId,
+            );
+
+            // then
+            verify(
+              () => playersRemoteDataSource.getPlayer(
+                id: playerId,
+              ),
+            ).called(1);
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given [PlayersRemoteDataSource.getPlayer()] successfully returns player"
+          "when [.loadPlayer()] is called"
+          "then should call [PlayersLocalDataSource.storePlayer()] with expected arguments",
+          () async {
+            // setup
+            const PlayerRemoteEntity remoteEntity = PlayerRemoteEntity(
+              id: 1,
+              firstName: "firstName",
+              lastName: "lastName",
+              nickname: "nickname",
+              avatarUrl: "http://example.com",
+            );
+
+            when(() => playersLocalDataSource.storePlayer(
+                    playerValue: any(named: "playerValue")))
+                .thenAnswer((_) async => remoteEntity.id);
+
+            // given
+            when(() => playersRemoteDataSource.getPlayer(id: any(named: "id")))
+                .thenAnswer((_) async => remoteEntity);
+
+            // when
+            await playersRepository.loadPlayer(
+              playerId: remoteEntity.id,
+            );
+
+            // then
+            final expectedPlayerValue = PlayerLocalEntityValue(
+              id: remoteEntity.id,
+              firstName: remoteEntity.firstName,
+              lastName: remoteEntity.lastName,
+              nickname: remoteEntity.nickname,
+              avatarUrl: remoteEntity.avatarUrl,
+            );
+
+            verify(
+              () => playersLocalDataSource.storePlayer(
+                playerValue: expectedPlayerValue,
+              ),
+            ).called(1);
+
+            // cleanup
+          },
+        );
+      });
+
       group(
         ".getMatches()",
         () {
@@ -254,3 +339,6 @@ class _MockPlayersRemoteDataSource extends Mock
 
 class _FakeSearchPlayersFilterValue extends Fake
     implements SearchPlayersFilterValue {}
+
+class _FakePlayerLocalEntityValue extends Fake
+    implements PlayerLocalEntityValue {}

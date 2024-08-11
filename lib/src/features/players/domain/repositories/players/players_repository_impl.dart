@@ -1,5 +1,6 @@
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source.dart';
+import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/values/player_local_entity_value.dart';
@@ -54,5 +55,22 @@ class PlayersRepositoryImpl implements PlayersRepository {
         _playersLocalDataSource.storePlayers(matchValues: localEntityValues);
 
     return ids;
+  }
+
+  // TODO should this also return int - just to be on safe side? or should it?
+  @override
+  Future<void> loadPlayer({required int playerId}) async {
+    final PlayerRemoteEntity remoteEntity =
+        await _playersRemoteDataSource.getPlayer(id: playerId);
+
+    final PlayerLocalEntityValue localEntityValue = PlayerLocalEntityValue(
+      id: remoteEntity.id,
+      firstName: remoteEntity.firstName,
+      lastName: remoteEntity.lastName,
+      nickname: remoteEntity.nickname,
+      avatarUrl: remoteEntity.avatarUrl,
+    );
+
+    await _playersLocalDataSource.storePlayer(playerValue: localEntityValue);
   }
 }
