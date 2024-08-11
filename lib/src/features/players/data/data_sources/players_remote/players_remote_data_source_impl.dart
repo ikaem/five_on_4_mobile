@@ -17,6 +17,36 @@ class PlayersRemoteDataSourceImpl implements PlayersRemoteDataSource {
   final DioWrapper _dioWrapper;
 
   @override
+  Future<PlayerRemoteEntity> getPlayer({required int id}) async {
+    final HttpRequestUriPartsValue uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpPlayersConstants.BACKEND_ENDPOINT_PATH_PLAYER
+          .getPlayerPathWithId(id),
+      queryParameters: null,
+    );
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.GET,
+    );
+
+    if (!response.isOk) {
+      // TODO come back to this - this is to be tested later
+      // TODO make proper exceptions for these things - already thowin simple exception in seach matches - ficx it
+      throw Exception("Something went wrong with getting player.");
+    }
+
+    final responseJsonPlayerData = response.payload["data"]["player"];
+
+    final playerEntity =
+        PlayerRemoteEntity.fromJson(json: responseJsonPlayerData);
+
+    return playerEntity;
+  }
+
+  @override
   Future<List<PlayerRemoteEntity>> getSearchedPlayers({
     required SearchPlayersFilterValue searchPlayersFilter,
   }) async {

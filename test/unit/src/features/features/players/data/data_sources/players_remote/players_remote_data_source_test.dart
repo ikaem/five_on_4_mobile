@@ -32,6 +32,100 @@ void main() {
   group(
     "$PlayersRemoteDataSource",
     () {
+      group(".getMatch()", () {
+        test(
+          "given ok response from [DioWrapper], "
+          "when [.getMatch()] is called, "
+          "then should return expected response",
+          () async {
+            // setup
+            const playerEntity = PlayerRemoteEntity(
+              id: 1,
+              firstName: "John",
+              lastName: "Doe",
+              avatarUrl:
+                  "https://images.unsplash.com/photo-1471864167314-e5f7e37e404c",
+              nickname: "JD",
+            );
+
+            // given
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"))).thenAnswer((_) async {
+              return HttpResponseValue(payload: {
+                "ok": true,
+                "message": "Player retrieved successfully.",
+                "data": {
+                  "player": {
+                    "id": playerEntity.id,
+                    "firstName": playerEntity.firstName,
+                    "lastName": playerEntity.lastName,
+                    "nickname": playerEntity.nickname,
+                    "authId": playerEntity.id,
+                  }
+                }
+              });
+            });
+
+            // when
+            final player = await dataSource.getPlayer(id: 1);
+
+            // then
+            expect(player, equals(playerEntity));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given [.getMatch()] is called"
+          "when examine request to the server"
+          "then should have called [DioWrapper.makeRequest()] with expected arguments",
+          () async {
+            // setup
+
+            // given
+            when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                uriParts: any(named: "uriParts"),
+                method: any(named: "method"))).thenAnswer((_) async {
+              return HttpResponseValue(payload: {
+                "ok": true,
+                "message": "Player retrieved successfully.",
+                "data": {
+                  "player": {
+                    "id": 1,
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "nickname": "JD",
+                    "authId": 1,
+                  }
+                }
+              });
+            });
+
+            // when
+            await dataSource.getPlayer(id: 1);
+
+            // then
+            final expectedUriParts = HttpRequestUriPartsValue(
+              apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+              apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+              apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+              apiEndpointPath: HttpPlayersConstants.BACKEND_ENDPOINT_PATH_PLAYER
+                  .getPlayerPathWithId(1),
+              queryParameters: null,
+            );
+            const expectedMethod = HttpMethodConstants.GET;
+
+            verify(() => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: expectedUriParts,
+                  method: expectedMethod,
+                ));
+
+            // cleanup
+          },
+        );
+      });
       group(
         ".getSearchedPlayers()",
         () {

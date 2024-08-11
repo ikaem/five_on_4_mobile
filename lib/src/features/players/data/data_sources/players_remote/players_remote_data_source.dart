@@ -7,4 +7,8 @@ abstract interface class PlayersRemoteDataSource {
   Future<List<PlayerRemoteEntity>> getSearchedPlayers({
     required SearchPlayersFilterValue searchPlayersFilter,
   });
+
+  Future<PlayerRemoteEntity> getPlayer({
+    required int id,
+  });
 }
