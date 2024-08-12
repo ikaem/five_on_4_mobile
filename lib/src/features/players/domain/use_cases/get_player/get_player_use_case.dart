@@ -8,7 +8,9 @@ class GetPlayerUseCase {
 
   final PlayersRepository _playersRepository;
 
-  Future<PlayerModel> call() async {
+  Future<PlayerModel> call({
+    required int playerId,
+  }) async {
     final PlayerModel player = await _playersRepository.getPlayer(
       playerId: playerId,
     );
