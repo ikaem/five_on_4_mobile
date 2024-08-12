@@ -18,6 +18,19 @@ class PlayersRepositoryImpl implements PlayersRepository {
   final PlayersRemoteDataSource _playersRemoteDataSource;
 
   @override
+  Future<PlayerModel> getPlayer({required int playerId}) async {
+    final PlayerLocalEntityValue localEntityValue =
+        await _playersLocalDataSource.getPlayer(
+      playerId: playerId,
+    );
+
+    final model =
+        PlayersConverter.toModelFromLocalEntityValue(localEntityValue);
+
+    return model;
+  }
+
+  @override
   Future<List<PlayerModel>> getPlayers({required List<int> playerIds}) async {
     final localEntitiesValues = await _playersLocalDataSource.getPlayers(
       playerIds: playerIds,

@@ -2,6 +2,8 @@ import 'package:five_on_4_mobile/src/features/players/domain/models/player/playe
 import 'package:five_on_4_mobile/src/features/players/domain/values/search_players_fluter_value.dart';
 
 abstract interface class PlayersRepository {
+  Future<PlayerModel> getPlayer({required int playerId});
+
   Future<List<PlayerModel>> getPlayers({
     required List<int> playerIds,
   });

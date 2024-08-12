@@ -1,6 +1,7 @@
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/exceptions/players_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository_impl.dart';
@@ -32,6 +33,115 @@ void main() {
   group(
     "$PlayersRepository",
     () {
+      group(
+        ".getPlayer()",
+        () {
+          test(
+            "given [PlayersLocalDataSource.getPlayer()] successfully returns player"
+            "when [.getPlayer()] is called"
+            "then should return expected result",
+            () async {
+              // setup
+              const localEntityValue = PlayerLocalEntityValue(
+                id: 1,
+                firstName: "firstName",
+                lastName: "lastName",
+                nickname: "nickname",
+                avatarUrl: "http://www.example.com/",
+              );
+
+              // given
+              when(() => playersLocalDataSource.getPlayer(
+                  playerId: any(named: "playerId"))).thenAnswer(
+                (_) async => localEntityValue,
+              );
+
+              // when
+              final result = await playersRepository.getPlayer(
+                  playerId: localEntityValue.id);
+
+              // then
+              final expectedResult = PlayerModel(
+                avatarUri: Uri.parse(localEntityValue.avatarUrl),
+                id: localEntityValue.id,
+                name:
+                    "${localEntityValue.firstName} ${localEntityValue.lastName}",
+                nickname: localEntityValue.nickname,
+              );
+
+              expect(result, equals(expectedResult));
+
+              // cleanup
+            },
+          );
+          // should throw exception if player is not found
+          test(
+            // ignore: unnecessary_brace_in_string_interps
+            "given [PlayersLocalDataSource.getPlayer()] throws "
+            "when [.getPlayer()] is called"
+            "then should throw ",
+            () async {
+              // setup
+              final exception = Exception("exception");
+
+              // given
+              when(() => playersLocalDataSource.getPlayer(
+                  playerId: any(named: "playerId"))).thenThrow(exception);
+
+              // when / then
+              expect(
+                () async => await playersRepository.getPlayer(
+                  playerId: 1,
+                ),
+                // throwsA(isA),
+                throwsA(predicate((e) {
+                  final exceptionString = e.toString();
+                  return exceptionString == exception.toString();
+                })),
+              );
+
+              // then
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given [.getPlayer()] is called"
+            "when examine call to [PlayersLocalDataSource.getPlayer()]"
+            "then should have been called with expected arguments",
+            () async {
+              const localEntityValue = PlayerLocalEntityValue(
+                id: 1,
+                firstName: "firstName",
+                lastName: "lastName",
+                nickname: "nickname",
+                avatarUrl: "http://www.example.com/",
+              );
+
+              when(() => playersLocalDataSource.getPlayer(
+                  playerId: any(named: "playerid"))).thenAnswer(
+                (_) async => localEntityValue,
+              );
+
+              // given
+              await playersRepository.getPlayer(
+                playerId: localEntityValue.id,
+              );
+
+              // when / then
+              verify(
+                () => playersLocalDataSource.getPlayer(
+                  playerId: localEntityValue.id,
+                ),
+              ).called(1);
+
+              // cleanup
+            },
+          );
+        },
+      );
+
       group(".loadPlayer", () {
         test(
           "given [playerId] is provided"
@@ -117,7 +227,7 @@ void main() {
       });
 
       group(
-        ".getMatches()",
+        ".getPlayers()",
         () {
           test(
             "given [PlayersLocalDataSource.getPlayers()] successfully returns players"
