@@ -29,7 +29,9 @@ import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/repositories/players/players_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/use_cases/get_player/get_player_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/get_players/get_players_use_case.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/use_cases/load_player/load_player_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/use_cases/load_searched_players/load_searched_players_use_case.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
@@ -196,6 +198,11 @@ abstract class GetItWrapper {
       playersRepository: playersRepository,
     );
 
+    final LoadPlayerUseCase loadPlayerUseCase =
+        LoadPlayerUseCase(playersRepository: playersRepository);
+    final GetPlayerUseCase getPlayerUseCase =
+        GetPlayerUseCase(playersRepository: playersRepository);
+
     // final
     // TODO FOR NOW NOT NEEDED
     // final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
@@ -204,6 +211,8 @@ abstract class GetItWrapper {
     // final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
     //   matchesRepository: matchesRepository,
     // );
+
+    // TODO extract all registering to another function
 
     // router
     getIt.registerSingleton<AutoRouteWrapper>(autoRouteWrapper);
@@ -240,6 +249,8 @@ abstract class GetItWrapper {
     getIt.registerSingleton<LoadSearchedPlayersUseCase>(
         loadSearchedPlayersUseCase);
     getIt.registerSingleton<GetPlayersUseCase>(getPlayersUseCase);
+    getIt.registerSingleton<LoadPlayerUseCase>(loadPlayerUseCase);
+    getIt.registerSingleton<GetPlayerUseCase>(getPlayerUseCase);
 
     // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
     // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);
