@@ -9,6 +9,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/get_it/get_it_wrapper.da
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "get_player_controller_state.dart";
+part "get_player_controller.g.dart";
 
 @riverpod
 class GetPlayerController extends _$GetPlayerController {
