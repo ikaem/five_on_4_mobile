@@ -12,7 +12,7 @@ class PlayerInfoContainer extends StatelessWidget {
     required this.player,
   });
 
-  final PlayerModel player;
+  final PlayerModel? player;
   final bool isError;
   final bool isLoading;
 
@@ -31,8 +31,19 @@ class PlayerInfoContainer extends StatelessWidget {
       );
     }
 
+    final thisPlayer = player;
+
+    if (thisPlayer == null) {
+      return const Center(
+        // TODO style this
+        // TODO do the same for match
+        // TODO this should never happen
+        child: Text("Player not found"),
+      );
+    }
+
     return PlayerInfo(
-      player: player,
+      player: thisPlayer,
     );
   }
 }

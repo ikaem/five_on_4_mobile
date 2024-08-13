@@ -19,6 +19,7 @@ class MatchUIState {
   final bool isLoading;
   final bool isSyncing;
   final bool isError;
+  // TODO why is this nullable?
   final MatchModel? match;
 }
 
