@@ -1,6 +1,6 @@
 import 'package:five_on_4_mobile/src/features/auth/domain/models/auth_data/auth_data_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 
 PlayerModel getTestPlayerModel({
   int id = 1,

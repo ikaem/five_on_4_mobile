@@ -2,7 +2,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
 // TODO move to values

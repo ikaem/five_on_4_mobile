@@ -142,8 +142,10 @@ List<PlayerRemoteEntity> getTestPlayerRemoteEntities({
       return PlayerRemoteEntity(
         id: index,
         nickname: "${namesPrefix}nickname$index",
-        name: "${namesPrefix}name$index",
-        avatarUri: avatarUrl,
+        // name: "${namesPrefix}name$index",
+        firstName: "${namesPrefix}firstName$index",
+        lastName: "${namesPrefix}lastName$index",
+        avatarUrl: avatarUrl,
       );
     },
   );

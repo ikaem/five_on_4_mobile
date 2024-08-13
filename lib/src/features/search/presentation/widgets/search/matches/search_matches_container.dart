@@ -56,6 +56,7 @@ class _SearchMatchesContainerState extends State<SearchMatchesContainer> {
         StreamedElevatedButton(
           isEnabledStream: widget.areInputsValidStream,
           onPressed: () {
+            // TODO I think we should take value from the inputs controller, not from the text field controller
             widget.onSearchButtonPressed(_matchTitleTextFieldController.text);
           },
           label: "Search",

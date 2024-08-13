@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
@@ -9,6 +10,7 @@ import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/s
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/matches/search_matches_container.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/widgets/search/players/search_players_container.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -41,6 +43,8 @@ class SearchScreenView extends ConsumerStatefulWidget {
 class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
 // TODO this should probably be instantiated closer to the inputs widget of search matches - but let it me here for now
 
+// TODO it could be it is an error with boradcast, because we use riverpod there? maybe we dont need to create single instance of it?
+// TODO or maybe we should dispose of it in the actual provider
   late final SearchMatchesInputsController searchMatchesInputsController =
       ref.read(searchMatchesInputsControllerProvider);
 
@@ -74,6 +78,7 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         // could also use cutoff
         await ref
             .read(searchMatchesControllerProvider.notifier)
+            // TODO this should actually acceptz validated input args, not single value
             .onSearchMatches(matchTitle: value);
       },
     );
@@ -86,6 +91,17 @@ class _SearchScreenViewState extends ConsumerState<SearchScreenView> {
         title: const Text("Search"),
         centerTitle: true,
         backgroundColor: ColorConstants.BLUE_LIGHT,
+        actions: [
+          // TODO temp this only
+          IconButton(
+            onPressed: () {
+              context.navigateTo(PlayerRoute(playerId: 1));
+            },
+            icon: const Icon(
+              Icons.temple_buddhist,
+            ),
+          )
+        ],
       ),
       // body: const Column(),
       body: TabToggler(

@@ -1,6 +1,6 @@
 // TODO use freezed or equatable later
 import 'package:equatable/equatable.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 
 class MatchModel extends Equatable {
   const MatchModel({

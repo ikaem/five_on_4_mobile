@@ -1,7 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/widgets/player_brief/player_brief.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wrapper.dart';
 import 'package:flutter/material.dart';
 
 // TODO test this
@@ -28,6 +29,7 @@ class PlayersBriefsList extends StatelessWidget {
           onTap: () {
             // TODO come back to this? or maybe we dont want this to be tappable by default? we could pass either on tapped, or let client wrap it in a gesture detector?
             // context.navigateTo(MatchRoute(matchId: match.id));
+            context.navigateTo(PlayerRoute(playerId: player.id));
           },
           child: PlayerBrief(player: player),
         );

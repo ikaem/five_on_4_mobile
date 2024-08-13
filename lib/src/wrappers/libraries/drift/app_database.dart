@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_local/authenticated_player_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/players/data/entities/player_local/player_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/migrations/migration_wrapper.dart';
 
 part "app_database.g.dart";
@@ -9,6 +10,9 @@ part "app_database.g.dart";
   tables: [
     AuthenticatedPlayerLocalEntity,
     MatchLocalEntity,
+    PlayerLocalEntity,
+    // PlayerLo
+    // PlayerLocalEntity(),
   ],
   queries: {
     "current_timestamp": "SELECT CURRENT_TIMESTAMP;",
@@ -28,8 +32,28 @@ class AppDatabase extends _$AppDatabase {
   // }
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => _migrationWrapper.migration;
 }
+
+// class PlayerLocalEntity extends Table {
+//   IntColumn get id => integer()();
+//   TextColumn get firstName => text()();
+//   TextColumn get lastName => text()();
+//   TextColumn get nickname => text()();
+
+//   @override
+//   Set<Column> get primaryKey => {id};
+// }
+
+// class PlayerLocalEntity extends Table {
+//   IntColumn get id => integer()();
+//   TextColumn get firstName => text()();
+//   TextColumn get lastName => text()();
+//   TextColumn get nickname => text()();
+
+//   @override
+//   Set<Column> get primaryKey => {id};
+// }

@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/wrappers/libraries/auto_route/auto_route_wr
 import 'package:flutter/material.dart';
 
 // TODO this should possibly live in matches feature
+// TODO this will probably be outdated - use MatchBriefsList
 class MatchesList extends StatelessWidget {
   const MatchesList({
     super.key,
