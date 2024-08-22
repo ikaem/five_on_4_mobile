@@ -1,8 +1,10 @@
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/custom_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/circled_sides_avatar.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/dialog_wrapper.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/string_extension.dart';
+import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participtions_creator.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_list.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
@@ -94,7 +96,8 @@ class MatchParticipants extends StatelessWidget {
             textColor: ColorConstants.WHITE,
             labelText: "INVITE PLAYERS",
             // onPressed: () => _onShowplayersInviteDialog(context: context),
-            onPressed: () {},
+            onPressed: () =>
+                _onShowMatchParticipantsInviterDialog(context: context),
           ),
         ],
       );
@@ -109,8 +112,9 @@ class MatchParticipants extends StatelessWidget {
           buttonColor: ColorConstants.BLUE_DARK,
           textColor: ColorConstants.WHITE,
           labelText: "INVITE PLAYERS",
-          // onPressed: () => _onShowplayersInviteDialog(context: context),
-          onPressed: () {},
+          onPressed: () =>
+              _onShowMatchParticipantsInviterDialog(context: context),
+          // onPressed: () {},
         ),
         const SizedBox(height: SpacingConstants.S),
         const Divider(),
@@ -362,3 +366,18 @@ List<PlayerBriefActionItem> _tempActionItems = [
     onActionItemTap: () {},
   ),
 ];
+
+// TODO should be abstracted and reused here and in match create participants
+Future<void> _onShowMatchParticipantsInviterDialog({
+  required BuildContext context,
+}) async {
+  await showDialog(
+    context: context,
+    builder: (context) => const DialogWrapper(
+      title: "INVITE PLAYERS",
+      child: MatchParticipationsCreator(
+        matchId: 1,
+      ),
+    ),
+  );
+}
