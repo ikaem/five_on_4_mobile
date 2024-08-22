@@ -13,9 +13,7 @@ class SearchMatchesInputsController
   final BehaviorSubject<String> _matchTitleSubject = BehaviorSubject.seeded("");
 
   Future<void> dispose() async {
-    await Future.wait([
-      _matchTitleSubject.close(),
-    ]);
+    await _matchTitleSubject.close();
   }
 
   // validated streams
@@ -56,6 +54,8 @@ class SearchMatchesInputsController
     // _matchTitleSubject.add(value);
     _matchTitleSink.add(value);
   }
+
+  // TODO should get latest value from the subject as well, so it can be used with the search button
 
   // streams
   Stream<String?> get _matchTitleStream => _matchTitleSubject.distinct();

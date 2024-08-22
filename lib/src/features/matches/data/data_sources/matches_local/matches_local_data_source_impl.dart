@@ -158,11 +158,11 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       location: matchValue.location,
     );
 
-    final id = await _databaseWrapper.db.transaction(() {
+    final id = await _databaseWrapper.db.transaction(() async {
       // final insertId = _databaseWrapper.matchLocalRepo.insertOne(companion);
-      final storeId =
-          _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
-      return storeId;
+      final storedId = await _databaseWrapper.matchLocalRepo
+          .insertOnConflictUpdate(companion);
+      return storedId;
     });
 
     return id;

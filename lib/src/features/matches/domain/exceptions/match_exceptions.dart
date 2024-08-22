@@ -25,6 +25,7 @@ class MatchesExceptionMatchFailedToCreate extends MatchesException {
 
 /* TODO rename all exceptions */
 
+// TODO remove end Exception from this one in name
 class MatchesExceptionMatchNotFoundException extends MatchesException {
   const MatchesExceptionMatchNotFoundException({
     required String message,

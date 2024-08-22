@@ -8,6 +8,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/screens/loading_
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/main_screen.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_create_screen/match_create_screen.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/screens/match_screen/match_screen.dart';
+import 'package:five_on_4_mobile/src/features/players/presentation/screens/player/player_screen.dart';
 import 'package:five_on_4_mobile/src/features/search/presentation/screens/search_screen.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class AutoRouteWrapper extends _$AutoRouteWrapper {
         ),
         AutoRoute(page: MatchCreateRoute.page),
         AutoRoute(page: MatchRoute.page),
+        AutoRoute(page: PlayerRoute.page),
         // AutoRoute(
         //   page: MatchRoute.page,
         // ),

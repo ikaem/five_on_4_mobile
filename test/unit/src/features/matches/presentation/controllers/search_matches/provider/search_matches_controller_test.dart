@@ -18,7 +18,7 @@ void main() {
   final listener = _MockListener<AsyncValue<SearchMatchesControllerState>>();
 
   setUpAll(() {
-    registerFallbackValue(AsyncValue.data(_FakeMatchCreateControllerState()));
+    registerFallbackValue(AsyncValue.data(_FakeSearchMatchesControllerState()));
     registerFallbackValue(_FakeSearchMatchesFilterValue());
   });
 
@@ -61,42 +61,9 @@ void main() {
                   null,
                   const AsyncData<SearchMatchesControllerState>(
                       SearchMatchesControllerState(foundMatches: [])),
-                  // const AsyncValue<SearchMatchesControllerState>.data(
-                  //   SearchMatchesControllerState(foundMatches: []),
-                  // ),
                 ),
           ]);
           verifyNoMoreInteractions(listener);
-
-          // ///////// verifying it //////////
-          // final captured = verifyInOrder([
-          //   () => listener(
-          //         captureAny(),
-          //         captureAny(),
-          //         // null,
-          //         // const AsyncValue.data(
-          //         //   SearchMatchesControllerState(foundMatches: []),
-          //         // ),
-          //       ),
-          // ]).captured;
-
-          // final args = captured[0];
-
-          // final firstArg = args[0];
-          // expect(firstArg, isNull);
-
-          // final secondArg = args[1];
-          // expect(
-          //   secondArg,
-          //   equals(
-          //     const AsyncData<SearchMatchesControllerState>(
-          //       SearchMatchesControllerState(
-          //         foundMatches: [],
-          //       ),
-          //     ),
-          //   ),
-          // );
-          // /////////// verifying it //////////
 
           // cleanup
           addTearDown(() {
@@ -142,7 +109,7 @@ void main() {
               );
 
           // then
-          verifyNoMoreInteractions(loadSearchedMatchesUseCase);
+          verifyNoMoreInteractions(listener);
 
           verifyNever(
               () => loadSearchedMatchesUseCase(filter: any(named: "filter")));
@@ -209,7 +176,9 @@ void main() {
           verifyNoMoreInteractions(listener);
 
           // verify calls to use cases
-          verify(() => loadSearchedMatchesUseCase(filter: any(named: "filter")))
+          verify(() => loadSearchedMatchesUseCase(
+                  filter:
+                      const SearchMatchesFilterValue(matchTitle: "matchTitle")))
               .called(1);
           verifyNever(
               () => getMatchesUseCase(matchIds: any(named: "matchIds")));
@@ -448,8 +417,8 @@ class _MockListener<T> extends Mock {
   void call(T? previous, T next);
 }
 
-class _FakeMatchCreateControllerState extends Mock
+class _FakeSearchMatchesControllerState extends Fake
     implements SearchMatchesControllerState {}
 
-class _FakeSearchMatchesFilterValue extends Mock
+class _FakeSearchMatchesFilterValue extends Fake
     implements SearchMatchesFilterValue {}

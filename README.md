@@ -39,11 +39,13 @@ apps](https://flutter.dev/docs/development/accessibility-and-localization/intern
 - or add new column
 - or change column type
 - - or some such
+- add table to app database
+  - it might show some const constructor error - restart VSC
 1. increase "schemaVersion" on AppDatabase by 1
 <!-- 2. run make generate --> -> maybe not this
-3. run the following command
+1. run the following command
 ```
-maake generate_migrations_schema
+make generate_migrations_schema
 ```
 1. run the following command
 ```

@@ -61,6 +61,16 @@ abstract class _$AutoRouteWrapper extends RootStackRouter {
         ),
       );
     },
+    PlayerRoute.name: (routeData) {
+      final args = routeData.argsAs<PlayerRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PlayerScreen(
+          key: args.key,
+          playerId: args.playerId,
+        ),
+      );
+    },
     RegisterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -200,6 +210,43 @@ class MatchRouteArgs {
   @override
   String toString() {
     return 'MatchRouteArgs{key: $key, matchId: $matchId}';
+  }
+}
+
+/// generated route for
+/// [PlayerScreen]
+class PlayerRoute extends PageRouteInfo<PlayerRouteArgs> {
+  PlayerRoute({
+    Key? key,
+    required int playerId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          PlayerRoute.name,
+          args: PlayerRouteArgs(
+            key: key,
+            playerId: playerId,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'PlayerRoute';
+
+  static const PageInfo<PlayerRouteArgs> page = PageInfo<PlayerRouteArgs>(name);
+}
+
+class PlayerRouteArgs {
+  const PlayerRouteArgs({
+    this.key,
+    required this.playerId,
+  });
+
+  final Key? key;
+
+  final int playerId;
+
+  @override
+  String toString() {
+    return 'PlayerRouteArgs{key: $key, playerId: $playerId}';
   }
 }
 

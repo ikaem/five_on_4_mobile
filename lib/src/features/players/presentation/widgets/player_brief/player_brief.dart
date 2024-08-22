@@ -1,4 +1,4 @@
-import 'package:five_on_4_mobile/src/features/players/models/player/player_model.dart';
+import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/circular_radius_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
