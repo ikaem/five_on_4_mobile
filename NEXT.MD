@@ -1,14 +1,7 @@
-1. start with support for match participation
-   1. it should be a new table
-   2. many to many -> player and match
-      1. player should be able to join many matches
-      2. match should have many players
-   3. create table
-   4. migrate
-   5. add endpoint to join
-      1. joining is me
-      2. me can be retrieved from token possibly - if not too inconvenient
-   6. get player
-      1. will need to join player table with match participation table
-         1. maybe limit to 5? 
-         2. maybe in future get only future matches
+1. next now is to createa new user that we will be able to invite
+2. we should not be able to invite ourselves
+3. also, search controller of players should be in this container for match participants
+4. and searcch player input controlelr, same as on search screen ofc
+5. all of this should be unified, so that there is only plugin and play ideally
+6. also, after find player, we should also have a controlelr somewhere to invite this player
+7. so lets start with that as well
