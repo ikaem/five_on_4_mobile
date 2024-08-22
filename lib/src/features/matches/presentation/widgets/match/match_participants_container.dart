@@ -138,6 +138,8 @@ class MatchParticipants extends StatelessWidget {
 
               return MatchPlayerParticipation(
                 player: player,
+                // actions: _tempActionItems,
+                actions: const [],
                 // isAddedToMatchInvitations: true,
                 // onInvitationAction: ({
                 //   required PlayerModel player,
@@ -160,12 +162,14 @@ class MatchPlayerParticipation extends StatelessWidget {
   const MatchPlayerParticipation({
     super.key,
     required this.player,
+    required this.actions,
   });
 
   // TODO we dont necessarily allow any actions here - it should be custom - we will add this later as a separate widget
   // that widgetion will MatchParticipantActions
 
   final PlayerModel player;
+  final List<PlayerBriefActionItem> actions;
 
   @override
   Widget build(BuildContext context) {
@@ -268,60 +272,62 @@ class MatchPlayerParticipation extends StatelessWidget {
             //     color: ColorConstants.BLUE_DARK,
             //   ),
             // ),
-            SizedBox(
-              height: 30,
-              child: PopupMenuButton(
-                color: ColorConstants.BLUE_DARK,
-                // iconSize: 14,
-                padding: const EdgeInsets.all(1),
-                icon: const Icon(
-                  // size: 14,
-                  Icons.more_horiz,
+            if (actions.isNotEmpty)
+              SizedBox(
+                height: 30,
+                child: PopupMenuButton(
                   color: ColorConstants.BLUE_DARK,
-                ),
-                itemBuilder: (BuildContext context) {
-                  return _tempActionItems.map((item) {
-                    return PopupMenuItem(
-                      value: item.onActionItemTap(),
-                      child: Row(
-                        children: [
-                          Icon(
-                            item.icon,
-                            color: ColorConstants.GREY_LIGHT,
-                          ),
-                          const SizedBox(width: SpacingConstants.XS),
-                          Text(
-                            item.label,
-                            style: const TextStyle(
-                              color: ColorConstants.WHITE,
+                  // iconSize: 14,
+                  padding: const EdgeInsets.all(1),
+                  icon: const Icon(
+                    // size: 14,
+                    Icons.more_horiz,
+                    color: ColorConstants.BLUE_DARK,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    // return _tempActionItems.map((item) {
+                    return actions.map((item) {
+                      return PopupMenuItem(
+                        value: item.onActionItemTap(),
+                        child: Row(
+                          children: [
+                            Icon(
+                              item.icon,
+                              color: ColorConstants.GREY_LIGHT,
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList();
+                            const SizedBox(width: SpacingConstants.XS),
+                            Text(
+                              item.label,
+                              style: const TextStyle(
+                                color: ColorConstants.WHITE,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList();
 
-                  // return [
-                  //   const PopupMenuItem(
-                  //     child: Text(
-                  //       "Invite player",
-                  //       style: TextStyle(
-                  //         color: ColorConstants.WHITE,
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   const PopupMenuItem(
-                  //     child: Text(
-                  //       "View player",
-                  //       style: TextStyle(
-                  //         color: ColorConstants.WHITE,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ];
-                },
+                    // return [
+                    //   const PopupMenuItem(
+                    //     child: Text(
+                    //       "Invite player",
+                    //       style: TextStyle(
+                    //         color: ColorConstants.WHITE,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   const PopupMenuItem(
+                    //     child: Text(
+                    //       "View player",
+                    //       style: TextStyle(
+                    //         color: ColorConstants.WHITE,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ];
+                  },
+                ),
               ),
-            ),
           ],
         ),
       ],
