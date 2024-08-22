@@ -106,7 +106,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
 
     return [
       TabTogglerOptionValue(
-        title: "Info",
+        title: "INFO",
         child: MatchInfoContainer(
           match: match,
           isError: isError,
@@ -116,7 +116,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
         ),
       ),
       TabTogglerOptionValue(
-        title: "Participants",
+        title: "PARTICIPANTS",
         child: MatchParticipantsContainer(
           participants: participants,
           isError: isError,
