@@ -100,9 +100,13 @@ class _MatchCreateScreenViewState extends ConsumerState<MatchCreateScreenView> {
 
                 return _MatchCreateActionButton(
                   areInputsValid: areInputsValid,
-                  onCreateMatch: ref
+                  // onCreateMatch: ref
+                  //     .read(createMatchControllerProvider.notifier)
+                  //     .onCreateMatch,
+                  onCreateMatch: () => ref
                       .read(createMatchControllerProvider.notifier)
-                      .onCreateMatch,
+                      .onCreateMatch(createMatchInputsController
+                          .validatedMatchCreateInputArgs),
                 );
               }),
         ],
@@ -219,14 +223,15 @@ class _MatchCreateActionButton extends StatelessWidget {
   });
 
   final bool areInputsValid;
-  final Future<void> Function(MatchCreateInputArgs?) onCreateMatch;
+  // final Future<void> Function(MatchCreateInputArgs?) onCreateMatch;
+  final Future<void> Function() onCreateMatch;
 
   @override
   Widget build(BuildContext context) {
     final iconColor = areInputsValid ? ColorConstants.ORANGE : Colors.grey;
 
     return TextButton.icon(
-      onPressed: areInputsValid ? () async => onCreateMatch(null) : null,
+      onPressed: areInputsValid ? () async => onCreateMatch() : null,
       icon: const Text("CREATE"),
       label: Icon(
         Icons.save,
