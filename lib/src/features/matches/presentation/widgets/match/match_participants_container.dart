@@ -261,11 +261,65 @@ class MatchPlayerParticipation extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            GestureDetector(
-              onTap: () {},
-              child: const Icon(
-                Icons.more_horiz,
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: const Icon(
+            //     Icons.more_horiz,
+            //     color: ColorConstants.BLUE_DARK,
+            //   ),
+            // ),
+            SizedBox(
+              height: 30,
+              child: PopupMenuButton(
                 color: ColorConstants.BLUE_DARK,
+                // iconSize: 14,
+                padding: const EdgeInsets.all(1),
+                icon: const Icon(
+                  // size: 14,
+                  Icons.more_horiz,
+                  color: ColorConstants.BLUE_DARK,
+                ),
+                itemBuilder: (BuildContext context) {
+                  return _tempActionItems.map((item) {
+                    return PopupMenuItem(
+                      value: item.onActionItemTap(),
+                      child: Row(
+                        children: [
+                          Icon(
+                            item.icon,
+                            color: ColorConstants.GREY_LIGHT,
+                          ),
+                          const SizedBox(width: SpacingConstants.XS),
+                          Text(
+                            item.label,
+                            style: const TextStyle(
+                              color: ColorConstants.WHITE,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList();
+
+                  // return [
+                  //   const PopupMenuItem(
+                  //     child: Text(
+                  //       "Invite player",
+                  //       style: TextStyle(
+                  //         color: ColorConstants.WHITE,
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   const PopupMenuItem(
+                  //     child: Text(
+                  //       "View player",
+                  //       style: TextStyle(
+                  //         color: ColorConstants.WHITE,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ];
+                },
               ),
             ),
           ],
@@ -274,3 +328,31 @@ class MatchPlayerParticipation extends StatelessWidget {
     );
   }
 }
+
+// TODO move somewhere else
+// TODO test
+class PlayerBriefActionItem<T> {
+  const PlayerBriefActionItem({
+    required this.label,
+    required this.icon,
+    required this.onActionItemTap,
+  });
+
+  final String label;
+  final IconData icon;
+  final T Function() onActionItemTap;
+}
+
+// TODO temp only
+List<PlayerBriefActionItem> _tempActionItems = [
+  PlayerBriefActionItem<void>(
+    label: "Invite player",
+    icon: Icons.add,
+    onActionItemTap: () {},
+  ),
+  PlayerBriefActionItem<void>(
+    label: "View player",
+    icon: Icons.person,
+    onActionItemTap: () {},
+  ),
+];
