@@ -27,7 +27,7 @@ class SearchPlayersResultsPresenter extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isError) {
       return const ErrorStatus(
-        message: "There was an issue searching matches",
+        message: "There was an issue searching players",
         onRetry: null,
         // onRetry: () async {
         //   // TODO for now do noting, dont offer it
@@ -36,13 +36,13 @@ class SearchPlayersResultsPresenter extends StatelessWidget {
     }
     if (isLoading) {
       return const LoadingStatus(
-        message: "Searching matches...",
+        message: "Searching players...",
       );
     }
 
     if (players.isEmpty) {
       return const Center(
-        child: Text("No matches found"),
+        child: Text("No players found"),
       );
     }
 
