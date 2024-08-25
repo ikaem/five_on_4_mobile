@@ -13,6 +13,16 @@ class PlayerMatchParticipationLocalEntity extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+
+  @override
+  // TODO: implement uniqueKeys
+  List<Set<Column<Object>>>? get uniqueKeys => [
+        // if a participation with same player and match already exists, we should be allowed to create a new one
+        {
+          playerId,
+          matchId,
+        }
+      ];
 }
 
 // TODO move to somehwere else, not sure where yet
