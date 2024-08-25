@@ -33,6 +33,103 @@ void main() {
     "$PlayerMatchParticipationRemoteDataSource",
     () {
       group(
+        ".inviteToMatch()",
+        () {
+          final okResponseValue = HttpResponseValue(
+            payload: {
+              "ok": true,
+              "message": "Player match participation stored successfully.",
+              "data": {
+                "id": 1,
+              },
+            },
+          );
+
+          test(
+            "given ok response from [DioWrapper], "
+            "when [.inviteToMatch()] is called, "
+            "then should return expected response",
+            () async {
+              // setup
+
+              // given
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return okResponseValue;
+                },
+              );
+
+              // when
+              final result = await dataSource.inviteToMatch(
+                matchId: 1,
+                playerId: 1,
+              );
+
+              // then
+              expect(result, equals(1));
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given [.inviteToMatch()] is called, "
+            "when examine request to the server"
+            "then should have called [DioWrapper.makeRequest()] with expected arguments",
+            () async {
+              // setup
+              when(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: any(named: "uriParts"),
+                  method: any(named: "method"),
+                ),
+              ).thenAnswer(
+                (_) async {
+                  return okResponseValue;
+                },
+              );
+
+              // given
+              await dataSource.inviteToMatch(
+                matchId: 1,
+                playerId: 1,
+              );
+
+              // when / then
+              final HttpRequestUriPartsValue expectedUriParts =
+                  HttpRequestUriPartsValue(
+                apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+                apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+                apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+                apiEndpointPath: HttpPlayerMatchParticipationsConstants
+                    .BACKEND_ENDPOINT_PATH_PLAYER_MATCH_PARTICIPATION_STORE,
+                queryParameters: const {
+                  "match_id": "1",
+                  "player_id": "1",
+                  "participation_status": "pendingDecision",
+                },
+              );
+              const expectedMethod = HttpMethodConstants.POST;
+
+              verify(
+                () => dioWrapper.makeRequest<Map<String, dynamic>>(
+                  uriParts: expectedUriParts,
+                  method: expectedMethod,
+                ),
+              ).called(1);
+
+              // cleanup
+            },
+          );
+        },
+      );
+
+      group(
         ".unjoinMatch()",
         () {
           final okResponseValue = HttpResponseValue(

@@ -93,7 +93,38 @@ class PlayerMatchParticipationRemoteDataSourceImpl
   @override
   Future<int> inviteToMatch(
       {required int matchId, required int playerId}) async {
-    // TODO: implement inviteToMatch
-    throw UnimplementedError();
+    final queryParams = <String, String>{
+      // TODO make these into constants
+      "match_id": matchId.toString(),
+      "player_id": playerId.toString(),
+      // TODO should take this from that enum for status
+      "participation_status": "pendingDecision",
+    };
+
+    final uriParts = HttpRequestUriPartsValue(
+      apiUrlScheme: HttpConstants.HTTPS_PROTOCOL.value,
+      apiBaseUrl: HttpConstants.BACKEND_BASE_URL.value,
+      apiContextPath: HttpConstants.BACKEND_CONTEXT_PATH.value,
+      apiEndpointPath: HttpPlayerMatchParticipationsConstants
+          .BACKEND_ENDPOINT_PATH_PLAYER_MATCH_PARTICIPATION_STORE,
+      queryParameters: queryParams,
+    );
+
+    final response = await _dioWrapper.makeRequest<Map<String, dynamic>>(
+      uriParts: uriParts,
+      method: HttpMethodConstants.POST,
+    );
+
+    if (!response.isOk) {
+      // TODO come back to this - this is to be tested later
+      // TODO make proper exceptions for these things - already thowin simple exception in seach matches - ficx it
+      throw Exception("Something went wrong with inviting to match.");
+    }
+
+    // TODO this seems flaky - make it better
+    final responseJsonPlayerMatchParticipationData =
+        response.payload["data"]["id"] as int;
+
+    return responseJsonPlayerMatchParticipationData;
   }
 }
