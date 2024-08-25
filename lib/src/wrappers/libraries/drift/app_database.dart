@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/auth/data/entities/authenticated_player_local/authenticated_player_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_local/player_local_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/migrations/migration_wrapper.dart';
 
@@ -11,6 +12,7 @@ part "app_database.g.dart";
     AuthenticatedPlayerLocalEntity,
     MatchLocalEntity,
     PlayerLocalEntity,
+    PlayerMatchParticipationLocalEntity,
     // PlayerLo
     // PlayerLocalEntity(),
   ],
@@ -32,7 +34,7 @@ class AppDatabase extends _$AppDatabase {
   // }
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => _migrationWrapper.migration;
