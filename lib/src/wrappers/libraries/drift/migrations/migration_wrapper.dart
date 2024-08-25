@@ -23,6 +23,9 @@ class MigrationWrapper {
           schema.playerLocalEntity.avatarUrl,
         );
       },
+      from4To5: (Migrator m, Schema5 schema) async {
+        await m.createTable(schema.playerMatchParticipationLocalEntity);
+      },
     ),
     beforeOpen: (details) async {
       // some populate things if needed
