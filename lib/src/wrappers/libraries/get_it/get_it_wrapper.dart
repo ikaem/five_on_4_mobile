@@ -139,9 +139,9 @@ abstract class GetItWrapper {
     );
 
     // use cases
-    final getAuthDataStatusUseCase = GetAuthDataStatusUseCase(
-      authRepository: authRepository,
-    );
+    // final getAuthDataStatusUseCase = GetAuthDataStatusUseCase(
+    //   authRepository: authRepository,
+    // );
 
     final getMatchUseCase =
         GetMatchUseCase(matchesRepository: matchesRepository);
@@ -220,7 +220,7 @@ abstract class GetItWrapper {
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
     // but then we would have to expose repositories via getIt
-    getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
+    // getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
     getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
     getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);

@@ -33,6 +33,8 @@ class DatabaseWrapper {
       db.authenticatedPlayerLocalEntity;
   $MatchLocalEntityTable get matchLocalRepo => db.matchLocalEntity;
   $PlayerLocalEntityTable get playerLocalRepo => db.playerLocalEntity;
+  $PlayerMatchParticipationLocalEntityTable get playerMatchParticipationRepo =>
+      db.playerMatchParticipationLocalEntity;
 
   Future<void> initialize() async {
     try {
