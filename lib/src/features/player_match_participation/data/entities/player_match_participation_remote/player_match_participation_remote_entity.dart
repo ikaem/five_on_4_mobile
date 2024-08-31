@@ -37,6 +37,16 @@ class PlayerMatchParticipationRemoteEntity extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "playerId": playerId,
+      "matchId": matchId,
+      "status": status,
+      "playerNickname": playerNickname,
+    };
+  }
+
   @override
   List<Object?> get props => [
         id,
