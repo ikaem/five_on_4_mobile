@@ -1,7 +1,9 @@
+import 'package:drift/drift.dart';
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/data/data_sources/player_match_participation_local/player_match_participation_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
 
 class PlayerMatchParticipationLocalDataSourceImpl
@@ -17,7 +19,19 @@ class PlayerMatchParticipationLocalDataSourceImpl
     required PlayerMatchParticipationLocalEntityValue
         playerMatchParticipationValue,
   }) async {
-    throw UnimplementedError();
+    final companion = PlayerMatchParticipationLocalEntityCompanion.insert(
+      id: Value(playerMatchParticipationValue.id),
+      status: playerMatchParticipationValue.status,
+      playerId: playerMatchParticipationValue.playerId,
+      matchId: playerMatchParticipationValue.matchId,
+      playerNickname: Value(playerMatchParticipationValue.playerNickname),
+    );
+
+    // TODO maybe we neede transaction - check it later
+    final storedId = await _databaseWrapper.playerMatchParticipationRepo
+        .insertOnConflictUpdate(companion);
+
+    return storedId;
   }
 
   @override
