@@ -120,7 +120,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     final responseJsonMapMatchData = response.payload["data"]["match"];
 
     final MatchRemoteEntity matchEntity =
-        MatchRemoteEntity.fromJson(json: responseJsonMapMatchData);
+        MatchRemoteEntity.fromJson(matchJsonMap: responseJsonMapMatchData);
 
     return matchEntity;
   }
@@ -158,7 +158,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         response.payload["data"]["matches"] as List<dynamic>;
 
     final matchesEntities = responseJsonMapMatchesData
-        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .map((e) => MatchRemoteEntity.fromJson(matchJsonMap: e))
         .toList();
 
     return matchesEntities;
@@ -199,7 +199,7 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         response.payload["data"]["matches"] as List<dynamic>;
 
     final matchesOverview = responseJsonMapMatchesData
-        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .map((e) => MatchRemoteEntity.fromJson(matchJsonMap: e))
         .toList();
 
     return matchesOverview;

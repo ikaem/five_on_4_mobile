@@ -50,6 +50,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
       description: remoteEntity.description,
     );
 
+    // TODO matches local data source should also store any participations on match into particpations table
+    // this is to make sure all is atomic in transaction in case of failure
     await _matchesLocalDataSource.storeMatch(matchValue: localEntityValue);
 
     // final matchRemote =
