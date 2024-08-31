@@ -190,6 +190,9 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       dateAndTime: matchData.dateAndTime,
       location: matchData.location,
       description: matchData.description,
+      // TODO this will need to be added later to actually have participations
+      // TODO just replicate same joins that exist on backend
+      participations: const [],
     );
 
     return entityValue;
@@ -212,6 +215,9 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
               dateAndTime: e.dateAndTime,
               location: e.location,
               description: e.description,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             ))
         .toList();
 
@@ -438,6 +444,9 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
               dateAndTime: e.dateAndTime,
               location: e.location,
               description: e.description,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             ))
         .toList();
     return matchValues;
@@ -481,6 +490,9 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
               dateAndTime: e.dateAndTime,
               location: e.location,
               description: e.description,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             ))
         .toList();
     return matchValues;
@@ -524,6 +536,9 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
               dateAndTime: e.dateAndTime,
               location: e.location,
               description: e.description,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             ))
         .toList();
     return matchValues;

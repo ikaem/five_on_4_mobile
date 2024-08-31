@@ -8,6 +8,8 @@ import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 
 class MatchesRepositoryImpl implements MatchesRepository {
   const MatchesRepositoryImpl({
@@ -42,12 +44,9 @@ class MatchesRepositoryImpl implements MatchesRepository {
     final remoteEntity =
         await _matchesRemoteDataSource.getMatch(matchId: matchId);
 
-    final localEntityValue = MatchLocalEntityValue(
-      id: remoteEntity.id,
-      dateAndTime: remoteEntity.dateAndTime,
-      title: remoteEntity.title,
-      location: remoteEntity.location,
-      description: remoteEntity.description,
+    final localEntityValue =
+        MatchesConverter.fromRemoteEntityToMatchLocalEntityValue(
+      matchRemote: remoteEntity,
     );
 
     // TODO matches local data source should also store any participations on match into particpations table

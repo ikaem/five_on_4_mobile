@@ -85,6 +85,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -143,6 +146,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -201,6 +207,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -251,6 +260,9 @@ void main() {
                       dateAndTime: entity.dateAndTime.value,
                       description: entity.description.value,
                       location: entity.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList();
@@ -315,6 +327,9 @@ void main() {
                       dateAndTime: entity.dateAndTime.value,
                       description: entity.description.value,
                       location: entity.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList();
@@ -385,6 +400,9 @@ void main() {
               title: testMatchLocalEntityCompanion.title.value,
               location: testMatchLocalEntityCompanion.location.value,
               description: testMatchLocalEntityCompanion.description.value,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             );
 
             expect(result, equals(expectedResult));
@@ -413,6 +431,9 @@ void main() {
                 dateAndTime: matchEntityCompanion.dateAndTime.value,
                 description: matchEntityCompanion.description.value,
                 location: matchEntityCompanion.location.value,
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // when
@@ -455,6 +476,9 @@ void main() {
                 dateAndTime: matchEntityCompanion.dateAndTime.value,
                 description: matchEntityCompanion.description.value,
                 location: matchEntityCompanion.location.value,
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // given
@@ -469,6 +493,9 @@ void main() {
                 description:
                     "${matchEntityCompanion.description.value} updated",
                 location: "${matchEntityCompanion.location.value} updated",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               await dataSource.storeMatch(matchValue: updatedMatchEntityValue);
@@ -510,6 +537,9 @@ void main() {
                 dateAndTime: matchEntityCompanion.dateAndTime.value,
                 description: matchEntityCompanion.description.value,
                 location: matchEntityCompanion.location.value,
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // when
@@ -547,6 +577,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: companion.description.value,
                     location: companion.location.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();
@@ -597,6 +630,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: companion.description.value,
                     location: companion.location.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();
@@ -616,6 +652,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: "${companion.description.value} updated",
                     location: "${companion.location.value} updated",
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();

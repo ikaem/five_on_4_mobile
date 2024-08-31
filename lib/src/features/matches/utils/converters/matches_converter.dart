@@ -2,10 +2,12 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote/match_remote_entity.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
-// TODO move to values
+// TODO this requireds testing
 
 abstract class MatchesConverter {
   static List<MatchLocalEntityValue> fromRemoteEntitiesToLocalEntityValues({
@@ -45,12 +47,28 @@ abstract class MatchesConverter {
     //   arrivingPlayers: arrivingPlayers,
     // );
 
+    final participationLocalEntityValues = matchRemote.participations
+        .map(
+          (e) => PlayerMatchParticipationLocalEntityValue(
+            id: e.id,
+            status: PlayerMatchParticipationStatus.values.firstWhere(
+              (element) => element.index == e.status,
+              orElse: () => PlayerMatchParticipationStatus.unknown,
+            ),
+            playerNickname: e.playerNickname,
+            playerId: e.playerId,
+            matchId: e.matchId,
+          ),
+        )
+        .toList();
+
     final entityValue = MatchLocalEntityValue(
       id: matchRemote.id,
       dateAndTime: matchRemote.dateAndTime,
       title: matchRemote.title,
       location: matchRemote.location,
       description: matchRemote.description,
+      participations: participationLocalEntityValues,
     );
 
     return entityValue;

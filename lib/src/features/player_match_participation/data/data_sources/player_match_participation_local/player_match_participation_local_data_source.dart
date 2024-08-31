@@ -4,6 +4,7 @@ import 'package:five_on_4_mobile/src/features/player_match_participation/domain/
 
 abstract interface class PlayerMatchParticipationLocalDataSource {
   // NOTE this might not even be needed - matches and players local data sources might be doing this instead, to make sure all is in one trasnaction
+  // TODO we will needed - we will seaprate fetching match and match participations - it will be two requests, so this will be used to store participations
   // TODO we will see
   // TODO maybe this will be useful when we do some isolatioed creation of participation(s)
   Future<int> storeParticipation({
