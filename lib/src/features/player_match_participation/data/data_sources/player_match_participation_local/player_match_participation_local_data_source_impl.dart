@@ -39,6 +39,29 @@ class PlayerMatchParticipationLocalDataSourceImpl
     required List<PlayerMatchParticipationLocalEntityValue>
         playerMatchParticipationValues,
   }) async {
-    throw UnimplementedError();
+    final companions = playerMatchParticipationValues
+        .map(
+          (playerMatchParticipationValue) =>
+              PlayerMatchParticipationLocalEntityCompanion.insert(
+            id: Value(playerMatchParticipationValue.id),
+            status: playerMatchParticipationValue.status,
+            playerId: playerMatchParticipationValue.playerId,
+            matchId: playerMatchParticipationValue.matchId,
+            playerNickname: Value(playerMatchParticipationValue.playerNickname),
+          ),
+        )
+        .toList();
+
+    // TODO not sure if transaction is better here
+    await _databaseWrapper.runInBatch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _databaseWrapper.playerMatchParticipationRepo,
+        companions,
+      );
+    });
+
+    final ids = playerMatchParticipationValues.map((e) => e.id).toList();
+
+    return ids;
   }
 }

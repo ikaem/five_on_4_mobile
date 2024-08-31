@@ -30,6 +30,161 @@ void main() {
     "$PlayerMatchParticipationLocalDataSource",
     () {
       group(
+        ".storeParticipations()",
+        () {
+          test(
+            "given list of [PlayerMatchParticipationLocalEntityValue] "
+            "when [.storeParticipations()] is called "
+            "then should store participations",
+            () async {
+              // setup
+
+              // given
+              // TODO check why in test (maybe in production too) we actually CAN insert participation with match and player id that does not exist? is this a bug, or maybe memory and sqlite work like that? check it later
+              final playerMatchParticipationValues = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  matchId: 1,
+                  playerId: index,
+                  id: index,
+                  playerNickname: "playerNickname$index",
+                  status: PlayerMatchParticipationStatus.values[index],
+                );
+              });
+
+              // when
+              await dataSource.storeParticipations(
+                playerMatchParticipationValues: playerMatchParticipationValues,
+              );
+
+              // then
+              final expectedResults = playerMatchParticipationValues
+                  .map(
+                    (playerMatchParticipationValue) =>
+                        PlayerMatchParticipationLocalEntityData(
+                      id: playerMatchParticipationValue.id,
+                      status: playerMatchParticipationValue.status,
+                      playerId: playerMatchParticipationValue.playerId,
+                      matchId: playerMatchParticipationValue.matchId,
+                      playerNickname:
+                          playerMatchParticipationValue.playerNickname,
+                    ),
+                  )
+                  .toList();
+
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final participations = await select.get();
+
+              expect(participations, equals(expectedResults));
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given list of [PlayerMatchParticipationLocalEntityValue] exists in the database "
+            "when [.storeParticipations()] is called with updated values of the same participations "
+            "then should update the existing participations",
+            () async {
+              // setup
+              final playerMatchParticipationValues = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  matchId: 1,
+                  playerId: index,
+                  id: index,
+                  playerNickname: "playerNickname$index",
+                  status: PlayerMatchParticipationStatus.pendingDecision,
+                );
+              });
+
+              // given
+              await dataSource.storeParticipations(
+                playerMatchParticipationValues: playerMatchParticipationValues,
+              );
+
+              // when
+              final updatedPlayerMatchParticipationValues =
+                  playerMatchParticipationValues
+                      .map(
+                        (playerMatchParticipationValue) =>
+                            PlayerMatchParticipationLocalEntityValue(
+                          matchId: playerMatchParticipationValue.matchId,
+                          playerId: playerMatchParticipationValue.playerId,
+                          id: playerMatchParticipationValue.id,
+                          playerNickname:
+                              playerMatchParticipationValue.playerNickname,
+                          // updating status
+                          status: PlayerMatchParticipationStatus.arriving,
+                        ),
+                      )
+                      .toList();
+
+              await dataSource.storeParticipations(
+                playerMatchParticipationValues:
+                    updatedPlayerMatchParticipationValues,
+              );
+
+              // then
+              final expectedResults = playerMatchParticipationValues
+                  .map(
+                    (playerMatchParticipationValue) =>
+                        PlayerMatchParticipationLocalEntityData(
+                      id: playerMatchParticipationValue.id,
+                      status: PlayerMatchParticipationStatus.arriving,
+                      playerId: playerMatchParticipationValue.playerId,
+                      matchId: playerMatchParticipationValue.matchId,
+                      playerNickname:
+                          playerMatchParticipationValue.playerNickname,
+                    ),
+                  )
+                  .toList();
+
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final participations = await select.get();
+
+              expect(participations, equals(expectedResults));
+
+              // cleanup
+            },
+          );
+
+          test(
+            "given list of [PlayerMatchParticipationLocalEntityValue] "
+            "when [.storeParticipations()] is called "
+            "then should return expected ids",
+            () async {
+              // setup
+
+              // given
+              // TODO check why in test (maybe in production too) we actually CAN insert participation with match and player id that does not exist? is this a bug, or maybe memory and sqlite work like that? check it later
+              final playerMatchParticipationValues = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  matchId: 1,
+                  playerId: index,
+                  id: index,
+                  playerNickname: "playerNickname$index",
+                  status: PlayerMatchParticipationStatus.values[index],
+                );
+              });
+
+              // when
+              final ids = await dataSource.storeParticipations(
+                playerMatchParticipationValues: playerMatchParticipationValues,
+              );
+
+              // then
+              expect(ids, equals([0, 1, 2]));
+
+              // cleanup
+            },
+          );
+        },
+      );
+
+      group(
         ".storeParticipation()",
         () {
           // shoud store participation
