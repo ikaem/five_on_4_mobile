@@ -16,6 +16,7 @@ class MatchRemoteEntity extends Equatable {
     // required this.arrivingPlayers,
   });
 
+// TODO for list of matches when we get them - those will be briefs - so maybe a new remote entity for briefs would be good to create in future - think about it
   // TODO if we go with Freezed, which we will, fromJson will be here anyway
   factory MatchRemoteEntity.fromJson({
     required Map<String, dynamic> json,
