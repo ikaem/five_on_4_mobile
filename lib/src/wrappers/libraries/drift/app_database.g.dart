@@ -827,6 +827,12 @@ class $PlayerMatchParticipationLocalEntityTable
           type: DriftSqlType.int, requiredDuringInsert: true)
       .withConverter<PlayerMatchParticipationStatus>(
           $PlayerMatchParticipationLocalEntityTable.$converterstatus);
+  static const VerificationMeta _playerNicknameMeta =
+      const VerificationMeta('playerNickname');
+  @override
+  late final GeneratedColumn<String> playerNickname = GeneratedColumn<String>(
+      'player_nickname', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _playerIdMeta =
       const VerificationMeta('playerId');
   @override
@@ -846,7 +852,8 @@ class $PlayerMatchParticipationLocalEntityTable
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'REFERENCES match_local_entity (id)'));
   @override
-  List<GeneratedColumn> get $columns => [id, status, playerId, matchId];
+  List<GeneratedColumn> get $columns =>
+      [id, status, playerNickname, playerId, matchId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -862,6 +869,12 @@ class $PlayerMatchParticipationLocalEntityTable
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     context.handle(_statusMeta, const VerificationResult.success());
+    if (data.containsKey('player_nickname')) {
+      context.handle(
+          _playerNicknameMeta,
+          playerNickname.isAcceptableOrUnknown(
+              data['player_nickname']!, _playerNicknameMeta));
+    }
     if (data.containsKey('player_id')) {
       context.handle(_playerIdMeta,
           playerId.isAcceptableOrUnknown(data['player_id']!, _playerIdMeta));
@@ -893,6 +906,8 @@ class $PlayerMatchParticipationLocalEntityTable
       status: $PlayerMatchParticipationLocalEntityTable.$converterstatus
           .fromSql(attachedDatabase.typeMapping
               .read(DriftSqlType.int, data['${effectivePrefix}status'])!),
+      playerNickname: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}player_nickname']),
       playerId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}player_id'])!,
       matchId: attachedDatabase.typeMapping
@@ -915,11 +930,13 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
     implements Insertable<PlayerMatchParticipationLocalEntityData> {
   final int id;
   final PlayerMatchParticipationStatus status;
+  final String? playerNickname;
   final int playerId;
   final int matchId;
   const PlayerMatchParticipationLocalEntityData(
       {required this.id,
       required this.status,
+      this.playerNickname,
       required this.playerId,
       required this.matchId});
   @override
@@ -931,6 +948,9 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
           .$converterstatus
           .toSql(status));
     }
+    if (!nullToAbsent || playerNickname != null) {
+      map['player_nickname'] = Variable<String>(playerNickname);
+    }
     map['player_id'] = Variable<int>(playerId);
     map['match_id'] = Variable<int>(matchId);
     return map;
@@ -940,6 +960,9 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
     return PlayerMatchParticipationLocalEntityCompanion(
       id: Value(id),
       status: Value(status),
+      playerNickname: playerNickname == null && nullToAbsent
+          ? const Value.absent()
+          : Value(playerNickname),
       playerId: Value(playerId),
       matchId: Value(matchId),
     );
@@ -953,6 +976,7 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       status: $PlayerMatchParticipationLocalEntityTable.$converterstatus
           .fromJson(serializer.fromJson<int>(json['status'])),
+      playerNickname: serializer.fromJson<String?>(json['playerNickname']),
       playerId: serializer.fromJson<int>(json['playerId']),
       matchId: serializer.fromJson<int>(json['matchId']),
     );
@@ -965,6 +989,7 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
       'status': serializer.toJson<int>($PlayerMatchParticipationLocalEntityTable
           .$converterstatus
           .toJson(status)),
+      'playerNickname': serializer.toJson<String?>(playerNickname),
       'playerId': serializer.toJson<int>(playerId),
       'matchId': serializer.toJson<int>(matchId),
     };
@@ -973,11 +998,14 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
   PlayerMatchParticipationLocalEntityData copyWith(
           {int? id,
           PlayerMatchParticipationStatus? status,
+          Value<String?> playerNickname = const Value.absent(),
           int? playerId,
           int? matchId}) =>
       PlayerMatchParticipationLocalEntityData(
         id: id ?? this.id,
         status: status ?? this.status,
+        playerNickname:
+            playerNickname.present ? playerNickname.value : this.playerNickname,
         playerId: playerId ?? this.playerId,
         matchId: matchId ?? this.matchId,
       );
@@ -986,6 +1014,7 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
     return (StringBuffer('PlayerMatchParticipationLocalEntityData(')
           ..write('id: $id, ')
           ..write('status: $status, ')
+          ..write('playerNickname: $playerNickname, ')
           ..write('playerId: $playerId, ')
           ..write('matchId: $matchId')
           ..write(')'))
@@ -993,13 +1022,15 @@ class PlayerMatchParticipationLocalEntityData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, status, playerId, matchId);
+  int get hashCode =>
+      Object.hash(id, status, playerNickname, playerId, matchId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is PlayerMatchParticipationLocalEntityData &&
           other.id == this.id &&
           other.status == this.status &&
+          other.playerNickname == this.playerNickname &&
           other.playerId == this.playerId &&
           other.matchId == this.matchId);
 }
@@ -1008,17 +1039,20 @@ class PlayerMatchParticipationLocalEntityCompanion
     extends UpdateCompanion<PlayerMatchParticipationLocalEntityData> {
   final Value<int> id;
   final Value<PlayerMatchParticipationStatus> status;
+  final Value<String?> playerNickname;
   final Value<int> playerId;
   final Value<int> matchId;
   const PlayerMatchParticipationLocalEntityCompanion({
     this.id = const Value.absent(),
     this.status = const Value.absent(),
+    this.playerNickname = const Value.absent(),
     this.playerId = const Value.absent(),
     this.matchId = const Value.absent(),
   });
   PlayerMatchParticipationLocalEntityCompanion.insert({
     this.id = const Value.absent(),
     required PlayerMatchParticipationStatus status,
+    this.playerNickname = const Value.absent(),
     required int playerId,
     required int matchId,
   })  : status = Value(status),
@@ -1027,12 +1061,14 @@ class PlayerMatchParticipationLocalEntityCompanion
   static Insertable<PlayerMatchParticipationLocalEntityData> custom({
     Expression<int>? id,
     Expression<int>? status,
+    Expression<String>? playerNickname,
     Expression<int>? playerId,
     Expression<int>? matchId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (status != null) 'status': status,
+      if (playerNickname != null) 'player_nickname': playerNickname,
       if (playerId != null) 'player_id': playerId,
       if (matchId != null) 'match_id': matchId,
     });
@@ -1041,11 +1077,13 @@ class PlayerMatchParticipationLocalEntityCompanion
   PlayerMatchParticipationLocalEntityCompanion copyWith(
       {Value<int>? id,
       Value<PlayerMatchParticipationStatus>? status,
+      Value<String?>? playerNickname,
       Value<int>? playerId,
       Value<int>? matchId}) {
     return PlayerMatchParticipationLocalEntityCompanion(
       id: id ?? this.id,
       status: status ?? this.status,
+      playerNickname: playerNickname ?? this.playerNickname,
       playerId: playerId ?? this.playerId,
       matchId: matchId ?? this.matchId,
     );
@@ -1062,6 +1100,9 @@ class PlayerMatchParticipationLocalEntityCompanion
           .$converterstatus
           .toSql(status.value));
     }
+    if (playerNickname.present) {
+      map['player_nickname'] = Variable<String>(playerNickname.value);
+    }
     if (playerId.present) {
       map['player_id'] = Variable<int>(playerId.value);
     }
@@ -1076,6 +1117,7 @@ class PlayerMatchParticipationLocalEntityCompanion
     return (StringBuffer('PlayerMatchParticipationLocalEntityCompanion(')
           ..write('id: $id, ')
           ..write('status: $status, ')
+          ..write('playerNickname: $playerNickname, ')
           ..write('playerId: $playerId, ')
           ..write('matchId: $matchId')
           ..write(')'))
@@ -1548,6 +1590,7 @@ typedef $$PlayerMatchParticipationLocalEntityTableInsertCompanionBuilder
     = PlayerMatchParticipationLocalEntityCompanion Function({
   Value<int> id,
   required PlayerMatchParticipationStatus status,
+  Value<String?> playerNickname,
   required int playerId,
   required int matchId,
 });
@@ -1555,6 +1598,7 @@ typedef $$PlayerMatchParticipationLocalEntityTableUpdateCompanionBuilder
     = PlayerMatchParticipationLocalEntityCompanion Function({
   Value<int> id,
   Value<PlayerMatchParticipationStatus> status,
+  Value<String?> playerNickname,
   Value<int> playerId,
   Value<int> matchId,
 });
@@ -1586,24 +1630,28 @@ class $$PlayerMatchParticipationLocalEntityTableTableManager
           getUpdateCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             Value<PlayerMatchParticipationStatus> status = const Value.absent(),
+            Value<String?> playerNickname = const Value.absent(),
             Value<int> playerId = const Value.absent(),
             Value<int> matchId = const Value.absent(),
           }) =>
               PlayerMatchParticipationLocalEntityCompanion(
             id: id,
             status: status,
+            playerNickname: playerNickname,
             playerId: playerId,
             matchId: matchId,
           ),
           getInsertCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             required PlayerMatchParticipationStatus status,
+            Value<String?> playerNickname = const Value.absent(),
             required int playerId,
             required int matchId,
           }) =>
               PlayerMatchParticipationLocalEntityCompanion.insert(
             id: id,
             status: status,
+            playerNickname: playerNickname,
             playerId: playerId,
             matchId: matchId,
           ),
@@ -1639,6 +1687,11 @@ class $$PlayerMatchParticipationLocalEntityTableFilterComposer
           builder: (column, joinBuilders) => ColumnWithTypeConverterFilters(
               column,
               joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get playerNickname => $state.composableBuilder(
+      column: $state.table.playerNickname,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 
   $$PlayerLocalEntityTableFilterComposer get playerId {
     final $$PlayerLocalEntityTableFilterComposer composer =
@@ -1681,6 +1734,11 @@ class $$PlayerMatchParticipationLocalEntityTableOrderingComposer
 
   ColumnOrderings<int> get status => $state.composableBuilder(
       column: $state.table.status,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get playerNickname => $state.composableBuilder(
+      column: $state.table.playerNickname,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 

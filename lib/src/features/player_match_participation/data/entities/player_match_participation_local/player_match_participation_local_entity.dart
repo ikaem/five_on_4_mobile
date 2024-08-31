@@ -6,6 +6,11 @@ class PlayerMatchParticipationLocalEntity extends Table {
   IntColumn get id => integer()();
 
   IntColumn get status => intEnum<PlayerMatchParticipationStatus>()();
+  // TODO this adds duplication between tables, but screw it. we need to know somehow name on participation
+  // so at some point, if we allow changes of nickname, this would be a problem because we would need to update it on both backend and on each device. this is why we should not allow changes of nickname
+  // alternatively, we could send entire player?
+  // maybe as a field here, so we would then have full player info, but i dont know. lets consider that when we get there
+  TextColumn get playerNickname => text().nullable()();
 
   // refs
   IntColumn get playerId => integer().references(PlayerLocalEntity, #id)();
