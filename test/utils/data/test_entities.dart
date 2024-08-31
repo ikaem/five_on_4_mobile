@@ -8,6 +8,8 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_remote/player_remote_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 
+// TODO these might be obsolete in future
+
 List<MatchLocalEntityCompanion> generateTestMatchLocalEntityCompanions({
   int count = 10,
   String namesPrefix = "test_",
@@ -41,6 +43,7 @@ List<MatchRemoteEntity> generateTestMatchRemoteEntities({
         dateAndTime: DateTime.now().millisecondsSinceEpoch,
         description: "${namesPrefix}description${index + 1} ",
         location: "${namesPrefix}location${index + 1}",
+        participations: const [],
       );
     },
   );
