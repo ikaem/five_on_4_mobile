@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_local/matches_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_remote/matches_remote_data_source.dart';
@@ -5,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/isar/isar_wrapper.dart';
 import 'package:five_on_4_mobile/src/wrappers/local/database/database_wrapper.dart';
@@ -172,7 +174,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
 
     final id = await _databaseWrapper.db.transaction(() async {
       // final insertId = _databaseWrapper.matchLocalRepo.insertOne(companion);
-      final storedId = await _databaseWrapper.matchLocalRepo
+      final storedId = await _databaseWrapper.matchRepo
           .insertOnConflictUpdate(matchCompanion);
 
       await _databaseWrapper.playerMatchParticipationRepo
@@ -213,7 +215,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     // TODO not sure if batch is needed, but lets leave it as is
     await _databaseWrapper.runInBatch((batch) {
       batch.insertAllOnConflictUpdate(
-        _databaseWrapper.matchLocalRepo,
+        _databaseWrapper.matchRepo,
         matchCompanions,
       );
     });
@@ -277,36 +279,120 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   Future<MatchLocalEntityValue> getMatch({
     required int matchId,
   }) async {
-    final select = _databaseWrapper.matchLocalRepo.select();
-    final findMatch = select..where((tbl) => tbl.id.equals(matchId));
-    final matchData = await findMatch.getSingleOrNull();
+// TODO this will be removed later - when we separate match and participations requests, so each will need to be requested separatedly. this will allow to not be required to have same joins in mobile and backend
 
-    if (matchData == null) {
-      // TODO not sure we should be throwing exception here
+    final select = _databaseWrapper.matchRepo.select();
+    final joinedSelect = select.join([
+      leftOuterJoin(
+        _databaseWrapper.playerMatchParticipationRepo,
+        _databaseWrapper.playerMatchParticipationRepo.matchId.equalsExp(
+          _databaseWrapper.matchRepo.id,
+        ),
+      ),
+    ]);
+
+    final findMatchSelect = joinedSelect
+      ..where(_databaseWrapper.matchRepo.id.equals(matchId));
+
+    final result = await findMatchSelect.get();
+
+    if (result.isEmpty) {
       throw MatchesExceptionMatchNotFoundException(
         message: "Match with id: $matchId not found",
       );
     }
 
-    final MatchLocalEntityValue entityValue = MatchLocalEntityValue(
+    final matchData = result.first.readTable(_databaseWrapper.matchRepo);
+    final participationsData = result.map((row) {
+      // return e.readTable(_databaseWrapper.playerMatchParticipationRepo);
+      final participationData = row.readTableOrNull(
+        _databaseWrapper.playerMatchParticipationRepo,
+      );
+
+      if (participationData == null) {
+        return null;
+      }
+
+      return participationData;
+
+      // final participationValue = PlayerMatchParticipationLocalEntityValue(
+      //   id: participationData.id,
+      //   matchId: participationData.matchId,
+      //   playerId: participationData.playerId,
+      //   status: participationData.status,
+      //   playerNickname: participationData.playerNickname,
+      // );
+
+      // return participationValue;
+    }).toList();
+
+    final validatedParticipations = participationsData.whereNotNull().map((e) {
+      final participationValue = PlayerMatchParticipationLocalEntityValue(
+        id: e.id,
+        matchId: e.matchId,
+        playerId: e.playerId,
+        status: e.status,
+        playerNickname: e.playerNickname,
+      );
+
+      return participationValue;
+    }).toList();
+
+    final matchValue = MatchLocalEntityValue(
       id: matchData.id,
       title: matchData.title,
       dateAndTime: matchData.dateAndTime,
       location: matchData.location,
       description: matchData.description,
-      // TODO this will need to be added later to actually have participations
-      // TODO just replicate same joins that exist on backend
-      participations: const [],
+      participations: validatedParticipations,
     );
 
-    return entityValue;
+    return matchValue;
+
+    // TODO temp only - lets test ///////////
+    // final tempValue = MatchLocalEntityValue(
+    //   id: 1,
+    //   dateAndTime: DateTime.now().millisecondsSinceEpoch,
+    //   title: "title",
+    //   location: "location",
+    //   description: "description",
+    //   participations: validatedParticipations,
+    // );
+
+    // return tempValue;
+
+    ///////////////////////////////////////////// KEEP THIS FOR NOW /////////////////////////////////////////////
+    // NOTE old implementation - we will probably return to thos when separate requests for match and participations. for now, though, leave it
+    // final select = _databaseWrapper.matchLocalRepo.select();
+    // final findMatch = select..where((tbl) => tbl.id.equals(matchId));
+    // final matchData = await findMatch.getSingleOrNull();
+
+    // if (matchData == null) {
+    //   // TODO not sure we should be throwing exception here
+    //   throw MatchesExceptionMatchNotFoundException(
+    //     message: "Match with id: $matchId not found",
+    //   );
+    // }
+
+    // final MatchLocalEntityValue entityValue = MatchLocalEntityValue(
+    //   id: matchData.id,
+    //   title: matchData.title,
+    //   dateAndTime: matchData.dateAndTime,
+    //   location: matchData.location,
+    //   description: matchData.description,
+    //   // TODO this will need to be added later to actually have participations
+    //   // TODO just replicate same joins that exist on backend
+    //   participations: const [],
+    // );
+
+    // return entityValue;
   }
 
   @override
   Future<List<MatchLocalEntityValue>> getMatches({
     required List<int> matchIds,
   }) async {
-    final select = _databaseWrapper.matchLocalRepo.select();
+    final select = _databaseWrapper.matchRepo.select();
 
     final findMatches = select..where((tbl) => tbl.id.isIn(matchIds));
 
@@ -365,7 +451,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   }) {
     // final matchTitle = filter.title;
 
-    final select = _databaseWrapper.matchLocalRepo.select();
+    final select = _databaseWrapper.matchRepo.select();
 
     // TODO throw exception for now realy quick
     throw UnimplementedError();
@@ -445,7 +531,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       0,
     );
 
-    final select = _databaseWrapper.matchLocalRepo.select();
+    final select = _databaseWrapper.matchRepo.select();
     final findMatches = select
       // TODO WILL COME BACK TO THIS
       // TODO we can have another where, or we can do this check in upper where
@@ -494,7 +580,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       999,
     );
 
-    final select = _databaseWrapper.matchLocalRepo.select();
+    final select = _databaseWrapper.matchRepo.select();
     final findMatches = select
       // TODO WILL COME BACK TO THIS
       // TODO we can have another where, or we can do this check in upper where
@@ -540,7 +626,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       0,
     );
 
-    final select = _databaseWrapper.matchLocalRepo.select();
+    final select = _databaseWrapper.matchRepo.select();
     final findMatches = select
       // TODO WILL COME BACK TO THIS
       // TODO we can have another where, or we can do this check in upper where

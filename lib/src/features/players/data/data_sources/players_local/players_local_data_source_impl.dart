@@ -27,8 +27,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
 
     // TODO not really sure transaction is needed here
     final id = await _databaseWrapper.db.transaction(() async {
-      final storedId =
-          await _databaseWrapper.playerLocalRepo.insertOnConflictUpdate(
+      final storedId = await _databaseWrapper.playerRepo.insertOnConflictUpdate(
         playerCompanion,
       );
 
@@ -54,7 +53,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
 
     await _databaseWrapper.runInBatch((batch) {
       batch.insertAllOnConflictUpdate(
-        _databaseWrapper.playerLocalRepo,
+        _databaseWrapper.playerRepo,
         playerCompanions,
       );
     });
@@ -69,7 +68,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
   @override
   Future<PlayerLocalEntityValue> getPlayer({required int playerId}) async {
     final SimpleSelectStatement<$PlayerLocalEntityTable, PlayerLocalEntityData>
-        select = _databaseWrapper.playerLocalRepo.select();
+        select = _databaseWrapper.playerRepo.select();
     final SimpleSelectStatement<$PlayerLocalEntityTable, PlayerLocalEntityData>
         findPlayerSelect = select..where((tbl) => tbl.id.equals(playerId));
     final PlayerLocalEntityData? player =
@@ -95,7 +94,7 @@ class PlayersLocalDataSourceImpl implements PlayersLocalDataSource {
   @override
   Future<List<PlayerLocalEntityValue>> getPlayers(
       {required List<int> playerIds}) async {
-    final select = _databaseWrapper.playerLocalRepo.select();
+    final select = _databaseWrapper.playerRepo.select();
 
     final findPlayers = select..where((tbl) => tbl.id.isIn(playerIds));
 

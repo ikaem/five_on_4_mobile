@@ -67,7 +67,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -127,7 +127,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -187,7 +187,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -247,7 +247,7 @@ void main() {
                   matchEntities.map((entity) => entity.id.value).toList();
 
               // given
-              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+              await testDatabaseWrapper.databaseWrapper.matchRepo
                   .insertAll(matchEntities);
 
               // when
@@ -314,7 +314,7 @@ void main() {
                     ..add(matchEntities.length + 1);
 
               // given
-              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+              await testDatabaseWrapper.databaseWrapper.matchRepo
                   .insertAll(matchEntities);
 
               // when
@@ -379,7 +379,7 @@ void main() {
             // setup
             final testMatchLocalEntityCompanion =
                 generateTestMatchLocalEntityCompanions(count: 1).first;
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertOne(testMatchLocalEntityCompanion);
 
             // given
@@ -405,6 +405,87 @@ void main() {
               // TODO we will see if this is needed
               // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
               participations: const [],
+            );
+
+            expect(result, equals(expectedResult));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given a valid match id and existing [PlayerMatchParticipationLocalEntity]s in the database"
+          "when '.getMatch() is called"
+          "then should return expected match with participations",
+          () async {
+            // setup
+            // final participations = List.generate(3, (index) {
+            //   return PlayerMatchParticipationLocalEntityValue(
+            //     id: index + 1,
+            //     status: PlayerMatchParticipationStatus.pendingDecision,
+            //     playerNickname: "player$index",
+            //     playerId: index + 1,
+            //     matchId: 1,
+            //   );
+            // });
+
+            final match = MatchLocalEntityCompanion.insert(
+              id: const Value(1),
+              title: "title",
+              dateAndTime: DateTime.now().millisecondsSinceEpoch,
+              location: "location",
+              description: "description",
+            );
+
+            final participations = List.generate(3, (index) {
+              return PlayerMatchParticipationLocalEntityCompanion.insert(
+                id: Value(index + 1),
+                status: PlayerMatchParticipationStatus.pendingDecision,
+                playerNickname: Value("player$index"),
+                playerId: index + 1,
+                matchId: 1,
+              );
+            });
+
+            await testDatabaseWrapper.databaseWrapper.matchRepo
+                .insertOne(match);
+            await testDatabaseWrapper
+                .databaseWrapper.playerMatchParticipationRepo
+                .insertAll(participations);
+
+            // given
+            final id = match.id.value;
+
+            // when
+            final result = await dataSource.getMatch(matchId: id);
+
+            // then
+            // final expectedResult = MatchLocalEntityData(
+            //   id: id,
+            //   title: testMatchLocalEntityCompanion.title.value,
+            //   dateAndTime: testMatchLocalEntityCompanion.dateAndTime.value,
+            //   description: testMatchLocalEntityCompanion.description.value,
+            //   location: testMatchLocalEntityCompanion.location.value,
+            // );
+            final expectedResult = MatchLocalEntityValue(
+              id: id,
+              dateAndTime: match.dateAndTime.value,
+              title: match.title.value,
+              location: match.location.value,
+              description: match.description.value,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityValue(
+                      id: participation.id.value,
+                      status: participation.status.value,
+                      playerNickname: participation.playerNickname.value,
+                      playerId: participation.playerId.value,
+                      matchId: participation.matchId.value,
+                    ),
+                  )
+                  .toList(),
             );
 
             expect(result, equals(expectedResult));
@@ -589,7 +670,7 @@ void main() {
               // then
               // TODO this needs to be abstracted somehow as a getter possibly in app datahbase wrapper
               final select =
-                  testDatabaseWrapper.databaseWrapper.matchLocalRepo.select();
+                  testDatabaseWrapper.databaseWrapper.matchRepo.select();
               final findMatch = select
                 ..where((tbl) => tbl.id.equals(matchEntityValue.id));
               final matchData = await findMatch.getSingleOrNull();
@@ -648,7 +729,7 @@ void main() {
 
               // then
               final select =
-                  testDatabaseWrapper.databaseWrapper.matchLocalRepo.select();
+                  testDatabaseWrapper.databaseWrapper.matchRepo.select();
               final findMatch = select
                 ..where((tbl) => tbl.id.equals(matchEntityValue.id));
               final matchData = await findMatch.getSingleOrNull();
@@ -747,8 +828,7 @@ void main() {
                 )
                 .toList();
 
-            final select = await testDatabaseWrapper
-                .databaseWrapper.matchLocalRepo
+            final select = await testDatabaseWrapper.databaseWrapper.matchRepo
                 .select()
                 .get();
 
@@ -821,8 +901,7 @@ void main() {
                 )
                 .toList();
 
-            final select = await testDatabaseWrapper
-                .databaseWrapper.matchLocalRepo
+            final select = await testDatabaseWrapper.databaseWrapper.matchRepo
                 .select()
                 .get();
 

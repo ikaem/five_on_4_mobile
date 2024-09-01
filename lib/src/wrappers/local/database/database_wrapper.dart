@@ -31,8 +31,8 @@ class DatabaseWrapper {
   // db repositories (tables) will be here
   $AuthenticatedPlayerLocalEntityTable get authenticatedPlayerRepo =>
       db.authenticatedPlayerLocalEntity;
-  $MatchLocalEntityTable get matchLocalRepo => db.matchLocalEntity;
-  $PlayerLocalEntityTable get playerLocalRepo => db.playerLocalEntity;
+  $MatchLocalEntityTable get matchRepo => db.matchLocalEntity;
+  $PlayerLocalEntityTable get playerRepo => db.playerLocalEntity;
   $PlayerMatchParticipationLocalEntityTable get playerMatchParticipationRepo =>
       db.playerMatchParticipationLocalEntity;
 
