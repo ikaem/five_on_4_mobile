@@ -224,6 +224,7 @@ void main() {
                 description: "description",
                 location: "location",
                 title: "title",
+                participations: const [],
               );
 
               final ProviderContainer providerContainer = ProviderContainer();

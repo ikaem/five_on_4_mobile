@@ -133,4 +133,5 @@ final _tempPlayerMatches = List.generate(
           dateAndTime: DateTime.now(),
           location: "Location $i",
           description: "Description $i",
+          participations: const [],
         ));

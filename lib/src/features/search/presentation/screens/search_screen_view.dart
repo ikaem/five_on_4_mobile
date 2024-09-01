@@ -188,4 +188,5 @@ final List<MatchModel> _tempMatches = List.generate(
           location: "Location",
           description: "Description",
           title: "Title",
+          participations: const [],
         ));

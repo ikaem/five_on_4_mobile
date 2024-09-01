@@ -55,6 +55,7 @@ MatchModel getTestMatchModel({
     dateAndTime: dateAndTime ?? DateTime.now(),
     location: location,
     description: description,
+    participations: const [],
     // organizer: organizer,
     // arrivingPlayers: arrivingPlayers,
   );
@@ -78,6 +79,7 @@ List<MatchModel> getTestMatchesModels({
         dateAndTime: dateAndTime ?? DateTime.now(),
         location: location,
         description: description,
+        participations: const [],
         // organizer: organizer,
         // arrivingPlayers: arrivingPlayers,
       );

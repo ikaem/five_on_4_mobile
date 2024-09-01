@@ -123,6 +123,7 @@ void main() {
           "then should return expected value",
           () async {
             // setup
+
             const localEntityValue = MatchLocalEntityValue(
               id: 1,
               dateAndTime: 1,
@@ -157,6 +158,7 @@ void main() {
               title: localEntityValue.title,
               location: localEntityValue.location,
               description: localEntityValue.description,
+              participations: const [],
             );
 
             expect(result, equals(expectedModel));
@@ -220,6 +222,7 @@ void main() {
                   title: e.title,
                   location: e.location,
                   description: e.description,
+                  participations: const [],
                 ),
               )
               .toList();
@@ -344,6 +347,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -357,6 +361,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -370,6 +375,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),

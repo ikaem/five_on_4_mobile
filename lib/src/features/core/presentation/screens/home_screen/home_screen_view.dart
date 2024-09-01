@@ -119,6 +119,8 @@ class HomeScreenView extends ConsumerWidget {
               id: index + 1,
               location: "location",
               title: "title",
+              // TODO will be removed eventually
+              participations: const [],
             ),
           ),
           isError: matchesUIState.isError,
@@ -141,6 +143,7 @@ class HomeScreenView extends ConsumerWidget {
               id: index + 1,
               location: "location",
               title: "title",
+              participations: const [],
             ),
           ),
           isError: matchesUIState.isError,
