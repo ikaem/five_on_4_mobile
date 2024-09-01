@@ -110,6 +110,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -121,6 +123,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -132,6 +136,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -216,13 +222,17 @@ class MatchesRepositoryImpl implements MatchesRepository {
         await _matchesLocalDataSource.getMatch(matchId: matchId);
 
     // TODO maybe converter exists already
-    final matchModel = MatchModel(
-      id: localEntityValue.id,
-      dateAndTime:
-          DateTime.fromMillisecondsSinceEpoch(localEntityValue.dateAndTime),
-      location: localEntityValue.location,
-      description: localEntityValue.description,
-      title: localEntityValue.title,
+    // final matchModel = MatchModel(
+    //   id: localEntityValue.id,
+    //   dateAndTime:
+    //       DateTime.fromMillisecondsSinceEpoch(localEntityValue.dateAndTime),
+    //   location: localEntityValue.location,
+    //   description: localEntityValue.description,
+    //   title: localEntityValue.title,
+    // );
+
+    final matchModel = MatchesConverter.toModelFromLocalEntityValue(
+      value: localEntityValue,
     );
 
     return matchModel;
@@ -234,16 +244,20 @@ class MatchesRepositoryImpl implements MatchesRepository {
         await _matchesLocalDataSource.getMatches(matchIds: matchIds);
 
     // TODO maybe converter exists already
-    final modelMatches = localEntitiesValues.map((e) {
-      return MatchModel(
-        id: e.id,
-        dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
-        location: e.location,
-        description: e.description,
-        title: e.title,
-      );
+    // final modelMatches = localEntitiesValues.map((e) {
+    //   return MatchModel(
+    //     id: e.id,
+    //     dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+    //     location: e.location,
+    //     description: e.description,
+    //     title: e.title,
+    //   );
+    // }).toList();
+
+    final matchModels = localEntitiesValues.map((e) {
+      return MatchesConverter.toModelFromLocalEntityValue(value: e);
     }).toList();
 
-    return modelMatches;
+    return matchModels;
   }
 }

@@ -38,3 +38,5 @@ enum PlayerMatchParticipationStatus {
   // TODO if any other are added, they need to be added at the end of list to account for indexes of each enum and avoid migration
   unknown, // 3
 }
+
+// TODO create some extension on this for nicely formatted string to render in UI

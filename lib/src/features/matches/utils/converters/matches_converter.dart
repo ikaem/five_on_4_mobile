@@ -3,6 +3,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/models/player_match_participation/player_match_participation_model.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
@@ -88,6 +89,9 @@ abstract class MatchesConverter {
     return matchesModel;
   }
 
+// TODO maybe it would be good to rename these to start with to
+// toModelFromLocalEntityData - to know immediately what it converts to
+// TODO not used
   static MatchModel fromLocalEntityDataToModel({
     required MatchLocalEntityData matchLocal,
   }) {
@@ -113,8 +117,34 @@ abstract class MatchesConverter {
       description: matchLocal.description,
       // organizer: matchLocal.organizer,
       // arrivingPlayers: arrivingPlayers,
+      participations: const [],
     );
 
     return matchModel;
+  }
+
+  static MatchModel toModelFromLocalEntityValue({
+    required MatchLocalEntityValue value,
+  }) {
+    final participations = value.participations.map((e) {
+      return PlayerMatchParticipationModel(
+        id: e.id,
+        status: e.status,
+        playerNickname: e.playerNickname,
+        playerId: e.playerId,
+        matchId: e.matchId,
+      );
+    }).toList();
+
+    final match = MatchModel(
+      id: value.id,
+      title: value.title,
+      dateAndTime: DateTime.fromMillisecondsSinceEpoch(value.dateAndTime),
+      location: value.location,
+      description: value.description,
+      participations: participations,
+    );
+
+    return match;
   }
 }
