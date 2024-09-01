@@ -4,6 +4,8 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -415,30 +417,174 @@ void main() {
       group(
         ".storeMatch()",
         () {
+          // TODO this is for testing only - will be simpliefed later where storing of participations will be fully delegated to its own data source, as match and its participations will be fetched from remote in separate calls
+          test(
+            "given [MatchLocalEntityValue] with participations"
+            "when '.storeMatch() is called"
+            "then should save participations to the database",
+            () async {
+              // setup
+              // given
+              final participations = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  id: index + 1,
+                  status: PlayerMatchParticipationStatus.pendingDecision,
+                  playerNickname: "player$index",
+                  playerId: index + 1,
+                  matchId: 1,
+                );
+              });
+              final matchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: participations,
+              );
+
+              // when
+              await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              // then
+              final expectedParticipationsData = participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityData(
+                      id: participation.id,
+                      status: participation.status,
+                      playerNickname: participation.playerNickname,
+                      playerId: participation.playerId,
+                      matchId: participation.matchId,
+                    ),
+                  )
+                  .toList();
+
+              final participationIds = participations
+                  .map((participation) => participation.id)
+                  .toList();
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final findParticipations = select
+                ..where((tbl) => tbl.id.isIn(participationIds));
+              final participationsData = await findParticipations.get();
+
+              expect(participationsData, equals(expectedParticipationsData));
+
+              // cleanup
+            },
+          );
+
+          // also needs to update existing participations
+          test(
+            "given [MatchLocalEntityValue] with participations already existing in the database"
+            "when '.storeMatch() is called with updated participations"
+            "then should update participations in the database",
+            () async {
+              // setup
+              // given
+              final participations = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  id: index + 1,
+                  status: PlayerMatchParticipationStatus.pendingDecision,
+                  playerNickname: "player$index",
+                  playerId: index + 1,
+                  matchId: 1,
+                );
+              });
+              final matchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: participations,
+              );
+              await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              // when
+              final updatedParticipations = participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityValue(
+                      id: participation.id,
+                      status: PlayerMatchParticipationStatus.arriving,
+                      playerNickname: participation.playerNickname,
+                      playerId: participation.playerId,
+                      matchId: participation.matchId,
+                    ),
+                  )
+                  .toList();
+              final updatedMatchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: updatedParticipations,
+              );
+
+              await dataSource.storeMatch(matchValue: updatedMatchEntityValue);
+
+              // then
+              final expectedParticipationsData = updatedParticipations
+                  .map(
+                    (updatedParticipation) =>
+                        PlayerMatchParticipationLocalEntityData(
+                      id: updatedParticipation.id,
+                      status: updatedParticipation.status,
+                      playerNickname: updatedParticipation.playerNickname,
+                      playerId: updatedParticipation.playerId,
+                      matchId: updatedParticipation.matchId,
+                    ),
+                  )
+                  .toList();
+
+              final participationIds = participations
+                  .map((participation) => participation.id)
+                  .toList();
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final findParticipations = select
+                ..where((tbl) => tbl.id.isIn(participationIds));
+              final participationsData = await findParticipations.get();
+
+              expect(participationsData, equals(expectedParticipationsData));
+
+              // cleanup
+            },
+          );
+
           test(
             "given MatchLocalEntityValue"
             "when '.storeMatch() is called"
             "then should save the match to the database",
             () async {
               // setup
-              final matchEntityCompanion =
-                  generateTestMatchLocalEntityCompanions(count: 1).first;
+              // final matchEntityCompanion =
+              //     generateTestMatchLocalEntityCompanions(count: 1).first;
 
               // given
               final matchEntityValue = MatchLocalEntityValue(
-                id: matchEntityCompanion.id.value,
-                title: matchEntityCompanion.title.value,
-                dateAndTime: matchEntityCompanion.dateAndTime.value,
-                description: matchEntityCompanion.description.value,
-                location: matchEntityCompanion.location.value,
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
                 // TODO we will see if this is needed
                 // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
                 participations: const [],
               );
 
               // when
-              final storedMatchId =
-                  await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              await dataSource.storeMatch(matchValue: matchEntityValue);
 
               // then
               // TODO this needs to be abstracted somehow as a getter possibly in app datahbase wrapper

@@ -150,7 +150,7 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
     required MatchLocalEntityValue matchValue,
   }) async {
     // TODO this upserts the match
-    final companion = MatchLocalEntityCompanion.insert(
+    final matchCompanion = MatchLocalEntityCompanion.insert(
       id: Value(matchValue.id),
       title: matchValue.title,
       dateAndTime: matchValue.dateAndTime,
@@ -158,17 +158,121 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
       location: matchValue.location,
     );
 
+    final participationCompanions = matchValue.participations
+        .map(
+          (e) => PlayerMatchParticipationLocalEntityCompanion.insert(
+            id: Value(e.id),
+            matchId: matchValue.id,
+            playerId: e.playerId,
+            status: e.status,
+            playerNickname: Value(e.playerNickname),
+          ),
+        )
+        .toList();
+
     final id = await _databaseWrapper.db.transaction(() async {
       // final insertId = _databaseWrapper.matchLocalRepo.insertOne(companion);
       final storedId = await _databaseWrapper.matchLocalRepo
-          .insertOnConflictUpdate(companion);
+          .insertOnConflictUpdate(matchCompanion);
+
+      await _databaseWrapper.playerMatchParticipationRepo
+          .insertAll(participationCompanions,
+              onConflict: DoUpdate.withExcluded((old, excluded) {
+                return PlayerMatchParticipationLocalEntityCompanion.custom(
+                  // only status can be updated here for now, rest needs to stay the same
+                  status: excluded.status,
+                );
+              }, target: [
+                // NOTE these two are unique keys, so we need to specify them here
+                _databaseWrapper.playerMatchParticipationRepo.playerId,
+                _databaseWrapper.playerMatchParticipationRepo.matchId,
+              ]));
+
       return storedId;
     });
 
     return id;
   }
 
+  @override
+  Future<List<int>> storeMatches({
+    required List<MatchLocalEntityValue> matchValues,
+  }) async {
+    // throw UnimplementedError();
+
+    final matchCompanions = matchValues
+        .map((e) => MatchLocalEntityCompanion.insert(
+              id: Value(e.id),
+              title: e.title,
+              dateAndTime: e.dateAndTime,
+              location: e.location,
+              description: e.description,
+            ))
+        .toList();
+
+    // TODO not sure if batch is needed, but lets leave it as is
+    await _databaseWrapper.runInBatch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _databaseWrapper.matchLocalRepo,
+        matchCompanions,
+      );
+    });
+
+    final matchesIds = matchValues.map((e) => e.id).toList();
+    // TODO come back to test that it actually does return list of ids
+    return matchesIds;
+
+//  ----------- TODO keep this here for now --------------
+//     _databaseWrapper.matchLocalRepo.insertAll(matchCompanions);
+
+//     // TODO using transaction over batch because we can get ids of upserted elements
+//     // TODO there is no need for trasnaction if atomatically insert alrteady with insertall? or is ther
+//     final ids = await _databaseWrapper.runInTransaction(() async {
+//       // for (final companion in matchCompanions) {
+//       // final id = await _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
+//       final ids = await _databaseWrapper.matchLocalRepo.insertAll(
+//         matchCompanions,
+//         mode: InsertMode.insertOrReplace,
+//         // TODO not really sure how to use this
+//         // onConflict: DoUpdate.withExcluded(
+//         //   (old, excluded) {
+//         //     tbl1.id;
+//         //     tbl2.id;
+
+//         //     return const MatchLocalEntityCompanion();
+//         //   },
+//         // ),
+//         // TODO this works iwth mode
+//         // TODO does not seem to be needed for now
+//         // TODO this is how they do it in drift from their source code
+//         /*
+//         Future<int> insertOnConflictUpdate(Insertable<D> entity) {
+//           return insert(entity, onConflict: DoUpdate((_) => entity));
+//         }
+//          */
+//         // onConflict: DoUpdate(
+//         //   (tbl) => MatchLocalEntityCompanion(
+//         //     id: tbl.id,
+//         //     title: tbl.title,
+//         //     dateAndTime: tbl.dateAndTime,
+//         //     location: tbl.location,
+//         //     description: tbl.description,
+//         //   ),
+//         // ),
+//       );
+
+//       return ids;
+//     });
+
+// // TODO maybe this is not good - maybe we can use batch, or this is ok since we dont get all ids anyway
+//     return ids;
+
+    // TODO leave batch here for now --------------------- !!!!!!!!!
+//  ----------- TODO keep this here for now --------------
+  }
+
 // TODO change this to return value, not match data
+// TODO in future, we will need to return to fetching only match, as participatiosn will be retrieved from participations data soruce on demand - not with match
   @override
   Future<MatchLocalEntityValue> getMatch({
     required int matchId,
@@ -290,83 +394,6 @@ class MatchesLocalDataSourceImpl implements MatchesLocalDataSource {
   
   
    */
-
-  @override
-  Future<List<int>> storeMatches({
-    required List<MatchLocalEntityValue> matchValues,
-  }) async {
-    // throw UnimplementedError();
-
-    final matchCompanions = matchValues
-        .map((e) => MatchLocalEntityCompanion.insert(
-              id: Value(e.id),
-              title: e.title,
-              dateAndTime: e.dateAndTime,
-              location: e.location,
-              description: e.description,
-            ))
-        .toList();
-
-    // TODO not sure if batch is needed, but lets leave it as is
-    await _databaseWrapper.runInBatch((batch) {
-      batch.insertAllOnConflictUpdate(
-        _databaseWrapper.matchLocalRepo,
-        matchCompanions,
-      );
-    });
-
-    final matchesIds = matchValues.map((e) => e.id).toList();
-    // TODO come back to test that it actually does return list of ids
-    return matchesIds;
-
-//  ----------- TODO keep this here for now --------------
-//     _databaseWrapper.matchLocalRepo.insertAll(matchCompanions);
-
-//     // TODO using transaction over batch because we can get ids of upserted elements
-//     // TODO there is no need for trasnaction if atomatically insert alrteady with insertall? or is ther
-//     final ids = await _databaseWrapper.runInTransaction(() async {
-//       // for (final companion in matchCompanions) {
-//       // final id = await _databaseWrapper.matchLocalRepo.insertOnConflictUpdate(companion);
-//       final ids = await _databaseWrapper.matchLocalRepo.insertAll(
-//         matchCompanions,
-//         mode: InsertMode.insertOrReplace,
-//         // TODO not really sure how to use this
-//         // onConflict: DoUpdate.withExcluded(
-//         //   (old, excluded) {
-//         //     tbl1.id;
-//         //     tbl2.id;
-
-//         //     return const MatchLocalEntityCompanion();
-//         //   },
-//         // ),
-//         // TODO this works iwth mode
-//         // TODO does not seem to be needed for now
-//         // TODO this is how they do it in drift from their source code
-//         /*
-//         Future<int> insertOnConflictUpdate(Insertable<D> entity) {
-//           return insert(entity, onConflict: DoUpdate((_) => entity));
-//         }
-//          */
-//         // onConflict: DoUpdate(
-//         //   (tbl) => MatchLocalEntityCompanion(
-//         //     id: tbl.id,
-//         //     title: tbl.title,
-//         //     dateAndTime: tbl.dateAndTime,
-//         //     location: tbl.location,
-//         //     description: tbl.description,
-//         //   ),
-//         // ),
-//       );
-
-//       return ids;
-//     });
-
-// // TODO maybe this is not good - maybe we can use batch, or this is ok since we dont get all ids anyway
-//     return ids;
-
-    // TODO leave batch here for now --------------------- !!!!!!!!!
-//  ----------- TODO keep this here for now --------------
-  }
 
   @override
   Future<PlayerMatchLocalEntitiesOverviewValue> getPlayerMatchesOverview({
