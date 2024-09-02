@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
 
 class PlayerMatchParticipationRemoteEntity extends Equatable {
   const PlayerMatchParticipationRemoteEntity({
@@ -15,7 +16,7 @@ class PlayerMatchParticipationRemoteEntity extends Equatable {
   final String? playerNickname;
 
   // TODO this will also be an enum here when we get to local entity
-  final int status;
+  final PlayerMatchParticipationStatus status;
 
   // TODO make ticket to create converter class for this instead of doing it from here
 
@@ -25,14 +26,18 @@ class PlayerMatchParticipationRemoteEntity extends Equatable {
     final id = json["id"] as int;
     final playerId = json["playerId"] as int;
     final matchId = json["matchId"] as int;
-    final status = json["status"] as int;
+    final status = json["status"] as String;
     final playerNickname = json["playerNickname"] as String?;
 
     return PlayerMatchParticipationRemoteEntity(
       id: id,
       playerId: playerId,
       matchId: matchId,
-      status: status,
+      // status: status,
+      status: PlayerMatchParticipationStatus.values.firstWhere(
+        (e) => e.name == status,
+        orElse: () => PlayerMatchParticipationStatus.unknown,
+      ),
       playerNickname: playerNickname,
     );
   }

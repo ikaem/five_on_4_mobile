@@ -22,7 +22,7 @@ class MatchRemoteEntity extends Equatable {
   // TODO if we go with Freezed, which we will, fromJson will be here anyway
   factory MatchRemoteEntity.fromJson({
     required Map<String, dynamic> matchJsonMap,
-    required List<Map<String, dynamic>> participationJsonMaps,
+    required List<dynamic> participationJsonMaps,
   }) {
     final id = matchJsonMap["id"] as int;
     final title = matchJsonMap["title"] as String;

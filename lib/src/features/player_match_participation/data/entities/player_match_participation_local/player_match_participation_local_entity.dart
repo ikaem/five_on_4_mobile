@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
 import 'package:five_on_4_mobile/src/features/matches/data/entities/match_local/match_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/players/data/entities/player_local/player_local_entity.dart';
+import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
+import 'package:flutter/material.dart' hide Table, Column;
 
 class PlayerMatchParticipationLocalEntity extends Table {
   IntColumn get id => integer()();
@@ -31,12 +33,49 @@ class PlayerMatchParticipationLocalEntity extends Table {
 }
 
 // TODO move to somehwere else, not sure where yet
+// TODO move to somehwere else, not sure where yet
 enum PlayerMatchParticipationStatus {
   pendingDecision, // 0
   arriving, // 1
   notArriving, // 2
   // TODO if any other are added, they need to be added at the end of list to account for indexes of each enum and avoid migration
-  unknown, // 3
+  unknown; // 3
+
+// TODO maybe this should be in an extension
+  String get formattedName {
+    final formattedName = switch (this) {
+      PlayerMatchParticipationStatus.pendingDecision => "Pending decision",
+      PlayerMatchParticipationStatus.arriving => "Arriving",
+      PlayerMatchParticipationStatus.notArriving => "Not arriving",
+      PlayerMatchParticipationStatus.unknown => "Unknown",
+    };
+
+    return formattedName;
+  }
+
+  IconData get iconData {
+    final icon = switch (this) {
+      PlayerMatchParticipationStatus.pendingDecision => Icons.question_mark,
+      PlayerMatchParticipationStatus.arriving => Icons.check,
+      PlayerMatchParticipationStatus.notArriving => Icons.close,
+      PlayerMatchParticipationStatus.unknown => Icons.warning,
+    };
+
+    return icon;
+  }
+
+  Color get iconColor {
+    final color = switch (this) {
+      PlayerMatchParticipationStatus.pendingDecision => ColorConstants.GREY,
+      PlayerMatchParticipationStatus.arriving => ColorConstants.GREEN,
+      PlayerMatchParticipationStatus.notArriving => ColorConstants.RED,
+      PlayerMatchParticipationStatus.unknown => ColorConstants.GREY_DARK,
+    };
+
+    return color;
+  }
 }
+
+// extension 
 
 // TODO create some extension on this for nicely formatted string to render in UI

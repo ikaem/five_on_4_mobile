@@ -53,7 +53,7 @@ abstract class MatchesConverter {
           (e) => PlayerMatchParticipationLocalEntityValue(
             id: e.id,
             status: PlayerMatchParticipationStatus.values.firstWhere(
-              (element) => element.index == e.status,
+              (element) => element == e.status,
               orElse: () => PlayerMatchParticipationStatus.unknown,
             ),
             playerNickname: e.playerNickname,

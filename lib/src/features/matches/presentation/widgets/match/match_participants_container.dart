@@ -6,6 +6,7 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/string_extension.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participtions_creator.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_list.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/models/player_match_participation/player_match_participation_model.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/spacing_constants.dart';
@@ -22,7 +23,8 @@ class MatchParticipantsContainer extends StatelessWidget {
   });
 
 // TODO possible that we would need to introduce a model for participant
-  final List<PlayerModel> participants;
+  // final List<PlayerModel> participants;
+  final List<PlayerMatchParticipationModel>? participants;
   final bool isError;
   final bool isSyncing;
   final bool isLoading;
@@ -40,7 +42,12 @@ class MatchParticipantsContainer extends StatelessWidget {
       return const LoadingStatus(message: "Loading match participants...");
     }
 
-    return MatchParticipants(players: participants);
+    final thisParticipants = participants;
+    if (thisParticipants == null) {
+      return const LoadingStatus(message: "Loading match participants...");
+    }
+
+    return MatchParticipantsList(participations: thisParticipants);
 
     // return Container();
 
@@ -59,17 +66,17 @@ class MatchParticipantsContainer extends StatelessWidget {
 }
 
 // TODO move to its own widget - but also, maybe unite with match create solution for similar functionality
-class MatchParticipants extends StatelessWidget {
-  const MatchParticipants({
+class MatchParticipantsList extends StatelessWidget {
+  const MatchParticipantsList({
     super.key,
-    required this.players,
+    required this.participations,
   });
 
-  final List<PlayerModel> players;
+  final List<PlayerMatchParticipationModel> participations;
 
   @override
   Widget build(BuildContext context) {
-    if (players.isEmpty) {
+    if (participations.isEmpty) {
       return Column(
         children: [
           const Text(
@@ -136,12 +143,12 @@ class MatchParticipants extends StatelessWidget {
               height: SpacingConstants.XL,
               child: Divider(),
             ),
-            itemCount: players.length,
+            itemCount: participations.length,
             itemBuilder: (context, index) {
-              final player = players[index];
+              final participation = participations[index];
 
-              return MatchPlayerParticipation(
-                player: player,
+              return MatchParticipationItem(
+                participation: participation,
                 // actions: _tempActionItems,
                 actions: const [],
                 // isAddedToMatchInvitations: true,
@@ -162,17 +169,18 @@ class MatchParticipants extends StatelessWidget {
 // TODO also reuse this possibly with match create participants - or replace existing match participation invitation  - because it is not rellay invitation - it is participation - not necessarily joined, but participation still
 // TODO move to correct folder
 // TODO should this be converted to player brief - and then we just pass actions as we see fit? - and some labels too - so we can pass condtional labels as widgets? we will see
-class MatchPlayerParticipation extends StatelessWidget {
-  const MatchPlayerParticipation({
+class MatchParticipationItem extends StatelessWidget {
+  const MatchParticipationItem({
     super.key,
-    required this.player,
+    required this.participation,
     required this.actions,
   });
 
   // TODO we dont necessarily allow any actions here - it should be custom - we will add this later as a separate widget
   // that widgetion will MatchParticipantActions
 
-  final PlayerModel player;
+  // final PlayerModel player;
+  final PlayerMatchParticipationModel participation;
   final List<PlayerBriefActionItem> actions;
 
   @override
@@ -211,7 +219,8 @@ class MatchPlayerParticipation extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                player.nickname,
+                // player.nickname,
+                participation.playerNickname ?? "Unknown",
                 style: const TextStyle(
                   fontSize: TextSizeConstants.LARGE,
                   color: ColorConstants.BLACK,
@@ -221,13 +230,15 @@ class MatchPlayerParticipation extends StatelessWidget {
               const SizedBox(height: SpacingConstants.XS),
               Row(
                 children: [
-                  const Icon(
-                    Icons.calendar_month,
-                    color: ColorConstants.BLUE_DARK,
+                  Icon(
+                    participation.status.iconData,
+                    // color: ColorConstants.BLUE_DARK,
+                    color: participation.status.iconColor,
                   ),
                   const SizedBox(width: SpacingConstants.XS),
                   Text(
-                    player.name.uppercase,
+                    // player.name.uppercase,
+                    participation.status.formattedName.uppercase,
                     style: const TextStyle(
                       color: ColorConstants.BLACK,
                       fontSize: TextSizeConstants.REGULAR,
@@ -235,23 +246,7 @@ class MatchPlayerParticipation extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: SpacingConstants.XS),
-              const Row(
-                children: [
-                  Icon(
-                    Icons.location_on,
-                    color: ColorConstants.BLUE_DARK,
-                  ),
-                  SizedBox(width: SpacingConstants.XS),
-                  Text(
-                    "Player team name",
-                    style: TextStyle(
-                      color: ColorConstants.BLACK,
-                      fontSize: TextSizeConstants.REGULAR,
-                    ),
-                  ),
-                ],
-              ),
+              // const SizedBox(height: SpacingConstants.XS),
             ],
           ),
         ),
@@ -261,11 +256,12 @@ class MatchPlayerParticipation extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircledSidesAvatar(
-              avatarUri: player.avatarUri,
-              // TODO WE SHOULD HAVE SOME CONSTANT HERE
-              radius: 50,
-            ),
+            // TODO avatar url we will not be allowing to add
+            // CircledSidesAvatar(
+            //   avatarUri: player.avatarUri,
+            //   // TODO WE SHOULD HAVE SOME CONSTANT HERE
+            //   radius: 50,
+            // ),
             const SizedBox(
               height: 5,
             ),

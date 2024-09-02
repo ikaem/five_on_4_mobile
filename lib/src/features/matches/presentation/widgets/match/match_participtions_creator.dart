@@ -7,10 +7,12 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/circled_sides_avatar.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
+import 'package:five_on_4_mobile/src/features/core/utils/extensions/string_extension.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
@@ -271,7 +273,7 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
         //   onInvitationAction: onInvitationAction,
         // );
 
-        return MatchPlayerParticipation(
+        return _MatchParticipationCreatorPlayerItem(
           player: foundPlayer,
           actions: const [],
         );
@@ -281,3 +283,184 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
 }
 
 // TODO split all of this into separate widgets
+
+// TODO check to move it elsewhere this possibly?
+class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
+  const _MatchParticipationCreatorPlayerItem({
+    super.key,
+    required this.player,
+    required this.actions,
+  });
+
+  // TODO we dont necessarily allow any actions here - it should be custom - we will add this later as a separate widget
+  // that widgetion will MatchParticipantActions
+
+  // final PlayerModel player;
+  final PlayerModel player;
+  final List<PlayerBriefActionItem> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO here will will conditoonally later render MatchParticipantActionsSelector in case there are any actions available
+    // TODO this could theoretically render PlayerBrief, and then potentially add this action thing - we will see later
+    return Row(
+      // crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CircledSidesAvatar(
+              avatarUri: player.avatarUri,
+              // TODO WE SHOULD HAVE SOME CONSTANT HERE
+              radius: 50,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: const Icon(
+                Icons.more_horiz,
+                color: ColorConstants.BLUE_DARK,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          width: SpacingConstants.M,
+        ),
+        Expanded(
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                player.nickname,
+                // participation.playerNickname ?? "Unknown",
+                style: const TextStyle(
+                  fontSize: TextSizeConstants.LARGE,
+                  color: ColorConstants.BLACK,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: SpacingConstants.XS),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.calendar_month,
+                    color: ColorConstants.BLUE_DARK,
+                  ),
+                  const SizedBox(width: SpacingConstants.XS),
+                  Text(
+                    player.name.uppercase,
+                    style: const TextStyle(
+                      color: ColorConstants.BLACK,
+                      fontSize: TextSizeConstants.REGULAR,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: SpacingConstants.XS),
+              const Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: ColorConstants.BLUE_DARK,
+                  ),
+                  SizedBox(width: SpacingConstants.XS),
+                  Text(
+                    "Player team name",
+                    style: TextStyle(
+                      color: ColorConstants.BLACK,
+                      fontSize: TextSizeConstants.REGULAR,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          width: SpacingConstants.M,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // TODO avatar url we will not be allowing to add
+            // CircledSidesAvatar(
+            //   avatarUri: player.avatarUri,
+            //   // TODO WE SHOULD HAVE SOME CONSTANT HERE
+            //   radius: 50,
+            // ),
+            const SizedBox(
+              height: 5,
+            ),
+            // GestureDetector(
+            //   onTap: () {},
+            //   child: const Icon(
+            //     Icons.more_horiz,
+            //     color: ColorConstants.BLUE_DARK,
+            //   ),
+            // ),
+            if (actions.isNotEmpty)
+              SizedBox(
+                height: 30,
+                child: PopupMenuButton(
+                  color: ColorConstants.BLUE_DARK,
+                  // iconSize: 14,
+                  padding: const EdgeInsets.all(1),
+                  icon: const Icon(
+                    // size: 14,
+                    Icons.more_horiz,
+                    color: ColorConstants.BLUE_DARK,
+                  ),
+                  itemBuilder: (BuildContext context) {
+                    // return _tempActionItems.map((item) {
+                    return actions.map((item) {
+                      return PopupMenuItem(
+                        value: item.onActionItemTap(),
+                        child: Row(
+                          children: [
+                            Icon(
+                              item.icon,
+                              color: ColorConstants.GREY_LIGHT,
+                            ),
+                            const SizedBox(width: SpacingConstants.XS),
+                            Text(
+                              item.label,
+                              style: const TextStyle(
+                                color: ColorConstants.WHITE,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList();
+
+                    // return [
+                    //   const PopupMenuItem(
+                    //     child: Text(
+                    //       "Invite player",
+                    //       style: TextStyle(
+                    //         color: ColorConstants.WHITE,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   const PopupMenuItem(
+                    //     child: Text(
+                    //       "View player",
+                    //       style: TextStyle(
+                    //         color: ColorConstants.WHITE,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ];
+                  },
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}

@@ -121,6 +121,8 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
     final responseParticipationJsonMaps =
         response.payload["data"]["participations"];
 
+    print("responseMatchJsonMap: $responseMatchJsonMap");
+
     final MatchRemoteEntity matchEntity = MatchRemoteEntity.fromJson(
       matchJsonMap: responseMatchJsonMap,
       participationJsonMaps: responseParticipationJsonMaps,

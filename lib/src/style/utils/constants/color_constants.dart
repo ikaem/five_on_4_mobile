@@ -17,4 +17,7 @@ abstract class ColorConstants {
   static const Color ORANGE = Color(0xFFFB9B2E);
   // red
   static const Color RED = Color(0xFFFE6158);
+
+  // green
+  static const Color GREEN = Color(0xFF4CAF50);
 }

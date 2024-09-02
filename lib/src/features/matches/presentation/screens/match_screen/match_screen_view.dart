@@ -99,7 +99,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     // TODO this will need to be updated once backend provides arriving players
     // TODO this will need to be derived from match data - so we will need to provide arriving players on match model - will need to be joining some stuff on backend - and will need to be migrating db here
     // TODO this seems to be the best - let mobile app database always have ready for render data, so it does not have to do any joins on its own - otherwise, joining implementations might be different, and all goes to shit
-    final participants = _tempMatchParticipants;
+    // final participants = _tempMatchParticipants;
     final isLoading = matchUIState.isLoading;
     final isError = matchUIState.isError;
     final isSyncing = matchUIState.isSyncing;
@@ -118,7 +118,8 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
       TabTogglerOptionValue(
         title: "PARTICIPANTS",
         child: MatchParticipantsContainer(
-          participants: participants,
+          // participants: participants,
+          participants: match?.participations,
           isError: isError,
           isLoading: isLoading,
           isSyncing: isSyncing,

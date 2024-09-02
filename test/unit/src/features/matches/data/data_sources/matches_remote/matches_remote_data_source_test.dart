@@ -7,6 +7,7 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_remote/player_match_participation_remote_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -181,7 +182,8 @@ void main() {
               id: index + 1,
               playerId: index + 1,
               matchId: 1,
-              status: 1,
+              // status: 1,
+              status: PlayerMatchParticipationStatus.pendingDecision,
               playerNickname: "nickname",
             );
           });
