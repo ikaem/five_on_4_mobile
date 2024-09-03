@@ -6,6 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "sign_out_controller.g.dart";
 
+// TODO this should live inside provider folder
+
 @riverpod
 class SignOutController extends _$SignOutController {
   final signOutUseCase = GetItWrapper.get<SignOutUseCase>();

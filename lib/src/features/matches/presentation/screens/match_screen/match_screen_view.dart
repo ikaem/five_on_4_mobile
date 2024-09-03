@@ -54,6 +54,10 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     });
   }
 
+  // TODO we will see if this stays forever
+  // TODO move below
+  // bool check
+
   @override
   Widget build(
     BuildContext context,
