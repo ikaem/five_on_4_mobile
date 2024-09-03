@@ -7,12 +7,13 @@ part of 'get_authenticated_player_controller.dart';
 // **************************************************************************
 
 String _$getAuthenticatedPlayerControllerHash() =>
-    r'533fe79d897f0bd88f8ccd94ae6f2b6a10d7c4ba';
+    r'4a19504557c84e98afaf96a405cd3ceb2c8f17a5';
 
 /// See also [GetAuthenticatedPlayerController].
 @ProviderFor(GetAuthenticatedPlayerController)
-final getAuthenticatedPlayerControllerProvider = AutoDisposeNotifierProvider<
-    GetAuthenticatedPlayerController, AsyncValue<bool>>.internal(
+final getAuthenticatedPlayerControllerProvider =
+    AutoDisposeAsyncNotifierProvider<GetAuthenticatedPlayerController,
+        GetAuthenticatedPlayerControllerState>.internal(
   GetAuthenticatedPlayerController.new,
   name: r'getAuthenticatedPlayerControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +24,6 @@ final getAuthenticatedPlayerControllerProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$GetAuthenticatedPlayerController
-    = AutoDisposeNotifier<AsyncValue<bool>>;
+    = AutoDisposeAsyncNotifier<GetAuthenticatedPlayerControllerState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
