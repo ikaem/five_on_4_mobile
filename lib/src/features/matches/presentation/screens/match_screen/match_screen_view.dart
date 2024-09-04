@@ -1,12 +1,19 @@
+import 'package:five_on_4_mobile/src/features/auth/domain/models/authenticated_player/authenticated_player_model.dart';
+import 'package:five_on_4_mobile/src/features/auth/presentation/controllers/get_authenticated_player/provider/get_authenticated_player_controller.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/tab_toggler/tab_toggler.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/models/match/match_model.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/controllers/get_match/provider/get_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_info_container.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/models/player_match_participation/player_match_participation_model.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/presentation/controllers/join_match/provider/join_match_controller.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/presentation/controllers/unjoin_match/provider/unjoin_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/style/utils/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MatchUIState {
   const MatchUIState({
@@ -83,8 +90,13 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
         actions: [
           // TODO this should be handled by some controller that handles join unjoin
           CurrentPlayerMatchParticipationIndicator(
-            isParticipating: isParticipating,
-            onParticipateToggle: onParticipateToggle,
+            // isParticipating: isParticipating,
+            // onParticipateToggle: onParticipateToggle,
+            participations: matchUIState.match?.participations ?? [],
+            matchId: widget.matchId,
+            onReloadMatch: () {
+              // TODO for now lets keep it like this
+            },
           ),
         ],
       ),
@@ -164,18 +176,83 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
   }
 }
 
-class CurrentPlayerMatchParticipationIndicator extends StatelessWidget {
+class CurrentPlayerMatchParticipationIndicator extends ConsumerWidget {
   const CurrentPlayerMatchParticipationIndicator({
     super.key,
-    required this.isParticipating,
-    required this.onParticipateToggle,
+    required this.participations,
+    required this.matchId,
+    required this.onReloadMatch,
+    // required this.isParticipating,
+    // required this.onParticipateToggle,
   });
 
-  final bool isParticipating;
-  final Future<void> Function() onParticipateToggle;
+  // final bool isParticipating;
+  // final Future<void> Function() onParticipateToggle;
+
+  // TODO this widget itself should hold three controllers
+  // get authenticated player model
+  // join match
+  // unjoin match
+
+  // it should receive match participations and check if authenticated player is in it
+
+  final List<PlayerMatchParticipationModel> participations;
+  final int matchId;
+  // TODO this is a bit clumsy now - maybe logic for toggling participation of current user should be inside the main widget, and then single function would we bpassed here that has both toggle participation and reload match?
+  final VoidCallback onReloadMatch;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
+    final authenticatedPlayerModelState =
+        ref.watch(getAuthenticatedPlayerControllerProvider);
+
+    final isLoading = authenticatedPlayerModelState.isLoading;
+    final isError = authenticatedPlayerModelState.hasError;
+    final authenticatedPlayer =
+        authenticatedPlayerModelState.value?.authenticatedPlayer;
+
+    if (isLoading) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
+    if (isError) {
+      return const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Center(child: Text("N/A")),
+      );
+    }
+
+    if (authenticatedPlayer == null) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
+    final isParticipating = _checkIsParticipating(
+      authenticatedPlayer: authenticatedPlayer,
+      participations: participations,
+    );
+
+    // TODO this needs to be be rebuilt once toggled. so the match needs to be updated. so i guess we need to reload the match
     final String label = isParticipating ? "JOINED" : "JOIN";
     final Icon icon = isParticipating
         ? const Icon(
@@ -188,10 +265,49 @@ class CurrentPlayerMatchParticipationIndicator extends StatelessWidget {
           );
 
     return TextButton.icon(
-      onPressed: onParticipateToggle,
+      onPressed: () => _handleParticipateToggle(
+        ref: ref,
+        isParticipating: isParticipating,
+        // authenticatedPlayer: authenticatedPlayer,
+        matchId: participations.first.matchId,
+      ),
       label: icon,
       icon: Text(label),
     );
+  }
+
+  bool _checkIsParticipating({
+    required AuthenticatedPlayerModel authenticatedPlayer,
+    required List<PlayerMatchParticipationModel> participations,
+  }) {
+    final isParticipating = participations.any(
+      (participation) =>
+          participation.playerId == authenticatedPlayer.playerId &&
+          participation.status == PlayerMatchParticipationStatus.arriving,
+    );
+
+    return isParticipating;
+  }
+
+  Future<void> _handleParticipateToggle({
+    required WidgetRef ref,
+    required bool isParticipating,
+    // required AuthenticatedPlayerModel authenticatedPlayer,
+    required int matchId,
+  }) async {
+    if (isParticipating) {
+      // TODO unjoin match
+
+      ref.read(unjoinMatchControllerProvider.notifier).onUnjoinMatch(
+            matchId: matchId,
+          );
+    } else {
+      // TODO join match
+
+      ref.read(joinMatchControllerProvider.notifier).onJoinMatch(
+            matchId: matchId,
+          );
+    }
   }
 }
 
