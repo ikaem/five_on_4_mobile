@@ -43,8 +43,8 @@ class GetAuthenticatedPlayerController
 
       await _signOutUseCase();
 
-      // rethrow;
-      throw Exception("No authenticated player");
+      rethrow;
+      // throw Exception("No authenticated player");
       // throw const AsyncError(AuthNotLoggedInException, StackTrace.empty);
       // throw const AuthNotLoggedInException();
     } catch (e, s) {
