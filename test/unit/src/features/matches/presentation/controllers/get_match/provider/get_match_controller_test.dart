@@ -315,6 +315,378 @@ void main() {
       // TODO there will be a test for sign out needed
     },
   );
+
+  group(
+    ".onGetMatch()",
+    () {
+      test(
+        "given there is an error when loading match into db"
+        "when onGetMatch() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          final MatchModel matchModel = MatchModel(
+            dateAndTime: DateTime.now(),
+            id: 1,
+            description: "description",
+            location: "location",
+            title: "title",
+            participations: const [],
+          );
+
+          final ProviderContainer providerContainer = ProviderContainer();
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async {});
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async => matchModel);
+
+          // start listening
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // verify initial states
+          // NOTE: no need to verify initial states, as we have already done that in the previous test
+          verifyInOrder([
+            () => listener(
+                  any(), // null
+                  any(), // loading
+                ),
+            () => listener(
+                  any(), // loading
+                  any(), // data
+                ),
+          ]);
+          verifyNoMoreInteractions(listener);
+
+          // given
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenThrow(Exception("Error loading match into db"));
+
+          // when
+          await providerContainer
+              .read(getMatchControllerProvider(matchId: 1).notifier)
+              .onGetMatch();
+
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // data
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // error
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isA<AsyncData<GetMatchControllerState>>(),
+          );
+          expect(
+            firstCallSecondArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+
+          expect(
+            secondCallFirstArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+          expect(
+            secondCallSecondArg,
+            isA<AsyncError<GetMatchControllerState>>(),
+          );
+
+          // examine error state
+          expect(
+            (secondCallSecondArg as AsyncError<GetMatchControllerState>).error,
+            equals("Exception: Error loading match into db"),
+          );
+          expect(
+            (secondCallSecondArg).stackTrace,
+            equals(StackTrace.empty),
+          );
+
+          //
+          print("hell");
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+      test(
+        "given there is an error when getting match from db"
+        "when onGetMatch() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          final MatchModel matchModel = MatchModel(
+            dateAndTime: DateTime.now(),
+            id: 1,
+            description: "description",
+            location: "location",
+            title: "title",
+            participations: const [],
+          );
+
+          final ProviderContainer providerContainer = ProviderContainer();
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async {});
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async => matchModel);
+
+          // start listening
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // verify initial states
+          // NOTE: no need to verify initial states, as we have already done that in the previous test
+          verifyInOrder([
+            () => listener(
+                  any(), // null
+                  any(), // loading
+                ),
+            () => listener(
+                  any(), // loading
+                  any(), // data
+                ),
+          ]);
+          verifyNoMoreInteractions(listener);
+
+          // given
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenThrow(Exception("Error getting match from db"));
+
+          // when
+          await providerContainer
+              .read(getMatchControllerProvider(matchId: 1).notifier)
+              .onGetMatch();
+
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // data
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // error
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isA<AsyncData<GetMatchControllerState>>(),
+          );
+          expect(
+            firstCallSecondArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+
+          expect(
+            secondCallFirstArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+          expect(
+            secondCallSecondArg,
+            isA<AsyncError<GetMatchControllerState>>(),
+          );
+
+          // examine error state
+          expect(
+            (secondCallSecondArg as AsyncError<GetMatchControllerState>).error,
+            equals("Exception: Error getting match from db"),
+          );
+          expect(
+            (secondCallSecondArg).stackTrace,
+            equals(StackTrace.empty),
+          );
+
+          //
+          print("hell");
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+      test(
+        "given successful loading and fetching of match"
+        "when .onGetMatch() is called"
+        "then should emit state events in particular order",
+        () async {
+          // setup
+          final MatchModel matchModel = MatchModel(
+            dateAndTime: DateTime.now(),
+            id: 1,
+            description: "description",
+            location: "location",
+            title: "title",
+            participations: const [],
+          );
+
+          final ProviderContainer providerContainer = ProviderContainer();
+          when(
+            () => loadMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async {});
+          when(
+            () => getMatchUseCase(matchId: any(named: "matchId")),
+          ).thenAnswer((_) async => matchModel);
+
+          // start listening
+          providerContainer.listen(
+            getMatchControllerProvider(
+              matchId: 1,
+            ),
+            listener,
+            fireImmediately: true,
+          );
+          await Future.delayed(Duration.zero);
+
+          // verify initial states
+          // NOTE: no need to verify initial states, as we have already done that in the previous test
+          verifyInOrder([
+            () => listener(
+                  any(), // null
+                  any(), // loading
+                ),
+            () => listener(
+                  any(), // loading
+                  any(), // data
+                ),
+          ]);
+          verifyNoMoreInteractions(listener);
+
+          // given
+          // when(
+          //   () => getMatchUseCase(matchId: any(named: "matchId")),
+          // ).thenThrow(Exception("Error getting match from db"));
+
+          // when
+          await providerContainer
+              .read(getMatchControllerProvider(matchId: 1).notifier)
+              .onGetMatch();
+
+          final captured = verifyInOrder([
+            () => listener(
+                  captureAny(), // data
+                  captureAny(), // loading
+                ),
+            () => listener(
+                  captureAny(), // loading
+                  captureAny(), // error
+                ),
+          ]).captured;
+          verifyNoMoreInteractions(listener);
+
+          // verify states
+          final firstCall = captured[0];
+          final secondCall = captured[1];
+
+          final firstCallFirstArg = firstCall[0];
+          final firstCallSecondArg = firstCall[1];
+
+          final secondCallFirstArg = secondCall[0];
+          final secondCallSecondArg = secondCall[1];
+
+          expect(
+            firstCallFirstArg,
+            isA<AsyncData<GetMatchControllerState>>(),
+          );
+          expect(
+            firstCallSecondArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+
+          expect(
+            secondCallFirstArg,
+            isA<AsyncLoading<GetMatchControllerState>>(),
+          );
+          expect(
+            secondCallSecondArg,
+            isA<AsyncData<GetMatchControllerState>>(),
+          );
+
+          // examine data state
+          expect(
+            (secondCallSecondArg as AsyncData<GetMatchControllerState>).value,
+            equals(GetMatchControllerState(
+              isRemoteFetchDone: true,
+              match: matchModel,
+            )),
+          );
+
+          // expect(
+          //   secondCallSecondArg,
+          //   isA<AsyncError<GetMatchControllerState>>(),
+          // );
+
+          // // examine error state
+          // expect(
+          //   (secondCallSecondArg as AsyncError<GetMatchControllerState>).error,
+          //   equals("Exception: Error getting match from db"),
+          // );
+          // expect(
+          //   (secondCallSecondArg).stackTrace,
+          //   equals(StackTrace.empty),
+          // );
+
+          //
+          print("hell");
+
+          // cleanup
+          addTearDown(() {
+            providerContainer.dispose();
+          });
+        },
+      );
+
+// copy above cases
+    },
+  );
 }
 
 class _MockLoadMatchUseCase extends Mock implements LoadMatchUseCase {}
@@ -329,16 +701,6 @@ class _MockListener<T> extends Mock {
 
 class _FakeGetMatchControllerState extends Fake
     implements GetMatchControllerState {}
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/get_match_use_case.dart';
 // import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/get_match/provider/get_match_use_case_provider.dart';

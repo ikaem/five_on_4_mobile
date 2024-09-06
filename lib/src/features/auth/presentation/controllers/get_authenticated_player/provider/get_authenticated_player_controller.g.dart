@@ -7,7 +7,7 @@ part of 'get_authenticated_player_controller.dart';
 // **************************************************************************
 
 String _$getAuthenticatedPlayerControllerHash() =>
-    r'4a19504557c84e98afaf96a405cd3ceb2c8f17a5';
+    r'747057bfa2e379d0bfe8ab55ecc935b69935e290';
 
 /// See also [GetAuthenticatedPlayerController].
 @ProviderFor(GetAuthenticatedPlayerController)

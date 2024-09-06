@@ -28,6 +28,7 @@ class GetMatchController extends _$GetMatchController {
   // TODO - will need to use when we get 401 i guess
   final SignOutUseCase signOutUseCase = GetItWrapper.get<SignOutUseCase>();
 
+// TODO maybe initially we dont need to call it initially - maybe it should always be on demand - and then we can just reuse it?
   Future<void> handleDispose() async {
     ref.onDispose(() {
       // NOTE for now nothing is needed here
@@ -68,6 +69,49 @@ class GetMatchController extends _$GetMatchController {
 
       // TODO rethrowing so that build can handle it automatically
       rethrow;
+    }
+  }
+
+  // TODO this should be unified with above in build somehow. just make sure that initially it returns something
+  // TODO this needs to be tested
+  // TODO make ticket to always have just this one funciton - and it should be called manually in each widget
+  Future<void> onGetMatch() async {
+    // state = const AsyncLoading();
+    state = const AsyncValue.loading();
+
+    try {
+      await loadMatchUseCase(matchId: matchId);
+      final MatchModel match = await getMatchUseCase(matchId: matchId);
+
+      final GetMatchControllerState controllerState = GetMatchControllerState(
+        match: match,
+        isRemoteFetchDone: true,
+      );
+
+      state = AsyncData(controllerState);
+      // return controllerState;
+    } catch (e, s) {
+      // TODO we might have to handle 401 here - come back to this
+      // if (e is AuthException) {
+      // TODO also create reusable handler for this - this will be done on lot of controllers
+      // not suure if it will be auth exception
+      //   await signOutUseCase();
+      // }
+
+      log(
+        "Error retrieving match with id: $matchId into db",
+        error: e,
+        stackTrace: s,
+      );
+
+      state = AsyncError(
+        // "Error loading match with id: $matchId into db",
+        e.toString(),
+        StackTrace.empty,
+      );
+
+      // TODO rethrowing so that build can handle it automatically
+      // rethrow;
     }
   }
 
