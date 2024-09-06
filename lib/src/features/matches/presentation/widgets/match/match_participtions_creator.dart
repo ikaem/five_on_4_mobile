@@ -51,10 +51,12 @@ class MatchParticipationsCreator extends ConsumerStatefulWidget {
   const MatchParticipationsCreator({
     super.key,
     required this.matchId,
+    required this.onReloadMatch,
     // required this.players,
   });
 
   final int matchId;
+  final Future<void> Function() onReloadMatch;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -275,6 +277,9 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
 
         return _MatchParticipationCreatorPlayerItem(
           player: foundPlayer,
+          // TODO we will handle with actions later
+          // TODO also should somehow mark if player has already been added to match participations
+          // TODO we should also refetch match after adding player to match participations
           actions: const [],
         );
       },

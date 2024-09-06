@@ -74,9 +74,10 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
     final togglerOptions = _getTogglerOptions(
       matchUIState: matchUIState,
       // onRetry: onMatchReload,
-      onRetry: () async {
+      onReloadMatch: () async {
         // TODO come back to this
         // await onMatchReload();
+        ref.read(getMatchControllerProviderInstance.notifier).onGetMatch();
       },
     );
 
@@ -115,7 +116,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
 
   List<TabTogglerOptionValue> _getTogglerOptions({
     required MatchUIState matchUIState,
-    required Future<void> Function() onRetry,
+    required Future<void> Function() onReloadMatch,
   }) {
     final match = matchUIState.match;
     // TODO this will need to be updated once backend provides arriving players
@@ -134,7 +135,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
           isError: isError,
           isLoading: isLoading,
           isSyncing: isSyncing,
-          onRetry: onRetry,
+          onRetry: onReloadMatch,
         ),
       ),
       TabTogglerOptionValue(
@@ -145,6 +146,7 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
           isError: isError,
           isLoading: isLoading,
           isSyncing: isSyncing,
+          onReloadMatch: onReloadMatch,
         ),
       ),
     ];

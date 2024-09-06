@@ -20,6 +20,7 @@ class MatchParticipantsContainer extends StatelessWidget {
     required this.isError,
     required this.isLoading,
     required this.isSyncing,
+    required this.onReloadMatch,
   });
 
 // TODO possible that we would need to introduce a model for participant
@@ -28,6 +29,7 @@ class MatchParticipantsContainer extends StatelessWidget {
   final bool isError;
   final bool isSyncing;
   final bool isLoading;
+  final Future<void> Function() onReloadMatch;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,10 @@ class MatchParticipantsContainer extends StatelessWidget {
       return const LoadingStatus(message: "Loading match participants...");
     }
 
-    return MatchParticipantsList(participations: thisParticipants);
+    return MatchParticipantsList(
+      participations: thisParticipants,
+      onReloadMatch: onReloadMatch,
+    );
 
     // return Container();
 
@@ -70,9 +75,11 @@ class MatchParticipantsList extends StatelessWidget {
   const MatchParticipantsList({
     super.key,
     required this.participations,
+    required this.onReloadMatch,
   });
 
   final List<PlayerMatchParticipationModel> participations;
+  final Future<void> Function() onReloadMatch;
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +110,10 @@ class MatchParticipantsList extends StatelessWidget {
             textColor: ColorConstants.WHITE,
             labelText: "INVITE PLAYERS",
             // onPressed: () => _onShowplayersInviteDialog(context: context),
-            onPressed: () =>
-                _onShowMatchParticipantsInviterDialog(context: context),
+            onPressed: () => _onShowMatchParticipantsInviterDialog(
+              context: context,
+              onReloadMatch: onReloadMatch,
+            ),
           ),
         ],
       );
@@ -119,8 +128,10 @@ class MatchParticipantsList extends StatelessWidget {
           buttonColor: ColorConstants.BLUE_DARK,
           textColor: ColorConstants.WHITE,
           labelText: "INVITE PLAYERS",
-          onPressed: () =>
-              _onShowMatchParticipantsInviterDialog(context: context),
+          onPressed: () => _onShowMatchParticipantsInviterDialog(
+            context: context,
+            onReloadMatch: onReloadMatch,
+          ),
           // onPressed: () {},
         ),
         const SizedBox(height: SpacingConstants.S),
@@ -151,6 +162,7 @@ class MatchParticipantsList extends StatelessWidget {
                 participation: participation,
                 // actions: _tempActionItems,
                 actions: const [],
+                onReloadMatch: onReloadMatch,
                 // isAddedToMatchInvitations: true,
                 // onInvitationAction: ({
                 //   required PlayerModel player,
@@ -174,6 +186,7 @@ class MatchParticipationItem extends StatelessWidget {
     super.key,
     required this.participation,
     required this.actions,
+    required this.onReloadMatch,
   });
 
   // TODO we dont necessarily allow any actions here - it should be custom - we will add this later as a separate widget
@@ -182,6 +195,7 @@ class MatchParticipationItem extends StatelessWidget {
   // final PlayerModel player;
   final PlayerMatchParticipationModel participation;
   final List<PlayerBriefActionItem> actions;
+  final Future<void> Function() onReloadMatch;
 
   @override
   Widget build(BuildContext context) {
@@ -342,11 +356,13 @@ class PlayerBriefActionItem<T> {
     required this.label,
     required this.icon,
     required this.onActionItemTap,
+    // required this.onMatchReload,
   });
 
   final String label;
   final IconData icon;
   final T Function() onActionItemTap;
+  // final Future<void> Function() onMatchReload;
 }
 
 // TODO temp only
@@ -366,13 +382,15 @@ List<PlayerBriefActionItem> _tempActionItems = [
 // TODO should be abstracted and reused here and in match create participants
 Future<void> _onShowMatchParticipantsInviterDialog({
   required BuildContext context,
+  required Future<void> Function() onReloadMatch,
 }) async {
   await showDialog(
     context: context,
-    builder: (context) => const DialogWrapper(
+    builder: (context) => DialogWrapper(
       title: "INVITE PLAYERS",
       child: MatchParticipationsCreator(
         matchId: 1,
+        onReloadMatch: onReloadMatch,
       ),
     ),
   );
