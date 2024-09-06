@@ -80,6 +80,8 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
       },
     );
 
+    // TODO maybe better it would be here to have controllers to join and unjoin - we will see
+
     return Scaffold(
       backgroundColor: ColorConstants.BLUE_LIGHT,
       // TODO make ticket for abnstracting app bar to be reusable
@@ -92,10 +94,14 @@ class _MatchViewState extends ConsumerState<MatchScreenView> {
           CurrentPlayerMatchParticipationIndicator(
             // isParticipating: isParticipating,
             // onParticipateToggle: onParticipateToggle,
-            participations: matchUIState.match?.participations ?? [],
+            // participations: matchUIState.match?.participations ?? [],
+            participations: matchUIState.match?.participations,
             matchId: widget.matchId,
             onReloadMatch: () {
               // TODO for now lets keep it like this
+              ref
+                  .read(getMatchControllerProviderInstance.notifier)
+                  .onGetMatch();
             },
           ),
         ],
@@ -196,7 +202,7 @@ class CurrentPlayerMatchParticipationIndicator extends ConsumerWidget {
 
   // it should receive match participations and check if authenticated player is in it
 
-  final List<PlayerMatchParticipationModel> participations;
+  final List<PlayerMatchParticipationModel>? participations;
   final int matchId;
   // TODO this is a bit clumsy now - maybe logic for toggling participation of current user should be inside the main widget, and then single function would we bpassed here that has both toggle participation and reload match?
   final VoidCallback onReloadMatch;
@@ -247,9 +253,23 @@ class CurrentPlayerMatchParticipationIndicator extends ConsumerWidget {
       );
     }
 
+    final thisParticipations = participations;
+    if (thisParticipations == null) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     final isParticipating = _checkIsParticipating(
       authenticatedPlayer: authenticatedPlayer,
-      participations: participations,
+      participations: thisParticipations,
     );
 
     // TODO this needs to be be rebuilt once toggled. so the match needs to be updated. so i guess we need to reload the match
@@ -269,7 +289,8 @@ class CurrentPlayerMatchParticipationIndicator extends ConsumerWidget {
         ref: ref,
         isParticipating: isParticipating,
         // authenticatedPlayer: authenticatedPlayer,
-        matchId: participations.first.matchId,
+        // matchId: this.first.matchId,
+        matchId: matchId,
       ),
       label: icon,
       icon: Text(label),
@@ -298,16 +319,19 @@ class CurrentPlayerMatchParticipationIndicator extends ConsumerWidget {
     if (isParticipating) {
       // TODO unjoin match
 
-      ref.read(unjoinMatchControllerProvider.notifier).onUnjoinMatch(
+      await ref.read(unjoinMatchControllerProvider.notifier).onUnjoinMatch(
             matchId: matchId,
           );
     } else {
       // TODO join match
 
-      ref.read(joinMatchControllerProvider.notifier).onJoinMatch(
+      await ref.read(joinMatchControllerProvider.notifier).onJoinMatch(
             matchId: matchId,
           );
     }
+
+    // TODO this should probably be done in parent of this widget, or in .listen of the state of both controllers
+    onReloadMatch();
   }
 }
 
