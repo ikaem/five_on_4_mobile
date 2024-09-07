@@ -30,13 +30,13 @@ void main() {
             upcomingMatches: generateTestMatchRemoteEntities(count: 3)
                 .map(
                   (e) => MatchModel(
-                    id: e.id,
-                    title: e.title,
-                    dateAndTime:
-                        DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
-                    location: e.location,
-                    description: e.description,
-                  ),
+                      id: e.id,
+                      title: e.title,
+                      dateAndTime:
+                          DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+                      location: e.location,
+                      description: e.description,
+                      participations: const []),
                 )
                 .toList(),
             todayMatches: generateTestMatchRemoteEntities(count: 3)
@@ -48,6 +48,7 @@ void main() {
                         DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -60,6 +61,7 @@ void main() {
                         DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),

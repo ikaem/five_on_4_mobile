@@ -32,10 +32,10 @@ void main() {
   group(
     "$PlayersRemoteDataSource",
     () {
-      group(".getMatch()", () {
+      group(".getPlayer()", () {
         test(
           "given ok response from [DioWrapper], "
-          "when [.getMatch()] is called, "
+          "when [.getPlayer()] is called, "
           "then should return expected response",
           () async {
             // setup
@@ -78,7 +78,7 @@ void main() {
         );
 
         test(
-          "given [.getMatch()] is called"
+          "given [.getPlayer()] is called"
           "when examine request to the server"
           "then should have called [DioWrapper.makeRequest()] with expected arguments",
           () async {

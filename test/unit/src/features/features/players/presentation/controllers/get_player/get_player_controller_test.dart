@@ -30,7 +30,7 @@ void main() {
     getIt.registerSingleton<SignOutUseCase>(signOutUseCase);
   });
 
-  setUp(() {
+  tearDown(() {
     reset(loadPlayerUseCase);
     reset(getPlayerUseCase);
     reset(signOutUseCase);

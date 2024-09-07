@@ -39,6 +39,7 @@ void main() {
                     dateAndTime: DateTime.now(),
                     location: "location",
                     description: "description",
+                    participations: const [],
                   ));
 
           when(

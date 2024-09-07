@@ -6,6 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part "authenticate_with_google_controller.g.dart";
 
+// TODO this should live inside provider folder
+
 @riverpod
 class AuthenticateWithGoogleController
     extends _$AuthenticateWithGoogleController {

@@ -32,6 +32,7 @@ void main() {
                     dateAndTime: DateTime.now(),
                     location: "location",
                     description: "description",
+                    participations: const [],
                   ));
 
           final matchIds = matchModels.map((e) => e.id).toList();

@@ -15,3 +15,6 @@ generate_clean_cache:
 
 just_example_how_to_add_env_vars_to_built_app:
 	flutter build appbundle --flavor production -t lib/main_production.dart --dart-define-from-file=.env
+
+tests:
+	flutter test

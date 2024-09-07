@@ -54,7 +54,7 @@ void main() {
             // TODO when all is done, then create additojnal wrapper around general db, to have functions there that we need - so that we now have full interface ovder db wrapper, and can just repalce db when needed
             final SimpleSelectStatement<$PlayerLocalEntityTable,
                     PlayerLocalEntityData> select =
-                testDatabaseWrapper.databaseWrapper.playerLocalRepo.select();
+                testDatabaseWrapper.databaseWrapper.playerRepo.select();
             final SimpleSelectStatement<$PlayerLocalEntityTable,
                 PlayerLocalEntityData> findMatchSelect = select
               ..where((tbl) => tbl.id.equals(playerValue.id));
@@ -112,7 +112,7 @@ void main() {
             // then
             final SimpleSelectStatement<$PlayerLocalEntityTable,
                     PlayerLocalEntityData> select =
-                testDatabaseWrapper.databaseWrapper.playerLocalRepo.select();
+                testDatabaseWrapper.databaseWrapper.playerRepo.select();
             final SimpleSelectStatement<$PlayerLocalEntityTable,
                 PlayerLocalEntityData> findMatchSelect = select
               ..where((tbl) => tbl.id.equals(playerValue.id));
@@ -206,7 +206,7 @@ void main() {
 
             // given
 
-            await testDatabaseWrapper.databaseWrapper.playerLocalRepo
+            await testDatabaseWrapper.databaseWrapper.playerRepo
                 .insertOne(playerData);
 
             final playerId = playerData.id;
@@ -255,7 +255,7 @@ void main() {
               }).toList();
 
               // given
-              await testDatabaseWrapper.databaseWrapper.playerLocalRepo
+              await testDatabaseWrapper.databaseWrapper.playerRepo
                   .insertAll(playerEntities);
 
               // when
@@ -325,7 +325,7 @@ void main() {
                 ..add(playerEntities.length + 1);
 
               // given
-              await testDatabaseWrapper.databaseWrapper.playerLocalRepo
+              await testDatabaseWrapper.databaseWrapper.playerRepo
                   .insertAll(playerEntities);
 
               // when
@@ -390,7 +390,7 @@ void main() {
               }).toList();
 
               final actualData = await testDatabaseWrapper
-                  .databaseWrapper.playerLocalRepo
+                  .databaseWrapper.playerRepo
                   .select()
                   .get();
 
@@ -482,7 +482,7 @@ void main() {
 
               // get all data from db
               final actualData = await testDatabaseWrapper
-                  .databaseWrapper.playerLocalRepo
+                  .databaseWrapper.playerRepo
                   .select()
                   .get();
 

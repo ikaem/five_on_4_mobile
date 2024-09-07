@@ -354,6 +354,7 @@ void main() {
             description: e.description.value,
             location: e.location.value,
             title: e.title.value,
+            participations: const [],
           );
         }).toList();
 

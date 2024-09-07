@@ -123,12 +123,16 @@ void main() {
           "then should return expected value",
           () async {
             // setup
+
             const localEntityValue = MatchLocalEntityValue(
               id: 1,
               dateAndTime: 1,
               title: "title",
               location: "location",
               description: "description",
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: [],
             );
 
             // given
@@ -154,6 +158,7 @@ void main() {
               title: localEntityValue.title,
               location: localEntityValue.location,
               description: localEntityValue.description,
+              participations: const [],
             );
 
             expect(result, equals(expectedModel));
@@ -183,6 +188,9 @@ void main() {
                       title: e.title.value,
                       location: e.location.value,
                       description: e.description.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList();
@@ -214,6 +222,7 @@ void main() {
                   title: e.title,
                   location: e.location,
                   description: e.description,
+                  participations: const [],
                 ),
               )
               .toList();
@@ -280,6 +289,9 @@ void main() {
                     title: e.title.value,
                     location: e.location.value,
                     description: e.description.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -291,6 +303,9 @@ void main() {
                     title: e.title.value,
                     location: e.location.value,
                     description: e.description.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -302,6 +317,9 @@ void main() {
                     title: e.title.value,
                     location: e.location.value,
                     description: e.description.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -329,6 +347,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -342,6 +361,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -355,6 +375,7 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    participations: const [],
                   ),
                 )
                 .toList(),
@@ -442,6 +463,9 @@ void main() {
                   title: e.title,
                   location: e.location,
                   description: e.description,
+                  // TODO we will see if this is needed
+                  // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                  participations: const [],
                 ),
               )
               .toList();
@@ -565,6 +589,9 @@ void main() {
               title: testMatchRemoteEntity.title,
               location: testMatchRemoteEntity.location,
               description: testMatchRemoteEntity.description,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
             );
 
             verify(
@@ -658,6 +685,9 @@ void main() {
                     title: e.title,
                     location: e.location,
                     description: e.description,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ))
               .toList();
 

@@ -10,6 +10,7 @@ typedef OnPlayerSearch = Future<void> Function({
   required String playerIdentifier,
 });
 
+// TODO this should be reused in match participants
 class MatchCreateParticipantsInvite extends StatelessWidget {
   const MatchCreateParticipantsInvite({
     super.key,

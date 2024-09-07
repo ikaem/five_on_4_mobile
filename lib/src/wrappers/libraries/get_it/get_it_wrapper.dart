@@ -23,6 +23,14 @@ import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_matc
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_my_matches/load_my_matches_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_player_matches_overview/load_player_matches_overview_use_case.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/use_cases/load_searched_matches/load_searched_matches_use_case.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/data_sources/player_match_participation_local/player_match_participation_local_data_source.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/data_sources/player_match_participation_local/player_match_participation_local_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/data_sources/player_match_participation_remote/player_match_participation_remote_data_source_impl.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/repositories/player_match_participation_repository.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/repositories/player_match_participation_repository_impl.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/use_cases/invite_to_match/invite_to_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/use_cases/join_match/join_match_use_case.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/use_cases/unjoin_match/unjoin_match_use_case.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_local/players_local_data_source_impl.dart';
 import 'package:five_on_4_mobile/src/features/players/data/data_sources/players_remote/players_remote_data_source.dart';
@@ -123,6 +131,17 @@ abstract class GetItWrapper {
       dioWrapper: dioWrapper,
     );
 
+    final PlayerMatchParticipationLocalDataSource
+        playerMatchParticipationLocalDataSource =
+        PlayerMatchParticipationLocalDataSourceImpl(
+      databaseWrapper: databaseWrapper,
+    );
+
+    final playerMatchParticipationRemoteDataSource =
+        PlayerMatchParticipationRemoteDataSourceImpl(
+      dioWrapper: dioWrapper,
+    );
+
     // repositories
     final authRepository = AuthRepositoryImpl(
       authLocalDataSource: authLocalDataSource,
@@ -138,9 +157,11 @@ abstract class GetItWrapper {
       playersRemoteDataSource: playersRemoteDataSource,
     );
 
-    // use cases
-    final getAuthDataStatusUseCase = GetAuthDataStatusUseCase(
-      authRepository: authRepository,
+    final PlayerMatchParticipationRepository
+        playerMatchParticipationRepository =
+        PlayerMatchParticipationRepositoryImpl(
+      playerMatchParticipationRemoteDataSource:
+          playerMatchParticipationRemoteDataSource,
     );
 
     final getMatchUseCase =
@@ -149,10 +170,6 @@ abstract class GetItWrapper {
         LoadMatchUseCase(matchesRepository: matchesRepository);
     final createMatchUseCase =
         CreateMatchUseCase(matchesRepository: matchesRepository);
-    // final loadMyMatchesUseCase =
-    //     LoadMyMatchesUseCase(matchesRepository: matchesRepository);
-    // final getMyTodayMatchesUseCase =
-    //     GetMyTodayMatchesUseCase(matchesRepository: matchesRepository);
     final getAuthenticatedPlayerModelStreamUseCase =
         GetAuthenticatedPlayerModelStreamUseCase(
       authRepository: authRepository,
@@ -203,14 +220,20 @@ abstract class GetItWrapper {
     final GetPlayerUseCase getPlayerUseCase =
         GetPlayerUseCase(playersRepository: playersRepository);
 
-    // final
-    // TODO FOR NOW NOT NEEDED
-    // final getMyPasMatchesUseCase = GetMyPastMatchesUseCase(
-    //   matchesRepository: matchesRepository,
-    // );
-    // final getMyUpcomingMatchesUseCase = GetMyUpcomingMatchesUseCase(
-    //   matchesRepository: matchesRepository,
-    // );
+    // player match participations
+    final JoinMatchUseCase joinMatchUseCase = JoinMatchUseCase(
+      // matchesRepository: matchesRepository,
+      playerMatchParticipationRepository: playerMatchParticipationRepository,
+    );
+    final UnjoinMatchUseCase unjoinMatchUseCase = UnjoinMatchUseCase(
+      // matchesRepository: matchesRepository,
+      playerMatchParticipationRepository: playerMatchParticipationRepository,
+    );
+
+    final InviteToMatchUseCase inviteToMatchUseCase = InviteToMatchUseCase(
+      // matchesRepository: matchesRepository,
+      playerMatchParticipationRepository: playerMatchParticipationRepository,
+    );
 
     // TODO extract all registering to another function
 
@@ -220,7 +243,7 @@ abstract class GetItWrapper {
     // register use case singletons
     // TODO maybe dont need to be registered at all - we can simply instantiate them when needed - just make sure they are stateless
     // but then we would have to expose repositories via getIt
-    getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
+    // getIt.registerSingleton<GetAuthDataStatusUseCase>(getAuthDataStatusUseCase);
     getIt.registerSingleton<GetMatchUseCase>(getMatchUseCase);
     getIt.registerSingleton<LoadMatchUseCase>(loadMatchesUseCase);
     getIt.registerSingleton<CreateMatchUseCase>(createMatchUseCase);
@@ -251,6 +274,11 @@ abstract class GetItWrapper {
     getIt.registerSingleton<GetPlayersUseCase>(getPlayersUseCase);
     getIt.registerSingleton<LoadPlayerUseCase>(loadPlayerUseCase);
     getIt.registerSingleton<GetPlayerUseCase>(getPlayerUseCase);
+
+    // player match participations
+    getIt.registerSingleton<JoinMatchUseCase>(joinMatchUseCase);
+    getIt.registerSingleton<UnjoinMatchUseCase>(unjoinMatchUseCase);
+    getIt.registerSingleton<InviteToMatchUseCase>(inviteToMatchUseCase);
 
     // getIt.registerSingleton<LoadMyMatchesUseCase>(loadMyMatchesUseCase);
     // getIt.registerSingleton<GetMyTodayMatchesUseCase>(getMyTodayMatchesUseCase);

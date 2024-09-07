@@ -23,6 +23,15 @@ class MigrationWrapper {
           schema.playerLocalEntity.avatarUrl,
         );
       },
+      from4To5: (Migrator m, Schema5 schema) async {
+        await m.createTable(schema.playerMatchParticipationLocalEntity);
+      },
+      from5To6: (Migrator m, Schema6 schema) async {
+        await m.addColumn(
+          schema.playerMatchParticipationLocalEntity,
+          schema.playerMatchParticipationLocalEntity.playerNickname,
+        );
+      },
     ),
     beforeOpen: (details) async {
       // some populate things if needed

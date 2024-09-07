@@ -8,6 +8,8 @@ import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_models_overview_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/converters/matches_converter.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 
 class MatchesRepositoryImpl implements MatchesRepository {
   const MatchesRepositoryImpl({
@@ -42,14 +44,13 @@ class MatchesRepositoryImpl implements MatchesRepository {
     final remoteEntity =
         await _matchesRemoteDataSource.getMatch(matchId: matchId);
 
-    final localEntityValue = MatchLocalEntityValue(
-      id: remoteEntity.id,
-      dateAndTime: remoteEntity.dateAndTime,
-      title: remoteEntity.title,
-      location: remoteEntity.location,
-      description: remoteEntity.description,
+    final localEntityValue =
+        MatchesConverter.fromRemoteEntityToMatchLocalEntityValue(
+      matchRemote: remoteEntity,
     );
 
+    // TODO matches local data source should also store any participations on match into particpations table
+    // this is to make sure all is atomic in transaction in case of failure
     await _matchesLocalDataSource.storeMatch(matchValue: localEntityValue);
 
     // final matchRemote =
@@ -109,6 +110,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -120,6 +123,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -131,6 +136,8 @@ class MatchesRepositoryImpl implements MatchesRepository {
               location: e.location,
               description: e.description,
               title: e.title,
+              // TODO not needed here, for now at least?
+              participations: const [],
             ),
           )
           .toList(),
@@ -215,13 +222,17 @@ class MatchesRepositoryImpl implements MatchesRepository {
         await _matchesLocalDataSource.getMatch(matchId: matchId);
 
     // TODO maybe converter exists already
-    final matchModel = MatchModel(
-      id: localEntityValue.id,
-      dateAndTime:
-          DateTime.fromMillisecondsSinceEpoch(localEntityValue.dateAndTime),
-      location: localEntityValue.location,
-      description: localEntityValue.description,
-      title: localEntityValue.title,
+    // final matchModel = MatchModel(
+    //   id: localEntityValue.id,
+    //   dateAndTime:
+    //       DateTime.fromMillisecondsSinceEpoch(localEntityValue.dateAndTime),
+    //   location: localEntityValue.location,
+    //   description: localEntityValue.description,
+    //   title: localEntityValue.title,
+    // );
+
+    final matchModel = MatchesConverter.toModelFromLocalEntityValue(
+      value: localEntityValue,
     );
 
     return matchModel;
@@ -233,16 +244,20 @@ class MatchesRepositoryImpl implements MatchesRepository {
         await _matchesLocalDataSource.getMatches(matchIds: matchIds);
 
     // TODO maybe converter exists already
-    final modelMatches = localEntitiesValues.map((e) {
-      return MatchModel(
-        id: e.id,
-        dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
-        location: e.location,
-        description: e.description,
-        title: e.title,
-      );
+    // final modelMatches = localEntitiesValues.map((e) {
+    //   return MatchModel(
+    //     id: e.id,
+    //     dateAndTime: DateTime.fromMillisecondsSinceEpoch(e.dateAndTime),
+    //     location: e.location,
+    //     description: e.description,
+    //     title: e.title,
+    //   );
+    // }).toList();
+
+    final matchModels = localEntitiesValues.map((e) {
+      return MatchesConverter.toModelFromLocalEntityValue(value: e);
     }).toList();
 
-    return modelMatches;
+    return matchModels;
   }
 }

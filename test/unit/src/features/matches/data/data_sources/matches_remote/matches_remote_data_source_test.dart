@@ -7,6 +7,8 @@ import 'package:five_on_4_mobile/src/features/matches/data/entities/match_remote
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_create_data_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/utils/constants/http_matches_constants.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_remote/player_match_participation_remote_entity.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/dio/dio_wrapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -174,7 +176,26 @@ void main() {
       group(
         ".getMatch()",
         () {
-          final matchEntity = generateTestMatchRemoteEntities(count: 1).first;
+          // final matchEntity = generateTestMatchRemoteEntities(count: 1).first;
+          final participationEntities = List.generate(3, (index) {
+            return PlayerMatchParticipationRemoteEntity(
+              id: index + 1,
+              playerId: index + 1,
+              matchId: 1,
+              // status: 1,
+              status: PlayerMatchParticipationStatus.pendingDecision,
+              playerNickname: "nickname",
+            );
+          });
+
+          final matchEntity = MatchRemoteEntity(
+            id: 1,
+            title: "title",
+            dateAndTime: 1,
+            location: "location",
+            description: "description",
+            participations: participationEntities,
+          );
           // ok response, return expected response
           test(
             "given ok response from dio"
@@ -202,7 +223,9 @@ void main() {
                         "dateAndTime": matchEntity.dateAndTime,
                         "location": matchEntity.location,
                         "description": matchEntity.description,
-                      }
+                      },
+                      "participations":
+                          participationEntities.map((e) => e.toJson()).toList(),
                     }
                     // "data": matchEntity.toJson(),
                   });
@@ -246,7 +269,9 @@ void main() {
                         "dateAndTime": matchEntity.dateAndTime,
                         "location": matchEntity.location,
                         "description": matchEntity.description,
-                      }
+                      },
+                      "participations":
+                          participationEntities.map((e) => e.toJson()).toList(),
                     }
                     // "data": matchEntity.toJson(),
                   });
@@ -309,6 +334,7 @@ void main() {
             when(() => dioWrapper.makeRequest<Map<String, dynamic>>(
                   uriParts: any(named: "uriParts"),
                   method: any(named: "method"),
+                  bodyData: any(named: "bodyData"),
                 )).thenAnswer((_) async {
               return HttpResponseValue(payload: {
                 "ok": true,

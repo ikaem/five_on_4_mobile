@@ -85,6 +85,7 @@ class MatchCreateParticipants extends StatelessWidget {
   }
 
 // TODO create ticket for this to add feature to invite players to a match
+// TODO create ticket for this to be abstracted and reused in match participants
   Future<void> _onShowParticipantsInviteDialog({
     required BuildContext context,
   }) async {

@@ -340,6 +340,7 @@ void main() {
                     dateAndTime: DateTime.now(),
                     location: "location $i",
                     description: "description $i",
+                    participations: const [],
                   ));
           final matchesIds = matches.map((e) => e.id).toList();
 

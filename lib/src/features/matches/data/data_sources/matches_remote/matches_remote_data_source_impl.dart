@@ -117,10 +117,16 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
           "Something went wrong with getting match: ${response.message}");
     }
 
-    final responseJsonMapMatchData = response.payload["data"]["match"];
+    final responseMatchJsonMap = response.payload["data"]["match"];
+    final responseParticipationJsonMaps =
+        response.payload["data"]["participations"];
 
-    final MatchRemoteEntity matchEntity =
-        MatchRemoteEntity.fromJson(json: responseJsonMapMatchData);
+    print("responseMatchJsonMap: $responseMatchJsonMap");
+
+    final MatchRemoteEntity matchEntity = MatchRemoteEntity.fromJson(
+      matchJsonMap: responseMatchJsonMap,
+      participationJsonMaps: responseParticipationJsonMaps,
+    );
 
     return matchEntity;
   }
@@ -158,7 +164,11 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         response.payload["data"]["matches"] as List<dynamic>;
 
     final matchesEntities = responseJsonMapMatchesData
-        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .map((e) => MatchRemoteEntity.fromJson(
+              matchJsonMap: e,
+              // TODO no participations are needed or returned in searched matches - for now
+              participationJsonMaps: const [],
+            ))
         .toList();
 
     return matchesEntities;
@@ -199,7 +209,12 @@ class MatchesRemoteDataSourceImpl implements MatchesRemoteDataSource {
         response.payload["data"]["matches"] as List<dynamic>;
 
     final matchesOverview = responseJsonMapMatchesData
-        .map((e) => MatchRemoteEntity.fromJson(json: e))
+        .map((e) => MatchRemoteEntity.fromJson(
+              matchJsonMap: e,
+              // TODO no participations are needed or returned in player matches overview - for now
+              // TODO but it might be needed in future, to be able to immediately show what is current number of participating players and so on - future work
+              participationJsonMaps: const [],
+            ))
         .toList();
 
     return matchesOverview;

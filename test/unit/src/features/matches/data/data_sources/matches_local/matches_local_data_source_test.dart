@@ -4,6 +4,8 @@ import 'package:five_on_4_mobile/src/features/matches/data/data_sources/matches_
 import 'package:five_on_4_mobile/src/features/matches/domain/exceptions/match_exceptions.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/match_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/features/matches/domain/values/player_match_local_entities_overview_value.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/values/player_match_participation_local_entity_value.dart';
 import 'package:five_on_4_mobile/src/wrappers/libraries/drift/app_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,7 +67,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -85,6 +87,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -122,7 +127,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -143,6 +148,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -179,7 +187,7 @@ void main() {
             });
 
             // given
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertAll(testMatchLocalEntityCompanions);
 
             // when
@@ -201,6 +209,9 @@ void main() {
                       dateAndTime: companion.dateAndTime.value,
                       description: companion.description.value,
                       location: companion.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList(),
@@ -236,7 +247,7 @@ void main() {
                   matchEntities.map((entity) => entity.id.value).toList();
 
               // given
-              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+              await testDatabaseWrapper.databaseWrapper.matchRepo
                   .insertAll(matchEntities);
 
               // when
@@ -251,6 +262,9 @@ void main() {
                       dateAndTime: entity.dateAndTime.value,
                       description: entity.description.value,
                       location: entity.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList();
@@ -300,7 +314,7 @@ void main() {
                     ..add(matchEntities.length + 1);
 
               // given
-              await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+              await testDatabaseWrapper.databaseWrapper.matchRepo
                   .insertAll(matchEntities);
 
               // when
@@ -315,6 +329,9 @@ void main() {
                       dateAndTime: entity.dateAndTime.value,
                       description: entity.description.value,
                       location: entity.location.value,
+                      // TODO we will see if this is needed
+                      // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                      participations: const [],
                     ),
                   )
                   .toList();
@@ -362,7 +379,7 @@ void main() {
             // setup
             final testMatchLocalEntityCompanion =
                 generateTestMatchLocalEntityCompanions(count: 1).first;
-            await testDatabaseWrapper.databaseWrapper.matchLocalRepo
+            await testDatabaseWrapper.databaseWrapper.matchRepo
                 .insertOne(testMatchLocalEntityCompanion);
 
             // given
@@ -385,6 +402,90 @@ void main() {
               title: testMatchLocalEntityCompanion.title.value,
               location: testMatchLocalEntityCompanion.location.value,
               description: testMatchLocalEntityCompanion.description.value,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: const [],
+            );
+
+            expect(result, equals(expectedResult));
+
+            // cleanup
+          },
+        );
+
+        test(
+          "given a valid match id and existing [PlayerMatchParticipationLocalEntity]s in the database"
+          "when '.getMatch() is called"
+          "then should return expected match with participations",
+          () async {
+            // setup
+            // final participations = List.generate(3, (index) {
+            //   return PlayerMatchParticipationLocalEntityValue(
+            //     id: index + 1,
+            //     status: PlayerMatchParticipationStatus.pendingDecision,
+            //     playerNickname: "player$index",
+            //     playerId: index + 1,
+            //     matchId: 1,
+            //   );
+            // });
+
+            final match = MatchLocalEntityCompanion.insert(
+              id: const Value(1),
+              title: "title",
+              dateAndTime: DateTime.now().millisecondsSinceEpoch,
+              location: "location",
+              description: "description",
+            );
+
+            final participations = List.generate(3, (index) {
+              return PlayerMatchParticipationLocalEntityCompanion.insert(
+                id: Value(index + 1),
+                status: PlayerMatchParticipationStatus.pendingDecision,
+                playerNickname: Value("player$index"),
+                playerId: index + 1,
+                matchId: 1,
+              );
+            });
+
+            await testDatabaseWrapper.databaseWrapper.matchRepo
+                .insertOne(match);
+            await testDatabaseWrapper
+                .databaseWrapper.playerMatchParticipationRepo
+                .insertAll(participations);
+
+            // given
+            final id = match.id.value;
+
+            // when
+            final result = await dataSource.getMatch(matchId: id);
+
+            // then
+            // final expectedResult = MatchLocalEntityData(
+            //   id: id,
+            //   title: testMatchLocalEntityCompanion.title.value,
+            //   dateAndTime: testMatchLocalEntityCompanion.dateAndTime.value,
+            //   description: testMatchLocalEntityCompanion.description.value,
+            //   location: testMatchLocalEntityCompanion.location.value,
+            // );
+            final expectedResult = MatchLocalEntityValue(
+              id: id,
+              dateAndTime: match.dateAndTime.value,
+              title: match.title.value,
+              location: match.location.value,
+              description: match.description.value,
+              // TODO we will see if this is needed
+              // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+              participations: participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityValue(
+                      id: participation.id.value,
+                      status: participation.status.value,
+                      playerNickname: participation.playerNickname.value,
+                      playerId: participation.playerId.value,
+                      matchId: participation.matchId.value,
+                    ),
+                  )
+                  .toList(),
             );
 
             expect(result, equals(expectedResult));
@@ -397,32 +498,179 @@ void main() {
       group(
         ".storeMatch()",
         () {
+          // TODO this is for testing only - will be simpliefed later where storing of participations will be fully delegated to its own data source, as match and its participations will be fetched from remote in separate calls
+          test(
+            "given [MatchLocalEntityValue] with participations"
+            "when '.storeMatch() is called"
+            "then should save participations to the database",
+            () async {
+              // setup
+              // given
+              final participations = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  id: index + 1,
+                  status: PlayerMatchParticipationStatus.pendingDecision,
+                  playerNickname: "player$index",
+                  playerId: index + 1,
+                  matchId: 1,
+                );
+              });
+              final matchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: participations,
+              );
+
+              // when
+              await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              // then
+              final expectedParticipationsData = participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityData(
+                      id: participation.id,
+                      status: participation.status,
+                      playerNickname: participation.playerNickname,
+                      playerId: participation.playerId,
+                      matchId: participation.matchId,
+                    ),
+                  )
+                  .toList();
+
+              final participationIds = participations
+                  .map((participation) => participation.id)
+                  .toList();
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final findParticipations = select
+                ..where((tbl) => tbl.id.isIn(participationIds));
+              final participationsData = await findParticipations.get();
+
+              expect(participationsData, equals(expectedParticipationsData));
+
+              // cleanup
+            },
+          );
+
+          // also needs to update existing participations
+          test(
+            "given [MatchLocalEntityValue] with participations already existing in the database"
+            "when '.storeMatch() is called with updated participations"
+            "then should update participations in the database",
+            () async {
+              // setup
+              // given
+              final participations = List.generate(3, (index) {
+                return PlayerMatchParticipationLocalEntityValue(
+                  id: index + 1,
+                  status: PlayerMatchParticipationStatus.pendingDecision,
+                  playerNickname: "player$index",
+                  playerId: index + 1,
+                  matchId: 1,
+                );
+              });
+              final matchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: participations,
+              );
+              await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              // when
+              final updatedParticipations = participations
+                  .map(
+                    (participation) => PlayerMatchParticipationLocalEntityValue(
+                      id: participation.id,
+                      status: PlayerMatchParticipationStatus.arriving,
+                      playerNickname: participation.playerNickname,
+                      playerId: participation.playerId,
+                      matchId: participation.matchId,
+                    ),
+                  )
+                  .toList();
+              final updatedMatchEntityValue = MatchLocalEntityValue(
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: updatedParticipations,
+              );
+
+              await dataSource.storeMatch(matchValue: updatedMatchEntityValue);
+
+              // then
+              final expectedParticipationsData = updatedParticipations
+                  .map(
+                    (updatedParticipation) =>
+                        PlayerMatchParticipationLocalEntityData(
+                      id: updatedParticipation.id,
+                      status: updatedParticipation.status,
+                      playerNickname: updatedParticipation.playerNickname,
+                      playerId: updatedParticipation.playerId,
+                      matchId: updatedParticipation.matchId,
+                    ),
+                  )
+                  .toList();
+
+              final participationIds = participations
+                  .map((participation) => participation.id)
+                  .toList();
+              final select = testDatabaseWrapper
+                  .databaseWrapper.playerMatchParticipationRepo
+                  .select();
+              final findParticipations = select
+                ..where((tbl) => tbl.id.isIn(participationIds));
+              final participationsData = await findParticipations.get();
+
+              expect(participationsData, equals(expectedParticipationsData));
+
+              // cleanup
+            },
+          );
+
           test(
             "given MatchLocalEntityValue"
             "when '.storeMatch() is called"
             "then should save the match to the database",
             () async {
               // setup
-              final matchEntityCompanion =
-                  generateTestMatchLocalEntityCompanions(count: 1).first;
+              // final matchEntityCompanion =
+              //     generateTestMatchLocalEntityCompanions(count: 1).first;
 
               // given
               final matchEntityValue = MatchLocalEntityValue(
-                id: matchEntityCompanion.id.value,
-                title: matchEntityCompanion.title.value,
-                dateAndTime: matchEntityCompanion.dateAndTime.value,
-                description: matchEntityCompanion.description.value,
-                location: matchEntityCompanion.location.value,
+                id: 1,
+                title: "title",
+                dateAndTime: DateTime.now().millisecondsSinceEpoch,
+                description: "description",
+                location: "location",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // when
-              final storedMatchId =
-                  await dataSource.storeMatch(matchValue: matchEntityValue);
+
+              await dataSource.storeMatch(matchValue: matchEntityValue);
 
               // then
               // TODO this needs to be abstracted somehow as a getter possibly in app datahbase wrapper
               final select =
-                  testDatabaseWrapper.databaseWrapper.matchLocalRepo.select();
+                  testDatabaseWrapper.databaseWrapper.matchRepo.select();
               final findMatch = select
                 ..where((tbl) => tbl.id.equals(matchEntityValue.id));
               final matchData = await findMatch.getSingleOrNull();
@@ -455,6 +703,9 @@ void main() {
                 dateAndTime: matchEntityCompanion.dateAndTime.value,
                 description: matchEntityCompanion.description.value,
                 location: matchEntityCompanion.location.value,
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // given
@@ -469,13 +720,16 @@ void main() {
                 description:
                     "${matchEntityCompanion.description.value} updated",
                 location: "${matchEntityCompanion.location.value} updated",
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               await dataSource.storeMatch(matchValue: updatedMatchEntityValue);
 
               // then
               final select =
-                  testDatabaseWrapper.databaseWrapper.matchLocalRepo.select();
+                  testDatabaseWrapper.databaseWrapper.matchRepo.select();
               final findMatch = select
                 ..where((tbl) => tbl.id.equals(matchEntityValue.id));
               final matchData = await findMatch.getSingleOrNull();
@@ -510,6 +764,9 @@ void main() {
                 dateAndTime: matchEntityCompanion.dateAndTime.value,
                 description: matchEntityCompanion.description.value,
                 location: matchEntityCompanion.location.value,
+                // TODO we will see if this is needed
+                // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                participations: const [],
               );
 
               // when
@@ -547,6 +804,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: companion.description.value,
                     location: companion.location.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();
@@ -568,8 +828,7 @@ void main() {
                 )
                 .toList();
 
-            final select = await testDatabaseWrapper
-                .databaseWrapper.matchLocalRepo
+            final select = await testDatabaseWrapper.databaseWrapper.matchRepo
                 .select()
                 .get();
 
@@ -597,6 +856,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: companion.description.value,
                     location: companion.location.value,
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();
@@ -616,6 +878,9 @@ void main() {
                     dateAndTime: companion.dateAndTime.value,
                     description: "${companion.description.value} updated",
                     location: "${companion.location.value} updated",
+                    // TODO we will see if this is needed
+                    // TODO possibly we could have a factory constructor called brief that will immeditarly assing empty list of participations here
+                    participations: const [],
                   ),
                 )
                 .toList();
@@ -636,8 +901,7 @@ void main() {
                 )
                 .toList();
 
-            final select = await testDatabaseWrapper
-                .databaseWrapper.matchLocalRepo
+            final select = await testDatabaseWrapper.databaseWrapper.matchRepo
                 .select()
                 .get();
 

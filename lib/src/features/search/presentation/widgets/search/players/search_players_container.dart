@@ -117,8 +117,12 @@ class _SearchPlayersContainerState
         orElse: () => false, error: (e, s) => true);
 
     final List<PlayerModel> foundPlayers =
-        searchPlayersControllerState.maybeWhen(
-            orElse: () => _tempPlayers, data: (data) => data.foundPlayers);
+        searchPlayersControllerState.maybeWhen(orElse: () {
+      // return _tempPlayers;
+      return [];
+    }, data: (data) {
+      return data.foundPlayers;
+    });
 
     final SearchPlayersUIState state = SearchPlayersUIState(
       isLoading: isLoading,

@@ -34,6 +34,7 @@ class MatchCreateParticipantsContainer extends StatelessWidget {
         message: "Creating match...",
       );
     }
+    // TODO this can probably be reused or soemthing with match participants
     return MatchCreateParticipants(playersToInvite: playersToInvite);
   }
 }
