@@ -294,7 +294,12 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // onPlayerTap(foundPlayer);
-            _onShowConfirmInviteDialog(context: context);
+            _onShowConfirmInviteDialog(
+              context: context,
+              onInvitePlayer: () async {
+                onPlayerTap(foundPlayer);
+              },
+            );
           },
           child: _MatchParticipationCreatorPlayerItem(
             player: foundPlayer,
@@ -494,6 +499,7 @@ class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
 
 Future<void> _onShowConfirmInviteDialog({
   required BuildContext context,
+  required Future<void> Function() onInvitePlayer,
 }) async {
   await showDialog(
     context: context,
@@ -517,15 +523,16 @@ Future<void> _onShowConfirmInviteDialog({
         actions: [
           ElevatedButton(
             onPressed: () {
+              onInvitePlayer();
               Navigator.of(context).pop();
             },
-            child: const Text("Cancel"),
+            child: const Text("Invite"),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text("Invite"),
+            child: const Text("Cancel"),
           ),
         ],
       );
