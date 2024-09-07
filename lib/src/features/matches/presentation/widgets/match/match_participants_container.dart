@@ -386,6 +386,8 @@ List<PlayerBriefActionItem> _tempActionItems = [
 Future<void> _onShowMatchParticipantsInviterDialog({
   required BuildContext context,
   required Future<void> Function() onReloadMatch,
+  // TODO this does not update player status if they are already invited
+  // TODO maybe it would be good to pass instance of getmatchcontroller provider, so that we can listzen to its staste and rebuild?
   required List<PlayerMatchParticipationModel> participations,
 }) async {
   await showDialog(
