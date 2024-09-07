@@ -385,6 +385,7 @@ Future<void> _onShowMatchParticipantsInviterDialog({
   required Future<void> Function() onReloadMatch,
 }) async {
   await showDialog(
+    // anchorPoint: const Offset(100, 100),
     context: context,
     builder: (context) => DialogWrapper(
       title: "INVITE PLAYERS",

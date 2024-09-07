@@ -8,12 +8,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/circled_sides_avatar.dart';
+import 'package:five_on_4_mobile/src/features/core/presentation/widgets/dialog_wrapper.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/error_status.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/custom_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/streamed_text_field.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/string_extension.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/presentation/controllers/invite_to_match/provider/invite_to_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players_input/provider/search_players_inputs_controller_provider.dart';
@@ -140,6 +142,7 @@ class _MatchParticipationsCreatorState
               players: searchPlayersForMatchParticipationUIState.players,
               onPlayerTap: (player) {
                 // TODO this should add player to match participations
+                _onInvitePlayer(playerId: player.id);
               }
               // TODO this should add player to match participations
               ),
@@ -185,6 +188,17 @@ class _MatchParticipationsCreatorState
     );
 
     return state;
+  }
+
+  Future<void> _onInvitePlayer({
+    required int playerId,
+  }) async {
+    await ref.read(inviteToMatchControllerProvider.notifier).onInviteToMatch(
+          matchId: widget.matchId,
+          playerId: playerId,
+        );
+
+    await widget.onReloadMatch();
   }
 }
 
@@ -275,12 +289,20 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
         //   onInvitationAction: onInvitationAction,
         // );
 
-        return _MatchParticipationCreatorPlayerItem(
-          player: foundPlayer,
-          // TODO we will handle with actions later
-          // TODO also should somehow mark if player has already been added to match participations
-          // TODO we should also refetch match after adding player to match participations
-          actions: const [],
+        // TODO this is temp when tap on each player
+        // TODO it should be in actions
+        return GestureDetector(
+          onTap: () {
+            // onPlayerTap(foundPlayer);
+            _onShowConfirmInviteDialog(context: context);
+          },
+          child: _MatchParticipationCreatorPlayerItem(
+            player: foundPlayer,
+            // TODO we will handle with actions later
+            // TODO also should somehow mark if player has already been added to match participations
+            // TODO we should also refetch match after adding player to match participations
+            actions: const [],
+          ),
         );
       },
     );
@@ -468,4 +490,45 @@ class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<void> _onShowConfirmInviteDialog({
+  required BuildContext context,
+}) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      // TODO this should be different widget - we should probably use our own wrapper - leave as is for now
+      return AlertDialog(
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        title: const Text("INVITE PLAYER"),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Are you sure you want to invite this player to the match?",
+              style: TextStyle(
+                color: ColorConstants.BLACK,
+                fontSize: TextSizeConstants.REGULAR,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Invite"),
+          ),
+        ],
+      );
+    },
+  );
 }
