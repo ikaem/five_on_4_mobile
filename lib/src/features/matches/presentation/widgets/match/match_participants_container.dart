@@ -113,6 +113,7 @@ class MatchParticipantsList extends StatelessWidget {
             onPressed: () => _onShowMatchParticipantsInviterDialog(
               context: context,
               onReloadMatch: onReloadMatch,
+              participations: participations,
             ),
           ),
         ],
@@ -128,9 +129,11 @@ class MatchParticipantsList extends StatelessWidget {
           buttonColor: ColorConstants.BLUE_DARK,
           textColor: ColorConstants.WHITE,
           labelText: "INVITE PLAYERS",
+
           onPressed: () => _onShowMatchParticipantsInviterDialog(
             context: context,
             onReloadMatch: onReloadMatch,
+            participations: participations,
           ),
           // onPressed: () {},
         ),
@@ -383,6 +386,7 @@ List<PlayerBriefActionItem> _tempActionItems = [
 Future<void> _onShowMatchParticipantsInviterDialog({
   required BuildContext context,
   required Future<void> Function() onReloadMatch,
+  required List<PlayerMatchParticipationModel> participations,
 }) async {
   await showDialog(
     // anchorPoint: const Offset(100, 100),
@@ -392,6 +396,7 @@ Future<void> _onShowMatchParticipantsInviterDialog({
       child: MatchParticipationsCreator(
         matchId: 1,
         onReloadMatch: onReloadMatch,
+        participations: participations,
       ),
     ),
   );

@@ -5,6 +5,7 @@
 // searches for players only
 // and then we would pass callback for on tap player, or something - we can see in future
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/buttons/streamed_elevated_button.dart';
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/circled_sides_avatar.dart';
@@ -15,6 +16,8 @@ import 'package:five_on_4_mobile/src/features/core/presentation/widgets/inputs/s
 import 'package:five_on_4_mobile/src/features/core/presentation/widgets/loading_status.dart';
 import 'package:five_on_4_mobile/src/features/core/utils/extensions/string_extension.dart';
 import 'package:five_on_4_mobile/src/features/matches/presentation/widgets/match/match_participants_container.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/data/entities/player_match_participation_local/player_match_participation_local_entity.dart';
+import 'package:five_on_4_mobile/src/features/player_match_participation/domain/models/player_match_participation/player_match_participation_model.dart';
 import 'package:five_on_4_mobile/src/features/player_match_participation/presentation/controllers/invite_to_match/provider/invite_to_match_controller.dart';
 import 'package:five_on_4_mobile/src/features/players/domain/models/player/player_model.dart';
 import 'package:five_on_4_mobile/src/features/players/presentation/controllers/search_players/provider/search_players_controller.dart';
@@ -54,10 +57,12 @@ class MatchParticipationsCreator extends ConsumerStatefulWidget {
     super.key,
     required this.matchId,
     required this.onReloadMatch,
+    required this.participations,
     // required this.players,
   });
 
   final int matchId;
+  final List<PlayerMatchParticipationModel> participations;
   final Future<void> Function() onReloadMatch;
 
   @override
@@ -140,6 +145,7 @@ class _MatchParticipationsCreatorState
               isLoading: searchPlayersForMatchParticipationUIState.isLoading,
               isError: searchPlayersForMatchParticipationUIState.isError,
               players: searchPlayersForMatchParticipationUIState.players,
+              participations: widget.participations,
               onPlayerTap: (player) {
                 // TODO this should add player to match participations
                 _onInvitePlayer(playerId: player.id);
@@ -211,12 +217,14 @@ class _MatchParticipationsCreatorSearchedPlayersResultsPresenter
     required this.isLoading,
     required this.isError,
     required this.players,
+    required this.participations,
     required this.onPlayerTap,
   });
 
   final bool isLoading;
   final bool isError;
   final List<PlayerModel> players;
+  final List<PlayerMatchParticipationModel> participations;
   final void Function(PlayerModel player) onPlayerTap;
 
   @override
@@ -260,6 +268,7 @@ class _MatchParticipationsCreatorSearchedPlayersResultsPresenter
     return _MatchParticipationCreatorPlayersList(
       onPlayerTap: onPlayerTap,
       foundPlayers: players,
+      participations: participations,
     );
   }
 }
@@ -269,10 +278,27 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
     super.key,
     required this.onPlayerTap,
     required this.foundPlayers,
+    required this.participations,
   });
 
   final void Function(PlayerModel player) onPlayerTap;
   final List<PlayerModel> foundPlayers;
+  final List<PlayerMatchParticipationModel> participations;
+
+  // TODO move this below probably
+  PlayerMatchParticipationStatus? _getPlayerMatchParticipationStatus({
+    required PlayerModel player,
+  }) {
+    // check if player is already in participations - if not, return null
+    final playerParticipation =
+        participations.firstWhereOrNull((e) => e.playerId == player.id);
+    if (playerParticipation == null) {
+      return null;
+    }
+
+    final PlayerMatchParticipationStatus status = playerParticipation.status;
+    return status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -282,6 +308,8 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
       itemCount: foundPlayers.length,
       itemBuilder: (context, index) {
         final foundPlayer = foundPlayers[index];
+        final PlayerMatchParticipationStatus? status =
+            _getPlayerMatchParticipationStatus(player: foundPlayer);
 
         // return MatchPlayerInvitation(
         //   player: foundPlayer,
@@ -303,6 +331,13 @@ class _MatchParticipationCreatorPlayersList extends StatelessWidget {
           },
           child: _MatchParticipationCreatorPlayerItem(
             player: foundPlayer,
+            // TODO temp hardcoded status
+            // TODO maybe we should add .none status to player match participation status - for when participation does not exist?
+            // TODO or, we can pass null? lets pass null
+            // status: PlayerMatchParticipationStatus.arriving,
+            status: status,
+            // status: null,
+
             // TODO we will handle with actions later
             // TODO also should somehow mark if player has already been added to match participations
             // TODO we should also refetch match after adding player to match participations
@@ -322,6 +357,7 @@ class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
     super.key,
     required this.player,
     required this.actions,
+    required this.status,
   });
 
   // TODO we dont necessarily allow any actions here - it should be custom - we will add this later as a separate widget
@@ -330,6 +366,8 @@ class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
   // final PlayerModel player;
   final PlayerModel player;
   final List<PlayerBriefActionItem> actions;
+  // TODO not sure if this is needed here - maybe it is good
+  final PlayerMatchParticipationStatus? status;
 
   @override
   Widget build(BuildContext context) {
@@ -366,14 +404,29 @@ class _MatchParticipationCreatorPlayerItem extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                player.nickname,
-                // participation.playerNickname ?? "Unknown",
-                style: const TextStyle(
-                  fontSize: TextSizeConstants.LARGE,
-                  color: ColorConstants.BLACK,
-                  fontWeight: FontWeight.bold,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    player.nickname,
+                    // participation.playerNickname ?? "Unknown",
+                    style: const TextStyle(
+                      fontSize: TextSizeConstants.LARGE,
+                      color: ColorConstants.BLACK,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  status != null
+                      ? Text(
+                          status!.formattedName.toUpperCase(),
+                          style: const TextStyle(
+                            fontSize: TextSizeConstants.REGULAR,
+                            color: ColorConstants.GREY,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
               ),
               const SizedBox(height: SpacingConstants.XS),
               Row(
